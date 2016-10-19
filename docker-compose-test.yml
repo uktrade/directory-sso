@@ -1,0 +1,18 @@
+version: '2'
+services:
+
+  postgres:
+    image: postgres:9.5.2
+    env_file: ./docker/.env-postgres.test
+
+  sut:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    depends_on: [postgres]
+    links: [postgres]
+    working_dir: /usr/src/app
+    entrypoint: dockerize -wait tcp://postgres:5432 -timeout 20s
+    command: ./docker/cmd-test.sh
+    env_file: ./docker/.env.test
+    restart: "no"
