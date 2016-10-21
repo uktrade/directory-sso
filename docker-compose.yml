@@ -3,7 +3,7 @@ services:
 
   postgres:
     image: postgres:9.5.2
-    env_file: .env-postgres
+    env_file: ./docker/.env-postgres
 
   webserver:
     build:
@@ -15,6 +15,6 @@ services:
     working_dir: /usr/src/app
     entrypoint: dockerize -wait tcp://postgres:5432 -timeout 20s
     command: ./docker/cmd-webserver.sh
-    ports: ["8000:8000"]
+    ports: ["8003:8003"]
     env_file: ./docker/.env
     restart: "always"
