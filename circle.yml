@@ -14,7 +14,7 @@ test:
 
 deployment:
   heroku:
-    branch: test
+    branch: master
     commands:
       - docker login --email=$HEROKU_EMAIL --username=$HEROKU_EMAIL --password=$HEROKU_API_KEY registry.heroku.com
       - docker push registry.heroku.com/directory-sso-dev/web
