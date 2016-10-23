@@ -1,68 +1,85 @@
 from django.conf.urls import url, include
 from django.contrib import admin
-from django.views.generic import TemplateView
 
 import oauth2_provider.views
-import rest_auth.views
-import rest_auth.registration.views
-
-from sso.views import documentation
+import allauth.account.views
 
 
 admin.autodiscover()
 
 
-rest_auth_patterns = [
+allauth_urlpatterns = [
     url(
-        r'^registration/$',
-        rest_auth.registration.views.RegisterView.as_view(),
-        name='rest_register'
+        r"^signup/$",
+        allauth.account.views.signup,
+        name="account_signup"
+    ),
+    url(
+        r"^login/$",
+        allauth.account.views.login,
+        name="account_login"
+    ),
+    url(
+        r"^logout/$",
+        allauth.account.views.logout,
+        name="account_logout"
     ),
 
-    # TODO: override this view to handle it and send post to /verify-email/
-    # endpoint with proper key (see allauth.account.views.ConfirmEmailView for
-    # example)
     url(
-        r'^account-confirm-email/(?P<key>[-:\w]+)/$',
-        TemplateView.as_view(),
-        name='account_confirm_email'
+        r"^password/change/$",
+        allauth.account.views.password_change,
+        name="account_change_password"
     ),
     url(
-        r'^registration/verify_email/$',
-        rest_auth.registration.views.VerifyEmailView.as_view(),
-        name='rest_verify_email'
+        r"^password/set/$",
+        allauth.account.views.password_set,
+        name="account_set_password"
+    ),
+
+    url(
+        r"^inactive/$",
+        allauth.account.views.account_inactive,
+        name="account_inactive"
+    ),
+
+    url(
+        r"^email/$",
+        allauth.account.views.email,
+        name="account_email"
     ),
     url(
-        r'^user/$',
-        rest_auth.views.UserDetailsView.as_view(),
-        name='rest_user_details'
+        r"^confirm-email/$",
+        allauth.account.views.email_verification_sent,
+        name="account_email_verification_sent"
     ),
     url(
-        r'^login/$',
-        rest_auth.views.LoginView.as_view(),
-        name='rest_login'
+        r"^confirm-email/(?P<key>[-:\w]+)/$",
+        allauth.account.views.confirm_email,
+        name="account_confirm_email"
+    ),
+
+    url(
+        r"^password/reset/$",
+        allauth.account.views.password_reset,
+        name="account_reset_password"
     ),
     url(
-        r'^logout/$',
-        rest_auth.views.LogoutView.as_view(),
-        name='rest_logout'
+        r"^password/reset/done/$",
+        allauth.account.views.password_reset_done,
+        name="account_reset_password_done"
     ),
     url(
-        r'^password/reset/$',
-        rest_auth.views.PasswordResetView.as_view(),
-        name='rest_password_reset'
+        r"^password/reset/key/(?P<uidb36>[0-9A-Za-z]+)-(?P<key>.+)/$",
+        allauth.account.views.password_reset_from_key,
+        name="account_reset_password_from_key"
     ),
     url(
-        r'^password/reset/confirm/$',
-        rest_auth.views.PasswordResetConfirmView.as_view(),
-        name='rest_password_reset_confirm'
-    ),
-    url(
-        r'^password/change/$',
-        rest_auth.views.PasswordChangeView.as_view(),
-        name='rest_password_change'
+        r"^password/reset/key/done/$",
+        allauth.account.views.password_reset_from_key_done,
+        name="account_reset_password_from_key_done"
     ),
 ]
+
 
 oauth2_provider_patterns = [
     url(
@@ -119,18 +136,15 @@ oauth2_provider_patterns = [
     ),
 ]
 
+
 urlpatterns = [
     url(
         r'^admin/',
         include(admin.site.urls)
     ),
     url(
-        r'^docs/$',
-        documentation
-    ),
-    url(
         r'^account/',
-        include(rest_auth_patterns, namespace='rest_auth')
+        include(allauth_urlpatterns)
     ),
     url(
         r'^auth/',

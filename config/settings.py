@@ -17,8 +17,6 @@ DEBUG = True if (os.getenv('DEBUG') == 'true') else False
 ALLOWED_HOSTS = ['*']
 
 
-# Application definition
-
 INSTALLED_APPS = [
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -26,17 +24,14 @@ INSTALLED_APPS = [
     'django.contrib.sites',
     'django.contrib.staticfiles',
     'django.contrib.admin',
-    'django_extensions',
     'raven.contrib.django.raven_compat',
-    'rest_framework',
-    'rest_framework_swagger',
-    'rest_framework.authtoken',
-    'rest_auth',
-    'rest_auth.registration',
     'allauth',
     'allauth.account',
+    'allauth.socialaccount',
     'oauth2_provider',
     'corsheaders',
+    'sso.authorisation',
+    'sso.user',
 ]
 
 SITE_ID = 1
@@ -55,7 +50,15 @@ CORS_ORIGIN_ALLOW_ALL = True if (
     os.getenv('CORS_ORIGIN_ALLOW_ALL') == 'true'
 ) else False
 
-ROOT_URLCONF = 'sso.urls'
+
+AUTHENTICATION_BACKENDS = (
+    'django.contrib.auth.backends.ModelBackend',
+    # `allauth` specific authentication methods, such as login by e-mail
+    'allauth.account.auth_backends.AuthenticationBackend',
+)
+
+
+ROOT_URLCONF = 'config.urls'
 
 TEMPLATES = [
     {
@@ -77,15 +80,13 @@ TEMPLATES = [
 ]
 
 
-WSGI_APPLICATION = 'sso.wsgi.application'
+WSGI_APPLICATION = 'config.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/1.9/ref/settings/#databases
 
 DATABASES = {
-    'default': dj_database_url.config(
-        default="postgres://test:test@localhost:5432/sso-test"
-    )
+    'default': dj_database_url.config()
 }
 
 # Internationalization
@@ -172,31 +173,23 @@ if DEBUG:
         }
     }
 
+# auth
+AUTH_USER_MODEL = 'user.User'
 
-# SQS
+# django-allauth
 
-SQS_REGION_NAME = os.getenv("SQS_REGION_NAME", 'eu-west-1')
-
-SQS_ENROLMENT_QUEUE_NAME = os.getenv(
-    "SQS_ENROLMENT_QUEUE_NAME", 'sso-enrolment'
-)
-SQS_INVALID_ENROLMENT_QUEUE_NAME = os.getenv(
-    "SQS_INVALID_ENROLMENT_QUEUE_NAME", 'sso-enrolment-invalid'
-)
-
-# Long polling time (how long boto client waits for messages during single
-# receive_messages call), in seconds, max is 20
-SQS_WAIT_TIME = int(os.getenv("SQS_WAIT_TIME", 20))
-# Number of messages retrieved at once, max is 10
-SQS_MAX_NUMBER_OF_MESSAGES = int(os.getenv("SQS_MAX_NUMBER_OF_MESSAGES", 10))
-# Time after which retrieved, but not deleted message will reappear in the
-# queue, max is 43200 (12 hours)
-SQS_VISIBILITY_TIMEOUT = int(os.getenv("SQS_VISIBILITY_TIMEOUT", 21600))
-
-# Auth
-
-REST_FRAMEWORK = {
-    'DEFAULT_AUTHENTICATION_CLASSES': (
-        'rest_framework.authentication.TokenAuthentication',
-    )
-}
+ACCOUNT_AUTHENTICATION_METHOD = 'email'
+ACCOUNT_UNIQUE_EMAIL = True
+ACCOUNT_USER_MODEL_USERNAME_FIELD = None
+ACCOUNT_EMAIL_REQUIRED = True
+ACCOUNT_USERNAME_REQUIRED = False
+# HTTP POST is more appropriate, but would require JS in the email
+ACCOUNT_CONFIRM_EMAIL_ON_GET = True
+ACCOUNT_EMAIL_CONFIRMATION_EXPIRE_DAYS = 3
+ACCOUNT_EMAIL_VERIFICATION = 'mandatory'
+ACCOUNT_EMAIL_SUBJECT_PREFIX = 'Exporting is GREAT Account'
+ACCOUNT_DEFAULT_HTTP_PROTOCOL = 'https'
+ACCOUNT_LOGIN_ATTEMPTS_LIMIT = 5
+ACCOUNT_LOGIN_ATTEMPTS_TIMEOUT = 300  # seconds
+ACCOUNT_SIGNUP_EMAIL_ENTER_TWICE = False
+ACCOUNT_SIGNUP_PASSWORD_ENTER_TWICE = True
