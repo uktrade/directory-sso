@@ -143,7 +143,7 @@ urlpatterns = [
         include(admin.site.urls)
     ),
     url(
-        r'^account/',
+        r'^accounts/',
         include(allauth_urlpatterns)
     ),
     url(
