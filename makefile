@@ -76,7 +76,8 @@ DEBUG_SET_ENV_VARS := \
 	export DEBUG=true; \
 	export DB_NAME=sso_debug; \
 	export DB_USER=debug; \
-	export DB_PASSWORD=debug
+	export DB_PASSWORD=debug; \
+	export DATABASE_URL=postgres://debug:debug@localhost:5432/sso_debug
 
 debug_webserver:
 	 $(DEBUG_SET_ENV_VARS); $(DJANGO_WEBSERVER);
