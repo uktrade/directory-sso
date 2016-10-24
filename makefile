@@ -96,4 +96,7 @@ debug_test:
 
 debug: test_requirements debug_db debug_test
 
-.PHONY: build clean test_requirements docker_test docker_run docker_debug docker_webserver_bash docker_psql docker_test debug_webserver debug_db debug_test debug
+migrations:
+	$(DEBUG_SET_ENV_VARS) && ./manage.py makemigrations user authorisation
+
+.PHONY: build clean test_requirements docker_test docker_run docker_debug docker_webserver_bash docker_psql docker_test debug_webserver debug_db debug_test debug migrations
