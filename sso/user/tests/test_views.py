@@ -7,5 +7,5 @@ import pytest
 def test_public_views():
     client = Client()
     for view in ('login', 'signup'):
-        response = client.get('/account/{}/'.format(view))
+        response = client.get('/accounts/{}/'.format(view))
         assert response.status_code == 200
