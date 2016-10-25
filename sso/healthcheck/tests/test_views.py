@@ -1,5 +1,3 @@
-import json
-
 from django.core.urlresolvers import reverse
 
 from rest_framework import status
@@ -12,6 +10,6 @@ def test_health_check():
 
     assert response.status_code == status.HTTP_200_OK
 
-    response_data = json.loads(response.data)
+    response_data = response.data
     assert response_data['status_code'] == status.HTTP_200_OK
     assert response_data['detail'] == 'Hello world'

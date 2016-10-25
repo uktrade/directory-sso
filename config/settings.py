@@ -29,6 +29,7 @@ INSTALLED_APPS = [
     'allauth.account',
     'allauth.socialaccount',
     'oauth2_provider',
+    'rest_framework',
     'corsheaders',
     'sso.authorisation',
     'sso.user',
@@ -49,13 +50,6 @@ MIDDLEWARE_CLASSES = [
 CORS_ORIGIN_ALLOW_ALL = True if (
     os.getenv('CORS_ORIGIN_ALLOW_ALL') == 'true'
 ) else False
-
-
-AUTHENTICATION_BACKENDS = (
-    'django.contrib.auth.backends.ModelBackend',
-    # `allauth` specific authentication methods, such as login by e-mail
-    'allauth.account.auth_backends.AuthenticationBackend',
-)
 
 
 ROOT_URLCONF = 'config.urls'
@@ -127,12 +121,6 @@ STATICFILES_STORAGE = 'whitenoise.django.GzipManifestStaticFilesStorage'
 SECRET_KEY = os.environ["SECRET_KEY"]
 
 
-# DRF
-REST_FRAMEWORK = {
-    'UNAUTHENTICATED_USER': None
-}
-
-
 # Sentry
 
 RAVEN_CONFIG = {
@@ -172,8 +160,32 @@ if DEBUG:
 
 # Authentication
 AUTH_USER_MODEL = 'user.User'
+AUTHENTICATION_BACKENDS = (
+    'oauth2_provider.backends.OAuth2Backend',
+    'django.contrib.auth.backends.ModelBackend',
+    'allauth.account.auth_backends.AuthenticationBackend'
+)
+
+# DRF
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'oauth2_provider.ext.rest_framework.OAuth2Authentication',
+    ),
+    'DEFAULT_PERMISSION_CLASSES': (
+        'rest_framework.permissions.IsAuthenticated',
+    ),
+    'UNAUTHENTICATED_USER': None,
+}
+
+# django-oauth2-toolkit
+OAUTH2_PROVIDER = {
+    'SCOPES': {
+        'profile': 'Access to your profile'
+    }
+}
 
 # django-allauth
+LOGIN_REDIRECT_URL = '/'
 ACCOUNT_AUTHENTICATION_METHOD = 'email'
 ACCOUNT_UNIQUE_EMAIL = True
 ACCOUNT_USER_MODEL_USERNAME_FIELD = None
