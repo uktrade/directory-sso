@@ -1,0 +1,204 @@
+html {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
+*, *:before, *:after {
+  -webkit-box-sizing: inherit;
+  -moz-box-sizing: inherit;
+  box-sizing: inherit;
+}
+
+ul, li {
+  list-style: none;
+}
+
+.list-inset {
+  list-style-type: circle;
+  margin-left: 2.5em;
+}
+
+.clearfix:after {
+  visibility: hidden;
+  display: block;
+  font-size: 0;
+  content: " ";
+  clear: both;
+  height: 0;
+}
+
+* html .clearfix {
+  zoom: 1;
+}
+
+*:first-child + html .clearfix {
+  zoom: 1;
+}
+.sso-content {
+  margin-top: 40px;
+  margin-bottom: 40px;
+}
+
+#skiplink-container a.skiplink,
+a.teal:focus {
+  background: #007EA3;
+  color: #ffffff;
+}
+
+.input-field-container {
+  margin-bottom: 40px;
+}
+.input-field-container label {
+  margin-bottom: 10px;
+}
+.input-field-container input,
+.input-field-container select,
+.input-field-container textarea {
+  border-radius: 0;
+  font-size: 16px;
+  height: 50px;
+  width: 100%;
+  background-color: #fff;
+  border: 3px solid #6f777b;
+  margin-bottom: 10px;
+  font-family: 'Roboto', sans-serif;
+}
+.input-field-container input:focus,
+.input-field-container select:focus,
+.input-field-container textarea:focus {
+  border: 3px solid #007EA3;
+}
+.input-field-container input[type='checkbox'] {
+  height: 14px;
+  width: 14px;
+}
+.input-field-container select {
+  height: 50px;
+  width: 100%;
+}
+.input-field-container textarea {
+  min-height: 200px;
+}
+.input-field-container input[type='file'] {
+  border: 0;
+}
+.input-field-container.has-error {
+  border-left: 5px solid #B00D23;
+  padding-left: 15px;
+}
+ul.errorlist {
+  border-left: 5px solid #B00D23;
+  padding-left: 15px;
+  margin: 0;
+  padding-bottom: 10px;
+  color: #b10e1e;
+  font-weight: 600;
+}
+ul.errorlist li {
+  color: #b10e1e;
+  font-weight: 600;
+}
+.input-field-container.has-error input, .input-field-container.has-error select, .input-field-container.has-error textarea {
+  border: 3px solid #B00D23;
+}
+
+button {
+  background-color: #00549F;
+  padding: .5em;
+  border: none;
+  border-radius: 0;
+  line-height: 1.25;
+  text-decoration: none;
+  -webkit-font-smoothing: antialiased;
+  cursor: pointer;
+  color: #fff;
+  box-sizing: border-box;
+  font-size: 19px;
+  font-family: 'Roboto', sans-serif;
+}
+button:focus {
+  background: #007EA3;
+  outline: 0;
+}
+
+body {
+  font-family: 'Roboto', sans-serif;
+}
+@media (max-width: 979px) {
+    body {
+    padding: 0;
+  }
+    body .container {
+    padding: 20px;
+  }
+}
+body h1 {
+  font-size: 38px;
+}
+body h2 {
+  font-size: 26px;
+}
+@media (min-width: 979px) {
+    body .container {
+    max-width: 960px;
+  }
+}
+body #content {
+  padding-bottom: 0;
+}
+body #content .container .enrolment-intro-container {
+  margin-bottom: 20px;
+  margin-top: 70px;
+}
+body #content .container .enrolment-intro-container .enrolment-intro {
+  padding: 0;
+}
+body #content .container form {
+  margin-bottom: 0;
+}
+
+.sso-header ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 10px;
+}
+.sso-header ul li {
+  display: inline;
+  margin: 10px;
+}
+.sso-header ul li a {
+  color: white;
+}
+.sso-header ul li a:focus {
+  background: #007EA3;
+  color: #ffffff;
+}
+.sso-header .sso-header-level-one {
+  background: #110B29;
+}
+.sso-header .sso-header-level-two {
+  background: #1E1348;
+  padding-top: 5px;
+  padding-bottom: 10px;
+  line-height: 4em;
+}
+
+#footer.sso-footer {
+  background: #1E1348;
+  padding: 40px;
+}
+#footer.sso-footer .footer-wrapper {
+  background: #1E1348;
+}
+#footer.sso-footer ul li {
+  padding: 5px;
+}
+#footer.sso-footer ul li a {
+  color: white;
+}
+#footer.sso-footer ul li a:focus {
+  background: #007EA3;
+  color: #ffffff;
+}
+
