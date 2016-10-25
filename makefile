@@ -1,8 +1,5 @@
 build: docker_test
 
-heroku_deploy:
-	heroku container:push web
-
 clean:
 	-find . -type f -name "*.pyc" -delete
 	-find . -type d -name "__pycache__" -delete
@@ -99,4 +96,12 @@ debug: test_requirements debug_db debug_test
 migrations:
 	$(DEBUG_SET_ENV_VARS) && ./manage.py makemigrations user authorisation
 
-.PHONY: build clean test_requirements docker_test docker_run docker_debug docker_webserver_bash docker_psql docker_test debug_webserver debug_db debug_test debug migrations
+heroku_deploy_dev:
+	docker build -t registry.heroku.com/directory-sso-dev/web .
+	docker push registry.heroku.com/directory-sso-dev/web
+
+heroku_deploy_demo:
+	docker build -t registry.heroku.com/directory-sso-demo/web .
+	docker push registry.heroku.com/directory-sso-demo/web
+
+.PHONY: build clean test_requirements docker_test docker_run docker_debug docker_webserver_bash docker_psql docker_test debug_webserver debug_db debug_test debug migrations heroku_deploy_dev heroku_deploy_demo
