@@ -11,9 +11,8 @@ from oauth2_provider.models import AccessToken, Application
 from sso.user.models import User
 
 
-@pytest.mark.django_db
-def test_user_retrieve_view():
-    superuser = User.objects.create(
+def setup_data():
+    superuser = User.objects.create_user(
         email='superuser@example.com',
         password='pass',
         is_superuser=True
@@ -37,6 +36,13 @@ def test_user_retrieve_view():
         scope='profile'
     )
 
+    return superuser, application, user, access_token
+
+
+@pytest.mark.django_db
+def test_user_retrieve_view_authorised():
+    _, _, user, access_token = setup_data()
+
     client = APIClient()
     client.credentials(
         HTTP_AUTHORIZATION='Bearer {}'.format(access_token.token)
@@ -46,3 +52,31 @@ def test_user_retrieve_view():
 
     assert response.status_code == status.HTTP_200_OK
     assert response.data['email'] == user.email
+
+
+@pytest.mark.django_db
+def test_user_retrieve_view_no_token():
+    setup_data()
+
+    client = APIClient()
+    client.credentials(
+        HTTP_AUTHORIZATION='Bearer '
+    )
+
+    response = client.get(reverse('user-profile'))
+
+    assert response.status_code == status.HTTP_401_UNAUTHORIZED
+
+
+@pytest.mark.django_db
+def test_user_retrieve_view_invalid_token():
+    setup_data()
+
+    client = APIClient()
+    client.credentials(
+        HTTP_AUTHORIZATION='Bearer invalid_token'
+    )
+
+    response = client.get(reverse('user-profile'))
+
+    assert response.status_code == status.HTTP_401_UNAUTHORIZED
