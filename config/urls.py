@@ -4,6 +4,8 @@ from django.contrib import admin
 import oauth2_provider.views
 import allauth.account.views
 
+from sso.healthcheck.views import HealthCheckAPIView
+from sso.user.views_oauth2 import UserRetrieveAPIView
 
 admin.autodiscover()
 
@@ -136,6 +138,19 @@ oauth2_provider_patterns = [
     ),
 ]
 
+api_urlpatterns = [
+    url(
+        r'^$',
+        HealthCheckAPIView.as_view(),
+        name='health-check'
+    ),
+    url(
+        r'^user-profile/$',
+        UserRetrieveAPIView.as_view(),
+        name='user-profile'
+    ),
+]
+
 
 urlpatterns = [
     url(
@@ -149,5 +164,9 @@ urlpatterns = [
     url(
         r'^auth/',
         include(oauth2_provider_patterns, namespace='oauth2_provider')
+    ),
+    url(
+        r'^api/v1/',
+        include(api_urlpatterns)
     ),
 ]
