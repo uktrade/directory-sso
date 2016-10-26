@@ -48,7 +48,7 @@ def test_user_retrieve_view_authorised():
         HTTP_AUTHORIZATION='Bearer {}'.format(access_token.token)
     )
 
-    response = client.get(reverse('user-profile'))
+    response = client.get(reverse('oauth2_provider:user-profile'))
 
     assert response.status_code == status.HTTP_200_OK
     assert response.data['email'] == user.email
@@ -63,7 +63,7 @@ def test_user_retrieve_view_no_token():
         HTTP_AUTHORIZATION='Bearer '
     )
 
-    response = client.get(reverse('user-profile'))
+    response = client.get(reverse('oauth2_provider:user-profile'))
 
     assert response.status_code == status.HTTP_401_UNAUTHORIZED
 
@@ -77,6 +77,6 @@ def test_user_retrieve_view_invalid_token():
         HTTP_AUTHORIZATION='Bearer invalid_token'
     )
 
-    response = client.get(reverse('user-profile'))
+    response = client.get(reverse('oauth2_provider:user-profile'))
 
     assert response.status_code == status.HTTP_401_UNAUTHORIZED

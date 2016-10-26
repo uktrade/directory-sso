@@ -79,6 +79,9 @@ DEBUG_SET_ENV_VARS := \
 debug_webserver:
 	 $(DEBUG_SET_ENV_VARS); $(DJANGO_WEBSERVER);
 
+debug_shell:
+	 $(DEBUG_SET_ENV_VARS); ./manage.py shell
+
 DEBUG_CREATE_DB := \
 	psql -U postgres -tc "SELECT 1 FROM pg_database WHERE datname = '$$DB_NAME'" | \
 	grep -q 1 || psql -U postgres -c "CREATE DATABASE $$DB_NAME"; \
@@ -89,12 +92,12 @@ debug_db:
 	$(DEBUG_SET_ENV_VARS) && $(DEBUG_CREATE_DB)
 
 debug_test:
-	$(DEBUG_SET_ENV_VARS) && $(FLAKE8) && $(PYTEST)
+	$(DEBUG_SET_ENV_VARS) && $(COLLECT_STATIC) && $(FLAKE8) && $(PYTEST)
 
 debug: test_requirements debug_db debug_test
 
 migrations:
-	$(DEBUG_SET_ENV_VARS) && ./manage.py makemigrations user authorisation
+	$(DEBUG_SET_ENV_VARS) && ./manage.py makemigrations user oauth2
 
 heroku_deploy_dev:
 	docker build -t registry.heroku.com/directory-sso-dev/web .
