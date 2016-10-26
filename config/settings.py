@@ -57,7 +57,9 @@ ROOT_URLCONF = 'config.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [
+            os.path.join(BASE_DIR, 'sso', 'templates'),
+        ],
         'OPTIONS': {
             'context_processors': [
                 'django.template.context_processors.debug',
@@ -99,7 +101,7 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.9/howto/static-files/
-STATIC_ROOT = os.path.join(PROJECT_ROOT, 'staticfiles')
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 if not os.path.exists(STATIC_ROOT):
     os.makedirs(STATIC_ROOT)
@@ -108,7 +110,7 @@ STATIC_URL = '/static/'
 
 # Extra places for collectstatic to find static files.
 STATICFILES_DIRS = (
-    os.path.join(PROJECT_ROOT, 'static'),
+    os.path.join(BASE_DIR, 'static'),
 )
 
 for static_dir in STATICFILES_DIRS:
@@ -211,3 +213,14 @@ EMAIL_HOST_USER = os.getenv("EMAIL_HOST_USER")
 EMAIL_HOST_PASSWORD = os.getenv("EMAIL_HOST_PASSWORD")
 EMAIL_USE_TLS = True
 DEFAULT_FROM_EMAIL = os.getenv("DEFAULT_FROM_EMAIL")
+
+ACCOUNT_FORMS = {
+    'signup': 'sso.user.forms.SignupForm',
+    'login': 'sso.user.forms.LoginForm',
+    'user': 'sso.user.forms.UserForm',
+    'add_email': 'sso.user.forms.AddEmailForm',
+    'change_password': 'sso.user.forms.ChangePasswordForm',
+    'set_password': 'sso.user.forms.SetPasswordForm',
+    'reset_password': 'sso.user.forms.ResetPasswordForm',
+    'reset_password_from_key': 'sso.user.forms.ResetPasswordKeyForm',
+}
