@@ -20,7 +20,7 @@ class SignatureRejection:
             return False
 
         generated = self.generate_signature(
-            settings.UI_SECRET,
+            settings.API_SECRET,
             request.get_full_path(),
             request.body,
         )

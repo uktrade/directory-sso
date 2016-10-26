@@ -37,21 +37,21 @@ class SignatureRejectionMiddlewareTestCase(BaseSignatureTestCase):
             'c6be1984f8b516e94d7257031cc47ed9863a433e461ac0117214b1b6a7801991',
         )
 
-    @override_settings(UI_SECRET=AliceClient.SECRET)
+    @override_settings(API_SECRET=AliceClient.SECRET)
     def test_test_signature_missing(self):
         self.assertFalse(self.signature_rejection.test_signature(self.request))
 
-    @override_settings(UI_SECRET=AliceClient.SECRET)
+    @override_settings(API_SECRET=AliceClient.SECRET)
     def test_test_signature_incorrect(self):
         self.request.META['HTTP_X_SIGNATURE'] = 'bad-signature'
         self.assertFalse(self.signature_rejection.test_signature(self.request))
 
-    @override_settings(UI_SECRET=AliceClient.SECRET)
+    @override_settings(API_SECRET=AliceClient.SECRET)
     def test_test_signature_correct(self):
         self.request.META['HTTP_X_SIGNATURE'] = self.sig
         self.assertTrue(self.signature_rejection.test_signature(self.request))
 
-    @override_settings(UI_SECRET=AliceClient.SECRET)
+    @override_settings(API_SECRET=AliceClient.SECRET)
     def test_process_request_pass(self):
         self.request.META['HTTP_X_SIGNATURE'] = self.sig
         self.assertEqual(self.middleware.process_request(self.request), None)

@@ -33,6 +33,7 @@ DOCKER_SET_DEBUG_ENV_VARS := \
 	export SSO_PORT=8003; \
 	export SSO_DEBUG=true; \
 	export SSO_SECRET_KEY=debug; \
+	export SSO_API_SECRET=debug; \
 	export SSO_POSTGRES_USER=debug; \
 	export SSO_POSTGRES_PASSWORD=debug; \
 	export SSO_POSTGRES_DB=sso_debug; \
@@ -69,6 +70,7 @@ docker_test: docker_remove_all
 
 DEBUG_SET_ENV_VARS := \
 	export SECRET_KEY=debug; \
+	export API_SECRET=debug; \
 	export PORT=8003; \
 	export DEBUG=true; \
 	export DB_NAME=sso_debug; \

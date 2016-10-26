@@ -122,9 +122,10 @@ STATICFILES_STORAGE = 'whitenoise.django.GzipManifestStaticFilesStorage'
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = os.environ["SECRET_KEY"]
 
+# API key shared with clients
+API_SECRET = os.environ["API_SECRET"]
 
 # Sentry
-
 RAVEN_CONFIG = {
     "dsn": os.getenv("SENTRY_DSN"),
 }
