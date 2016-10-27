@@ -33,10 +33,18 @@ DOCKER_SET_DEBUG_ENV_VARS := \
 	export SSO_PORT=8003; \
 	export SSO_DEBUG=true; \
 	export SSO_SECRET_KEY=debug; \
+	export SSO_API_SECRET=debug; \
 	export SSO_POSTGRES_USER=debug; \
 	export SSO_POSTGRES_PASSWORD=debug; \
 	export SSO_POSTGRES_DB=sso_debug; \
-	export SSO_DATABASE_URL=postgres://debug:debug@postgres:5432/sso_debug
+	export SSO_DATABASE_URL=postgres://debug:debug@postgres:5432/sso_debug; \
+	export SSO_SESSION_COOKIE_DOMAIN=localhost; \
+	export SSO_SSO_SESSION_COOKIE=debug_sso_session_cookie; \
+    export SSO_EMAIL_HOST=debug; \
+    export SSO_EMAIL_PORT=debug; \
+    export SSO_EMAIL_HOST_USER=debug; \
+    export SSO_EMAIL_HOST_PASSWORD=debug; \
+    export SSO_DEFAULT_FROM_EMAIL=debug
 
 DOCKER_REMOVE_ALL := \
 	docker ps -a | \
@@ -69,15 +77,26 @@ docker_test: docker_remove_all
 
 DEBUG_SET_ENV_VARS := \
 	export SECRET_KEY=debug; \
+	export API_SECRET=debug; \
 	export PORT=8003; \
 	export DEBUG=true; \
 	export DB_NAME=sso_debug; \
 	export DB_USER=debug; \
 	export DB_PASSWORD=debug; \
-	export DATABASE_URL=postgres://debug:debug@localhost:5432/sso_debug
+	export DATABASE_URL=postgres://debug:debug@localhost:5432/sso_debug; \
+	export SESSION_COOKIE_DOMAIN=localhost; \
+	export SSO_SESSION_COOKIE=debug_sso_session_cookie; \
+    export EMAIL_HOST=debug; \
+    export EMAIL_PORT=debug; \
+    export EMAIL_HOST_USER=debug; \
+    export EMAIL_HOST_PASSWORD=debug; \
+    export DEFAULT_FROM_EMAIL=debug
 
 debug_webserver:
 	 $(DEBUG_SET_ENV_VARS); $(DJANGO_WEBSERVER);
+
+debug_shell:
+	 $(DEBUG_SET_ENV_VARS); ./manage.py shell
 
 DEBUG_CREATE_DB := \
 	psql -U postgres -tc "SELECT 1 FROM pg_database WHERE datname = '$$DB_NAME'" | \
@@ -89,12 +108,12 @@ debug_db:
 	$(DEBUG_SET_ENV_VARS) && $(DEBUG_CREATE_DB)
 
 debug_test:
-	$(DEBUG_SET_ENV_VARS) && $(FLAKE8) && $(PYTEST)
+	$(DEBUG_SET_ENV_VARS) && $(COLLECT_STATIC) && $(FLAKE8) && $(PYTEST)
 
 debug: test_requirements debug_db debug_test
 
 migrations:
-	$(DEBUG_SET_ENV_VARS) && ./manage.py makemigrations user authorisation
+	$(DEBUG_SET_ENV_VARS) && ./manage.py makemigrations user oauth2
 
 heroku_deploy_dev:
 	docker build -t registry.heroku.com/directory-sso-dev/web .

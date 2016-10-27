@@ -5,7 +5,9 @@ import oauth2_provider.views
 import allauth.account.views
 
 from sso.healthcheck.views import HealthCheckAPIView
-from sso.user.views_oauth2 import UserRetrieveAPIView
+from sso.oauth2.views_user import UserRetrieveAPIView
+from sso.api.views_user import SessionUserAPIView
+
 
 admin.autodiscover()
 
@@ -85,6 +87,11 @@ allauth_urlpatterns = [
 
 oauth2_provider_patterns = [
     url(
+        r'^user-profile/v1/$',
+        UserRetrieveAPIView.as_view(),
+        name='user-profile'
+    ),
+    url(
         r'^authorize/$',
         oauth2_provider.views.AuthorizationView.as_view(),
         name="authorize"
@@ -145,9 +152,9 @@ api_urlpatterns = [
         name='health-check'
     ),
     url(
-        r'^user-profile/$',
-        UserRetrieveAPIView.as_view(),
-        name='user-profile'
+        r'^session-user/$',
+        SessionUserAPIView.as_view(),
+        name='session-user'
     ),
 ]
 
@@ -162,7 +169,7 @@ urlpatterns = [
         include(allauth_urlpatterns)
     ),
     url(
-        r'^auth/',
+        r'^oauth2/',
         include(oauth2_provider_patterns, namespace='oauth2_provider')
     ),
     url(
