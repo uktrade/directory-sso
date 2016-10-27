@@ -51,24 +51,24 @@
                             <a href="#">Export Opportunities</a>
                         </li>
                         <li>
-                            <a href="#">Export Directory</a>
+                            <a href="#">Promote Your Business</a>
                         </li>
                         <li>
-                            <a href="#">Find Online Marketplace</a>
+                            <a href="#">Selling Online Overseas</a>
+                        </li>
+                        <li>
+                            <a href="#">Events</a>
                         </li>
                         {% if user.is_authenticated %}
                         <li>
-                          <a href="{% url 'account_email' %}">Change E-mail</a>
-                        </li>
-                        <li>
-                          <a href="{% url 'account_logout' %}">Sign Out</a>
+                          <a href="{% url 'account_logout' %}">Sign out</a>
                         </li>
                         {% else %}
                         <li>
-                          <a href="{% url 'account_login' %}">Sign In</a>
+                          <a href="{% url 'account_login' %}">Sign in</a>
                           </li>
                         <li>
-                          <a href="{% url 'account_signup' %}">Sign Up</a>
+                          <a href="{% url 'account_signup' %}">Register</a>
                         </li>
                         {% endif %}
                     </ul>
@@ -130,7 +130,7 @@
                                 <a href="#">Export Opportunities</a>
                             </li>
                             <li>
-                                <a href="#">Next steps</a>
+                                <a href="#">Promote Your Business</a>
                             </li>
                             <li>
                                 <a href="#">Advice and support</a>
