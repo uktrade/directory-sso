@@ -12,9 +12,13 @@ class SessionUserAPIView(RetrieveAPIView):
     serializer_class = UserSerializer
 
     def get_object(self):
-        session_key = self.request.META.get('HTTP_USER_SESSION_ID')
-        session = Session.objects.get(session_key=session_key)
+        session_key = self.request.META.get(
+            'headers', {}
+        ).get('user-session-key')
+
+        session = get_object_or_404(Session, session_key=session_key)
         session_data = session.get_decoded()
+
         user_id = session_data.get('_auth_user_id')
 
         return get_object_or_404(User, pk=user_id)
