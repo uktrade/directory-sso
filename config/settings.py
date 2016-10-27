@@ -201,19 +201,21 @@ ACCOUNT_EMAIL_VERIFICATION = 'mandatory'
 ACCOUNT_EMAIL_SUBJECT_PREFIX = os.getenv(
     "ACCOUNT_EMAIL_SUBJECT_PREFIX", 'Exporting is GREAT Account: '
 )
-ACCOUNT_DEFAULT_HTTP_PROTOCOL = 'https'
+ACCOUNT_DEFAULT_HTTP_PROTOCOL = os.getenv(
+    "ACCOUNT_DEFAULT_HTTP_PROTOCOL", 'https'
+)
 ACCOUNT_LOGIN_ATTEMPTS_LIMIT = 5
 ACCOUNT_LOGIN_ATTEMPTS_TIMEOUT = 300  # seconds
 ACCOUNT_SIGNUP_EMAIL_ENTER_TWICE = False
 ACCOUNT_SIGNUP_PASSWORD_ENTER_TWICE = True
 
 # Email
-EMAIL_HOST = os.getenv("EMAIL_HOST")
-EMAIL_PORT = os.getenv("EMAIL_PORT")
-EMAIL_HOST_USER = os.getenv("EMAIL_HOST_USER")
-EMAIL_HOST_PASSWORD = os.getenv("EMAIL_HOST_PASSWORD")
+EMAIL_HOST = os.environ["EMAIL_HOST"]
+EMAIL_PORT = os.environ["EMAIL_PORT"]
+EMAIL_HOST_USER = os.environ["EMAIL_HOST_USER"]
+EMAIL_HOST_PASSWORD = os.environ["EMAIL_HOST_PASSWORD"]
 EMAIL_USE_TLS = True
-DEFAULT_FROM_EMAIL = os.getenv("DEFAULT_FROM_EMAIL")
+DEFAULT_FROM_EMAIL = os.environ["DEFAULT_FROM_EMAIL"]
 
 ACCOUNT_FORMS = {
     'signup': 'sso.user.forms.SignupForm',
@@ -225,3 +227,7 @@ ACCOUNT_FORMS = {
     'reset_password': 'sso.user.forms.ResetPasswordForm',
     'reset_password_from_key': 'sso.user.forms.ResetPasswordKeyForm',
 }
+
+SESSION_COOKIE_DOMAIN = os.environ['SESSION_COOKIE_DOMAIN']
+# env var not same as setting to be more explicit (directory-ui uses same name)
+SESSION_COOKIE_NAME = os.environ['SSO_SESSION_COOKIE']
