@@ -14,6 +14,26 @@ ul, li {
   list-style: none;
 }
 
+textarea:focus,
+input[type="text"]:focus,
+input[type="password"]:focus,
+input[type="datetime"]:focus,
+input[type="datetime-local"]:focus,
+input[type="date"]:focus,
+input[type="month"]:focus,
+input[type="time"]:focus,
+input[type="week"]:focus,
+input[type="number"]:focus,
+input[type="email"]:focus,
+input[type="url"]:focus,
+input[type="search"]:focus,
+input[type="tel"]:focus,
+input[type="color"]:focus,
+.uneditable-input:focus {
+    box-shadow: none;
+    -webkit-box-shadow: none;
+}
+
 .list-inset {
   list-style-type: circle;
   margin-left: 2.5em;
@@ -103,7 +123,8 @@ ul.errorlist li {
   border: 3px solid #B00D23;
 }
 
-button {
+input[type="submit"], button {
+  width: auto;
   background-color: #00549F;
   padding: .5em;
   border: none;
@@ -117,7 +138,7 @@ button {
   font-size: 19px;
   font-family: 'Roboto', sans-serif;
 }
-button:focus {
+input[type="submit"], button:focus {
   background: #007EA3;
   outline: 0;
 }
