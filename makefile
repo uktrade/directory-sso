@@ -8,7 +8,7 @@ test_requirements:
 	pip install -r requirements_test.txt
 
 FLAKE8 := flake8 . --exclude=migrations
-PYTEST := pytest . --cov=. $(pytest_args)
+PYTEST := pytest . --cov=. $(pytest_args) --capture=no
 COLLECT_STATIC := python manage.py collectstatic --noinput
 
 test:
@@ -44,7 +44,8 @@ DOCKER_SET_DEBUG_ENV_VARS := \
     export SSO_EMAIL_PORT=debug; \
     export SSO_EMAIL_HOST_USER=debug; \
     export SSO_EMAIL_HOST_PASSWORD=debug; \
-    export SSO_DEFAULT_FROM_EMAIL=debug
+    export SSO_DEFAULT_FROM_EMAIL=debug; \
+    export SSO_LOGOUT_REDIRECT_URL=http://www.example.com
 
 DOCKER_REMOVE_ALL := \
 	docker ps -a | \
@@ -90,7 +91,8 @@ DEBUG_SET_ENV_VARS := \
     export EMAIL_PORT=debug; \
     export EMAIL_HOST_USER=debug; \
     export EMAIL_HOST_PASSWORD=debug; \
-    export DEFAULT_FROM_EMAIL=debug
+    export DEFAULT_FROM_EMAIL=debug; \
+    export LOGOUT_REDIRECT_URL=http://www.example.com
 
 debug_webserver:
 	 $(DEBUG_SET_ENV_VARS); $(DJANGO_WEBSERVER);
