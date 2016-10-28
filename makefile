@@ -38,14 +38,14 @@ DOCKER_SET_DEBUG_ENV_VARS := \
 	export SSO_POSTGRES_PASSWORD=debug; \
 	export SSO_POSTGRES_DB=sso_debug; \
 	export SSO_DATABASE_URL=postgres://debug:debug@postgres:5432/sso_debug; \
-	export SSO_SESSION_COOKIE_DOMAIN=localhost; \
+	export SSO_SESSION_COOKIE_DOMAIN=.trade.great.dev; \
 	export SSO_SSO_SESSION_COOKIE=debug_sso_session_cookie; \
     export SSO_EMAIL_HOST=debug; \
     export SSO_EMAIL_PORT=debug; \
     export SSO_EMAIL_HOST_USER=debug; \
     export SSO_EMAIL_HOST_PASSWORD=debug; \
     export SSO_DEFAULT_FROM_EMAIL=debug; \
-    export SSO_LOGOUT_REDIRECT_URL=http://www.example.com
+    export SSO_LOGOUT_REDIRECT_URL=http://ui.trade.great.dev
 
 DOCKER_REMOVE_ALL := \
 	docker ps -a | \
@@ -85,14 +85,14 @@ DEBUG_SET_ENV_VARS := \
 	export DB_USER=debug; \
 	export DB_PASSWORD=debug; \
 	export DATABASE_URL=postgres://debug:debug@localhost:5432/sso_debug; \
-	export SESSION_COOKIE_DOMAIN=localhost; \
+	export SESSION_COOKIE_DOMAIN=.trade.great.dev; \
 	export SSO_SESSION_COOKIE=debug_sso_session_cookie; \
     export EMAIL_HOST=debug; \
     export EMAIL_PORT=debug; \
     export EMAIL_HOST_USER=debug; \
     export EMAIL_HOST_PASSWORD=debug; \
     export DEFAULT_FROM_EMAIL=debug; \
-    export LOGOUT_REDIRECT_URL=http://www.example.com
+    export LOGOUT_REDIRECT_URL=http://ui.trade.great.dev
 
 debug_webserver:
 	 $(DEBUG_SET_ENV_VARS); $(DJANGO_WEBSERVER);
