@@ -6,6 +6,7 @@ import allauth.account.views
 
 from sso.user.views import (
     LogoutView,
+    LoginView,
     ConfirmEmailView,
     PasswordResetFromKeyView,
 )
@@ -25,7 +26,7 @@ allauth_urlpatterns = [
     ),
     url(
         r"^login/$",
-        allauth.account.views.login,
+        LoginView.as_view(),
         name="account_login"
     ),
     url(
