@@ -6,4 +6,4 @@ from sso.alice.utils import SignatureRejection
 class APIClientPermission(permissions.BasePermission):
 
     def has_permission(self, request, view):
-        return not SignatureRejection.test_signature(request)
+        return SignatureRejection.test_signature(request)
