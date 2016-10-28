@@ -34,7 +34,7 @@ def test_get_session_user_valid_api_key():
 
     response = client.get(
         reverse('session-user'),
-        headers={'USER-SESSION-KEY': user_session._session_key}
+        data={"session_key": user_session._session_key},
     )
 
     assert response.status_code == status.HTTP_200_OK
