@@ -45,7 +45,8 @@ DOCKER_SET_DEBUG_ENV_VARS := \
     export SSO_EMAIL_HOST_USER=debug; \
     export SSO_EMAIL_HOST_PASSWORD=debug; \
     export SSO_DEFAULT_FROM_EMAIL=debug; \
-    export SSO_LOGOUT_REDIRECT_URL=http://www.example.com
+    export SSO_LOGOUT_REDIRECT_URL=http://www.example.com; \
+    export ALLOWED_REDIRECT_DOMAINS=example.com,exportingisgreat.gov.uk
 
 DOCKER_REMOVE_ALL := \
 	docker ps -a | \
@@ -92,7 +93,7 @@ DEBUG_SET_ENV_VARS := \
     export EMAIL_HOST_USER=debug; \
     export EMAIL_HOST_PASSWORD=debug; \
     export DEFAULT_FROM_EMAIL=debug; \
-    export LOGOUT_REDIRECT_URL=http://www.example.com
+    export LOGOUT_REDIRECT_URL=http://www.example.com; \
     export ALLOWED_REDIRECT_DOMAINS=example.com,exportingisgreat.gov.uk
 
 debug_webserver:
