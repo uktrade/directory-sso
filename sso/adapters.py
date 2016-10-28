@@ -1,6 +1,7 @@
 from allauth.account.adapter import DefaultAccountAdapter
 import tldextract
 from django.conf import settings
+from django.core.exceptions import ValidationError
 
 
 def validate_next(next_param):
@@ -16,5 +17,8 @@ class AccountAdapter(DefaultAccountAdapter):
             request, emailconfirmation
         )
         if 'next' in request.GET:
+            if not validate_next(request.GET['next']):
+                raise ValidationError(
+                    "The next param is not in allowed domains")
             return '{0}?next={1}'.format(ret, request.GET['next'])
         return ret
