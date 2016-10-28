@@ -4,7 +4,11 @@ from django.contrib import admin
 import oauth2_provider.views
 import allauth.account.views
 
-from sso.user.views import LogoutView
+from sso.user.views import (
+    LogoutView,
+    ConfirmEmailView,
+    PasswordResetFromKeyView,
+)
 from sso.healthcheck.views import HealthCheckAPIView
 from sso.oauth2.views_user import UserRetrieveAPIView
 from sso.api.views_user import SessionUserAPIView
@@ -59,7 +63,7 @@ allauth_urlpatterns = [
     ),
     url(
         r"^confirm-email/(?P<key>[-:\w]+)/$",
-        allauth.account.views.confirm_email,
+        ConfirmEmailView.as_view(),
         name="account_confirm_email"
     ),
 
@@ -68,20 +72,17 @@ allauth_urlpatterns = [
         allauth.account.views.password_reset,
         name="account_reset_password"
     ),
+
     url(
         r"^password/reset/done/$",
         allauth.account.views.password_reset_done,
         name="account_reset_password_done"
     ),
+
     url(
         r"^password/reset/key/(?P<uidb36>[0-9A-Za-z]+)-(?P<key>.+)/$",
-        allauth.account.views.password_reset_from_key,
+        PasswordResetFromKeyView.as_view(),
         name="account_reset_password_from_key"
-    ),
-    url(
-        r"^password/reset/key/done/$",
-        allauth.account.views.password_reset_from_key_done,
-        name="account_reset_password_from_key_done"
     ),
 ]
 
