@@ -14,7 +14,7 @@ class SessionUserAPIView(RetrieveAPIView):
     def get_object(self):
         session_key = self.request.META.get(
             'headers', {}
-        ).get('user-session-key')
+        ).get('USER-SESSION-KEY')
 
         session = get_object_or_404(Session, session_key=session_key)
         session_data = session.get_decoded()
