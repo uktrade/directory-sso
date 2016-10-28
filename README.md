@@ -37,6 +37,7 @@ Provides defaults for all environment variables.
 | ------------- | ------------- |
 | SSO_SECRET_KEY | SECRET_KEY |
 | SSO_DATABASE_URL | DATABASE_URL |
+| SSO_LOGOUT_REDIRECT_URL | LOGOUT_REDIRECT_URL |
 
 #### Database
 | Host environment variable | Docker environment variable  |
@@ -67,3 +68,4 @@ Requires locally running PostgreSQL (e.g. [Postgres.app](http://postgresapp.com/
 | ------------- | ------------- | ------------- |
 | SECRET_KEY | None | Django secret key |
 | DATABASE_URL | None | Postgres database url |
+| LOGOUT_REDIRECT_URL | None | Where to send the user after successfully logging out |

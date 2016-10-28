@@ -4,6 +4,7 @@ from django.contrib import admin
 import oauth2_provider.views
 import allauth.account.views
 
+from sso.user.views import LogoutView
 from sso.healthcheck.views import HealthCheckAPIView
 from sso.oauth2.views_user import UserRetrieveAPIView
 from sso.api.views_user import SessionUserAPIView
@@ -25,7 +26,7 @@ allauth_urlpatterns = [
     ),
     url(
         r"^logout/$",
-        allauth.account.views.logout,
+        LogoutView.as_view(),
         name="account_logout"
     ),
 
