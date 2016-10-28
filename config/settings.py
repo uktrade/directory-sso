@@ -235,3 +235,6 @@ SESSION_COOKIE_NAME = os.environ['SSO_SESSION_COOKIE']
 LOGOUT_REDIRECT_URL = os.environ['LOGOUT_REDIRECT_URL']
 
 ACCOUNT_ADAPTER = 'sso.adapters.AccountAdapter'
+
+# Set with comma separated values in env
+ALLOWED_REDIRECT_DOMAINS = os.environ['ALLOWED_REDIRECT_DOMAINS'].split(',')

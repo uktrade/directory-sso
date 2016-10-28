@@ -93,6 +93,7 @@ DEBUG_SET_ENV_VARS := \
     export EMAIL_HOST_PASSWORD=debug; \
     export DEFAULT_FROM_EMAIL=debug; \
     export LOGOUT_REDIRECT_URL=http://www.example.com
+    export ALLOWED_REDIRECT_DOMAINS=example.com,exportingisgreat.gov.uk
 
 debug_webserver:
 	 $(DEBUG_SET_ENV_VARS); $(DJANGO_WEBSERVER);

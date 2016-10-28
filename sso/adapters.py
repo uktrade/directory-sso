@@ -1,4 +1,11 @@
 from allauth.account.adapter import DefaultAccountAdapter
+from urllib.parse import urlparse
+from django.conf import settings
+
+
+def validate_next(next_param):
+    domain = urlparse(next_param).netloc
+    return domain in settings.ALLOWED_REDIRECT_DOMAINS
 
 
 class AccountAdapter(DefaultAccountAdapter):
