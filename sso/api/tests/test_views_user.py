@@ -1,4 +1,3 @@
-from unittest.mock import patch, Mock
 from django.core.urlresolvers import reverse
 from django.test.client import Client
 
@@ -25,8 +24,6 @@ def setup_data():
 
 
 @pytest.mark.django_db
-@patch('sso.alice.utils.SignatureRejection.test_signature',
-       Mock(return_value=True))
 def test_get_session_user_valid_api_key():
     user, user_session = setup_data()
 

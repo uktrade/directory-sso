@@ -1,16 +1,17 @@
 from django.contrib.sessions.models import Session
 
 from rest_framework.generics import RetrieveAPIView
+from rest_framework.permissions import AllowAny
 
-from sso.api.permissions import APIClientPermission
 from sso.user.serializers import UserSerializer
 from sso.user.models import User
 
 
 class SessionUserAPIView(RetrieveAPIView):
-    permission_classes = [APIClientPermission]
+    permission_classes = [AllowAny]
     authentication_classes = []
     serializer_class = UserSerializer
+    lookup_field = 'session_key'
 
     def get_object(self):
         session_key = self.request.query_params.get('session_key')
