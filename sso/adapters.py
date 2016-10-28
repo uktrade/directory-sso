@@ -1,10 +1,11 @@
 from allauth.account.adapter import DefaultAccountAdapter
-from urllib.parse import urlparse
+import tldextract
 from django.conf import settings
 
 
 def validate_next(next_param):
-    domain = urlparse(next_param).netloc
+    extracted_domain = tldextract.extract(next_param)
+    domain = '.'.join([extracted_domain.domain, extracted_domain.suffix])
     return domain in settings.ALLOWED_REDIRECT_DOMAINS
 
 
