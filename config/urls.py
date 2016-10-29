@@ -176,7 +176,7 @@ urlpatterns = [
         include(oauth2_provider_patterns, namespace='oauth2_provider')
     ),
     url(
-        r'',
+        r'^api/v1/',
         include(api_urlpatterns)
     ),
 ]
