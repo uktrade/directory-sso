@@ -61,14 +61,14 @@
                         </li>
                         {% if user.is_authenticated %}
                         <li>
-                          <a href="{% url 'account_logout' %}">Sign out</a>
+                          <a href="{% url 'account_logout' %}">Logout</a>
                         </li>
                         {% else %}
                         <li>
-                          <a href="{% url 'account_login' %}">Sign in</a>
-                          </li>
-                        <li>
                           <a href="{% url 'account_signup' %}">Register</a>
+                        </li>
+                        <li>
+                          <a href="{% url 'account_login' %}">Login</a>
                         </li>
                         {% endif %}
                     </ul>
@@ -80,13 +80,13 @@
                     <span>
                         <ul class="pull-right">
                             <li>
-                                <a href="#">YOUR NEXT STEPS</a>
+                                <a href="#">New to Exporting </a>
                             </li>
                             <li>
-                                <a href="#">ADVICE AND SUPPORT</a>
+                                <a href="#">Occasional Exporter</a>
                             </li>
                             <li>
-                                <a href="#">MY OPPORTUNITIES</a>
+                                <a href="#">Regular Exporter</a>
                             </li>
                         </ul>
                     </span>
