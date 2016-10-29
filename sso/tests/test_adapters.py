@@ -1,8 +1,5 @@
 from unittest.mock import patch, Mock
 
-import pytest
-from django.core.exceptions import ValidationError
-
 from ..adapters import validate_next, AccountAdapter
 
 
@@ -50,27 +47,39 @@ def test_next_validation_copes_when_no_protocol_given(settings):
 
 
 @patch('allauth.account.adapter.DefaultAccountAdapter.'
-       'get_email_confirmation_url', Mock())
-def test_account_adapter_raises_exception_if_next_param_invalid(
+       'get_email_confirmation_url', Mock(return_value='default_url'))
+def test_account_adapter_returns_default_if_no_next_param(
+        rf, settings):
+    settings.ALLOWED_REDIRECT_DOMAINS = ['iloveexporting.com']
+    adapter = AccountAdapter()
+    request = rf.get('/exporting')
+
+    url = adapter.get_email_confirmation_url(request, None)
+
+    assert url == 'default_url'
+
+
+@patch('allauth.account.adapter.DefaultAccountAdapter.'
+       'get_email_confirmation_url', Mock(return_value='default_url'))
+def test_account_adapter_returns_default_if_next_param_invalid(
         rf, settings):
     settings.ALLOWED_REDIRECT_DOMAINS = ['iloveexporting.com']
     adapter = AccountAdapter()
     request = rf.get('/exporting?next=http://hateexporting.com')
 
-    with pytest.raises(ValidationError):
-        adapter.get_email_confirmation_url(request, None)
+    url = adapter.get_email_confirmation_url(request, None)
+
+    assert url == 'default_url'
 
 
 @patch('allauth.account.adapter.DefaultAccountAdapter.'
-       'get_email_confirmation_url', Mock())
-def test_account_adapter_doesnt_raise_exception_if_next_param_valid(
+       'get_email_confirmation_url', Mock(return_value='default_url'))
+def test_account_adapter_returns_modified_url_if_next_param_valid(
         rf, settings):
     settings.ALLOWED_REDIRECT_DOMAINS = ['iloveexporting.com']
     adapter = AccountAdapter()
     request = rf.get('/exporting?next=http://iloveexporting.com')
 
-    try:
-        adapter.get_email_confirmation_url(request, None)
-    except ValidationError:
-        raise AssertionError("Account Adapter is raising exception on "
-                             "valid next param")
+    url = adapter.get_email_confirmation_url(request, None)
+
+    assert url == 'default_url?next=http://iloveexporting.com'
