@@ -120,20 +120,28 @@ def test_confirm_email_redirect_next_param(settings, client,
     signup_url = reverse('account_signup')
 
     # signup with `next` param and send 'confirm email' email
+    client.defaults['HTTP_REFERER'] = '{url}?next={next}'.format(
+        url=signup_url, next=expected
+    )
     client.post(
-        '{url}?next={next}'.format(url=signup_url, next=expected),
+        signup_url,
         data={
             'email': 'jim@example.com',
             'password1': '0123456',
             'password2': '0123456',
         }
     )
-    body = mail.outbox[0].body
+    message = mail.outbox[0]
+    txt = message.body
+    html = message.alternatives[0][0]
+
     # Extract URL for `password_reset_from_key` view and access it
-    url = body[body.find('/accounts/confirm-email/'):].split()[0]
+    url = txt[txt.find('/accounts/confirm-email/'):].split()[0]
 
     response = client.get(url)
 
+    assert url in txt
+    assert url in html
     assert response.status_code == http.client.FOUND
     assert response.get('Location') == expected
 
@@ -150,12 +158,16 @@ def test_confirm_email_redirect_default_param(settings, client,
             'password2': '0123456',
         }
     )
-    body = mail.outbox[0].body
+    message = mail.outbox[0]
+    txt = message.body
+    html = message.alternatives[0][0]
     # Extract URL for `password_reset_from_key` view and access it
-    url = body[body.find('/accounts/confirm-email/'):].split()[0]
+    url = txt[txt.find('/accounts/confirm-email/'):].split()[0]
 
     response = client.get(url)
 
+    assert url in txt
+    assert url in html
     assert response.status_code == http.client.FOUND
     assert response.get('Location') == settings.LOGOUT_REDIRECT_URL
 
@@ -169,15 +181,18 @@ def test_password_reset_redirect_default_param(settings, client, user):
         reverse('account_reset_password'),
         data={'email': user.email}
     )
-    body = mail.outbox[0].body
+    message = mail.outbox[0]
+    txt = message.body
+    html = message.alternatives[0][0]
     # Extract URL for `password_reset_from_key` view and access it
-    url = body[body.find('/accounts/password/reset/'):].split()[0]
+    url = txt[txt.find('/accounts/password/reset/'):].split()[0]
 
     # Reset the password
     response = client.post(
         url, {'password1': new_password, 'password2': new_password}
     )
-
+    assert url in txt
+    assert url in html
     assert response.status_code == http.client.FOUND
     assert response.get('Location') == settings.LOGOUT_REDIRECT_URL
 
@@ -194,14 +209,18 @@ def test_password_reset_redirect_next_param(settings, client, user):
         '{url}?next={next}'.format(url=password_reset_url, next=expected),
         data={'email': user.email}
     )
-    body = mail.outbox[0].body
+    message = mail.outbox[0]
+    txt = message.body
+    html = message.alternatives[0][0]
     # Extract URL for `password_reset_from_key` view and access it
-    url = body[body.find('/accounts/password/reset/'):].split()[0]
+    url = txt[txt.find('/accounts/password/reset/'):].split()[0]
 
     # Reset the password
     response = client.post(
         url, {'password1': new_password, 'password2': new_password}
     )
 
+    assert url in txt
+    assert url in html
     assert response.status_code == http.client.FOUND
     assert response.get('Location') == expected
