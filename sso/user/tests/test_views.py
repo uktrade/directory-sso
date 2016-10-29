@@ -13,7 +13,25 @@ from django.core.urlresolvers import reverse
 
 @pytest.fixture
 def user():
-    return User.objects.create(email='test@example.com')
+    return User.objects.create_user(
+        email='test@example.com',
+        password='password',
+    )
+
+
+@pytest.fixture
+def verified_user():
+    user = User.objects.create_user(
+        email='verified@example.com',
+        password='password',
+    )
+    EmailAddress.objects.create(
+        user=user,
+        email=user.email,
+        verified=True,
+        primary=True
+    )
+    return user
 
 
 @pytest.fixture
@@ -42,6 +60,33 @@ def test_public_views(client):
     for name in ('account_login', 'account_signup'):
         response = client.get(reverse(name))
         assert response.status_code == 200
+
+
+@pytest.mark.django_db
+def test_login_redirect_default_param(client, verified_user, settings):
+    settings.LOGOUT_REDIRECT_URL = 'http://www.example.com'
+    response = client.post(
+        reverse('account_login'),
+        {'login': verified_user.email, 'password': 'password'}
+    )
+
+    assert response.status_code == http.client.FOUND
+    assert response.get('Location') == 'http://www.example.com'
+
+
+@pytest.mark.django_db
+def test_login_redirect_next_param(client, settings, verified_user):
+    settings.LOGOUT_REDIRECT_URL = 'http://www.other.com'
+    url = reverse('account_login')
+    expected = 'http://example.com'
+
+    response = client.post(
+        '{url}?next={next}'.format(url=url, next=expected),
+        {'login': verified_user.email, 'password': 'password'}
+    )
+
+    assert response.status_code == http.client.FOUND
+    assert response.get('Location') == 'http://example.com'
 
 
 @pytest.mark.django_db
