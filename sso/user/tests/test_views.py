@@ -13,7 +13,25 @@ from django.core.urlresolvers import reverse
 
 @pytest.fixture
 def user():
-    return User.objects.create(email='test@example.com')
+    return User.objects.create_user(
+        email='test@example.com',
+        password='password',
+    )
+
+
+@pytest.fixture
+def verified_user():
+    user = User.objects.create_user(
+        email='verified@example.com',
+        password='password',
+    )
+    EmailAddress.objects.create(
+        user=user,
+        email=user.email,
+        verified=True,
+        primary=True
+    )
+    return user
 
 
 @pytest.fixture
@@ -42,6 +60,33 @@ def test_public_views(client):
     for name in ('account_login', 'account_signup'):
         response = client.get(reverse(name))
         assert response.status_code == 200
+
+
+@pytest.mark.django_db
+def test_login_redirect_default_param(client, verified_user, settings):
+    settings.LOGOUT_REDIRECT_URL = 'http://www.example.com'
+    response = client.post(
+        reverse('account_login'),
+        {'login': verified_user.email, 'password': 'password'}
+    )
+
+    assert response.status_code == http.client.FOUND
+    assert response.get('Location') == 'http://www.example.com'
+
+
+@pytest.mark.django_db
+def test_login_redirect_next_param(client, settings, verified_user):
+    settings.LOGOUT_REDIRECT_URL = 'http://www.other.com'
+    url = reverse('account_login')
+    expected = 'http://example.com'
+
+    response = client.post(
+        '{url}?next={next}'.format(url=url, next=expected),
+        {'login': verified_user.email, 'password': 'password'}
+    )
+
+    assert response.status_code == http.client.FOUND
+    assert response.get('Location') == 'http://example.com'
 
 
 @pytest.mark.django_db
@@ -75,20 +120,28 @@ def test_confirm_email_redirect_next_param(settings, client,
     signup_url = reverse('account_signup')
 
     # signup with `next` param and send 'confirm email' email
+    client.defaults['HTTP_REFERER'] = '{url}?next={next}'.format(
+        url=signup_url, next=expected
+    )
     client.post(
-        '{url}?next={next}'.format(url=signup_url, next=expected),
+        signup_url,
         data={
             'email': 'jim@example.com',
             'password1': '0123456',
             'password2': '0123456',
         }
     )
-    body = mail.outbox[0].body
+    message = mail.outbox[0]
+    txt = message.body
+    html = message.alternatives[0][0]
+
     # Extract URL for `password_reset_from_key` view and access it
-    url = body[body.find('/accounts/confirm-email/'):].split()[0]
+    url = txt[txt.find('/accounts/confirm-email/'):].split()[0]
 
     response = client.get(url)
 
+    assert url in txt
+    assert url in html
     assert response.status_code == http.client.FOUND
     assert response.get('Location') == expected
 
@@ -105,12 +158,16 @@ def test_confirm_email_redirect_default_param(settings, client,
             'password2': '0123456',
         }
     )
-    body = mail.outbox[0].body
+    message = mail.outbox[0]
+    txt = message.body
+    html = message.alternatives[0][0]
     # Extract URL for `password_reset_from_key` view and access it
-    url = body[body.find('/accounts/confirm-email/'):].split()[0]
+    url = txt[txt.find('/accounts/confirm-email/'):].split()[0]
 
     response = client.get(url)
 
+    assert url in txt
+    assert url in html
     assert response.status_code == http.client.FOUND
     assert response.get('Location') == settings.LOGOUT_REDIRECT_URL
 
@@ -124,15 +181,18 @@ def test_password_reset_redirect_default_param(settings, client, user):
         reverse('account_reset_password'),
         data={'email': user.email}
     )
-    body = mail.outbox[0].body
+    message = mail.outbox[0]
+    txt = message.body
+    html = message.alternatives[0][0]
     # Extract URL for `password_reset_from_key` view and access it
-    url = body[body.find('/accounts/password/reset/'):].split()[0]
+    url = txt[txt.find('/accounts/password/reset/'):].split()[0]
 
     # Reset the password
     response = client.post(
         url, {'password1': new_password, 'password2': new_password}
     )
-
+    assert url in txt
+    assert url in html
     assert response.status_code == http.client.FOUND
     assert response.get('Location') == settings.LOGOUT_REDIRECT_URL
 
@@ -149,14 +209,18 @@ def test_password_reset_redirect_next_param(settings, client, user):
         '{url}?next={next}'.format(url=password_reset_url, next=expected),
         data={'email': user.email}
     )
-    body = mail.outbox[0].body
+    message = mail.outbox[0]
+    txt = message.body
+    html = message.alternatives[0][0]
     # Extract URL for `password_reset_from_key` view and access it
-    url = body[body.find('/accounts/password/reset/'):].split()[0]
+    url = txt[txt.find('/accounts/password/reset/'):].split()[0]
 
     # Reset the password
     response = client.post(
         url, {'password1': new_password, 'password2': new_password}
     )
 
+    assert url in txt
+    assert url in html
     assert response.status_code == http.client.FOUND
     assert response.get('Location') == expected

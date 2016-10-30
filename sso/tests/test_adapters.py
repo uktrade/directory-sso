@@ -53,6 +53,7 @@ def test_account_adapter_returns_default_url_if_no_next_param(
     settings.ALLOWED_REDIRECT_DOMAINS = ['iloveexporting.com']
     adapter = AccountAdapter()
     request = rf.get('/exporting')
+    request.META['HTTP_REFERER'] = '/exporting'
 
     url = adapter.get_email_confirmation_url(request, None)
 
@@ -65,7 +66,8 @@ def test_account_adapter_returns_default_url_if_next_param_invalid(
         rf, settings):
     settings.ALLOWED_REDIRECT_DOMAINS = ['iloveexporting.com']
     adapter = AccountAdapter()
-    request = rf.get('/exporting?next=http://hateexporting.com')
+    request = rf.get('/export?next=http://hateexporting.com')
+    request.META['HTTP_REFERER'] = '/export?next=http://hateexporting.com'
 
     url = adapter.get_email_confirmation_url(request, None)
 
@@ -78,7 +80,8 @@ def test_account_adapter_returns_modified_url_if_next_param_valid(
         rf, settings):
     settings.ALLOWED_REDIRECT_DOMAINS = ['iloveexporting.com']
     adapter = AccountAdapter()
-    request = rf.get('/exporting?next=http://iloveexporting.com')
+    request = rf.get('/export?next=http://iloveexporting.com')
+    request.META['HTTP_REFERER'] = '/export?next=http://iloveexporting.com'
 
     url = adapter.get_email_confirmation_url(request, None)
 

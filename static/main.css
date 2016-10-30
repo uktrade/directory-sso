@@ -145,6 +145,10 @@ input[type="submit"], button:focus {
 
 body {
   font-family: 'Roboto', sans-serif;
+  background-color: #fafafa;
+  line-height: 24px;
+  font-size: 18px;
+  font-weight: 300;
 }
 @media (max-width: 979px) {
     body {
@@ -155,7 +159,8 @@ body {
   }
 }
 body h1 {
-  font-size: 38px;
+  font-size: 48px;
+  line-height: 50px;
 }
 body h2 {
   font-size: 26px;
@@ -171,6 +176,7 @@ body #content {
 body #content .container .enrolment-intro-container {
   margin-bottom: 20px;
   margin-top: 70px;
+  color: #4a4a4a;
 }
 body #content .container .enrolment-intro-container .enrolment-intro {
   padding: 0;
@@ -183,6 +189,7 @@ body #content .container form {
   list-style-type: none;
   margin: 0;
   padding: 10px;
+  padding-right: 20px;
 }
 .sso-header ul li {
   display: inline;
@@ -190,10 +197,15 @@ body #content .container form {
 }
 .sso-header ul li a {
   color: white;
+  border-bottom: 1px solid #777;
 }
 .sso-header ul li a:focus {
   background: #007EA3;
   color: #ffffff;
+}
+.sso-header ul li a:hover {
+  border-bottom: 1px dashed #fff;
+  text-decoration: none;
 }
 .sso-header .sso-header-level-one {
   background: #110B29;
@@ -217,9 +229,13 @@ body #content .container form {
 }
 #footer.sso-footer ul li a {
   color: white;
+  border-bottom: 1px solid #777
 }
 #footer.sso-footer ul li a:focus {
   background: #007EA3;
   color: #ffffff;
 }
-
+#footer.sso-footer ul li a:hover {
+  border-bottom: 1px dashed #fafafa;
+  text-decoration: none;
+}
