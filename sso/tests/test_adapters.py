@@ -48,7 +48,7 @@ def test_next_validation_copes_when_no_protocol_given(settings):
 
 @patch('allauth.account.adapter.DefaultAccountAdapter.'
        'get_email_confirmation_url', Mock(return_value='default_url'))
-def test_account_adapter_returns_default_if_no_next_param(
+def test_account_adapter_returns_default_url_if_no_next_param(
         rf, settings):
     settings.ALLOWED_REDIRECT_DOMAINS = ['iloveexporting.com']
     adapter = AccountAdapter()
@@ -61,7 +61,7 @@ def test_account_adapter_returns_default_if_no_next_param(
 
 @patch('allauth.account.adapter.DefaultAccountAdapter.'
        'get_email_confirmation_url', Mock(return_value='default_url'))
-def test_account_adapter_returns_default_if_next_param_invalid(
+def test_account_adapter_returns_default_url_if_next_param_invalid(
         rf, settings):
     settings.ALLOWED_REDIRECT_DOMAINS = ['iloveexporting.com']
     adapter = AccountAdapter()

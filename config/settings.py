@@ -2,6 +2,8 @@ import os
 
 import dj_database_url
 
+from .helpers import validate_domain
+
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
 BASE_DIR = os.path.dirname(PROJECT_ROOT)
@@ -238,3 +240,5 @@ ACCOUNT_ADAPTER = 'sso.adapters.AccountAdapter'
 
 # Set with comma separated values in env
 ALLOWED_REDIRECT_DOMAINS = os.environ['ALLOWED_REDIRECT_DOMAINS'].split(',')
+for domain in ALLOWED_REDIRECT_DOMAINS:
+    assert validate_domain(domain) is True
