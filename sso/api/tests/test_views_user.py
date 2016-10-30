@@ -1,3 +1,5 @@
+from unittest import mock
+
 from django.core.urlresolvers import reverse
 from django.test.client import Client
 
@@ -29,10 +31,11 @@ def test_get_session_user_valid_api_key():
 
     client = APIClient()
 
-    response = client.get(
-        reverse('session-user'),
-        data={"session_key": user_session._session_key},
-    )
+    with mock.patch('sso.api.permissions.APIClientPermission.has_permission'):
+        response = client.get(
+            reverse('session-user'),
+            data={"session_key": user_session._session_key},
+        )
 
     assert response.status_code == status.HTTP_200_OK
     assert response.data['email'] == user.email
