@@ -1,6 +1,10 @@
 {% extends 'base_email_cta.html' %}
 
+{% block title %}Your GREAT.gov.uk export services account{% endblock %}
 {% block cta_url %}{{ activate_url }}{% endblock %}
-{% block cta_label %}Confirm{% endblock %}
-{% block title %}Account{% endblock %}
-{% block synopsis %}Please click the button to confirm your email address.{% endblock %}
+{% block synopsis %}
+    <p>You recently signed up for a GREAT.gov.uk export services account.</p>
+    <p>Verify your email address by clicking the button below.</p>
+    <p>You will then be able to sign in and access GREAT.gov.uk services.</p>
+{% endblock %}
+{% block cta_label %}Verify your email address{% endblock %}
