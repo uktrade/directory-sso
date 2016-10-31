@@ -2,7 +2,7 @@ import tldextract
 from urllib.parse import urlparse
 
 
-def validate_domain(domain):
+def is_valid_domain(domain):
     # NOTE: tldextract and urlparse both have their shortcomings so
     # using both for what they do good
     tld_result = tldextract.extract(domain)
