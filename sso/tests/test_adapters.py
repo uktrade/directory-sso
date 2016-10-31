@@ -10,6 +10,24 @@ def test_next_validation_returns_true_if_in_allowed_domains(settings):
     assert valid is True
 
 
+def test_next_validation_returns_true_if_in_allowed_suffixes(settings):
+    settings.ALLOWED_REDIRECT_DOMAINS = ['gov.uk', 'com']
+    valid = validate_next('http://www.gov.uk')
+    assert valid is True
+    valid = validate_next('http://exporting.com')
+    assert valid is True
+
+    # Should work with a mix of domains and suffixes
+    settings.ALLOWED_REDIRECT_DOMAINS = [
+        'iloveexporting.com', 'iloveexporting.gov.uk', 'gov.uk']
+    valid = validate_next('http://iloveexporting.com/')
+    assert valid is True
+    valid = validate_next('http://iloveexporting.gov.uk/')
+    assert valid is True
+    valid = validate_next('http://exportingisgreat.gov.uk')
+    assert valid is True
+
+
 def test_next_validation_returns_false_if_not_in_allowed_domains(settings):
     settings.ALLOWED_REDIRECT_DOMAINS = [
         'iloveexporting.com', 'ilovecats.com']
@@ -17,12 +35,29 @@ def test_next_validation_returns_false_if_not_in_allowed_domains(settings):
     assert valid is False
 
 
+def test_next_validation_returns_false_if_not_in_allowed_suffixes(settings):
+    settings.ALLOWED_REDIRECT_DOMAINS = ['gov.uk']
+    valid = validate_next('http://iloveexporting.net')
+    assert valid is False
+
+    # Should work with a mix of domains and suffixes
+    settings.ALLOWED_REDIRECT_DOMAINS = [
+        'iloveexporting.com', 'iloveexporting.gov.uk', 'gov.uk']
+    valid = validate_next('http://iloveexporting.net')
+    assert valid is False
+
+
 def test_next_validation_copes_with_subdomains(settings):
     settings.ALLOWED_REDIRECT_DOMAINS = ['iloveexporting.com']
     valid = validate_next('http://www.iloveexporting.com')
     assert valid is True
-
     valid = validate_next('http://love.iloveexporting.com/love/')
+    assert valid is True
+
+    settings.ALLOWED_REDIRECT_DOMAINS = ['gov.uk']
+    valid = validate_next('http://www.iloveexporting.gov.uk')
+    assert valid is True
+    valid = validate_next('http://love.iloveexporting.gov.uk/love/')
     assert valid is True
 
 

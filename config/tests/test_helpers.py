@@ -6,13 +6,27 @@ def test_validate_domain_returns_true_for_valid_domains():
     assert validate_domain('google.com') is True
 
 
+def test_validate_domain_returns_true_for_valid_suffixes():
+    assert validate_domain('gov.uk') is True
+    assert validate_domain('.gov.uk') is True
+    assert validate_domain('com') is True
+    assert validate_domain('.com') is True
+
+
 def test_validate_domain_returns_false_for_invalid_domains():
-    assert validate_domain('.com') is False
     assert validate_domain('http://') is False
-    assert validate_domain('google') is False
-    assert validate_domain('http://google') is False
-    assert validate_domain('http://.com') is False
+    assert validate_domain('blabla') is False
+    assert validate_domain('http://blabla') is False
     assert validate_domain('http://www.blablabla') is False
+
+
+def test_validate_domain_returns_false_for_scheme_suffix_and_no_domain():
+    # Because http://gov.uk as a setting just seems weird and is likely
+    # a mistake. When providing suffix we expect "gov.uk" in settings
+    assert validate_domain('http://gov.uk') is False
+    assert validate_domain('http://.gov.uk') is False
+    assert validate_domain('http://com') is False
+    assert validate_domain('http://.com') is False
 
 
 def test_validate_domain_returns_false_if_subdomain_included():

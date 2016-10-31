@@ -10,7 +10,8 @@ from django.http import QueryDict
 def validate_next(next_param):
     extracted_domain = tldextract.extract(next_param)
     domain = '.'.join([extracted_domain.domain, extracted_domain.suffix])
-    return domain in settings.ALLOWED_REDIRECT_DOMAINS
+    return (domain in settings.ALLOWED_REDIRECT_DOMAINS) or (
+        extracted_domain.suffix in settings.ALLOWED_REDIRECT_DOMAINS)
 
 
 class AccountAdapter(DefaultAccountAdapter):
