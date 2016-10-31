@@ -1,0 +1,11 @@
+Your GREAT.gov.uk export services account
+
+You recently signed up for a GREAT.gov.uk export services account.
+
+Verify your email address by following the link below
+
+You will then be able to sign in and access GREAT.gov.uk services.
+
+{{ activate_url }}
+
+You received this email because you set up an account on GREAT.gov.uk
