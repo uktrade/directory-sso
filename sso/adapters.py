@@ -8,6 +8,11 @@ from django.http import QueryDict
 
 
 def validate_next(next_param):
+    # Allow internal redirects
+    if next_param.startswith('/'):
+        return True
+
+    # Otherwise check we allow that domain/suffix
     extracted_domain = tldextract.extract(next_param)
     domain = '.'.join([extracted_domain.domain, extracted_domain.suffix])
     return (domain in settings.ALLOWED_REDIRECT_DOMAINS) or (

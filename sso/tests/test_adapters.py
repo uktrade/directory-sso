@@ -121,3 +121,17 @@ def test_account_adapter_returns_modified_url_if_next_param_valid(
     url = adapter.get_email_confirmation_url(request, None)
 
     assert url == 'default_url?next=http://iloveexporting.com'
+
+
+@patch('allauth.account.adapter.DefaultAccountAdapter.'
+       'get_email_confirmation_url', Mock(return_value='default_url'))
+def test_account_adapter_returns_modified_url_if_next_param_internal(
+        rf, settings):
+    settings.ALLOWED_REDIRECT_DOMAINS = []
+    adapter = AccountAdapter()
+    request = rf.get('/export?next=/exportingismytruelove/')
+    request.META['HTTP_REFERER'] = '/export?next=/exportingismytruelove/'
+
+    url = adapter.get_email_confirmation_url(request, None)
+
+    assert url == 'default_url?next=/exportingismytruelove/'
