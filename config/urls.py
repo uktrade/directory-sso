@@ -109,43 +109,6 @@ oauth2_provider_patterns = [
         oauth2_provider.views.RevokeTokenView.as_view(),
         name="revoke-token"
     ),
-
-    # oauth2 application management views
-    url(
-        r'^applications/$',
-        oauth2_provider.views.ApplicationList.as_view(),
-        name="list"
-    ),
-    url(
-        r'^applications/register/$',
-        oauth2_provider.views.ApplicationRegistration.as_view(),
-        name="register"
-    ),
-    url(
-        r'^applications/(?P<pk>\d+)/$',
-        oauth2_provider.views.ApplicationDetail.as_view(),
-        name="detail"
-    ),
-    url(
-        r'^applications/(?P<pk>\d+)/delete/$',
-        oauth2_provider.views.ApplicationDelete.as_view(),
-        name="delete"
-    ),
-    url(
-        r'^applications/(?P<pk>\d+)/update/$',
-        oauth2_provider.views.ApplicationUpdate.as_view(),
-        name="update"
-    ),
-    url(
-        r'^authorized_tokens/$',
-        oauth2_provider.views.AuthorizedTokensListView.as_view(),
-        name="authorized-token-list"
-    ),
-    url(
-        r'^authorized_tokens/(?P<pk>\d+)/delete/$',
-        oauth2_provider.views.AuthorizedTokenDeleteView.as_view(),
-        name="authorized-token-delete"
-    ),
 ]
 
 api_urlpatterns = [
