@@ -21,4 +21,4 @@ def test_confirmation_email():
         'account/email/email_confirmation_message.html', context
     )
     assert 'http://confirm.com' in html
-    assert 'Confirm' in html
+    assert 'Verify your email address' in html
