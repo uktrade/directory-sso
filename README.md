@@ -70,5 +70,5 @@ Requires locally running PostgreSQL (e.g. [Postgres.app](http://postgresapp.com/
 | SECRET_KEY | None | Django secret key |
 | DATABASE_URL | None | Postgres database url |
 | LOGOUT_REDIRECT_URL | None | Where to send the user after successfully logging out |
-| REDIRECT_FIELD_NAME | None | On completing actions where to get redirect url from in the querstring |
+| REDIRECT_FIELD_NAME | None | On completing actions where to get redirect url from in the querystring |
 | ALLOWED_REDIRECT_DOMAINS | None | Comma separated list of domains that we allow redirection to via next params |

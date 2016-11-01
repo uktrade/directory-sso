@@ -24,6 +24,6 @@ def is_valid_domain(domain):
         return True
     elif is_suffix and not has_scheme:
         # http://.com or http://com just looks weird and
-        # is likely a mistake, hence "not has_scheme"
+        # is likely a mistake, hence only accepting .com and com
         return True
     return False
