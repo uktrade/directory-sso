@@ -2,6 +2,8 @@ import os
 
 import dj_database_url
 
+from .helpers import is_valid_domain
+
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
 BASE_DIR = os.path.dirname(PROJECT_ROOT)
@@ -31,6 +33,7 @@ INSTALLED_APPS = [
     'oauth2_provider',
     'rest_framework',
     'corsheaders',
+    'sso',
     'sso.oauth2',
     'sso.user',
 ]
@@ -237,3 +240,8 @@ SESSION_COOKIE_NAME = os.environ['SSO_SESSION_COOKIE']
 LOGOUT_REDIRECT_URL = os.environ['LOGOUT_REDIRECT_URL']
 
 REDIRECT_FIELD_NAME = os.environ['REDIRECT_FIELD_NAME']
+
+# Set with comma separated values in env
+ALLOWED_REDIRECT_DOMAINS = os.environ['ALLOWED_REDIRECT_DOMAINS'].split(',')
+for domain in ALLOWED_REDIRECT_DOMAINS:
+    assert is_valid_domain(domain) is True
