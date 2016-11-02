@@ -2,12 +2,12 @@
 
 {% load i18n %}
 
-{% block head_title %}{% trans "Signup" %}{% endblock %}
+{% block head_title %}{% trans "Sign up" %}{% endblock %}
 
 {% block content %}
-<h1>{% trans "Sign up for GREAT export services" %}</h1>
+<h1>{% trans "Sign up" %}</h1>
 
-<p>{% blocktrans %}If you already have a GREAT export services account, please <a href="{{ login_url }}">sign in</a>.{% endblocktrans %}</p>
+<p>{% blocktrans %}If you already have an Exporting is GREAT account, please <a href="{{ login_url }}">sign in</a>.{% endblocktrans %}</p>
 
 <form class="signup" id="signup_form" method="post" action="{% url 'account_signup' %}">
   {% csrf_token %}

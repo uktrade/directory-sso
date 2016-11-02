@@ -60,6 +60,10 @@ input[type="color"]:focus,
   margin-bottom: 40px;
 }
 
+.sso-content > .span6 {
+  margin: 0;
+}
+
 #skiplink-container a.skiplink,
 a.teal:focus {
   background: #007EA3;
