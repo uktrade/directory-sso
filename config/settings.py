@@ -33,6 +33,7 @@ INSTALLED_APPS = [
     'oauth2_provider',
     'rest_framework',
     'corsheaders',
+    'sso',
     'sso.oauth2',
     'sso.user',
 ]
