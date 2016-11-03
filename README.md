@@ -1,8 +1,8 @@
-# sso
+# directory-sso
 
 ## Build status
 
-[![CircleCI](https://circleci.com/gh/uktrade/sso/tree/master.svg?style=svg)](https://circleci.com/gh/uktrade/sso/tree/master)
+[![CircleCI](https://circleci.com/gh/uktrade/directory-sso/tree/master.svg?style=svg)](https://circleci.com/gh/uktrade/directory-sso/tree/master)
 
 ## Requirements
 [Docker >= 1.10](https://docs.docker.com/engine/installation/)
@@ -11,8 +11,8 @@
 
 ## Local installation
 
-    $ git clone https://github.com/uktrade/sso
-    $ cd sso
+    $ git clone https://github.com/uktrade/directory-sso
+    $ cd directory-sso
     $ make
 
 ## Running with Docker
