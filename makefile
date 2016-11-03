@@ -40,14 +40,14 @@ DOCKER_SET_DEBUG_ENV_VARS := \
 	export SSO_DATABASE_URL=postgres://debug:debug@postgres:5432/sso_debug; \
 	export SSO_SESSION_COOKIE_DOMAIN=.trade.great.dev; \
 	export SSO_SSO_SESSION_COOKIE=debug_sso_session_cookie; \
-    export SSO_EMAIL_HOST=debug; \
-    export SSO_EMAIL_PORT=debug; \
-    export SSO_EMAIL_HOST_USER=debug; \
-    export SSO_EMAIL_HOST_PASSWORD=debug; \
-    export SSO_DEFAULT_FROM_EMAIL=debug; \
-    export SSO_LOGOUT_REDIRECT_URL=http://ui.trade.great.dev:8001; \
-    export SSO_REDIRECT_FIELD_NAME=next; \
-    export SSO_ALLOWED_REDIRECT_DOMAINS=example.com,exportingisgreat.gov.uk,great.dev
+	export SSO_EMAIL_HOST=debug; \
+	export SSO_EMAIL_PORT=debug; \
+	export SSO_EMAIL_HOST_USER=debug; \
+	export SSO_EMAIL_HOST_PASSWORD=debug; \
+	export SSO_DEFAULT_FROM_EMAIL=debug; \
+	export SSO_LOGOUT_REDIRECT_URL=http://ui.trade.great.dev:8001; \
+	export SSO_REDIRECT_FIELD_NAME=next; \
+	export SSO_ALLOWED_REDIRECT_DOMAINS=example.com,exportingisgreat.gov.uk,great.dev
 
 DOCKER_REMOVE_ALL := \
 	docker ps -a | \
@@ -89,14 +89,14 @@ DEBUG_SET_ENV_VARS := \
 	export DATABASE_URL=postgres://debug:debug@localhost:5432/sso_debug; \
 	export SESSION_COOKIE_DOMAIN=.trade.great.dev; \
 	export SSO_SESSION_COOKIE=debug_sso_session_cookie; \
-    export EMAIL_HOST=debug; \
-    export EMAIL_PORT=debug; \
-    export EMAIL_HOST_USER=debug; \
-    export EMAIL_HOST_PASSWORD=debug; \
-    export DEFAULT_FROM_EMAIL=debug; \
-    export LOGOUT_REDIRECT_URL=http://ui.trade.great.dev:8001; \
-    export REDIRECT_FIELD_NAME=next; \
-    export ALLOWED_REDIRECT_DOMAINS=example.com,exportingisgreat.gov.uk,great.dev
+	export EMAIL_HOST=debug; \
+	export EMAIL_PORT=debug; \
+	export EMAIL_HOST_USER=debug; \
+	export EMAIL_HOST_PASSWORD=debug; \
+	export DEFAULT_FROM_EMAIL=debug; \
+	export LOGOUT_REDIRECT_URL=http://ui.trade.great.dev:8001; \
+	export REDIRECT_FIELD_NAME=next; \
+	export ALLOWED_REDIRECT_DOMAINS=example.com,exportingisgreat.gov.uk,great.dev
 
 debug_webserver:
 	 $(DEBUG_SET_ENV_VARS); $(DJANGO_WEBSERVER);
