@@ -43,44 +43,48 @@
             </div>
         </div>
 
-        <header class="sso-header">
-            <div class="row-fluid sso-header-level-one">
+        <header class="ed-header">
+            <div class="row-fluid ed-header-level-one">
                 <div class="container">
-                    <ul class="pull-right">
-                        <li>
-                            <a href="#">Export Opportunities</a>
-                        </li>
-                        <li>
-                            <a href="#">Find a Buyer</a>
-                        </li>
-                        <li>
-                            <a href="#">Selling Online Overseas</a>
-                        </li>
-                        <li>
-                            <a href="#">Events</a>
-                        </li>
-                        {% if user.is_authenticated %}
-                        <li>
-                          <a href="{% url 'account_logout' %}">Logout</a>
-                        </li>
-                        {% else %}
-                        <li>
-                          <a href="{% url 'account_signup' %}">Register</a>
-                        </li>
-                        <li>
-                          <a href="{% url 'account_login' %}">Login</a>
-                        </li>
-                        {% endif %}
-                    </ul>
+                    <div class="level-one-container">
+                        <h3 class="our-services-top hide-in-mobile">Our services:</h3>
+                        <ul class="">
+                            <li class="hide-in-mobile">
+                                <a href="#">Export Opportunities</a>
+                            </li>
+                            <li class="hide-in-mobile">
+                                <a href="#">Find a Buyer</a>
+                            </li>
+                            <li class="hide-in-mobile">
+                                <a href="#">Selling Online Overseas</a>
+                            </li>
+                            <li class="hide-in-mobile">
+                                <a href="#">Events</a>
+                            </li>
+                            {% if not sso_is_logged_in %}
+                            <li>
+                                <a href="{{ sso_login_url }}" target="_self">Login</a>
+                            </li>
+                            {% else %}
+                            <li>
+                                <a href="{% url 'company-detail' %}" target="_self">Profile</a>
+                            </li>
+                            <li>
+                                <a href="{{ sso_logout_url }}" target="_self">Logout</a>
+                            </li>
+                            {% endif %}
+                        </ul>
+                    </div>
                 </div>
             </div>
-            <div class="row-fluid sso-header-level-two">
+
+            <div class="row-fluid ed-header-level-two">
                 <div class="container">
-                    <img class="pull-left" height="83px" src="{% static 'images/exporting_is_great.png' %}" />
+                    <img class="header-main-logo" height="83px" width="300px" src="{% static 'images/exporting_is_great.png' %}" />
                     <span>
-                        <ul class="pull-right">
+                        <ul class="header-nav-links">
                             <li>
-                                <a href="#">New to Exporting </a>
+                                <a href="#">New to Exporting</a>
                             </li>
                             <li>
                                 <a href="#">Occasional Exporter</a>
@@ -91,6 +95,32 @@
                         </ul>
                     </span>
                 </span>
+            </div>
+
+            <div class="row-fluid ed-header-mobile-view" id="">
+                <div class="header-nav">
+                    <div class="background--indigo soft-half--sides soft--ends header-nav--top">
+                        <nav>
+                            <h3 class="font-white font-weight-medium font-size-15">Our services:</h3>
+                            <ul class="mobile-secondary-nav">
+                                <li class="header-nav-link"><a class="font-reg" href="">Exporting opportunities</a></li>
+                                <li class="header-nav-link"><a class="font-reg" href="">Find a buyer</a></li>
+                                <li class="header-nav-link"><a class="font-reg" href="">Selling online overseas</a></li>
+                                <li class="header-nav-link"><a class="font-reg" href="">Events</a></li>
+                            </ul>
+                        </nav>
+                    </div>
+                    <div class="soft-half--sides">
+                        <nav>
+                            <h3 class="font-white font-weight-medium font-size-15 push--top desktop-only">Exporting is GREAT:</h3>
+                            <ul id="secondaryNav" class="mobile-secondary-nav">
+                                <li class="header-nav-link"><a title="" href="" class="active">NEW TO EXPORTING</a></li>
+                                <li class="header-nav-link"><a title="" href="">OCCASIONAL EXPORTER</a></li>
+                                <li class="header-nav-link"><a title="" href="">REGULAR EXPORTER</a></li>
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
             </div>
         </header>
 
@@ -117,45 +147,53 @@
             {% endblock %}
         </div>
 
-        <footer class="group sso-footer" id="footer" role="contentinfo">
+        <footer class="group ed-footer" id="footer" role="contentinfo">
             <div class="container">
-                <div class="row-fluid">
-                    <span class="span3">
-                        <img src="{% static 'images/HM_Government_logo.png' %}" />
-                    </span>
-                    <span class="span3"></span>
-                    <span class="span3">
-                        <ul>
-                            <li>
-                                <a href="#">Export Opportunities</a>
-                            </li>
-                            <li>
-                                <a href="#">Find a Buyer</a>
-                            </li>
-                            <li>
-                                <a href="#">Advice and support</a>
-                            </li>
-                            <li>
-                                <a href="#">News</a>
-                            </li>
-                        </ul>
-                    </span>
-                    <span class="span3">
-                        <ul>
-                            <li>
-                                <a href="#">Department for International Trade</a>
-                            </li>
-                            <li>
-                                <a href="#">Contact us</a>
-                            </li>
-                            <li>
-                                <a href="#">Privacy and cookies</a>
-                            </li>
-                            <li>
-                                <a href="#">Terms & Conditions</a>
-                            </li>
-                        </ul>
-                    </span>
+                <div class="row-fluid grid-row">
+
+                    <div class="span4 logo">
+                        <div class="footer-section footer-section--first">
+                            <a href="https://www.gov.uk" title="Go to the GOV.UK homepage">
+                                <img src="{% static 'images/HM_Government_logo.png' %}" alt="Gov.uk logo" class="footer-img footer-img--top"/>
+                            </a>
+                            
+                            <p class="copyright-text">© Crown Copyright 2016</p>
+                            
+                            <a href="https://www.gov.uk" title="Go to the Exporting is Great homepage">
+                                <img src="{% static 'images/EiG-logo-stacked.png' %}" alt="Exporting is Great logo" class="footer-img footer-img--bottom footer-img--eig">
+                            </a>
+                        </div>
+                    </div>
+
+
+                    <div class="span4 links">
+                        <div class="footer-section">
+                            <h3 class="footer-header">Our services</h3>
+                            <ul class="footer-links-container">
+                              <li class="footer-links"><a href="" title="">Exporting opportunities</a></li>
+                              <li class="footer-links"><a href="" title="">Find a buyer</a></li>
+                              <li class="footer-links"><a href="" title="">Selling online overseas</a></li>
+                              <li class="footer-links"><a href="" title="">Events</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <div class="span4 subscribe">
+                        <div class="footer-section">
+                            <h3 class="footer-header">Exporting is GREAT</h3>
+                            <ul class="footer-links-container">
+                                <li class="footer-links"><a href="" title="">New to exporting</a></li>
+                                <li class="footer-links"><a href="" title="">Occasional exporter</a></li>
+                                <li class="footer-links"><a href="" title="">Regular exporter</a></li>
+                                <li class="footer-links"><a href="" title="">About</a></li>
+                                <li class="footer-links"><a href="" title="">Contact</a></li>
+                                <li class="footer-links"><a href="" title="">Privacy &amp; cookies</a></li>
+                                <li class="footer-links"><a href="" title="">Terms &amp; conditions</a></li>
+                                <li class="footer-links"><a href="" title="">Department for International Trade</a></li>
+                            </ul>
+
+                        </div>
+                    </div>
                 </div>
             </div>
         </footer>
