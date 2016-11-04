@@ -28,7 +28,9 @@ class AddEmailForm(IndentedInvalidFieldsMixin, forms.AddEmailForm):
 
 
 class ChangePasswordForm(IndentedInvalidFieldsMixin, forms.ChangePasswordForm):
-    pass
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['password2'].label = 'Confirm password:'
 
 
 class SetPasswordForm(IndentedInvalidFieldsMixin, forms.SetPasswordForm):
