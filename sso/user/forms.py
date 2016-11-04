@@ -1,4 +1,4 @@
-from django.forms import BooleanField, ValidationError
+from django.forms import ValidationError
 
 from allauth.account import forms
 
@@ -8,11 +8,15 @@ class IndentedInvalidFieldsMixin:
 
 
 class SignupForm(IndentedInvalidFieldsMixin, forms.SignupForm):
-    pass
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['password2'].label = 'Confirm password:'
 
 
 class LoginForm(IndentedInvalidFieldsMixin, forms.LoginForm):
-    remember = BooleanField(label='Remember me', required=False)
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['remember'].label = 'Remember me:'
 
 
 class UserForm(IndentedInvalidFieldsMixin, forms.UserForm):
