@@ -1,4 +1,4 @@
-from django.forms import BooleanField
+from django.forms import BooleanField, ValidationError
 
 from allauth.account import forms
 
@@ -32,7 +32,13 @@ class SetPasswordForm(IndentedInvalidFieldsMixin, forms.SetPasswordForm):
 
 
 class ResetPasswordForm(IndentedInvalidFieldsMixin, forms.ResetPasswordForm):
-    pass
+    NO_ACCOUNT = 'There is no account for this email address'
+
+    def clean_email(self):
+        try:
+            return super().clean_email()
+        except ValidationError:
+            raise ValidationError(self.NO_ACCOUNT)
 
 
 class ResetPasswordKeyForm(IndentedInvalidFieldsMixin,
