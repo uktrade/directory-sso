@@ -1,3 +1,5 @@
+from django.forms import BooleanField
+
 from allauth.account import forms
 
 
@@ -10,7 +12,7 @@ class SignupForm(IndentedInvalidFieldsMixin, forms.SignupForm):
 
 
 class LoginForm(IndentedInvalidFieldsMixin, forms.LoginForm):
-    pass
+    remember = BooleanField(label='Remember me', required=False)
 
 
 class UserForm(IndentedInvalidFieldsMixin, forms.UserForm):
