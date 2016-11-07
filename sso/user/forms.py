@@ -2,6 +2,7 @@ from django.forms import BooleanField, ValidationError
 from django.utils.safestring import mark_safe
 
 from allauth.account import forms
+from allauth.utils import set_form_field_order
 
 
 class IndentedInvalidFieldsMixin:
@@ -16,10 +17,19 @@ class SignupForm(IndentedInvalidFieldsMixin, forms.SignupForm):
             'conditions</a> of the exporting is GREAT service.'
         )
     )
+    field_order = [
+        'email',
+        'email2',
+        'password1',
+        'password2',
+        'terms_agreed',
+    ]
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.fields['password2'].label = 'Confirm password:'
+        self.fields['email2'].label = 'Confirm email:'
+        set_form_field_order(self, self.field_order)
 
 
 class LoginForm(IndentedInvalidFieldsMixin, forms.LoginForm):
