@@ -56,3 +56,14 @@ def test_signup_accepts_present_terms_agreed():
 
     assert form.is_valid() is False
     assert 'terms_agreed' not in form.errors
+
+
+def test_signup_field_order():
+    expected_field_order = [
+        'email',
+        'email2',
+        'password1',
+        'password2',
+        'terms_agreed',
+    ]
+    assert forms.SignupForm.field_order == expected_field_order
