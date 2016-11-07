@@ -3,6 +3,13 @@ import pytest
 from sso.user import forms
 
 
+def test_signup_form_email_twice():
+    form = forms.SignupForm()
+
+    assert 'email' in form.fields
+    assert 'email2' in form.fields
+
+
 def test_signup_form_customization():
     form = forms.SignupForm()
 
