@@ -67,3 +67,26 @@ def test_signup_field_order():
         'terms_agreed',
     ]
     assert forms.SignupForm.field_order == expected_field_order
+
+
+def test_signup_rejects_password_length_less_than_ten():
+    for i in range(1, 10):
+        form = forms.SignupForm(data={
+            'password1': '*' * i
+        })
+        expected = (
+            'This password is too short. It must contain at least 10 '
+            'characters.'
+        )
+
+        assert form.is_valid() is False
+        assert form.errors['password1'] == [expected]
+
+
+def test_signup_accepts_password_length_ten_or_more():
+    form = forms.SignupForm(data={
+        'password1': '*' * 10
+    })
+
+    assert form.is_valid() is False
+    assert 'password1' not in form.errors
