@@ -213,6 +213,7 @@ def test_confirm_email_redirect_next_param_if_next_param_valid(
         signup_url,
         data={
             'email': 'jim@example.com',
+            'email2': 'jim@example.com',
             'password1': '0123456',
             'password2': '0123456',
         }
@@ -249,6 +250,7 @@ def test_confirm_email_redirect_next_param_if_next_param_invalid(
         signup_url,
         data={
             'email': 'jim@example.com',
+            'email2': 'jim@example.com',
             'password1': '0123456',
             'password2': '0123456',
         }
@@ -285,6 +287,7 @@ def test_confirm_email_redirect_next_param_if_next_param_internal(
         signup_url,
         data={
             'email': 'jim@example.com',
+            'email2': 'jim@example.com',
             'password1': '0123456',
             'password2': '0123456',
         }
@@ -314,6 +317,7 @@ def test_confirm_email_redirect_default_param_if_no_next_param(
         reverse('account_signup'),
         data={
             'email': 'jim@example.com',
+            'email2': 'jim@example.com',
             'password1': '0123456',
             'password2': '0123456',
         }
