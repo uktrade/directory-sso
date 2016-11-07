@@ -166,6 +166,16 @@ if DEBUG:
 
 # Authentication
 AUTH_USER_MODEL = 'user.User'
+AUTH_PASSWORD_VALIDATORS = [
+    {
+        'NAME': (
+            'django.contrib.auth.password_validation.MinimumLengthValidator'
+        ),
+        'OPTIONS': {
+            'min_length': 10,
+        }
+    },
+]
 AUTHENTICATION_BACKENDS = (
     'oauth2_provider.backends.OAuth2Backend',
     'django.contrib.auth.backends.ModelBackend',
