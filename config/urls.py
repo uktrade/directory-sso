@@ -4,6 +4,8 @@ from django.contrib import admin
 import oauth2_provider.views
 import allauth.account.views
 
+from django.views.generic import TemplateView
+
 from sso.user.views import (
     LogoutView,
     LoginView,
@@ -126,6 +128,9 @@ api_urlpatterns = [
 
 
 urlpatterns = [
+    url(r"^terms_and_conditions$",
+        TemplateView.as_view(template_name="terms.html"),
+        name="terms"),
     url(
         r'^admin/',
         include(admin.site.urls)

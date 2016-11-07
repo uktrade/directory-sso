@@ -214,6 +214,7 @@ def test_confirm_email_redirect_next_param_if_next_param_valid(
         data={
             'email': 'jim@example.com',
             'email2': 'jim@example.com',
+            'terms_agreed': True,
             'password1': '0123456',
             'password2': '0123456',
         }
@@ -251,6 +252,7 @@ def test_confirm_email_redirect_next_param_if_next_param_invalid(
         data={
             'email': 'jim@example.com',
             'email2': 'jim@example.com',
+            'terms_agreed': True,
             'password1': '0123456',
             'password2': '0123456',
         }
@@ -288,6 +290,7 @@ def test_confirm_email_redirect_next_param_if_next_param_internal(
         data={
             'email': 'jim@example.com',
             'email2': 'jim@example.com',
+            'terms_agreed': True,
             'password1': '0123456',
             'password2': '0123456',
         }
@@ -318,6 +321,7 @@ def test_confirm_email_redirect_default_param_if_no_next_param(
         data={
             'email': 'jim@example.com',
             'email2': 'jim@example.com',
+            'terms_agreed': True,
             'password1': '0123456',
             'password2': '0123456',
         }

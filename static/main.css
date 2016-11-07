@@ -10,7 +10,8 @@ html {
   box-sizing: inherit;
 }
 
-ul, li {
+.sso-header li,
+.sso-footer li {
   list-style: none;
 }
 

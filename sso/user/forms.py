@@ -1,4 +1,5 @@
-from django.forms import ValidationError
+from django.forms import BooleanField, ValidationError
+from django.utils.safestring import mark_safe
 
 from allauth.account import forms
 
@@ -8,6 +9,14 @@ class IndentedInvalidFieldsMixin:
 
 
 class SignupForm(IndentedInvalidFieldsMixin, forms.SignupForm):
+    terms_agreed = BooleanField(
+        label=mark_safe(
+            'Tick this box to accept the '
+            '<a href="/terms_and_conditions" target="_blank">terms and '
+            'conditions</a> of the exporting is GREAT service.'
+        )
+    )
+
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.fields['password2'].label = 'Confirm password:'
