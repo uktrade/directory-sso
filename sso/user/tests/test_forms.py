@@ -2,6 +2,11 @@ import pytest
 
 from sso.user import forms
 
+from django.forms.fields import Field
+
+
+REQUIRED_MESSAGE = Field.default_error_messages['required']
+
 
 def test_signup_form_email_twice():
     form = forms.SignupForm()
@@ -37,3 +42,17 @@ def test_password_reset_form_customization():
 
     assert form.is_valid() is False
     assert form.errors['email'] == [expected]
+
+
+def test_signup_rejects_missing_terms_agreed():
+    form = forms.SignupForm(data={})
+
+    assert form.is_valid() is False
+    assert form.errors['terms_agreed'] == [REQUIRED_MESSAGE]
+
+
+def test_signup_accepts_present_terms_agreed():
+    form = forms.SignupForm(data={'terms_agreed': True})
+
+    assert form.is_valid() is False
+    assert 'terms_agreed' not in form.errors
