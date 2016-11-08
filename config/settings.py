@@ -246,6 +246,10 @@ ACCOUNT_FORMS = {
 SESSION_COOKIE_DOMAIN = os.environ['SESSION_COOKIE_DOMAIN']
 # env var not same as setting to be more explicit (directory-ui uses same name)
 SESSION_COOKIE_NAME = os.environ['SSO_SESSION_COOKIE']
+SESSION_COOKIE_SECURE = (
+    os.getenv('SSO_SESSION_COOKIE_SECURE', 'true') == 'true')
+SESSION_COOKIE_HTTPONLY = True
+CSRF_COOKIE_SECURE = True
 
 LOGOUT_REDIRECT_URL = os.environ['LOGOUT_REDIRECT_URL']
 
