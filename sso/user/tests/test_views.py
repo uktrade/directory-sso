@@ -213,8 +213,10 @@ def test_confirm_email_redirect_next_param_if_next_param_valid(
         signup_url,
         data={
             'email': 'jim@example.com',
-            'password1': '0123456',
-            'password2': '0123456',
+            'email2': 'jim@example.com',
+            'terms_agreed': True,
+            'password1': '*' * 10,
+            'password2': '*' * 10,
         }
     )
     message = mail.outbox[0]
@@ -249,8 +251,10 @@ def test_confirm_email_redirect_next_param_if_next_param_invalid(
         signup_url,
         data={
             'email': 'jim@example.com',
-            'password1': '0123456',
-            'password2': '0123456',
+            'email2': 'jim@example.com',
+            'terms_agreed': True,
+            'password1': '*' * 10,
+            'password2': '*' * 10,
         }
     )
     message = mail.outbox[0]
@@ -285,8 +289,10 @@ def test_confirm_email_redirect_next_param_if_next_param_internal(
         signup_url,
         data={
             'email': 'jim@example.com',
-            'password1': '0123456',
-            'password2': '0123456',
+            'email2': 'jim@example.com',
+            'terms_agreed': True,
+            'password1': '*' * 10,
+            'password2': '*' * 10,
         }
     )
     message = mail.outbox[0]
@@ -314,8 +320,10 @@ def test_confirm_email_redirect_default_param_if_no_next_param(
         reverse('account_signup'),
         data={
             'email': 'jim@example.com',
-            'password1': '0123456',
-            'password2': '0123456',
+            'email2': 'jim@example.com',
+            'terms_agreed': True,
+            'password1': '*' * 10,
+            'password2': '*' * 10,
         }
     )
     message = mail.outbox[0]
@@ -338,7 +346,7 @@ def test_password_reset_redirect_default_param_if_no_next_param(
 ):
 
     settings.ALLOWED_REDIRECT_DOMAINS = ['example.com', 'other.com']
-    new_password = '123456'
+    new_password = '*' * 10
     # submit form and send 'password reset link' email without a 'next' param
     client.post(
         reverse('account_reset_password'),
@@ -366,7 +374,7 @@ def test_password_reset_redirect_next_param_if_next_param_valid(
 ):
     settings.LOGOUT_REDIRECT_URL = 'http://other.com'
     settings.ALLOWED_REDIRECT_DOMAINS = ['example.com', 'other.com']
-    new_password = '123456'
+    new_password = '*' * 10
     password_reset_url = reverse('account_reset_password')
     expected = 'http://www.example.com'
 
@@ -398,7 +406,7 @@ def test_password_reset_redirect_next_param_if_next_param_invalid(
 ):
     settings.LOGOUT_REDIRECT_URL = 'http://other.com'
     settings.ALLOWED_REDIRECT_DOMAINS = ['other.com']
-    new_password = '123456'
+    new_password = '*' * 10
     password_reset_url = reverse('account_reset_password')
     next_param = 'http://www.example.com'
 
@@ -430,7 +438,7 @@ def test_password_reset_redirect_next_param_if_next_param_internal(
 ):
     settings.LOGOUT_REDIRECT_URL = 'http://other.com'
     settings.ALLOWED_REDIRECT_DOMAINS = ['example.com', 'other.com']
-    new_password = '123456'
+    new_password = '*' * 10
     password_reset_url = reverse('account_reset_password')
     expected = '/exporting/'
 

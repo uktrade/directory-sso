@@ -166,6 +166,16 @@ if DEBUG:
 
 # Authentication
 AUTH_USER_MODEL = 'user.User'
+AUTH_PASSWORD_VALIDATORS = [
+    {
+        'NAME': (
+            'django.contrib.auth.password_validation.MinimumLengthValidator'
+        ),
+        'OPTIONS': {
+            'min_length': 10,
+        }
+    },
+]
 AUTHENTICATION_BACKENDS = (
     'oauth2_provider.backends.OAuth2Backend',
     'django.contrib.auth.backends.ModelBackend',
@@ -209,7 +219,7 @@ ACCOUNT_DEFAULT_HTTP_PROTOCOL = os.getenv(
 )
 ACCOUNT_LOGIN_ATTEMPTS_LIMIT = 5
 ACCOUNT_LOGIN_ATTEMPTS_TIMEOUT = 300  # seconds
-ACCOUNT_SIGNUP_EMAIL_ENTER_TWICE = False
+ACCOUNT_SIGNUP_EMAIL_ENTER_TWICE = True
 ACCOUNT_SIGNUP_PASSWORD_ENTER_TWICE = True
 ACCOUNT_ADAPTER = 'sso.adapters.AccountAdapter'
 ACCOUNT_LOGIN_ON_EMAIL_CONFIRMATION = True
@@ -249,3 +259,5 @@ REDIRECT_FIELD_NAME = os.environ['REDIRECT_FIELD_NAME']
 ALLOWED_REDIRECT_DOMAINS = os.environ['ALLOWED_REDIRECT_DOMAINS'].split(',')
 for domain in ALLOWED_REDIRECT_DOMAINS:
     assert is_valid_domain(domain) is True
+
+FEEDBACK_FORM_URL = os.environ['FEEDBACK_FORM_URL']
