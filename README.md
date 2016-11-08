@@ -39,6 +39,7 @@ Provides defaults for all environment variables.
 | SSO_DATABASE_URL | DATABASE_URL |
 | SSO_LOGOUT_REDIRECT_URL | LOGOUT_REDIRECT_URL |
 | SSO_REDIRECT_FIELD_NAME | REDIRECT_FIELD_NAME |
+| SSO_SSO_SESSION_COOKIE_SECURE | SSO_SESSION_COOKIE_SECURE |
 
 #### Database
 | Host environment variable | Docker environment variable  |
@@ -72,3 +73,4 @@ Requires locally running PostgreSQL (e.g. [Postgres.app](http://postgresapp.com/
 | LOGOUT_REDIRECT_URL | None | Where to send the user after successfully logging out |
 | REDIRECT_FIELD_NAME | None | On completing actions where to get redirect url from in the querystring |
 | ALLOWED_REDIRECT_DOMAINS | None | Comma separated list of domains that we allow redirection to via next params |
+| SSO_SESSION_COOKIE_SECURE | True | Set secure flag on sso cookie (true or false) |
