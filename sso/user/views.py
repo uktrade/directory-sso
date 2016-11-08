@@ -2,6 +2,7 @@ from allauth.account import views
 from allauth.account.utils import get_request_param
 
 from django.conf import settings
+from django.views.generic import RedirectView
 
 from ..adapters import validate_next
 
@@ -35,3 +36,9 @@ class PasswordResetFromKeyView(RedirectToNextOrDefaultMixin,
 class LoginView(RedirectToNextOrDefaultMixin,
                 views.LoginView):
     pass
+
+
+class FeedbackView(RedirectView):
+
+    def get_redirect_url(self):
+        return settings.FEEDBACK_FORM_URL
