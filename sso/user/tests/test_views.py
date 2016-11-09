@@ -6,9 +6,10 @@ from allauth.account.models import (
 )
 import pytest
 
-from sso.user.models import User
 from django.core import mail
 from django.core.urlresolvers import reverse
+
+from sso.user.models import User
 
 
 @pytest.fixture

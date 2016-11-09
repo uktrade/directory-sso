@@ -259,5 +259,3 @@ REDIRECT_FIELD_NAME = os.environ['REDIRECT_FIELD_NAME']
 ALLOWED_REDIRECT_DOMAINS = os.environ['ALLOWED_REDIRECT_DOMAINS'].split(',')
 for domain in ALLOWED_REDIRECT_DOMAINS:
     assert is_valid_domain(domain) is True
-
-FEEDBACK_FORM_URL = os.environ['FEEDBACK_FORM_URL']
