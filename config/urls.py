@@ -4,14 +4,13 @@ from django.contrib import admin
 import oauth2_provider.views
 import allauth.account.views
 
-from django.views.generic import TemplateView
-
 from sso.user.views import (
-    LogoutView,
-    LoginView,
     ConfirmEmailView,
     FeedbackView,
+    LoginView,
+    LogoutView,
     PasswordResetFromKeyView,
+    TermsView,
 )
 from sso.healthcheck.views import HealthCheckAPIView
 from sso.oauth2.views_user import UserRetrieveAPIView
@@ -131,7 +130,7 @@ api_urlpatterns = [
 urlpatterns = [
     url(
         r"^terms_and_conditions$",
-        TemplateView.as_view(template_name="terms.html"),
+        TermsView.as_view(),
         name="terms"),
     url(
         r"^feedback$",

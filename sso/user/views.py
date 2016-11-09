@@ -4,7 +4,8 @@ from allauth.account.utils import get_request_param
 from django.conf import settings
 from django.views.generic import RedirectView
 
-from ..adapters import validate_next
+from sso.adapters import validate_next
+from sso import constants
 
 
 class RedirectToNextOrDefaultMixin:
@@ -39,6 +40,8 @@ class LoginView(RedirectToNextOrDefaultMixin,
 
 
 class FeedbackView(RedirectView):
+    url = constants.FEEDBACK_FORM_URL
 
-    def get_redirect_url(self):
-        return settings.FEEDBACK_FORM_URL
+
+class TermsView(RedirectView):
+    url = constants.TERMS_AND_CONDITIONS_URL
