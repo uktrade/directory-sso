@@ -14,7 +14,7 @@ class SignupForm(IndentedInvalidFieldsMixin, forms.SignupForm):
         label=mark_safe(
             'Tick this box to accept the '
             '<a href="/terms_and_conditions" target="_blank">terms and '
-            'conditions</a> of the exporting is GREAT service.'
+            'conditions</a> of the Exporting is GREAT service.'
         )
     )
     field_order = [
