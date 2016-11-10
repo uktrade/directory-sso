@@ -32,9 +32,19 @@ input[type="color"]:focus,
     -webkit-box-shadow: none
 }
 
-ul,
-li {
-    list-style: none
+ul.errorlist li,
+.sso-header li,
+.sso-footer li {
+   list-style: none;
+}
+
+.sso-content {
+    margin-top: 40px;
+    margin-bottom: 40px;
+}
+
+.sso-content > .span6 {
+   margin: 0;
 }
 
 .data-form .form-control {
@@ -309,20 +319,30 @@ textarea {
     padding-left: 15px
 }
 
+ul.errorlist {
+    border-left: 5px solid #B00D23;
+    padding-left: 15px;
+    margin: 0;
+    padding-bottom: 10px;
+    color: #b10e1e;
+    font-weight: 600;
+}
+
 .input-field-container.has-error ul.errorlist {
     margin: 0 0 10px;
-    padding: 0
+    padding: 0;
 }
 
 .input-field-container.has-error ul.errorlist li {
     color: #b10e1e;
-    font-weight: 600
+    font-weight: 600;
 }
+
 
 .input-field-container.has-error input,
 .input-field-container.has-error select,
 .input-field-container.has-error textarea {
-    border: 3px solid #B00D23
+    border: 3px solid #B00D23;
 }
 
 .btn-container {
@@ -485,31 +505,31 @@ body #content .container .sorry h2 {
     font-size: 15px
 }
 
-.ed-header .level-one-container {
+.sso-header .level-one-container {
     text-align: right
 }
 
-.ed-header .level-one-container ul li a {
+.sso-header .level-one-container ul li a {
     font-weight: 400;
     padding-bottom: 2px
 }
 
-.ed-header ul {
+.sso-header ul {
     display: inline-block;
     margin: 0
 }
 
-.ed-header ul.header-nav-links {
+.sso-header ul.header-nav-links {
     float: right;
     height: 72px;
     margin-top: 5px
 }
 
-.ed-header ul.header-nav-links li {
+.sso-header ul.header-nav-links li {
     line-height: 72px
 }
 
-.ed-header ul.header-nav-links li a {
+.sso-header ul.header-nav-links li a {
     color: white;
     font-size: 15px;
     border-bottom: 0;
@@ -518,55 +538,55 @@ body #content .container .sorry h2 {
     padding-bottom: 4px
 }
 
-.ed-header ul.header-nav-links li a:focus {
+.sso-header ul.header-nav-links li a:focus {
     background: #007EA3;
     color: #ffffff
 }
 
-.ed-header ul.header-nav-links li a:hover {
+.sso-header ul.header-nav-links li a:hover {
     border-bottom: 4px solid #dce0df
 }
 
-.ed-header ul.header-nav-links li a.active {
+.sso-header ul.header-nav-links li a.active {
     border-bottom: 4px solid #b00d23
 }
 
-.ed-header ul.header-nav-links li a.active:hover {
+.sso-header ul.header-nav-links li a.active:hover {
     border-bottom: 4px solid #dce0df
 }
 
 @media (min-width: 979px) {
-    .ed-header ul {
+    .sso-header ul {
         list-style-type: none
     }
 }
 
-.ed-header ul li {
+.sso-header ul li {
     display: inline;
     margin-right: 20px
 }
 
-.ed-header ul li:last-child {
+.sso-header ul li:last-child {
     margin-right: 0
 }
 
-.ed-header ul li a {
+.sso-header ul li a {
     color: white;
     border-bottom: 1px solid #777;
     font-size: 15px
 }
 
-.ed-header ul li a:focus {
+.sso-header ul li a:focus {
     background: #007EA3;
     color: #ffffff
 }
 
-.ed-header ul li a:hover {
+.sso-header ul li a:hover {
     border-bottom: 1px dashed #fff;
     text-decoration: none
 }
 
-.ed-header h3.our-services-top {
+.sso-header h3.our-services-top {
     display: inline-block;
     font-size: 15px;
     font-weight: 500;
@@ -575,79 +595,79 @@ body #content .container .sorry h2 {
     margin: 0 20px 0 0
 }
 
-.ed-header .ed-header-level-one {
+.sso-header .sso-header-level-one {
     background: #110B29
 }
 
-.ed-header .ed-header-level-one .container {
+.sso-header .sso-header-level-one .container {
     max-width: 960px;
     padding: 0;
     width: 100%
 }
 
 @media (max-width: 960px) {
-    .ed-header .ed-header-level-one {
+    .sso-header .sso-header-level-one {
         padding: 10px 20px
     }
-    .ed-header .ed-header-level-one .hide-in-mobile {
+    .sso-header .sso-header-level-one .hide-in-mobile {
         display: none
     }
 }
 
-.ed-header .ed-header-level-two {
+.sso-header .sso-header-level-two {
     background: #1E1348;
     padding-top: 15px;
     padding-bottom: 14px
 }
 
-.ed-header .ed-header-level-two .header-main-logo {
+.sso-header .sso-header-level-two .header-main-logo {
     float: left
 }
 
-.ed-header .ed-header-level-two .eig-links {
+.sso-header .sso-header-level-two .eig-links {
     float: right
 }
 
-.ed-header .ed-header-level-two .eig-links nav .header-nav-links {
+.sso-header .sso-header-level-two .eig-links nav .header-nav-links {
     height: 0;
     margin-top: -5px
 }
 
 @media (max-width: 960px) {
-    .ed-header .ed-header-level-two .header-nav-links {
+    .sso-header .sso-header-level-two .header-nav-links {
         display: none
     }
 }
 
-.ed-header .ed-header-mobile-view {
+.sso-header .sso-header-mobile-view {
     display: none;
     padding: 0;
     width: 100%
 }
 
 @media (max-width: 960px) {
-    .ed-header .ed-header-mobile-view {
+    .sso-header .sso-header-mobile-view {
         display: block
     }
 }
 
-.ed-header .ed-header-mobile-view .header-nav {
+.sso-header .sso-header-mobile-view .header-nav {
     padding: 0;
     text-align: left
 }
 
-.ed-header .ed-header-mobile-view .header-nav h3 {
+.sso-header .sso-header-mobile-view .header-nav h3 {
     line-height: 23px;
     margin: 0;
     padding: 0
 }
 
-.ed-header .ed-header-mobile-view .header-nav ul.mobile-secondary-nav {
+.sso-header .sso-header-mobile-view .header-nav ul.mobile-secondary-nav {
     list-style-type: none;
     width: 100%
 }
 
-.ed-header .ed-header-mobile-view .header-nav ul.mobile-secondary-nav li {
+.sso-header .sso-header-mobile-view .header-nav ul.mobile-secondary-nav li {
     display: inline-block;
     list-style-type: none;
     border-bottom: 1px solid #777;
@@ -659,12 +679,12 @@ body #content .container .sorry h2 {
     width: 93%
 }
 
-.ed-header .ed-header-mobile-view .header-nav ul.mobile-secondary-nav li a {
+.sso-header .sso-header-mobile-view .header-nav ul.mobile-secondary-nav li a {
     border-bottom: 0;
     font-weight: 400
 }
 
-.ed-header .ed-header-mobile-view .header-nav ul.mobile-secondary-nav li a.active:before {
+.sso-header .sso-header-mobile-view .header-nav ul.mobile-secondary-nav li a.active:before {
     border: 6px solid #b00d23;
     content: '';
     height: 20px;
@@ -672,11 +692,11 @@ body #content .container .sorry h2 {
     position: absolute
 }
 
-.ed-header .ed-header-mobile-view .header-nav ul.mobile-secondary-nav li a.active:hover:before {
+.sso-header .sso-header-mobile-view .header-nav ul.mobile-secondary-nav li a.active:hover:before {
     border-color: #dce0df
 }
 
-.ed-header .ed-header-mobile-view .header-nav ul.mobile-secondary-nav li a:hover:before {
+.sso-header .sso-header-mobile-view .header-nav ul.mobile-secondary-nav li a:hover:before {
     border: 6px solid #fff;
     content: '';
     height: 20px;
@@ -684,30 +704,30 @@ body #content .container .sorry h2 {
     position: absolute
 }
 
-.ed-header .ed-header-mobile-view .header-nav ul.mobile-secondary-nav li:last-child {
+.sso-header .sso-header-mobile-view .header-nav ul.mobile-secondary-nav li:last-child {
     border-bottom: 0
 }
 
-.ed-header .ed-header-mobile-view .header-nav .background--indigo {
+.sso-header .sso-header-mobile-view .header-nav .background--indigo {
     background-color: #110b29
 }
 
-.ed-header .ed-header-mobile-view .header-nav .soft-half--left {
+.sso-header .sso-header-mobile-view .header-nav .soft-half--left {
     padding-left: 10px
 }
 
-.ed-header .ed-header-mobile-view .header-nav .soft-half--sides {
+.sso-header .sso-header-mobile-view .header-nav .soft-half--sides {
     padding-left: 10px;
     padding-right: 10px;
     padding-top: 20px
 }
 
-.ed-header .ed-header-mobile-view .header-nav .soft--ends {
+.sso-header .sso-header-mobile-view .header-nav .soft--ends {
     padding-bottom: 20px;
     padding-top: 20px
 }
 
-.ed-hero-sub-header {
+.sso-hero-sub-header {
     color: white;
     min-height: 275px;
     padding-top: 20px;
@@ -719,75 +739,75 @@ body #content .container .sorry h2 {
     background-size: cover
 }
 
-.ed-hero-sub-header .ed-hero-sub-header-title h1 {
+.sso-hero-sub-header .sso-hero-sub-header-title h1 {
     margin-bottom: 20px
 }
 
-#footer.ed-footer {
+#footer.sso-footer {
     background: #1E1348;
     padding: 40px 40px 50px
 }
 
 @media (max-width: 960px) {
-    #footer.ed-footer {
+    #footer.sso-footer {
         padding: 40px 0
     }
-    #footer.ed-footer .footer-section {
+    #footer.sso-footer .footer-section {
         border-top: 1px solid #fff;
         padding: 30px 0
     }
-    #footer.ed-footer .container .grid-row {
+    #footer.sso-footer .container .grid-row {
         display: flex;
         flex-flow: column
     }
-    #footer.ed-footer .container .grid-row .logo {
+    #footer.sso-footer .container .grid-row .logo {
         order: 3;
         width: 100%
     }
-    #footer.ed-footer .container .grid-row .links {
+    #footer.sso-footer .container .grid-row .links {
         margin-left: 0;
         order: 2;
         width: 100%
     }
-    #footer.ed-footer .container .grid-row .subscribe {
+    #footer.sso-footer .container .grid-row .subscribe {
         margin-left: 0;
         order: 1;
         width: 100%
     }
-    #footer.ed-footer .container .grid-row .subscribe .footer-section {
+    #footer.sso-footer .container .grid-row .subscribe .footer-section {
         border-top: 0;
         padding-top: 0
     }
 }
 
-#footer.ed-footer .footer-wrapper {
+#footer.sso-footer .footer-wrapper {
     background: #1E1348
 }
 
-#footer.ed-footer ul li a {
+#footer.sso-footer ul li a {
     color: #fff;
     border-bottom: 1px solid #777
 }
 
-#footer.ed-footer ul li a:focus {
+#footer.sso-footer ul li a:focus {
     background: #007EA3;
     color: #ffffff
 }
 
-#footer.ed-footer ul li a:hover {
+#footer.sso-footer ul li a:hover {
     border-bottom: 1px dashed #fff;
     text-decoration: none
 }
 
-#footer.ed-footer .hmg-logo img {
+#footer.sso-footer .hmg-logo img {
     max-width: 250px
 }
 
-#footer.ed-footer .eig-logo-footer img {
+#footer.sso-footer .eig-logo-footer img {
     max-width: 200px
 }
 
-#footer.ed-footer p.copyright-text {
+#footer.sso-footer p.copyright-text {
     color: #dce0df;
     font-size: 14px;
     padding-bottom: 20px;
@@ -795,11 +815,11 @@ body #content .container .sorry h2 {
     font-weight: 300
 }
 
-#footer.ed-footer .footer-img--top {
+#footer.sso-footer .footer-img--top {
     margin-bottom: 10px
 }
 
-#footer.ed-footer h3.footer-header {
+#footer.sso-footer h3.footer-header {
     color: #fff;
     font-weight: 500;
     font-size: 20px;
@@ -808,15 +828,15 @@ body #content .container .sorry h2 {
     line-height: 30px
 }
 
-#footer.ed-footer ul.footer-links-container {
+#footer.sso-footer ul.footer-links-container {
     margin: 0
 }
 
-#footer.ed-footer ul.footer-links-container li.footer-links {
+#footer.sso-footer ul.footer-links-container li.footer-links {
     margin-bottom: 15px
 }
 
-#footer.ed-footer ul.footer-links-container li.footer-links a {
+#footer.sso-footer ul.footer-links-container li.footer-links a {
     font-size: 15px;
     font-weight: 400
 }
@@ -826,41 +846,41 @@ body #content .container .sorry h2 {
     clear: both
 }
 
-.ed-form-classification-container li {
+.sso-form-classification-container li {
     margin-bottom: 0
 }
 
-.ed-error-page-container {
+.sso-error-page-container {
     color: #4a4a4a
 }
 
-.ed-error-page-container .ed-error-page-title {
+.sso-error-page-container .sso-error-page-title {
     margin-top: 40px;
     margin-bottom: 40px
 }
 
-.ed-error-page-container ul.ed-error-page-synopsis {
+.sso-error-page-container ul.sso-error-page-synopsis {
     margin: 0
 }
 
-.ed-error-page-container ul.ed-error-page-synopsis li {
+.sso-error-page-container ul.sso-error-page-synopsis li {
     margin-bottom: 10px
 }
 
-.ed-error-page-container .ed-error-page-status {
+.sso-error-page-container .sso-error-page-status {
     padding-bottom: 40px
 }
 
-.ed-error-page-container hr {
+.sso-error-page-container hr {
     border-bottom: 1px solid #4f0b7b
 }
 
-.ed-international-success-container h1 {
+.sso-international-success-container h1 {
     margin-top: 40px;
     margin-bottom: 40px
 }
 
-.ed-international-success-container .ed-international-success-synopsis {
+.sso-international-success-container .sso-international-success-synopsis {
     margin-bottom: 40px
 }
 
@@ -882,12 +902,12 @@ body.js-enabled .js-header-nav-menu.js-header-nav-menu-hide {
     }
 }
 
-.ed-header-level-two .ed-header-image-container {
+.sso-header-level-two .sso-header-image-container {
     position: relative
 }
 
 @media (max-width: 979px) {
-    .ed-header-level-two .ed-header-image-container {
+    .sso-header-level-two .sso-header-image-container {
         padding-left: 5px
     }
 }
