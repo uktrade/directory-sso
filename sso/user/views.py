@@ -1,5 +1,6 @@
+import re
+
 from allauth.account import views
-from allauth.account.utils import get_request_param
 
 from django.conf import settings
 from django.views.generic import RedirectView
@@ -12,10 +13,25 @@ class RedirectToNextOrDefaultMixin:
 
     redirect_field_name = settings.REDIRECT_FIELD_NAME
 
+    def get_next_with_params(self, request_path):
+        """"Returns the URL path after 'next', including params of 'next' """
+        next_pattern = re.compile(
+            r'.*?\?' + self.redirect_field_name + r'\=(.*)'
+        )
+
+        match = next_pattern.match(request_path)
+
+        if match:
+            return match.groups()[0]
+
     def get_redirect_url(self):
-        redirect_to = get_request_param(self.request, self.redirect_field_name)
-        if redirect_to and validate_next(redirect_to):
-            return redirect_to
+        next_with_params = self.get_next_with_params(
+            request_path=self.request.get_full_path()
+        )
+
+        if next_with_params and validate_next(next_with_params):
+            return next_with_params
+
         return settings.LOGOUT_REDIRECT_URL
 
     get_success_url = get_redirect_url
