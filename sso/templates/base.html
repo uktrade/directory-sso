@@ -4,6 +4,7 @@
 <!--[if lt IE 9]><html class="lte-ie8" lang="en"><![endif]-->
 <!--[if gt IE 8]><!--><html lang="en"><!--<![endif]-->
     <head>
+        {% include 'google_tag_manager_head.html' %}
         <meta charset="utf-8" />
         <title>{% block head_title %}{% endblock %}</title>
         {% block extra_head %}{% endblock %}
@@ -36,6 +37,7 @@
     </head>
 
     <body>
+        {% include 'google_tag_manager_body.html' %}
         <script>document.body.className = ((document.body.className) ? document.body.className + ' js-enabled' : 'js-enabled');</script>
 
         <div id="skiplink-container">

@@ -251,3 +251,16 @@ def test_next_param_not_in_action_on_psswd_reset_page_next_unspecified(rf):
 
     url = reverse('account_reset_password')
     assert 'action="{url}"'.format(url=url) in html
+
+
+def test_google_tag_manager():
+    expected_head = render_to_string('google_tag_manager_head.html')
+    expected_body = render_to_string('google_tag_manager_body.html')
+
+    html = render_to_string('base.html')
+
+    assert expected_head in html
+    assert expected_body in html
+    # sanity check
+    assert 'www.googletagmanager.com' in expected_head
+    assert 'www.googletagmanager.com' in expected_body
