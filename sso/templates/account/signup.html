@@ -6,7 +6,7 @@
 
 {% block content %}
 <h1>{% trans "Register" %}</h1>
-
+<p>Before you get started, make sure you’re familiar with our guides for <a href="https://www.exportingisgreat.gov.uk/new/" taget="_blank">new</a>, <a href="https://www.exportingisgreat.gov.uk/occasional/" taget="_blank">occasional</a> and <a href="https://www.exportingisgreat.gov.uk/regular/" taget="_blank">frequent</a> exporters.</p>
 <p>{% blocktrans %}If you already have an Exporting is GREAT account, please <a href="{{ login_url }}">sign in</a>.{% endblocktrans %}</p>
 
 <form class="signup" id="signup_form" method="post" action="{% url 'account_signup' %}{% if 'next' in request.GET %}?next={{ request.GET.next }}{% endif %}">
