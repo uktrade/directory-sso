@@ -45,3 +45,7 @@ class FeedbackView(RedirectView):
 
 class TermsView(RedirectView):
     url = constants.TERMS_AND_CONDITIONS_URL
+
+
+class SSOLandingPage(RedirectView):
+    url = settings.ROOT_REDIRECT_URL
