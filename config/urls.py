@@ -1,5 +1,7 @@
 from django.conf.urls import url, include
 from django.contrib import admin
+from django.views.generic import RedirectView
+from django.conf import settings
 
 import oauth2_provider.views
 import allauth.account.views
@@ -128,6 +130,10 @@ api_urlpatterns = [
 
 
 urlpatterns = [
+    url(
+        r"^$",
+        RedirectView.as_view(url=settings.ROOT_REDIRECT_URL),
+        name="sso_root"),
     url(
         r"^terms_and_conditions$",
         TermsView.as_view(),

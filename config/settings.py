@@ -261,3 +261,6 @@ REDIRECT_FIELD_NAME = os.environ['REDIRECT_FIELD_NAME']
 ALLOWED_REDIRECT_DOMAINS = os.environ['ALLOWED_REDIRECT_DOMAINS'].split(',')
 for domain in ALLOWED_REDIRECT_DOMAINS:
     assert is_valid_domain(domain) is True
+
+ROOT_REDIRECT_URL = os.getenv(
+    'ROOT_REDIRECT_URL', 'http://find-a-buyer.export.great.gov.uk/')
