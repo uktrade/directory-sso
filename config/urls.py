@@ -1,7 +1,5 @@
 from django.conf.urls import url, include
 from django.contrib import admin
-from django.views.generic import RedirectView
-from django.conf import settings
 
 import oauth2_provider.views
 import allauth.account.views
@@ -13,6 +11,7 @@ from sso.user.views import (
     LogoutView,
     PasswordResetFromKeyView,
     TermsView,
+    SSOLandingPage,
 )
 from sso.healthcheck.views import HealthCheckAPIView
 from sso.oauth2.views_user import UserRetrieveAPIView
@@ -132,7 +131,7 @@ api_urlpatterns = [
 urlpatterns = [
     url(
         r"^$",
-        RedirectView.as_view(url=settings.ROOT_REDIRECT_URL),
+        SSOLandingPage.as_view(),
         name="sso_root"),
     url(
         r"^terms_and_conditions$",
