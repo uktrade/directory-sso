@@ -64,6 +64,29 @@ def test_public_views(client):
 
 
 @pytest.mark.django_db
+def test_login_redirect_next_param_oauth2(
+    client, settings, verified_user
+):
+    settings.LOGOUT_REDIRECT_URL = 'http://www.other.com'
+    settings.ALLOWED_REDIRECT_DOMAINS = ['example.com', 'other.com']
+    url = reverse('account_login')
+    expected = (
+        '/oauth2/authorize/?client_id=aisudhgfg943287895as&redirect_uri'
+        '=https%3A%2F%2Fuktieig-secondary.staging.dxw.net%2Fusers%2Fauth'
+        '%2Fexporting_is_great%2Fcallback&response_type=code&scope=profile'
+        '&state=23947asdoih4380'
+    )
+
+    response = client.post(
+        '{url}?next={next}'.format(url=url, next=expected),
+        {'login': verified_user.email, 'password': 'password'}
+    )
+
+    assert response.status_code == http.client.FOUND
+    assert response.get('Location') == expected
+
+
+@pytest.mark.django_db
 def test_login_redirect_default_param_if_no_next_param(
     client, verified_user, settings
 ):
@@ -130,6 +153,28 @@ def test_login_redirect_next_param_if_next_param_invalid(
 
     assert response.status_code == http.client.FOUND
     assert response.get('Location') == 'http://www.other.com'
+
+
+@pytest.mark.django_db
+def test_logout_redirect_next_param_if_next_param_oath2(
+    authed_client, settings
+):
+    settings.LOGOUT_REDIRECT_URL = 'http://www.other.com'
+    settings.ALLOWED_REDIRECT_DOMAINS = ['example.com', 'other.com']
+    url = reverse('account_logout')
+    expected = (
+        '/oauth2/authorize/?client_id=aisudhgfg943287895as&redirect_uri'
+        '=https%3A%2F%2Fuktieig-secondary.staging.dxw.net%2Fusers%2Fauth'
+        '%2Fexporting_is_great%2Fcallback&response_type=code&scope=profile'
+        '&state=23947asdoih4380'
+    )
+
+    response = authed_client.post(
+        '{url}?next={next}'.format(url=url, next=expected)
+    )
+
+    assert response.status_code == http.client.FOUND
+    assert response.get('Location') == expected
 
 
 @pytest.mark.django_db
