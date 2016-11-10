@@ -263,4 +263,4 @@ for domain in ALLOWED_REDIRECT_DOMAINS:
     assert is_valid_domain(domain) is True
 
 ROOT_REDIRECT_URL = os.getenv(
-    'ROOT_REDIRECT_URL', 'http://find-a-buyer.export.great.gov.uk/')
+    'ROOT_REDIRECT_URL', 'https://find-a-buyer.export.great.gov.uk/')
