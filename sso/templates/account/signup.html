@@ -8,7 +8,7 @@
 <h1>{% trans "Register" %}</h1>
 
 <p>{% blocktrans %}If you already have an Exporting is GREAT account, please <a href="{{ login_url }}">sign in</a>.{% endblocktrans %}</p>
-<p>Before you register, make sure you’re familiar with our <a href="https://www.great.gov.uk/">guides for new, occasional and frequent exporters</a>.</p>
+<p>Before you register, make sure you’re familiar with our guides for <a href="https://export.great.gov.uk/new/" target="_blank">new</a>, <a href="https://export.great.gov.uk/occasional/" target="_blank">occasional</a> and <a href="https://export.great.gov.uk/regular/" target="_blank">frequent</a> exporters.</p>
 
 <form class="signup" id="signup_form" method="post" action="{% url 'account_signup' %}{% if 'next' in request.GET %}?next={{ request.GET.next }}{% endif %}">
   {% csrf_token %}
