@@ -473,6 +473,15 @@ body #content .container form .connections-platform-form ul li {
     width: 33%
 }
 
+body #content .span6 .input-field-container form.signup p:last-of-type label {
+    float: right;
+    margin-bottom: 40px;
+    width: 90%;
+}
+body #content .span6 .input-field-container form.signup p:last-of-type input[type='checkbox'] {
+    float: left;
+}
+
 @media (min-width: 979px) and (max-width: 1200px) {
     body #content .container form .connections-platform-form ul li {
         float: left;
