@@ -1,13 +1,13 @@
 import http
 
+from django.core import mail
+from django.core.urlresolvers import reverse
+
 from allauth.account.models import (
     EmailAddress,
     EmailConfirmationHMAC
 )
 import pytest
-
-from django.core import mail
-from django.core.urlresolvers import reverse
 
 from sso.user.models import User
 
@@ -526,3 +526,24 @@ def test_password_reset_doesnt_allow_email_enumeration(
     # but redirect anyway so attackers dont find out if it exists
     assert response.status_code == http.client.FOUND
     assert response.get('Location') == reverse('account_reset_password_done')
+
+
+@pytest.mark.django_db(transaction=True)
+def test_signup_email_enumeration_not_possible(client, verified_user):
+    response = client.post(
+        reverse('account_signup'),
+        data={
+            'email': verified_user.email,
+            'email2': verified_user.email,
+            'terms_agreed': True,
+            'password1': 'passpasspass',
+            'password2': 'passpasspass'
+        }
+    )
+    assert response.status_code == 302
+    assert User.objects.all().count() == 1
+    assert User.objects.all().last() == verified_user
+    assert response.get('Location') == reverse(
+        'account_email_verification_sent'
+    )
+    assert len(mail.outbox) == 0

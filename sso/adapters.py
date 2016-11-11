@@ -39,3 +39,8 @@ class AccountAdapter(DefaultAccountAdapter):
                 ret, settings.REDIRECT_FIELD_NAME, redirect_value
             )
         return ret
+
+    def validate_unique_email(self, email):
+        # Although email has to be unique, as it is user login, do not validate
+        # it, so that e-mail enumeration is not possible - security requirement
+        return email
