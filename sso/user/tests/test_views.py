@@ -508,3 +508,21 @@ def test_password_reset_redirect_next_param_if_next_param_internal(
     assert url in html
     assert response.status_code == http.client.FOUND
     assert response.get('Location') == expected
+
+
+@pytest.mark.django_db
+def test_password_reset_doesnt_allow_email_enumeration(
+    settings, client, user
+):
+
+    # submit form and send 'password reset link' email without a 'next' param
+    response = client.post(
+        reverse('account_reset_password'),
+        data={'email': 'imaginaryemail@example.com'}
+    )
+
+    # don't send an email cause no account exists
+    assert len(mail.outbox) == 0
+    # but redirect anyway so attackers dont find out if it exists
+    assert response.status_code == http.client.FOUND
+    assert response.get('Location') == reverse('account_reset_password_done')

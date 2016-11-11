@@ -1,11 +1,32 @@
 import pytest
 
-from sso.user import forms
-
 from django.forms.fields import Field
+from django.core import mail
+from django.core.validators import EmailValidator
+
+from allauth.account.models import EmailAddress
+
+from sso.user import forms
+from sso.user.models import User
 
 
 REQUIRED_MESSAGE = Field.default_error_messages['required']
+INVALID_EMAIL_MESSAGE = EmailValidator.message
+
+
+@pytest.fixture
+def verified_user():
+    user = User.objects.create_user(
+        email='verified@example.com',
+        password='password',
+    )
+    EmailAddress.objects.create(
+        user=user,
+        email=user.email,
+        verified=True,
+        primary=True
+    )
+    return user
 
 
 def test_signup_form_email_twice():
@@ -34,14 +55,47 @@ def test_change_password_form_customization():
 
 
 @pytest.mark.django_db
-def test_password_reset_form_customization():
+def test_password_reset_form_accepts_nonexisting_email_without_sending(rf):
     form = forms.ResetPasswordForm(
-        data={'email': 'a@example.com'}
+        data={'email': 'nonexistingemail@example.com'}
     )
-    expected = forms.ResetPasswordForm.NO_ACCOUNT
+    request = rf.get('/')
+
+    assert form.is_valid() is True
+    form.save(request)
+    assert len(mail.outbox) == 0
+
+
+@pytest.mark.django_db
+def test_password_reset_form_accepts_existing_email_and_sends(
+    rf, verified_user
+):
+    form = forms.ResetPasswordForm(
+        data={'email': verified_user.email}
+    )
+    request = rf.get('/')
+
+    assert form.is_valid() is True
+    form.save(request)
+    assert len(mail.outbox) == 1
+
+
+def test_password_reset_form_invalid_email():
+    form = forms.ResetPasswordForm(
+        data={'email': 'this is not an email'}
+    )
 
     assert form.is_valid() is False
-    assert form.errors['email'] == [expected]
+    assert INVALID_EMAIL_MESSAGE in form.errors['email']
+
+
+def test_password_reset_form_email_required():
+    form = forms.ResetPasswordForm(
+        data={'email': ''}
+    )
+
+    assert form.is_valid() is False
+    assert REQUIRED_MESSAGE in form.errors['email']
 
 
 def test_signup_rejects_missing_terms_agreed():

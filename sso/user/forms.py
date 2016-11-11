@@ -1,7 +1,9 @@
-from django.forms import BooleanField, ValidationError
+from django.forms import BooleanField
 from django.utils.safestring import mark_safe
 
 from allauth.account import forms
+from allauth.account.adapter import get_adapter
+from allauth.account.utils import filter_users_by_email
 from allauth.utils import set_form_field_order
 
 
@@ -57,13 +59,21 @@ class SetPasswordForm(IndentedInvalidFieldsMixin, forms.SetPasswordForm):
 
 
 class ResetPasswordForm(IndentedInvalidFieldsMixin, forms.ResetPasswordForm):
-    NO_ACCOUNT = 'There is no account for this email address'
 
     def clean_email(self):
-        try:
-            return super().clean_email()
-        except ValidationError:
-            raise ValidationError(self.NO_ACCOUNT)
+        """Overrides allauth's method for security reasons.
+
+        Validation for whether a user/email exists has been removed.
+        This prevents potential attackers from finding out which emails
+        are registered in our system by attempting to submit this form.
+
+        """
+        email = self.cleaned_data["email"]
+        email = get_adapter().clean_email(email)
+        # allauth sends reset emails to all users in self.users.
+        # If there are none it will not send any emails
+        self.users = filter_users_by_email(email)
+        return self.cleaned_data["email"]
 
 
 class ResetPasswordKeyForm(IndentedInvalidFieldsMixin,
