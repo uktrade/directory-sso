@@ -529,16 +529,12 @@ def test_password_reset_doesnt_allow_email_enumeration(
 
 
 @pytest.mark.django_db(transaction=True)
-def test_signup_email_enumeration_not_possible(client):
-    user = User.objects.create(
-        email='test@example.com', password='passpasspass'
-    )
-
+def test_signup_email_enumeration_not_possible(client, verified_user):
     response = client.post(
         reverse('account_signup'),
         data={
-            'email': 'test@example.com',
-            'email2': 'test@example.com',
+            'email': verified_user.email,
+            'email2': verified_user.email,
             'terms_agreed': True,
             'password1': 'passpasspass',
             'password2': 'passpasspass'
@@ -546,7 +542,8 @@ def test_signup_email_enumeration_not_possible(client):
     )
     assert response.status_code == 302
     assert User.objects.all().count() == 1
-    assert User.objects.all().last() == user
+    assert User.objects.all().last() == verified_user
     assert response.get('Location') == reverse(
         'account_email_verification_sent'
     )
+    assert len(mail.outbox) == 0
