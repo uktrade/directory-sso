@@ -12,6 +12,7 @@ from sso.user.views import (
     PasswordResetFromKeyView,
     TermsView,
     SSOLandingPage,
+    SignupView,
 )
 from sso.healthcheck.views import HealthCheckAPIView
 from sso.oauth2.views_user import UserRetrieveAPIView
@@ -24,7 +25,7 @@ admin.autodiscover()
 allauth_urlpatterns = [
     url(
         r"^signup/$",
-        allauth.account.views.signup,
+        SignupView.as_view(),
         name="account_signup"
     ),
     url(
