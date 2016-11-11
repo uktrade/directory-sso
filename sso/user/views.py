@@ -20,11 +20,12 @@ class RedirectToNextMixin:
     def get_redirect_url(self):
         redirect_url = settings.DEFAULT_REDIRECT_URL
 
-        redirect_field_value = get_request_param(
+        redirect_param_value = get_request_param(
             self.request, self.redirect_field_name
         )
-        if redirect_field_value and is_valid_redirect(redirect_field_value):
-            redirect_url = redirect_field_value
+        if redirect_param_value:
+            if is_valid_redirect(urllib.parse.unquote(redirect_param_value)):
+                redirect_url = redirect_param_value
 
         return redirect_url
 
@@ -38,7 +39,7 @@ class RedirectToNextMixin:
         redirect_url = self.get_redirect_url()
 
         if redirect_url:
-            redirect_field_value = urllib.parse.quote(redirect_url)
+            redirect_field_value = urllib.parse.unquote(redirect_url)
         else:
             redirect_field_value = None
 

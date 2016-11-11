@@ -605,3 +605,35 @@ def test_confirm_email_redirect_next_param_oath2(
         'dxw.net%2Fusers%2Fauth%2Fexporting_is_great%2Fcallback&'
         'response_type=code&scope=profile&state=23947asdoih4380'
     )
+
+
+@pytest.mark.django_db
+def test_confirm_email_redirect_next_param(
+    settings, client, email_confirmation
+):
+    settings.DEFAULT_REDIRECT_URL = 'http://other.com'
+    settings.ALLOWED_REDIRECT_DOMAINS = ['example.com', 'other.com']
+    redirect_field_value = 'http%3A//www.test.example.com/register'
+    signup_url = "{}?next={}".format(
+        reverse('account_signup'), redirect_field_value
+    )
+    client.post(
+        signup_url,
+        data={
+            'email': 'jim@example.com',
+            'email2': 'jim@example.com',
+            'terms_agreed': True,
+            'password1': '*' * 10,
+            'password2': '*' * 10,
+        }
+    )
+    message = mail.outbox[0]
+    txt = message.body
+    html = message.alternatives[0][0]
+    # Extract URL for `password_reset_from_key` view and access it
+    url = txt[txt.find('/accounts/confirm-email/'):].split()[0]
+    response = client.get(url)
+    assert url in txt
+    assert url in html
+    assert response.status_code == http.client.FOUND
+    assert response.get('Location') == 'http://www.test.example.com/register'

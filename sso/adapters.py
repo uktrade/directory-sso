@@ -1,3 +1,5 @@
+import urllib.parse
+
 from django.conf import settings
 
 from allauth.account.adapter import DefaultAccountAdapter
@@ -12,19 +14,24 @@ class AccountAdapter(DefaultAccountAdapter):
         """
         Constructs the email confirmation (activation) url.
         """
-        redirect_url = get_request_param(
+        redirect_url = settings.DEFAULT_REDIRECT_URL
+
+        redirect_param_value = get_request_param(
             request, settings.REDIRECT_FIELD_NAME
         )
+        if redirect_param_value:
+            redirect_url = redirect_param_value
 
         email_confirmation_url = super().get_email_confirmation_url(
             request, emailconfirmation
         )
 
-        if redirect_url and is_valid_redirect(redirect_url):
-            email_confirmation_url = get_url_with_redirect(
-                url=email_confirmation_url,
-                redirect_url=redirect_url
-            )
+        if redirect_url:
+            if is_valid_redirect(urllib.parse.unquote(redirect_url)):
+                email_confirmation_url = get_url_with_redirect(
+                    url=email_confirmation_url,
+                    redirect_url=redirect_url
+                )
         return email_confirmation_url
 
     def validate_unique_email(self, email):
