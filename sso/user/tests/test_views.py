@@ -67,30 +67,36 @@ def test_public_views(client):
 def test_login_redirect_next_param_oauth2(
     client, settings, verified_user
 ):
-    settings.LOGOUT_REDIRECT_URL = 'http://www.other.com'
+    settings.DEFAULT_REDIRECT_URL = 'http://www.other.com/?param=test'
     settings.ALLOWED_REDIRECT_DOMAINS = ['example.com', 'other.com']
     url = reverse('account_login')
-    expected = (
-        '/oauth2/authorize/?client_id=aisudhgfg943287895as&redirect_uri'
-        '=https%3A%2F%2Fuktieig-secondary.staging.dxw.net%2Fusers%2Fauth'
-        '%2Fexporting_is_great%2Fcallback&response_type=code&scope=profile'
-        '&state=23947asdoih4380'
+    redirect_field_value = (
+        '/oauth2/authorize/%3Fclient_id%3Daisudhgfg943287895as'
+        '%26redirect_uri%3Dhttps%253A%252F%252Fuktieig-secondary'
+        '.staging.dxw.net%252Fusers%252Fauth%252Fexporting_is_great'
+        '%252Fcallback%26response_type%3Dcode%26scope%3Dprofile%26st'
+        'ate%3D23947asdoih4380'
     )
 
     response = client.post(
-        '{url}?next={next}'.format(url=url, next=expected),
+        '{url}?next={next}'.format(url=url, next=redirect_field_value),
         {'login': verified_user.email, 'password': 'password'}
     )
 
     assert response.status_code == http.client.FOUND
-    assert response.get('Location') == expected
+    assert response.get('Location') == (
+        '/oauth2/authorize/?client_id=aisudhgfg943287895as'
+        '&redirect_uri=https%3A%2F%2Fuktieig-secondary.staging.'
+        'dxw.net%2Fusers%2Fauth%2Fexporting_is_great%2Fcallback&'
+        'response_type=code&scope=profile&state=23947asdoih4380'
+    )
 
 
 @pytest.mark.django_db
 def test_login_redirect_default_param_if_no_next_param(
     client, verified_user, settings
 ):
-    settings.LOGOUT_REDIRECT_URL = 'http://www.example.com'
+    settings.DEFAULT_REDIRECT_URL = 'http://www.example.com'
     settings.ALLOWED_REDIRECT_DOMAINS = ['example.com', 'other.com']
     response = client.post(
         reverse('account_login'),
@@ -98,14 +104,14 @@ def test_login_redirect_default_param_if_no_next_param(
     )
 
     assert response.status_code == http.client.FOUND
-    assert response.get('Location') == 'http://www.example.com'
+    assert response.get('Location') == settings.DEFAULT_REDIRECT_URL
 
 
 @pytest.mark.django_db
 def test_login_redirect_next_param_if_next_param_internal(
     client, settings, verified_user
 ):
-    settings.LOGOUT_REDIRECT_URL = 'http://www.other.com'
+    settings.DEFAULT_REDIRECT_URL = 'http://www.other.com/?param=test'
     settings.ALLOWED_REDIRECT_DOMAINS = ['example.com', 'other.com']
     url = reverse('account_login')
     expected = '/i-love-cats/'
@@ -116,17 +122,17 @@ def test_login_redirect_next_param_if_next_param_internal(
     )
 
     assert response.status_code == http.client.FOUND
-    assert response.get('Location') == '/i-love-cats/'
+    assert response.get('Location') == expected
 
 
 @pytest.mark.django_db
 def test_login_redirect_next_param_if_next_param_valid(
     client, settings, verified_user
 ):
-    settings.LOGOUT_REDIRECT_URL = 'http://www.other.com'
+    settings.DEFAULT_REDIRECT_URL = 'http://www.other.com/?param=test'
     settings.ALLOWED_REDIRECT_DOMAINS = ['example.com', 'other.com']
     url = reverse('account_login')
-    expected = 'http://example.com'
+    expected = 'http://example.com/?param=test'
 
     response = client.post(
         '{url}?next={next}'.format(url=url, next=expected),
@@ -134,14 +140,14 @@ def test_login_redirect_next_param_if_next_param_valid(
     )
 
     assert response.status_code == http.client.FOUND
-    assert response.get('Location') == 'http://example.com'
+    assert response.get('Location') == expected
 
 
 @pytest.mark.django_db
 def test_login_redirect_next_param_if_next_param_invalid(
     client, settings, verified_user
 ):
-    settings.LOGOUT_REDIRECT_URL = 'http://www.other.com'
+    settings.DEFAULT_REDIRECT_URL = 'http://www.other.com/?param=test'
     settings.ALLOWED_REDIRECT_DOMAINS = ['other.com']
     url = reverse('account_login')
     next_param = 'http://example.com'
@@ -152,22 +158,58 @@ def test_login_redirect_next_param_if_next_param_invalid(
     )
 
     assert response.status_code == http.client.FOUND
-    assert response.get('Location') == 'http://www.other.com'
+    assert response.get('Location') == settings.DEFAULT_REDIRECT_URL
 
 
 @pytest.mark.django_db
 def test_logout_redirect_next_param_if_next_param_oath2(
     authed_client, settings
 ):
-    settings.LOGOUT_REDIRECT_URL = 'http://www.other.com'
+    settings.DEFAULT_REDIRECT_URL = 'http://www.other.com/?param=test'
     settings.ALLOWED_REDIRECT_DOMAINS = ['example.com', 'other.com']
     url = reverse('account_logout')
-    expected = (
-        '/oauth2/authorize/?client_id=aisudhgfg943287895as&redirect_uri'
-        '=https%3A%2F%2Fuktieig-secondary.staging.dxw.net%2Fusers%2Fauth'
-        '%2Fexporting_is_great%2Fcallback&response_type=code&scope=profile'
-        '&state=23947asdoih4380'
+    redirect_field_value = (
+        '/oauth2/authorize/%3Fclient_id%3Daisudhgfg943287895as'
+        '%26redirect_uri%3Dhttps%253A%252F%252Fuktieig-secondary'
+        '.staging.dxw.net%252Fusers%252Fauth%252Fexporting_is_great'
+        '%252Fcallback%26response_type%3Dcode%26scope%3Dprofile%26st'
+        'ate%3D23947asdoih4380'
     )
+
+    response = authed_client.post(
+        '{url}?next={next}'.format(url=url, next=redirect_field_value)
+    )
+
+    assert response.status_code == http.client.FOUND
+    assert response.get('Location') == (
+        '/oauth2/authorize/?client_id=aisudhgfg943287895as'
+        '&redirect_uri=https%3A%2F%2Fuktieig-secondary.staging.'
+        'dxw.net%2Fusers%2Fauth%2Fexporting_is_great%2Fcallback&'
+        'response_type=code&scope=profile&state=23947asdoih4380'
+    )
+
+
+@pytest.mark.django_db
+def test_logout_redirect_default_param_if_no_next_param(
+    authed_client, settings
+):
+    settings.DEFAULT_REDIRECT_URL = 'http://www.example.com'
+    settings.ALLOWED_REDIRECT_DOMAINS = ['http://www.example.com',
+                                         'http://www.other.com']
+    response = authed_client.post(reverse('account_logout'))
+
+    assert response.status_code == http.client.FOUND
+    assert response.get('Location') == settings.DEFAULT_REDIRECT_URL
+
+
+@pytest.mark.django_db
+def test_logout_redirect_next_param_if_next_param_valid(
+    authed_client, settings
+):
+    settings.DEFAULT_REDIRECT_URL = 'http://www.other.com/?param=test'
+    settings.ALLOWED_REDIRECT_DOMAINS = ['example.com', 'other.com']
+    url = reverse('account_logout')
+    expected = 'http://example.com/?param=test'
 
     response = authed_client.post(
         '{url}?next={next}'.format(url=url, next=expected)
@@ -178,40 +220,10 @@ def test_logout_redirect_next_param_if_next_param_oath2(
 
 
 @pytest.mark.django_db
-def test_logout_redirect_default_param_if_no_next_param(
-    authed_client, settings
-):
-    settings.LOGOUT_REDIRECT_URL = 'http://www.example.com'
-    settings.ALLOWED_REDIRECT_DOMAINS = ['http://www.example.com',
-                                         'http://www.other.com']
-    response = authed_client.post(reverse('account_logout'))
-
-    assert response.status_code == http.client.FOUND
-    assert response.get('Location') == 'http://www.example.com'
-
-
-@pytest.mark.django_db
-def test_logout_redirect_next_param_if_next_param_valid(
-    authed_client, settings
-):
-    settings.LOGOUT_REDIRECT_URL = 'http://www.other.com'
-    settings.ALLOWED_REDIRECT_DOMAINS = ['example.com', 'other.com']
-    url = reverse('account_logout')
-    expected = 'http://example.com'
-
-    response = authed_client.post(
-        '{url}?next={next}'.format(url=url, next=expected)
-    )
-
-    assert response.status_code == http.client.FOUND
-    assert response.get('Location') == 'http://example.com'
-
-
-@pytest.mark.django_db
 def test_logout_redirect_next_param_if_next_param_invalid(
     authed_client, settings
 ):
-    settings.LOGOUT_REDIRECT_URL = 'http://www.other.com'
+    settings.DEFAULT_REDIRECT_URL = 'http://www.other.com/?param=test'
     settings.ALLOWED_REDIRECT_DOMAINS = ['other.com']
     url = reverse('account_logout')
     next_param = 'http://example.com'
@@ -221,14 +233,14 @@ def test_logout_redirect_next_param_if_next_param_invalid(
     )
 
     assert response.status_code == http.client.FOUND
-    assert response.get('Location') == 'http://www.other.com'
+    assert response.get('Location') == settings.DEFAULT_REDIRECT_URL
 
 
 @pytest.mark.django_db
 def test_logout_redirect_next_param_if_next_param_internal(
     authed_client, settings
 ):
-    settings.LOGOUT_REDIRECT_URL = 'http://www.other.com'
+    settings.DEFAULT_REDIRECT_URL = 'http://www.other.com/?param=test'
     settings.ALLOWED_REDIRECT_DOMAINS = ['http://www.example.com',
                                          'http://www.other.com']
     url = reverse('account_logout')
@@ -239,22 +251,20 @@ def test_logout_redirect_next_param_if_next_param_internal(
     )
 
     assert response.status_code == http.client.FOUND
-    assert response.get('Location') == '/exporting/'
+    assert response.get('Location') == expected
 
 
 @pytest.mark.django_db
 def test_confirm_email_redirect_next_param_if_next_param_valid(
     settings, client, email_confirmation
 ):
-    settings.LOGOUT_REDIRECT_URL = 'http://other.com'
+    settings.DEFAULT_REDIRECT_URL = 'http://other.com'
     settings.ALLOWED_REDIRECT_DOMAINS = ['example.com', 'other.com']
     expected = 'http://www.example.com'
-    signup_url = reverse('account_signup')
-
-    # signup with `next` param and send 'confirm email' email
-    client.defaults['HTTP_REFERER'] = '{url}?next={next}'.format(
-        url=signup_url, next=expected
+    signup_url = '{url}?next={next}'.format(
+        url=reverse('account_signup'), next=expected
     )
+
     client.post(
         signup_url,
         data={
@@ -284,7 +294,7 @@ def test_confirm_email_redirect_next_param_if_next_param_valid(
 def test_confirm_email_redirect_next_param_if_next_param_invalid(
     settings, client, email_confirmation
 ):
-    settings.LOGOUT_REDIRECT_URL = 'http://other.com'
+    settings.DEFAULT_REDIRECT_URL = 'http://other.com'
     settings.ALLOWED_REDIRECT_DOMAINS = ['other.com']
     next_param = 'http://www.example.com'
     signup_url = reverse('account_signup')
@@ -315,17 +325,17 @@ def test_confirm_email_redirect_next_param_if_next_param_invalid(
     assert url in txt
     assert url in html
     assert response.status_code == http.client.FOUND
-    assert response.get('Location') == settings.LOGOUT_REDIRECT_URL
+    assert response.get('Location') == settings.DEFAULT_REDIRECT_URL
 
 
 @pytest.mark.django_db
 def test_confirm_email_redirect_next_param_if_next_param_internal(
     settings, client, email_confirmation
 ):
-    settings.LOGOUT_REDIRECT_URL = 'http://other.com'
+    settings.DEFAULT_REDIRECT_URL = 'http://other.com'
     settings.ALLOWED_REDIRECT_DOMAINS = ['example.com', 'other.com']
     expected = '/exporting/'
-    signup_url = reverse('account_signup')
+    signup_url = reverse('account_signup') + "?next={}".format(expected)
 
     # signup with `next` param and send 'confirm email' email
     client.defaults['HTTP_REFERER'] = '{url}?next={next}'.format(
@@ -383,7 +393,7 @@ def test_confirm_email_redirect_default_param_if_no_next_param(
     assert url in txt
     assert url in html
     assert response.status_code == http.client.FOUND
-    assert response.get('Location') == settings.LOGOUT_REDIRECT_URL
+    assert response.get('Location') == settings.DEFAULT_REDIRECT_URL
 
 
 @pytest.mark.django_db
@@ -411,14 +421,14 @@ def test_password_reset_redirect_default_param_if_no_next_param(
     assert url in txt
     assert url in html
     assert response.status_code == http.client.FOUND
-    assert response.get('Location') == settings.LOGOUT_REDIRECT_URL
+    assert response.get('Location') == settings.DEFAULT_REDIRECT_URL
 
 
 @pytest.mark.django_db
 def test_password_reset_redirect_next_param_if_next_param_valid(
     settings, client, user
 ):
-    settings.LOGOUT_REDIRECT_URL = 'http://other.com'
+    settings.DEFAULT_REDIRECT_URL = 'http://other.com'
     settings.ALLOWED_REDIRECT_DOMAINS = ['example.com', 'other.com']
     new_password = '*' * 10
     password_reset_url = reverse('account_reset_password')
@@ -450,7 +460,7 @@ def test_password_reset_redirect_next_param_if_next_param_valid(
 def test_password_reset_redirect_next_param_if_next_param_invalid(
     settings, client, user
 ):
-    settings.LOGOUT_REDIRECT_URL = 'http://other.com'
+    settings.DEFAULT_REDIRECT_URL = 'http://other.com'
     settings.ALLOWED_REDIRECT_DOMAINS = ['other.com']
     new_password = '*' * 10
     password_reset_url = reverse('account_reset_password')
@@ -475,14 +485,14 @@ def test_password_reset_redirect_next_param_if_next_param_invalid(
     assert url in txt
     assert url in html
     assert response.status_code == http.client.FOUND
-    assert response.get('Location') == settings.LOGOUT_REDIRECT_URL
+    assert response.get('Location') == settings.DEFAULT_REDIRECT_URL
 
 
 @pytest.mark.django_db
 def test_password_reset_redirect_next_param_if_next_param_internal(
     settings, client, user
 ):
-    settings.LOGOUT_REDIRECT_URL = 'http://other.com'
+    settings.DEFAULT_REDIRECT_URL = 'http://other.com'
     settings.ALLOWED_REDIRECT_DOMAINS = ['example.com', 'other.com']
     new_password = '*' * 10
     password_reset_url = reverse('account_reset_password')
@@ -514,10 +524,15 @@ def test_password_reset_redirect_next_param_if_next_param_internal(
 def test_password_reset_doesnt_allow_email_enumeration(
     settings, client, user
 ):
+    redirect_to = 'http://other.com'
+    settings.ALLOWED_REDIRECT_DOMAINS = ['other.com']
+    account_reset_password_url = "{}?next={}".format(
+        reverse('account_reset_password'), redirect_to
+    )
 
     # submit form and send 'password reset link' email without a 'next' param
     response = client.post(
-        reverse('account_reset_password'),
+        account_reset_password_url,
         data={'email': 'imaginaryemail@example.com'}
     )
 
@@ -525,7 +540,7 @@ def test_password_reset_doesnt_allow_email_enumeration(
     assert len(mail.outbox) == 0
     # but redirect anyway so attackers dont find out if it exists
     assert response.status_code == http.client.FOUND
-    assert response.get('Location') == reverse('account_reset_password_done')
+    assert response.get('Location') == redirect_to
 
 
 @pytest.mark.django_db(transaction=True)
@@ -547,3 +562,46 @@ def test_signup_email_enumeration_not_possible(client, verified_user):
         'account_email_verification_sent'
     )
     assert len(mail.outbox) == 0
+
+
+@pytest.mark.django_db
+def test_confirm_email_redirect_next_param_oath2(
+    settings, client, email_confirmation
+):
+    settings.DEFAULT_REDIRECT_URL = 'http://other.com'
+    settings.ALLOWED_REDIRECT_DOMAINS = ['example.com', 'other.com']
+    redirect_field_value = (
+        '/oauth2/authorize/%3Fclient_id%3Daisudhgfg943287895as'
+        '%26redirect_uri%3Dhttps%253A%252F%252Fuktieig-secondary'
+        '.staging.dxw.net%252Fusers%252Fauth%252Fexporting_is_great'
+        '%252Fcallback%26response_type%3Dcode%26scope%3Dprofile%26st'
+        'ate%3D23947asdoih4380'
+    )
+    signup_url = "{}?next={}".format(
+        reverse('account_signup'), redirect_field_value
+    )
+    client.post(
+        signup_url,
+        data={
+            'email': 'jim@example.com',
+            'email2': 'jim@example.com',
+            'terms_agreed': True,
+            'password1': '*' * 10,
+            'password2': '*' * 10,
+        }
+    )
+    message = mail.outbox[0]
+    txt = message.body
+    html = message.alternatives[0][0]
+    # Extract URL for `password_reset_from_key` view and access it
+    url = txt[txt.find('/accounts/confirm-email/'):].split()[0]
+    response = client.get(url)
+    assert url in txt
+    assert url in html
+    assert response.status_code == http.client.FOUND
+    assert response.get('Location') == (
+        '/oauth2/authorize/?client_id=aisudhgfg943287895as'
+        '&redirect_uri=https%3A%2F%2Fuktieig-secondary.staging.'
+        'dxw.net%2Fusers%2Fauth%2Fexporting_is_great%2Fcallback&'
+        'response_type=code&scope=profile&state=23947asdoih4380'
+    )

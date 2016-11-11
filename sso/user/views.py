@@ -1,47 +1,61 @@
-import re
-
+import urllib.parse
 from django.db import IntegrityError
 from django.conf import settings
 from django.core.urlresolvers import reverse
 from django.http import HttpResponseRedirect
 from django.views.generic import RedirectView
 
-from allauth.account import views
-from allauth.account.utils import complete_signup
+from allauth.account import views as allauth_views
+from allauth.account.utils import complete_signup, get_request_param
 import allauth.exceptions
 
-from sso.adapters import validate_next
+
+from sso.user.utils import get_url_with_redirect, is_valid_redirect
 
 
-class RedirectToNextOrDefaultMixin:
+class RedirectToNextMixin:
 
     redirect_field_name = settings.REDIRECT_FIELD_NAME
 
-    def get_next_with_params(self, request_path):
-        """"Returns the URL path after 'next', including params of 'next' """
-        next_pattern = re.compile(
-            r'.*?\?' + self.redirect_field_name + r'\=(.*)'
-        )
-
-        match = next_pattern.match(request_path)
-
-        if match:
-            return match.groups()[0]
-
     def get_redirect_url(self):
-        next_with_params = self.get_next_with_params(
-            request_path=self.request.get_full_path()
+        redirect_url = settings.DEFAULT_REDIRECT_URL
+
+        redirect_field_value = get_request_param(
+            self.request, self.redirect_field_name
         )
+        if redirect_field_value and is_valid_redirect(redirect_field_value):
+            redirect_url = redirect_field_value
 
-        if next_with_params and validate_next(next_with_params):
-            return next_with_params
-
-        return settings.LOGOUT_REDIRECT_URL
+        return redirect_url
 
     get_success_url = get_redirect_url
 
+    def get_context_data(self, **kwargs):
+        context_data = super(
+            RedirectToNextMixin, self
+        ).get_context_data(**kwargs)
 
-class SignupView(views.SignupView):
+        redirect_url = self.get_redirect_url()
+
+        if redirect_url:
+            redirect_field_value = urllib.parse.quote(redirect_url)
+        else:
+            redirect_field_value = None
+
+        context_data.update({
+            self.alternative_view_url_name: get_url_with_redirect(
+                url=reverse(self.alternative_view_url_name),
+                redirect_url=redirect_url
+            ),
+            "redirect_field_name": self.redirect_field_name,
+            "redirect_field_value": redirect_field_value,
+        })
+
+        return context_data
+
+
+class SignupView(RedirectToNextMixin, allauth_views.SignupView):
+    alternative_view_url_name = "account_login"
 
     @staticmethod
     def is_email_not_unique_error(integrity_error):
@@ -76,23 +90,32 @@ class SignupView(views.SignupView):
                 return exc.response
 
 
-class ConfirmEmailView(RedirectToNextOrDefaultMixin, views.ConfirmEmailView):
-    pass
+class LoginView(RedirectToNextMixin, allauth_views.LoginView):
+    alternative_view_url_name = "account_signup"
 
 
-class LogoutView(RedirectToNextOrDefaultMixin, views.LogoutView):
-    pass
+class LogoutView(RedirectToNextMixin, allauth_views.LogoutView):
+    alternative_view_url_name = "account_login"
 
 
-class PasswordResetFromKeyView(RedirectToNextOrDefaultMixin,
-                               views.PasswordResetFromKeyView):
-    pass
+class PasswordResetView(
+    RedirectToNextMixin, allauth_views.PasswordResetView
+):
+    alternative_view_url_name = "account_login"
 
 
-class LoginView(RedirectToNextOrDefaultMixin,
-                views.LoginView):
-    pass
+class ConfirmEmailView(
+    RedirectToNextMixin, allauth_views.ConfirmEmailView
+):
+    alternative_view_url_name = "account_signup"
+
+
+class PasswordResetFromKeyView(
+    RedirectToNextMixin,
+    allauth_views.PasswordResetFromKeyView
+):
+    alternative_view_url_name = "account_signup"
 
 
 class SSOLandingPage(RedirectView):
-    url = settings.ROOT_REDIRECT_URL
+    url = settings.DEFAULT_REDIRECT_URL

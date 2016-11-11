@@ -1,44 +1,31 @@
-from urllib.parse import urlparse
+from django.conf import settings
 
 from allauth.account.adapter import DefaultAccountAdapter
-import tldextract
+from allauth.account.utils import get_request_param
 
-from django.conf import settings
-from django.http import QueryDict
-
-
-def validate_next(next_param):
-    # Allow internal redirects
-    if next_param.startswith('/'):
-        return True
-
-    # Otherwise check we allow that domain/suffix
-    extracted_domain = tldextract.extract(next_param)
-    domain = '.'.join([extracted_domain.domain, extracted_domain.suffix])
-    return (domain in settings.ALLOWED_REDIRECT_DOMAINS) or (
-        extracted_domain.suffix in settings.ALLOWED_REDIRECT_DOMAINS)
+from sso.user.utils import get_url_with_redirect, is_valid_redirect
 
 
 class AccountAdapter(DefaultAccountAdapter):
 
-    @staticmethod
-    def get_redirect_value(request):
-        if 'HTTP_REFERER' in request.META:
-            referrer = request.META['HTTP_REFERER']
-            parsed = urlparse(referrer)
-            querydict = QueryDict(parsed.query)
-            return querydict.get(settings.REDIRECT_FIELD_NAME)
-
     def get_email_confirmation_url(self, request, emailconfirmation):
-        ret = super().get_email_confirmation_url(
+        """
+        Constructs the email confirmation (activation) url.
+        """
+        redirect_url = get_request_param(
+            request, settings.REDIRECT_FIELD_NAME
+        )
+
+        email_confirmation_url = super().get_email_confirmation_url(
             request, emailconfirmation
         )
-        redirect_value = self.get_redirect_value(request)
-        if redirect_value and validate_next(redirect_value):
-            return '{0}?{1}={2}'.format(
-                ret, settings.REDIRECT_FIELD_NAME, redirect_value
+
+        if redirect_url and is_valid_redirect(redirect_url):
+            email_confirmation_url = get_url_with_redirect(
+                url=email_confirmation_url,
+                redirect_url=redirect_url
             )
-        return ret
+        return email_confirmation_url
 
     def validate_unique_email(self, email):
         # Although email has to be unique, as it is user login, do not validate

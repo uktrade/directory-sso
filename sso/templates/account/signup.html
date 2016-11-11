@@ -10,11 +10,11 @@
 <p>{% blocktrans %}If you already have an Exporting is GREAT account, please <a href="{{ login_url }}">sign in</a>.{% endblocktrans %}</p>
 <p>Before you register, make sure you’re familiar with our guides for <a href="https://export.great.gov.uk/new/" target="_blank">new</a>, <a href="https://export.great.gov.uk/occasional/" target="_blank">occasional</a> and <a href="https://export.great.gov.uk/regular/" target="_blank">regular</a> exporters.</p>
 
-<form class="signup" id="signup_form" method="post" action="{% url 'account_signup' %}{% if 'next' in request.GET %}?next={{ request.GET.next }}{% endif %}">
+<form class="signup" id="signup_form" method="post" action="{% url 'account_signup' %}">
   {% csrf_token %}
   {{ form.as_p }}
   {% if redirect_field_value %}
-  <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
+    <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
   {% endif %}
   <button type="submit">{% trans "Register" %} &raquo;</button>
 </form>

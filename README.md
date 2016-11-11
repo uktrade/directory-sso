@@ -74,4 +74,4 @@ Requires locally running PostgreSQL (e.g. [Postgres.app](http://postgresapp.com/
 | REDIRECT_FIELD_NAME | None | On completing actions where to get redirect url from in the querystring |
 | ALLOWED_REDIRECT_DOMAINS | None | Comma separated list of domains that we allow redirection to via next params |
 | SSO_SESSION_COOKIE_SECURE | True | Set secure flag on sso cookie (true or false) |
-| ROOT_REDIRECT_URL | https://find-a-buyer.export.great.gov.uk/ | Redirect for SSO landing page |
+| DEFAULT_REDIRECT_URL | https://find-a-buyer.export.great.gov.uk/ | Redirect for SSO landing page |

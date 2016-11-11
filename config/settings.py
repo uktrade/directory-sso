@@ -203,7 +203,18 @@ OAUTH2_PROVIDER = {
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
 # django-allauth
-LOGIN_REDIRECT_URL = '/'
+REDIRECT_FIELD_NAME = os.getenv(
+    'REDIRECT_FIELD_NAME', 'next'
+)
+DEFAULT_REDIRECT_URL = os.getenv(
+    'DEFAULT_REDIRECT_URL', 'https://find-a-buyer.export.great.gov.uk/'
+)
+LOGIN_REDIRECT_URL = os.getenv(
+    'LOGIN_REDIRECT_URL', DEFAULT_REDIRECT_URL
+)
+LOGOUT_REDIRECT_URL = os.getenv(
+    'LOGOUT_REDIRECT_URL', DEFAULT_REDIRECT_URL
+)
 ACCOUNT_AUTHENTICATION_METHOD = 'email'
 ACCOUNT_UNIQUE_EMAIL = True
 ACCOUNT_USER_MODEL_USERNAME_FIELD = None
@@ -249,18 +260,12 @@ SESSION_COOKIE_DOMAIN = os.environ['SESSION_COOKIE_DOMAIN']
 # env var not same as setting to be more explicit (directory-ui uses same name)
 SESSION_COOKIE_NAME = os.environ['SSO_SESSION_COOKIE']
 SESSION_COOKIE_SECURE = (
-    os.getenv('SSO_SESSION_COOKIE_SECURE', 'true') == 'true')
+    os.getenv('SSO_SESSION_COOKIE_SECURE', 'true') == 'true'
+)
 SESSION_COOKIE_HTTPONLY = True
 CSRF_COOKIE_SECURE = True
-
-LOGOUT_REDIRECT_URL = os.environ['LOGOUT_REDIRECT_URL']
-
-REDIRECT_FIELD_NAME = os.environ['REDIRECT_FIELD_NAME']
 
 # Set with comma separated values in env
 ALLOWED_REDIRECT_DOMAINS = os.environ['ALLOWED_REDIRECT_DOMAINS'].split(',')
 for domain in ALLOWED_REDIRECT_DOMAINS:
     assert is_valid_domain(domain) is True
-
-ROOT_REDIRECT_URL = os.getenv(
-    'ROOT_REDIRECT_URL', 'https://find-a-buyer.export.great.gov.uk/')
