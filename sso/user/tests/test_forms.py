@@ -2,6 +2,7 @@ import pytest
 
 from django.forms.fields import Field
 from django.core import mail
+from django.core.validators import EmailValidator
 
 from allauth.account.models import EmailAddress
 
@@ -10,6 +11,7 @@ from sso.user.models import User
 
 
 REQUIRED_MESSAGE = Field.default_error_messages['required']
+INVALID_EMAIL_MESSAGE = EmailValidator.message
 
 
 @pytest.fixture
@@ -76,6 +78,24 @@ def test_password_reset_form_accepts_existing_email_and_sends(
     assert form.is_valid() is True
     form.save(request)
     assert len(mail.outbox) == 1
+
+
+def test_password_reset_form_invalid_email():
+    form = forms.ResetPasswordForm(
+        data={'email': 'this is not an email'}
+    )
+
+    assert form.is_valid() is False
+    assert INVALID_EMAIL_MESSAGE in form.errors['email']
+
+
+def test_password_reset_form_email_required():
+    form = forms.ResetPasswordForm(
+        data={'email': ''}
+    )
+
+    assert form.is_valid() is False
+    assert REQUIRED_MESSAGE in form.errors['email']
 
 
 def test_signup_rejects_missing_terms_agreed():
