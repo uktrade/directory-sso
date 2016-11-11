@@ -14,6 +14,7 @@
   {% csrf_token %}
   {{ form.as_p }}
   {% if redirect_field_value %}
+  <div class="clearfix"></div>
   <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
   {% endif %}
   <button type="submit">{% trans "Register" %} &raquo;</button>
