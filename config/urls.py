@@ -6,11 +6,9 @@ import allauth.account.views
 
 from sso.user.views import (
     ConfirmEmailView,
-    FeedbackView,
     LoginView,
     LogoutView,
     PasswordResetFromKeyView,
-    TermsView,
     SSOLandingPage,
     SignupView,
 )
@@ -130,18 +128,11 @@ api_urlpatterns = [
 
 
 urlpatterns = [
+    url(r"^", include('directory_constants.urls', namespace='external')),
     url(
         r"^$",
         SSOLandingPage.as_view(),
         name="sso_root"),
-    url(
-        r"^terms_and_conditions$",
-        TermsView.as_view(),
-        name="terms"),
-    url(
-        r"^feedback$",
-        FeedbackView.as_view(),
-        name="feedback"),
     url(
         r'^admin/',
         include(admin.site.urls)

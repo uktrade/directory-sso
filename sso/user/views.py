@@ -11,7 +11,6 @@ from allauth.account.utils import complete_signup
 import allauth.exceptions
 
 from sso.adapters import validate_next
-from sso import constants
 
 
 class RedirectToNextOrDefaultMixin:
@@ -93,14 +92,6 @@ class PasswordResetFromKeyView(RedirectToNextOrDefaultMixin,
 class LoginView(RedirectToNextOrDefaultMixin,
                 views.LoginView):
     pass
-
-
-class FeedbackView(RedirectView):
-    url = constants.FEEDBACK_FORM_URL
-
-
-class TermsView(RedirectView):
-    url = constants.TERMS_AND_CONDITIONS_URL
 
 
 class SSOLandingPage(RedirectView):
