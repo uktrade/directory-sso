@@ -1,3 +1,5 @@
+import urllib.parse
+
 import http
 
 from django.core import mail
@@ -262,7 +264,7 @@ def test_confirm_email_redirect_next_param_if_next_param_valid(
     settings.ALLOWED_REDIRECT_DOMAINS = ['example.com', 'other.com']
     expected = 'http://www.example.com'
     signup_url = '{url}?next={next}'.format(
-        url=reverse('account_signup'), next=expected
+        url=reverse('account_signup'), next=urllib.parse.quote(expected)
     )
 
     client.post(

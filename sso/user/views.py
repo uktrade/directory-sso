@@ -39,7 +39,7 @@ class RedirectToNextMixin:
         redirect_url = self.get_redirect_url()
 
         if redirect_url:
-            redirect_field_value = urllib.parse.unquote(redirect_url)
+            redirect_field_value = redirect_url
         else:
             redirect_field_value = None
 
