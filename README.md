@@ -32,21 +32,6 @@ Provides defaults for all environment variables.
 ### Host environment variables for docker-compose
 ``.env`` files will be automatically created with ``env_writer.py``, based on ``env.json`` and ``env-postgres.json``.
 
-#### Web server and queue worker
-| Host environment variable | Docker environment variable  |
-| ------------- | ------------- |
-| SSO_SECRET_KEY | SECRET_KEY |
-| SSO_DATABASE_URL | DATABASE_URL |
-| SSO_LOGOUT_REDIRECT_URL | LOGOUT_REDIRECT_URL |
-| SSO_REDIRECT_FIELD_NAME | REDIRECT_FIELD_NAME |
-| SSO_SSO_SESSION_COOKIE_SECURE | SSO_SESSION_COOKIE_SECURE |
-
-#### Database
-| Host environment variable | Docker environment variable  |
-| ------------- | ------------- |
-| SSO_POSTGRES_USER | POSTGRES_USER |
-| SSO_POSTGRES_PASSWORD | POSTGRES_PASSWORD |
-| SSO_POSTGRES_DB | POSTGRES_DB |
 
 ## Debugging
 
@@ -62,16 +47,3 @@ Requires locally running PostgreSQL (e.g. [Postgres.app](http://postgresapp.com/
 ### Run debug tests
 
     $ make debug_test
-
-
-## Environment variables
-
-| Environment variable | Default value | Description
-| ------------- | ------------- | ------------- |
-| SECRET_KEY | None | Django secret key |
-| DATABASE_URL | None | Postgres database url |
-| LOGOUT_REDIRECT_URL | None | Where to send the user after successfully logging out |
-| REDIRECT_FIELD_NAME | None | On completing actions where to get redirect url from in the querystring |
-| ALLOWED_REDIRECT_DOMAINS | None | Comma separated list of domains that we allow redirection to via next params |
-| SSO_SESSION_COOKIE_SECURE | True | Set secure flag on sso cookie (true or false) |
-| DEFAULT_REDIRECT_URL | https://find-a-buyer.export.great.gov.uk/ | Redirect for SSO landing page |
