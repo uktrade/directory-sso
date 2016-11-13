@@ -289,6 +289,14 @@ def test_confirm_email_redirect_next_param_if_next_param_valid(
     assert url in txt
     assert url in html
     assert response.status_code == http.client.FOUND
+
+    next_url = response.get('Location')
+
+    assert next_url == (
+        '/accounts/login/?next=http%3A%2F%2Fwww.example.com'
+    )
+
+    response = client.get(next_url)
     assert response.get('Location') == expected
 
 
@@ -298,7 +306,7 @@ def test_confirm_email_redirect_next_param_if_next_param_invalid(
 ):
     settings.DEFAULT_REDIRECT_URL = 'http://other.com'
     settings.ALLOWED_REDIRECT_DOMAINS = ['other.com']
-    next_param = 'http://www.example.com'
+    next_param = 'http://www.notallowed.com'
     signup_url = reverse('account_signup')
 
     # signup with `next` param and send 'confirm email' email
@@ -327,6 +335,14 @@ def test_confirm_email_redirect_next_param_if_next_param_invalid(
     assert url in txt
     assert url in html
     assert response.status_code == http.client.FOUND
+
+    next_url = response.get('Location')
+
+    assert next_url == (
+        '/accounts/login/?next=http%3A%2F%2Fother.com'
+    )
+
+    response = client.get(next_url)
     assert response.get('Location') == settings.DEFAULT_REDIRECT_URL
 
 
@@ -365,6 +381,12 @@ def test_confirm_email_redirect_next_param_if_next_param_internal(
     assert url in txt
     assert url in html
     assert response.status_code == http.client.FOUND
+
+    next_url = response.get('Location')
+
+    assert next_url == '/accounts/login/?next=%2Fexporting%2F'
+
+    response = client.get(next_url)
     assert response.get('Location') == expected
 
 
@@ -601,11 +623,23 @@ def test_confirm_email_redirect_next_param_oath2(
     assert url in txt
     assert url in html
     assert response.status_code == http.client.FOUND
+
+    next_url = response.get('Location')
+
+    assert next_url == (
+        '/accounts/login/?next=%2Foauth2%2Fauthorize%2F%3Fclient_id'
+        '%3Daisudhgfg943287895as%26redirect_uri%3Dhttps%253A%252F%252F'
+        'uktieig-secondary.staging.dxw.net%252Fusers%252Fauth%252F'
+        'exporting_is_great%252Fcallback%26response_type%3Dcode'
+        '%26scope%3Dprofile%26state%3D23947asdoih4380'
+    )
+
+    response = client.get(next_url)
     assert response.get('Location') == (
-        '/oauth2/authorize/?client_id=aisudhgfg943287895as'
-        '&redirect_uri=https%3A%2F%2Fuktieig-secondary.staging.'
-        'dxw.net%2Fusers%2Fauth%2Fexporting_is_great%2Fcallback&'
-        'response_type=code&scope=profile&state=23947asdoih4380'
+        '/oauth2/authorize/?client_id=aisudhgfg943287895as&redirect_uri'
+        '=https%3A%2F%2Fuktieig-secondary.staging.dxw.net%2Fusers%2Fauth'
+        '%2Fexporting_is_great%2Fcallback&response_type=code&scope=profile'
+        '&state=23947asdoih4380'
     )
 
 
@@ -638,6 +672,13 @@ def test_confirm_email_redirect_next_param(
     assert url in txt
     assert url in html
     assert response.status_code == http.client.FOUND
+    next_url = response.get('Location')
+
+    assert next_url == (
+        '/accounts/login/?next=http%3A%2F%2Fwww.test.example.com%2Fregister'
+    )
+
+    response = client.get(next_url)
     assert response.get('Location') == 'http://www.test.example.com/register'
 
 
