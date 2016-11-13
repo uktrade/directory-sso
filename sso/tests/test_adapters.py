@@ -117,7 +117,10 @@ def test_account_adapter_returns_modified_url_if_next_param_valid(
 
     url = adapter.get_email_confirmation_url(request, None)
 
-    assert url == 'default_url?next=http%3A%2F%2Filoveexporting.com'
+    assert url == (
+        'default_url?next=%2Faccounts%2Flogin%2F%3F'
+        'next%3Dhttp%253A%252F%252Filoveexporting.com'
+    )
 
 
 @patch('allauth.account.adapter.DefaultAccountAdapter.'
@@ -130,4 +133,7 @@ def test_account_adapter_returns_modified_url_if_next_param_internal(
 
     url = adapter.get_email_confirmation_url(request, None)
 
-    assert url == 'default_url?next=%2Fexportingismytruelove%2F'
+    assert url == (
+        'default_url?next=%2Faccounts%2Flogin%2F%3F'
+        'next%3D%252Fexportingismytruelove%252F'
+    )

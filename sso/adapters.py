@@ -1,6 +1,7 @@
 import urllib.parse
 
 from django.conf import settings
+from django.core.urlresolvers import reverse
 
 from allauth.account.adapter import DefaultAccountAdapter
 from allauth.account.utils import get_request_param
@@ -28,9 +29,20 @@ class AccountAdapter(DefaultAccountAdapter):
 
         if redirect_url:
             if is_valid_redirect(urllib.parse.unquote(redirect_url)):
+                # This is to handle the case when user registered on one device
+                # (e.g. desktop) and clicked 'confirm email' on another (e.g.
+                # mobile) - if user is automatically logged in on confirm
+                # (which will happen when clicking confirm on same machine)
+                # login view will redirect to 'next', if not (when switching
+                # browsers), user will have to log in and then will be
+                # redirected
+                login_url_with_next = get_url_with_redirect(
+                    url=reverse('account_login'),
+                    redirect_url=redirect_url
+                )
                 email_confirmation_url = get_url_with_redirect(
                     url=email_confirmation_url,
-                    redirect_url=redirect_url
+                    redirect_url=login_url_with_next
                 )
         return email_confirmation_url
 
