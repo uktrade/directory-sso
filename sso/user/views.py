@@ -44,8 +44,12 @@ class RedirectToNextMixin:
             redirect_field_value = None
 
         context_data.update({
-            self.alternative_view_url_name: get_url_with_redirect(
+            self.alternative_view_url_context_variable: get_url_with_redirect(
                 url=reverse(self.alternative_view_url_name),
+                redirect_url=redirect_url
+            ),
+            "reset_password_url": get_url_with_redirect(
+                url=reverse('account_reset_password'),
                 redirect_url=redirect_url
             ),
             "redirect_field_name": self.redirect_field_name,
@@ -55,8 +59,19 @@ class RedirectToNextMixin:
         return context_data
 
 
-class SignupView(RedirectToNextMixin, allauth_views.SignupView):
+class SignupAlternativeMixin:
+    alternative_view_url_name = "account_signup"
+    alternative_view_url_context_variable = "signup_url"
+
+
+class LoginAlternativeMixin:
     alternative_view_url_name = "account_login"
+    alternative_view_url_context_variable = "login_url"
+
+
+class SignupView(
+    LoginAlternativeMixin, RedirectToNextMixin, allauth_views.SignupView
+):
 
     @staticmethod
     def is_email_not_unique_error(integrity_error):
@@ -91,31 +106,35 @@ class SignupView(RedirectToNextMixin, allauth_views.SignupView):
                 return exc.response
 
 
-class LoginView(RedirectToNextMixin, allauth_views.LoginView):
-    alternative_view_url_name = "account_signup"
+class LoginView(
+    SignupAlternativeMixin, RedirectToNextMixin, allauth_views.LoginView
+):
+    pass
 
 
-class LogoutView(RedirectToNextMixin, allauth_views.LogoutView):
-    alternative_view_url_name = "account_login"
+class LogoutView(
+    LoginAlternativeMixin, RedirectToNextMixin, allauth_views.LogoutView
+):
+    pass
 
 
 class PasswordResetView(
-    RedirectToNextMixin, allauth_views.PasswordResetView
+    LoginAlternativeMixin, RedirectToNextMixin, allauth_views.PasswordResetView
 ):
-    alternative_view_url_name = "account_login"
+    pass
 
 
 class ConfirmEmailView(
-    RedirectToNextMixin, allauth_views.ConfirmEmailView
+    SignupAlternativeMixin, RedirectToNextMixin, allauth_views.ConfirmEmailView
 ):
-    alternative_view_url_name = "account_signup"
+    pass
 
 
 class PasswordResetFromKeyView(
-    RedirectToNextMixin,
+    SignupAlternativeMixin, RedirectToNextMixin,
     allauth_views.PasswordResetFromKeyView
 ):
-    alternative_view_url_name = "account_signup"
+    pass
 
 
 class SSOLandingPage(RedirectView):
