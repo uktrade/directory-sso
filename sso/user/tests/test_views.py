@@ -639,3 +639,60 @@ def test_confirm_email_redirect_next_param(
     assert url in html
     assert response.status_code == http.client.FOUND
     assert response.get('Location') == 'http://www.test.example.com/register'
+
+
+@pytest.mark.django_db
+def test_signup_page_login_has_next(
+    client, settings, verified_user
+):
+    settings.DEFAULT_REDIRECT_URL = 'http://www.other.com/?param=test'
+    settings.ALLOWED_REDIRECT_DOMAINS = ['example.com', 'other.com']
+    url = reverse('account_signup')
+    next_value = 'http://example.com/?param=test'
+
+    response = client.get('{url}?next={next}'.format(url=url, next=next_value))
+
+    assert response.status_code == http.client.OK
+
+    expected_signup_url = (
+        '/accounts/login/?next=http%3A%2F%2Fexample.com%2F%3Fparam%3Dtest'
+    )
+    assert expected_signup_url in response.rendered_content
+
+
+@pytest.mark.django_db
+def test_login_page_signup_has_next(
+    client, settings, verified_user
+):
+    settings.DEFAULT_REDIRECT_URL = 'http://www.other.com/?param=test'
+    settings.ALLOWED_REDIRECT_DOMAINS = ['example.com', 'other.com']
+    url = reverse('account_login')
+    next_value = 'http://example.com/?param=test'
+
+    response = client.get('{url}?next={next}'.format(url=url, next=next_value))
+
+    assert response.status_code == http.client.OK
+
+    expected_signup_url = (
+        '/accounts/signup/?next=http%3A%2F%2Fexample.com%2F%3Fparam%3Dtest'
+    )
+    assert expected_signup_url in response.rendered_content
+
+
+@pytest.mark.django_db
+def test_login_page_password_reset_has_next(
+    client, settings, verified_user
+):
+    settings.DEFAULT_REDIRECT_URL = 'http://www.other.com/?param=test'
+    settings.ALLOWED_REDIRECT_DOMAINS = ['example.com', 'other.com']
+    url = reverse('account_login')
+    next_value = 'http://example.com/?param=test'
+
+    response = client.get('{url}?next={next}'.format(url=url, next=next_value))
+
+    assert response.status_code == http.client.OK
+
+    expected_password_reset_url = (
+        '/password/reset/?next=http%3A%2F%2Fexample.com%2F%3Fparam%3Dtest'
+    )
+    assert expected_password_reset_url in response.rendered_content
