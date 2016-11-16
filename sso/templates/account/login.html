@@ -3,18 +3,18 @@
 {% load i18n %}
 {% load account socialaccount %}
 
-{% block head_title %}{% trans "Sign in" %}{% endblock %}
+{% block head_title %}{% trans "Login" %}{% endblock %}
 
 {% block content %}
 
-<h1>{% trans "Sign in" %}</h1>
+<h1>{% trans "Login" %}</h1>
 
 {% get_providers as socialaccount_providers %}
 
 {% if socialaccount_providers %}
-<p>{% blocktrans with site.name as site_name %}Please sign in with one
-of your existing third party accounts. Or, <a href="{{ signup_url }}">sign up</a>
-for a {{ site_name }} account and sign in below:{% endblocktrans %}</p>
+<p>Please login with one
+of your existing third party accounts. Or, <a href="{{ signup_url }}">Register</a>
+for a {{ site.name }} account and login below:</p>
 
 <div class="socialaccount_ballot">
 
@@ -29,8 +29,8 @@ for a {{ site_name }} account and sign in below:{% endblocktrans %}</p>
 {% include "socialaccount/snippets/login_extra.html" %}
 
 {% else %}
-<p>{% blocktrans %}If you have not created an account yet, then please
-<a href="{{ signup_url }}">sign up</a> first.{% endblocktrans %}</p>
+<p>If you have not created an account yet, then please
+<a href="{{ signup_url }}">register</a> first.</p>
 {% endif %}
 
 <form class="login" method="POST" action="{% url 'account_login' %}">
@@ -40,7 +40,7 @@ for a {{ site_name }} account and sign in below:{% endblocktrans %}</p>
     <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
   {% endif %}
   <a class="button secondaryAction" href="{{ reset_password_url }}">{% trans "Reset your password" %}</a>
-  <button class="primaryAction" type="submit">{% trans "Sign in" %}</button>
+  <button class="primaryAction" type="submit">{% trans "Login" %}</button>
 </form>
 
 {% endblock %}
