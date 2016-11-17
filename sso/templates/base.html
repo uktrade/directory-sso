@@ -52,10 +52,10 @@
                     <div class="level-one-container">
                         <h3 class="our-services-top hide-in-mobile">Our services:</h3>
                         <ul class="">
-                            <li class="hide-in-mobile"><a href="{% url 'external:export_opportunities' %}" title="Exporting opportunities">Exporting opportunities</a></li>
-                            <li class="hide-in-mobile"><a href="{% url 'external:find_a_buyer' %}" title="Find a buyer">Find a buyer</a></li>
-                            <li class="hide-in-mobile"><a href="{% url 'external:selling_online_overseas' %}" title="Selling online overseas">Selling online overseas</a></li>
-                            <li class="hide-in-mobile"><a href="{% url 'external:events' %}" title="Events">Events</a></li>
+                            <li class="hide-in-mobile"><a href="{% url 'constants:export_opportunities' %}" title="Exporting opportunities">Exporting opportunities</a></li>
+                            <li class="hide-in-mobile"><a href="{% url 'constants:find_a_buyer' %}" title="Find a buyer">Find a buyer</a></li>
+                            <li class="hide-in-mobile"><a href="{% url 'constants:selling_online_overseas' %}" title="Selling online overseas">Selling online overseas</a></li>
+                            <li class="hide-in-mobile"><a href="{% url 'constants:events' %}" title="Events">Events</a></li>
                             {% if not request.user.is_authenticated %}
                                 <li><a href="{{ login_url }}" target="_self" title="Login">Login</a></li>
                             {% else %}
@@ -77,9 +77,9 @@
                         <nav>
                         <h3 class="a11y">Exporting is GREAT:</h3>
                         <ul class="header-nav-links">
-                            <li class="header-nav-link"><a title="new to exporting" href="{% url 'external:new_to_exporting' %}" class="">NEW TO EXPORTING</a></li>
-                            <li class="header-nav-link"><a title="occasional exporter" href="{% url 'external:occasional_exporter' %}">OCCASIONAL EXPORTER</a></li>
-                            <li class="header-nav-link"><a title="regular exporter" href="{% url 'external:regular_exporter' %}">REGULAR EXPORTER</a></li>
+                            <li class="header-nav-link"><a title="new to exporting" href="{% url 'constants:new_to_exporting' %}" class="">NEW TO EXPORTING</a></li>
+                            <li class="header-nav-link"><a title="occasional exporter" href="{% url 'constants:occasional_exporter' %}">OCCASIONAL EXPORTER</a></li>
+                            <li class="header-nav-link"><a title="regular exporter" href="{% url 'constants:regular_exporter' %}">REGULAR EXPORTER</a></li>
                             </ul>
                         </nav>
                     </div>
@@ -93,10 +93,10 @@
                             <nav>
                                 <h3 class="font-white font-weight-medium font-size-15">Our services:</h3>
                                 <ul class="mobile-secondary-nav">
-                                    <li class="header-nav-link"><a class="font-reg" href="{% url 'external:export_opportunities' %}" title="Exporting opportunities">Exporting opportunities</a></li>
-                                    <li class="header-nav-link"><a class="font-reg" href="{% url 'external:find_a_buyer' %}" title="Find a buyer">Find a buyer</a></li>
-                                    <li class="header-nav-link"><a class="font-reg" href="{% url 'external:selling_online_overseas' %}" title="Selling online overseas">Selling online overseas</a></li>
-                                    <li class="header-nav-link"><a class="font-reg" href="{% url 'external:events' %}" title="Events">Events</a></li>
+                                    <li class="header-nav-link"><a class="font-reg" href="{% url 'constants:export_opportunities' %}" title="Exporting opportunities">Exporting opportunities</a></li>
+                                    <li class="header-nav-link"><a class="font-reg" href="{% url 'constants:find_a_buyer' %}" title="Find a buyer">Find a buyer</a></li>
+                                    <li class="header-nav-link"><a class="font-reg" href="{% url 'constants:selling_online_overseas' %}" title="Selling online overseas">Selling online overseas</a></li>
+                                    <li class="header-nav-link"><a class="font-reg" href="{% url 'constants:events' %}" title="Events">Events</a></li>
                                 </ul>
                             </nav>
                         </div>
@@ -104,9 +104,9 @@
                             <nav>
                                 <h3 class="font-white font-weight-medium font-size-15 push--top desktop-only">Exporting is GREAT:</h3>
                                 <ul id="secondaryNav" class="mobile-secondary-nav">
-                                    <li class="header-nav-link"><a title="NEW TO EXPORTING" href="{% url 'external:new_to_exporting' %}" class="">NEW TO EXPORTING</a></li>
-                                    <li class="header-nav-link"><a title="OCCASIONAL EXPORTER" href="{% url 'external:occasional_exporter' %}">OCCASIONAL EXPORTER</a></li>
-                                    <li class="header-nav-link"><a title="REGULAR EXPORTER" href="{% url 'external:regular_exporter' %}">REGULAR EXPORTER</a></li>
+                                    <li class="header-nav-link"><a title="NEW TO EXPORTING" href="{% url 'constants:new_to_exporting' %}" class="">NEW TO EXPORTING</a></li>
+                                    <li class="header-nav-link"><a title="OCCASIONAL EXPORTER" href="{% url 'constants:occasional_exporter' %}">OCCASIONAL EXPORTER</a></li>
+                                    <li class="header-nav-link"><a title="REGULAR EXPORTER" href="{% url 'constants:regular_exporter' %}">REGULAR EXPORTER</a></li>
                                 </ul>
                             </nav>
                         </div>
@@ -146,7 +146,7 @@
                                 <img src="{% static 'images/HM_Government_logo.png' %}" alt="Gov.uk logo" class="footer-img footer-img--top"/>
                             </a>
                             <p class="copyright-text">&copy; Crown Copyright 2016</p>
-                            <a href="{% url 'external:exporting_is_great' %}" title="Go to the Exporting is Great homepage" class="eig-logo-footer">
+                            <a href="{% url 'constants:exporting_is_great' %}" title="Go to the Exporting is Great homepage" class="eig-logo-footer">
                                 <img src="{% static 'images/EiG-logo-stacked.png' %}" alt="Exporting is Great logo" class="footer-img footer-img--bottom footer-img--eig">
                             </a>
                         </div>
@@ -156,10 +156,10 @@
                         <div class="footer-section">
                             <h3 class="footer-header">Our services</h3>
                             <ul class="footer-links-container">
-                              <li class="footer-links"><a href="{% url 'external:export_opportunities' %}" title="Exporting opportunities">Exporting opportunities</a></li>
-                              <li class="footer-links"><a href="{% url 'external:find_a_buyer' %}" title="Find a buyer">Find a buyer</a></li>
-                              <li class="footer-links"><a href="{% url 'external:selling_online_overseas' %}" title="Selling online overseas">Selling online overseas</a></li>
-                              <li class="footer-links"><a href="{% url 'external:events' %}" title="Events">Events</a></li>
+                              <li class="footer-links"><a href="{% url 'constants:export_opportunities' %}" title="Exporting opportunities">Exporting opportunities</a></li>
+                              <li class="footer-links"><a href="{% url 'constants:find_a_buyer' %}" title="Find a buyer">Find a buyer</a></li>
+                              <li class="footer-links"><a href="{% url 'constants:selling_online_overseas' %}" title="Selling online overseas">Selling online overseas</a></li>
+                              <li class="footer-links"><a href="{% url 'constants:events' %}" title="Events">Events</a></li>
                             </ul>
                         </div>
                     </div>
@@ -168,14 +168,14 @@
                         <div class="footer-section">
                             <h3 class="footer-header">Exporting is GREAT</h3>
                             <ul class="footer-links-container">
-                                <li class="footer-links"><a href="{% url 'external:new_to_exporting' %}" title="">New to exporting</a></li>
-                                <li class="footer-links"><a href="{% url 'external:occasional_exporter' %}" title="">Occasional exporter</a></li>
-                                <li class="footer-links"><a href="{% url 'external:regular_exporter' %}" title="">Regular exporter</a></li>
-                                <li class="footer-links"><a href="{% url 'external:about' %}" title="">About</a></li>
-                                <li class="footer-links"><a href="{% url 'external:contact_sso' %}" title="">Contact Us</a></li>
-                                <li class="footer-links"><a href="{% url 'external:privacy' %}" title="">Privacy &amp; cookies</a></li>
-                                <li class="footer-links"><a href="{% url 'external:terms' %}" title="">Terms &amp; conditions</a></li>
-                                <li class="footer-links"><a href="{% url 'external:DIT' %}" title="">Department for International Trade</a></li>
+                                <li class="footer-links"><a href="{% url 'constants:new_to_exporting' %}" title="">New to exporting</a></li>
+                                <li class="footer-links"><a href="{% url 'constants:occasional_exporter' %}" title="">Occasional exporter</a></li>
+                                <li class="footer-links"><a href="{% url 'constants:regular_exporter' %}" title="">Regular exporter</a></li>
+                                <li class="footer-links"><a href="{% url 'constants:about' %}" title="">About</a></li>
+                                <li class="footer-links"><a href="{% url 'constants:contact_sso' %}" title="">Contact Us</a></li>
+                                <li class="footer-links"><a href="{% url 'constants:privacy' %}" title="">Privacy &amp; cookies</a></li>
+                                <li class="footer-links"><a href="{% url 'constants:terms' %}" title="">Terms &amp; conditions</a></li>
+                                <li class="footer-links"><a href="{% url 'constants:DIT' %}" title="">Department for International Trade</a></li>
                             </ul>
                         </div>
                     </div>
