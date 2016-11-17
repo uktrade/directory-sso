@@ -1,4 +1,4 @@
-	{% load header_image from sso_email %}
+	{% load header_image absolute_url from sso_email %}
 	<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 	<html xmlns="http://www.w3.org/1999/xhtml">
 	<head>
@@ -344,8 +344,8 @@
 
 																		<div style="font-family:Helvetica,Arial,sans-serif;font-size:13px;color:#828282;text-align:center;line-height:120%;">
 																			<div>You received this email because you set up an account on GREAT.gov.uk</div>
-																			<div><a href="{% url 'constants:terms' %}">See the privacy statement to see how we keep your data and privacy safe.</div>
-																			<div><a href="{% url 'constants:feedback_sso' %}">Give feedback on this service</a></div>
+																			<div><a href="{% absolute_url 'constants:terms' %}">See the privacy statement to see how we keep your data and privacy safe.</div>
+																			<div><a href="{% absolute_url 'constants:feedback_sso' %}">Give feedback on this service</a></div>
 																		</div>
 
 																	</td>
