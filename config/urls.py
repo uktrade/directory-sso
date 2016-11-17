@@ -42,12 +42,6 @@ allauth_urlpatterns = [
         allauth.account.views.account_inactive,
         name="account_inactive"
     ),
-
-    url(
-        r"^email/$",
-        allauth.account.views.email,
-        name="account_email"
-    ),
     url(
         r"^confirm-email/$",
         allauth.account.views.email_verification_sent,
