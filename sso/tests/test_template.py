@@ -1,4 +1,15 @@
+from unittest.mock import Mock
+
+import pytest
+
 from django.template.loader import render_to_string
+
+
+@pytest.fixture
+def authenticated_request(rf):
+    request = rf.get('/')
+    request.user = Mock(is_authenticated=lambda: True)
+    return request
 
 
 def test_password_reset_email(rf):
@@ -49,3 +60,16 @@ def test_google_tag_manager():
     # sanity check
     assert 'www.googletagmanager.com' in expected_head
     assert 'www.googletagmanager.com' in expected_body
+
+
+def test_logged_in_header(authenticated_request):
+    context = {'request': authenticated_request}
+    html = render_to_string('base.html', context)
+
+    assert '>Logout<' in html
+
+
+def test_logged_out_hedaer():
+    html = render_to_string('base.html')
+
+    assert '>Login<' in html
