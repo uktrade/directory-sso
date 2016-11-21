@@ -68,6 +68,7 @@ TEMPLATES = [
                 'django.template.context_processors.debug',
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
+                'sso.user.context_processors.redirect_next_processor',
             ],
             'loaders': [
                 'django.template.loaders.filesystem.Loader',
