@@ -57,9 +57,9 @@
                             <li class="hide-in-mobile"><a href="{% url 'constants:selling_online_overseas' %}" title="Selling online overseas">Selling online overseas</a></li>
                             <li class="hide-in-mobile"><a href="{% url 'constants:events' %}" title="Events">Events</a></li>
                             {% if not request.user.is_authenticated %}
-                                <li><a href="{{ login_url }}" target="_self" title="Login">Login</a></li>
+                                <li><a href="{{ sso_login_url }}" target="_self" title="Login">Login</a></li>
                             {% else %}
-                                <li><a href="{% url 'account_logout' %}" target="_self" title="Logout">Logout</a></li>
+                                <li><a href="{{ sso_logout_url }}" target="_self" title="Logout">Logout</a></li>
                             {% endif %}
                         </ul>
                     </div>

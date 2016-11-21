@@ -1,4 +1,3 @@
-import urllib.parse
 from django.db import IntegrityError
 from django.conf import settings
 from django.core.urlresolvers import reverse
@@ -6,11 +5,10 @@ from django.http import HttpResponseRedirect
 from django.views.generic import RedirectView
 
 from allauth.account import views as allauth_views
-from allauth.account.utils import complete_signup, get_request_param
+from allauth.account.utils import complete_signup
 import allauth.exceptions
 
-
-from sso.user.utils import get_url_with_redirect, is_valid_redirect
+from sso.user.utils import get_redirect_url
 
 
 class RedirectToNextMixin:
@@ -18,60 +16,15 @@ class RedirectToNextMixin:
     redirect_field_name = settings.REDIRECT_FIELD_NAME
 
     def get_redirect_url(self):
-        redirect_url = settings.DEFAULT_REDIRECT_URL
-
-        redirect_param_value = get_request_param(
-            self.request, self.redirect_field_name
+        return get_redirect_url(
+            request=self.request,
+            redirect_field_name=self.redirect_field_name
         )
-        if redirect_param_value:
-            if is_valid_redirect(urllib.parse.unquote(redirect_param_value)):
-                redirect_url = redirect_param_value
-
-        return redirect_url
 
     get_success_url = get_redirect_url
 
-    def get_context_data(self, **kwargs):
-        context_data = super(
-            RedirectToNextMixin, self
-        ).get_context_data(**kwargs)
 
-        redirect_url = self.get_redirect_url()
-
-        if redirect_url:
-            redirect_field_value = redirect_url
-        else:
-            redirect_field_value = None
-
-        context_data.update({
-            self.alternative_view_url_context_variable: get_url_with_redirect(
-                url=reverse(self.alternative_view_url_name),
-                redirect_url=redirect_url
-            ),
-            "reset_password_url": get_url_with_redirect(
-                url=reverse('account_reset_password'),
-                redirect_url=redirect_url
-            ),
-            "redirect_field_name": self.redirect_field_name,
-            "redirect_field_value": redirect_field_value,
-        })
-
-        return context_data
-
-
-class SignupAlternativeMixin:
-    alternative_view_url_name = "account_signup"
-    alternative_view_url_context_variable = "signup_url"
-
-
-class LoginAlternativeMixin:
-    alternative_view_url_name = "account_login"
-    alternative_view_url_context_variable = "login_url"
-
-
-class SignupView(
-    LoginAlternativeMixin, RedirectToNextMixin, allauth_views.SignupView
-):
+class SignupView(RedirectToNextMixin, allauth_views.SignupView):
 
     @staticmethod
     def is_email_not_unique_error(integrity_error):
@@ -106,33 +59,24 @@ class SignupView(
                 return exc.response
 
 
-class LoginView(
-    SignupAlternativeMixin, RedirectToNextMixin, allauth_views.LoginView
-):
+class LoginView(RedirectToNextMixin, allauth_views.LoginView):
     pass
 
 
-class LogoutView(
-    LoginAlternativeMixin, RedirectToNextMixin, allauth_views.LogoutView
-):
+class LogoutView(RedirectToNextMixin, allauth_views.LogoutView):
     pass
 
 
-class PasswordResetView(
-    LoginAlternativeMixin, RedirectToNextMixin, allauth_views.PasswordResetView
-):
+class PasswordResetView(RedirectToNextMixin, allauth_views.PasswordResetView):
     pass
 
 
-class ConfirmEmailView(
-    SignupAlternativeMixin, RedirectToNextMixin, allauth_views.ConfirmEmailView
-):
+class ConfirmEmailView(RedirectToNextMixin, allauth_views.ConfirmEmailView):
     pass
 
 
 class PasswordResetFromKeyView(
-    SignupAlternativeMixin, RedirectToNextMixin,
-    allauth_views.PasswordResetFromKeyView
+    RedirectToNextMixin, allauth_views.PasswordResetFromKeyView
 ):
     pass
 
