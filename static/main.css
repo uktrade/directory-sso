@@ -31,11 +31,13 @@ input[type="color"]:focus,
     box-shadow: none;
     -webkit-box-shadow: none
 }
-
 ul.errorlist li,
 .sso-header li,
 .sso-footer li {
    list-style: none;
+}
+ul.errorlist.nonfield {
+  padding-bottom: 0;
 }
 
 .sso-content {
