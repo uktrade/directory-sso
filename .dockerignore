@@ -9,4 +9,4 @@ __pycache__/
 */*/*.py[cod]
 */*/*/*.py[cod]
 
-*.DS_Store
+.DS_Store

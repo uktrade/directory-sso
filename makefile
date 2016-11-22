@@ -33,7 +33,8 @@ DOCKER_SET_DEBUG_ENV_VARS := \
 	export SSO_PORT=8003; \
 	export SSO_DEBUG=true; \
 	export SSO_SECRET_KEY=debug; \
-	export SSO_API_SECRET=debug; \
+	export SSO_API_SIGNATURE_SECRET=api_signature_debug; \
+	export SSO_PROXY_SIGNATURE_SECRET=proxy_signature_debug; \
 	export SSO_POSTGRES_USER=debug; \
 	export SSO_POSTGRES_PASSWORD=debug; \
 	export SSO_POSTGRES_DB=sso_debug; \
@@ -81,7 +82,8 @@ docker_test: docker_remove_all
 
 DEBUG_SET_ENV_VARS := \
 	export SECRET_KEY=debug; \
-	export API_SECRET=debug; \
+	export API_SIGNATURE_SECRET=api_signature_debug; \
+	export PROXY_SIGNATURE_SECRET=proxy_signature_debug; \
 	export PORT=8003; \
 	export DEBUG=true; \
 	export DB_NAME=sso_debug; \
@@ -101,7 +103,7 @@ DEBUG_SET_ENV_VARS := \
 	export ALLOWED_REDIRECT_DOMAINS=example.com,exportingisgreat.gov.uk,great.dev
 
 debug_webserver:
-	 $(DEBUG_SET_ENV_VARS); $(DJANGO_WEBSERVER);
+	 $(DEBUG_SET_ENV_VARS)&& $(COLLECT_STATIC) && $(DJANGO_WEBSERVER);
 
 debug_shell:
 	 $(DEBUG_SET_ENV_VARS); ./manage.py shell
