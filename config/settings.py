@@ -201,8 +201,6 @@ OAUTH2_PROVIDER = {
     }
 }
 
-SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
-
 # django-allauth
 REDIRECT_FIELD_NAME = os.getenv(
     'REDIRECT_FIELD_NAME', 'next'
@@ -283,3 +281,7 @@ SIGNATURE_HEADERS = {
 URLS_EXCLUDED_FROM_SIGNATURE_CHECK = (
     '/api/v1/',
 )
+
+# Use proxy host name when generating links (e.g. in emails)
+USE_X_FORWARDED_HOST = True
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
