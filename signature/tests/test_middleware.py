@@ -19,7 +19,7 @@ class BaseSignatureTestCase(TestCase):
         self.request._body = b'lol'
         # signature generated from the key in settings, and above path & body
         self.sig = (
-            '25dc2f24f29c589a88baa22fa9aebbd58c5acb338f15ff920a752a9e414ba47e'
+            'b24d2898bf932db0f2af1e956d3596743b35cf93d7a23e699cc85eda34dd5ce2'
         )
 
 
@@ -40,23 +40,23 @@ class SignatureRejectionMiddlewareTestCase(BaseSignatureTestCase):
             'c6be1984f8b516e94d7257031cc47ed9863a433e461ac0117214b1b6a7801991',
         )
 
-    @override_settings(UI_SECRET=SignatureTestClient.SECRET)
+    @override_settings(PROXY_SIGNATURE_SECRET=SignatureTestClient.SECRET)
     def test_test_signature_missing(self):
         self.assertFalse(SignatureRejection.test_signature(self.request))
 
-    @override_settings(UI_SECRET=SignatureTestClient.SECRET)
+    @override_settings(PROXY_SIGNATURE_SECRET=SignatureTestClient.SECRET)
     def test_test_signature_incorrect(self):
-        self.request.META['HTTP_X_SIGNATURE'] = 'bad-signature'
+        self.request.META['HTTP_X_PROXY_SIGNATURE'] = 'bad-signature'
         self.assertFalse(SignatureRejection.test_signature(self.request))
 
-    @override_settings(UI_SECRET=SignatureTestClient.SECRET)
+    @override_settings(PROXY_SIGNATURE_SECRET=SignatureTestClient.SECRET)
     def test_test_signature_correct(self):
-        self.request.META['HTTP_X_SIGNATURE'] = self.sig
+        self.request.META['HTTP_X_PROXY_SIGNATURE'] = self.sig
         self.assertTrue(SignatureRejection.test_signature(self.request))
 
-    @override_settings(UI_SECRET=SignatureTestClient.SECRET)
+    @override_settings(PROXY_SIGNATURE_SECRET=SignatureTestClient.SECRET)
     def test_process_request_pass(self):
-        self.request.META['HTTP_X_SIGNATURE'] = self.sig
+        self.request.META['HTTP_X_PROXY_SIGNATURE'] = self.sig
         self.assertEqual(self.middleware.process_request(self.request), None)
 
     def test_process_request_fail(self):

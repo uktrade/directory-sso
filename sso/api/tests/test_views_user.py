@@ -40,3 +40,18 @@ def test_get_session_user_valid_api_key():
     assert response.status_code == status.HTTP_200_OK
     assert response.data['email'] == user.email
     assert response.data['id'] == user.id
+
+
+@pytest.mark.django_db
+def test_get_session_user_valid_api_key_no_user():
+    user, user_session = setup_data()
+
+    client = APIClient()
+
+    with mock.patch('sso.api.permissions.APIClientPermission.has_permission'):
+        response = client.get(
+            reverse('session-user'),
+            data={"session_key": 'non-existent'},
+        )
+
+    assert response.status_code == status.HTTP_404_NOT_FOUND
