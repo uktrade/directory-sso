@@ -1,5 +1,6 @@
 from hashlib import sha256
 
+from django.conf import settings
 from django.test import Client
 
 
@@ -9,8 +10,8 @@ class SignatureTestClient(Client):
     class doesn't exactly make that easy.
     """
 
-    SIG_KEY = "HTTP_X_SIGNATURE"
-    SECRET = "secret"
+    SIG_KEY = settings.SIGNATURE_HEADERS[settings.PROXY_SIGNATURE_SECRET]
+    SECRET = settings.PROXY_SIGNATURE_SECRET
 
     def generic(self, method, path, data='',
                 content_type='application/octet-stream', secure=False,

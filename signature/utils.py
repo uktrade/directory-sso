@@ -13,15 +13,17 @@ class SignatureRejection:
         return sha256(path + body + salt).hexdigest()
 
     @classmethod
-    def test_signature(self, request):
-        offered = request.META.get("HTTP_X_SIGNATURE")
+    def test_signature(self, request, secret=None):
+        secret = secret or settings.PROXY_SIGNATURE_SECRET
+        signature_header = settings.SIGNATURE_HEADERS.get(secret)
+        signature_header_value = request.META.get(signature_header)
 
-        if not offered:
+        if not signature_header_value:
             return False
 
-        generated = self.generate_signature(
-            settings.UI_SECRET,
+        expected = self.generate_signature(
+            secret,
             request.get_full_path(),
             request.body,
         )
-        return constant_time_compare(generated, offered)
+        return constant_time_compare(expected, signature_header_value)

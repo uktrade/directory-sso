@@ -128,9 +128,6 @@ for static_dir in STATICFILES_DIRS:
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = os.environ["SECRET_KEY"]
 
-# API key shared with clients
-API_SECRET = os.environ["API_SECRET"]
-
 # Sentry
 RAVEN_CONFIG = {
     "dsn": os.getenv("SENTRY_DSN"),
@@ -273,7 +270,14 @@ ALLOWED_REDIRECT_DOMAINS = os.environ['ALLOWED_REDIRECT_DOMAINS'].split(',')
 for domain in ALLOWED_REDIRECT_DOMAINS:
     assert is_valid_domain(domain) is True
 
-SIGNATURE_SECRET = os.environ['SIGNATURE_SECRET']
+# Signature check
+PROXY_SIGNATURE_SECRET = os.environ['PROXY_SIGNATURE_SECRET']
+API_SIGNATURE_SECRET = os.environ['API_SIGNATURE_SECRET']
+
+SIGNATURE_HEADERS = {
+    PROXY_SIGNATURE_SECRET: 'HTTP_X_PROXY_SIGNATURE',
+    API_SIGNATURE_SECRET: 'HTTP_X_SIGNATURE',
+}
 
 URLS_EXCLUDED_FROM_SIGNATURE_CHECK = (
     '/api/v1/',
