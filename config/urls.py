@@ -119,7 +119,6 @@ api_urlpatterns = [
 
 
 urlpatterns = [
-    url(r"^", include('directory_constants.urls', namespace='constants')),
     url(
         r"^$",
         SSOLandingPage.as_view(),
