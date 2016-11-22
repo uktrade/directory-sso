@@ -1,4 +1,8 @@
+from django.conf import settings
 from django.test import TestCase, override_settings, RequestFactory
+
+from rest_framework import status
+from rest_framework.test import APIClient
 
 from signature.middleware import SignatureRejectionMiddleware
 from signature.utils import SignatureRejection
@@ -58,3 +62,12 @@ class SignatureRejectionMiddlewareTestCase(BaseSignatureTestCase):
     def test_process_request_fail(self):
         response = self.middleware.process_request(self.request)
         self.assertEqual(response.status_code, 401)
+
+
+def test_urls_excluded_from_signature_check():
+    client = APIClient()
+
+    for url in settings.URLS_EXCLUDED_FROM_SIGNATURE_CHECK:
+        response = client.get(url)
+
+        assert response.status_code == status.HTTP_200_OK

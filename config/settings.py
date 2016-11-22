@@ -275,3 +275,7 @@ for domain in ALLOWED_REDIRECT_DOMAINS:
     assert is_valid_domain(domain) is True
 
 SIGNATURE_SECRET = os.environ['SIGNATURE_SECRET']
+
+URLS_EXCLUDED_FROM_SIGNATURE_CHECK = (
+    '/api/v1/',
+)
