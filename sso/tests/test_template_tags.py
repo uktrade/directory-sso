@@ -1,7 +1,5 @@
-from directory_constants.constants import urls
-
 from sso.templatetags.sso_validation import is_valid_redirect_domain
-from sso.templatetags.sso_email import absolute_url, header_image
+from sso.templatetags.sso_email import header_image
 from sso import constants
 
 
@@ -41,9 +39,3 @@ def test_is_valid_returns_false_when_no_domain_supplied(settings):
 
     is_valid = is_valid_redirect_domain(None)
     assert is_valid is False
-
-
-def test_absolute_url():
-    url = absolute_url('constants:terms')
-
-    assert url == urls.TERMS_AND_CONDITIONS_URL
