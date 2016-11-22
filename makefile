@@ -48,7 +48,8 @@ DOCKER_SET_DEBUG_ENV_VARS := \
 	export SSO_DEFAULT_FROM_EMAIL=debug; \
 	export SSO_LOGOUT_REDIRECT_URL=http://ui.trade.great.dev:8001; \
 	export SSO_REDIRECT_FIELD_NAME=next; \
-	export SSO_ALLOWED_REDIRECT_DOMAINS=example.com,exportingisgreat.gov.uk,great.dev
+	export SSO_ALLOWED_REDIRECT_DOMAINS=example.com,exportingisgreat.gov.uk,great.dev; \
+	export SSO_SIGNATURE_SECRET=debug
 
 DOCKER_REMOVE_ALL := \
 	docker ps -a | \
@@ -98,10 +99,11 @@ DEBUG_SET_ENV_VARS := \
 	export DEFAULT_FROM_EMAIL=debug; \
 	export LOGOUT_REDIRECT_URL=http://ui.trade.great.dev:8001; \
 	export REDIRECT_FIELD_NAME=next; \
-	export ALLOWED_REDIRECT_DOMAINS=example.com,exportingisgreat.gov.uk,great.dev
+	export ALLOWED_REDIRECT_DOMAINS=example.com,exportingisgreat.gov.uk,great.dev; \
+	export SIGNATURE_SECRET=debug
 
 debug_webserver:
-	 $(DEBUG_SET_ENV_VARS); $(DJANGO_WEBSERVER);
+	 $(DEBUG_SET_ENV_VARS)&& $(COLLECT_STATIC) && $(DJANGO_WEBSERVER);
 
 debug_shell:
 	 $(DEBUG_SET_ENV_VARS); ./manage.py shell

@@ -33,6 +33,7 @@ INSTALLED_APPS = [
     'oauth2_provider',
     'rest_framework',
     'corsheaders',
+    'signature',
     'sso',
     'sso.oauth2',
     'sso.user',
@@ -43,6 +44,7 @@ SITE_ID = 1
 
 MIDDLEWARE_CLASSES = [
     'django.middleware.security.SecurityMiddleware',
+    'signature.middleware.SignatureRejectionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
@@ -271,3 +273,5 @@ CSRF_COOKIE_SECURE = True
 ALLOWED_REDIRECT_DOMAINS = os.environ['ALLOWED_REDIRECT_DOMAINS'].split(',')
 for domain in ALLOWED_REDIRECT_DOMAINS:
     assert is_valid_domain(domain) is True
+
+SIGNATURE_SECRET = os.environ['SIGNATURE_SECRET']
