@@ -120,6 +120,9 @@ debug_db:
 debug_test:
 	$(DEBUG_SET_ENV_VARS) && $(COLLECT_STATIC) && $(FLAKE8) && $(PYTEST)
 
+debug_manage:
+	$(DEBUG_SET_ENV_VARS) && ./manage.py $(cmd)
+
 debug: test_requirements debug_db debug_test
 
 migrations:
