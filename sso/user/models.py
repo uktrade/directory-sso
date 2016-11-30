@@ -5,7 +5,7 @@ from django.contrib.auth.models import (
 from django.utils import timezone
 from django.utils.translation import ugettext_lazy as _
 
-from ..api.model_utils import TimeStampedModel
+from sso.api.model_utils import TimeStampedModel
 
 
 class UserManager(BaseUserManager):
