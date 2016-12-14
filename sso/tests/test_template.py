@@ -22,7 +22,6 @@ def test_password_reset_email(rf):
         context
     )
     assert 'http://reset.com' in html
-    assert 'Reset password' in html
 
 
 def test_password_reset_email_txt(rf):
