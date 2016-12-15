@@ -6,6 +6,8 @@ from allauth.account.adapter import get_adapter
 from allauth.account.utils import filter_users_by_email
 from allauth.utils import set_form_field_order
 
+from directory_constants.constants import urls
+
 
 class IndentedInvalidFieldsMixin:
     error_css_class = 'input-field-container has-error'
@@ -15,8 +17,9 @@ class SignupForm(IndentedInvalidFieldsMixin, forms.SignupForm):
     terms_agreed = BooleanField(
         label=mark_safe(
             'Tick this box to accept the '
-            '<a href="/terms_and_conditions" target="_blank">terms and '
-            'conditions</a> of the Exporting is GREAT service.'
+            '<a href="{url}" target="_blank">terms and '
+            'conditions</a> of the Exporting is GREAT service.'.format(
+                url=urls.TERMS_AND_CONDITIONS_URL)
         )
     )
     field_order = [
