@@ -5,4 +5,5 @@ from sso.user.models import User
 
 @admin.register(User)
 class UserAdmin(admin.ModelAdmin):
+    search_fields = ('email', )
     readonly_fields = ('created', 'modified',)
