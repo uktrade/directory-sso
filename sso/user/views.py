@@ -66,19 +66,14 @@ class LoginView(RedirectToNextMixin, allauth_views.LoginView):
 class LogoutView(RedirectToNextMixin, allauth_views.LogoutView):
     pass
 
-class PasswordResetView(allauth_views.PasswordResetView):
-    # purposefully omitting `RedirectToNextMixin` from this view to
-    # instead take the user to 'password reset successful' page.
-    pass
-
 
 class ConfirmEmailView(RedirectToNextMixin, allauth_views.ConfirmEmailView):
     pass
 
 
-class PasswordResetFromKeyView(allauth_views.PasswordResetFromKeyView):
-    # purposefully omitting `RedirectToNextMixin` from this view to
-    # instead take the user to 'password reset successful' page.
+class PasswordResetFromKeyView(
+    RedirectToNextMixin, allauth_views.PasswordResetFromKeyView
+):
     pass
 
 
