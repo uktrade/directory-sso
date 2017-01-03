@@ -11,7 +11,6 @@ from sso.user.views import (
     PasswordResetFromKeyView,
     SSOLandingPage,
     SignupView,
-    PasswordResetView,
 )
 from sso.healthcheck.views import HealthCheckAPIView
 from sso.oauth2.views_user import UserRetrieveAPIView
@@ -60,7 +59,7 @@ allauth_urlpatterns = [
     ),
     url(
         r"^password/reset/$",
-        PasswordResetView.as_view(),
+        allauth.account.views.password_reset,
         name="account_reset_password"
     ),
     url(

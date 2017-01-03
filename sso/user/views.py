@@ -67,10 +67,6 @@ class LogoutView(RedirectToNextMixin, allauth_views.LogoutView):
     pass
 
 
-class PasswordResetView(RedirectToNextMixin, allauth_views.PasswordResetView):
-    pass
-
-
 class ConfirmEmailView(RedirectToNextMixin, allauth_views.ConfirmEmailView):
     pass
 
