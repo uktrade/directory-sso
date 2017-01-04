@@ -470,9 +470,12 @@ def test_password_reset_redirect_next_param_if_next_param_valid(
     url = txt[txt.find('/accounts/password/reset/'):].split()[0]
 
     # Reset the password
-    response = client.post(
-        url, {'password1': new_password, 'password2': new_password}
-    )
+    data = {
+        'password1': new_password,
+        'password2': new_password,
+        'next': expected
+    }
+    response = client.post(url, data)
 
     assert url in txt
     assert url in html
@@ -525,7 +528,7 @@ def test_password_reset_redirect_next_param_if_next_param_internal(
     # submit form and send 'password reset link' email with a 'next' param
     client.post(
         '{url}?next={next}'.format(url=password_reset_url, next=expected),
-        data={'email': user.email}
+        data={'email': user.email, 'next': expected}
     )
     message = mail.outbox[0]
     txt = message.body
@@ -548,10 +551,17 @@ def test_password_reset_redirect_next_param_if_next_param_internal(
 def test_password_reset_doesnt_allow_email_enumeration(
     settings, client, user
 ):
-    response = client.post(
-        reverse('account_reset_password'),
-        data={'email': 'imaginaryemail@example.com'}
+    redirect_to = 'http://other.com'
+    settings.ALLOWED_REDIRECT_DOMAINS = ['other.com']
+    account_reset_password_url = "{}?next={}".format(
+        reverse('account_reset_password'), redirect_to
     )
+
+    data = {
+        'email': 'imaginaryemail@example.com',
+        'next': redirect_to
+    }
+    response = client.post(account_reset_password_url, data=data)
 
     # don't send an email cause no account exists
     assert len(mail.outbox) == 0
