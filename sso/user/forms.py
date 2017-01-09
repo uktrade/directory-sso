@@ -32,6 +32,11 @@ class SignupForm(IndentedInvalidFieldsMixin, forms.SignupForm):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
+        self.fields['email'].widget.attrs['autocomplete'] = 'new-password'
+        self.fields['email2'].widget.attrs['autocomplete'] = 'new-password'
+        self.fields['password1'].widget.attrs['autocomplete'] = 'new-password'
+        self.fields['password2'].widget.attrs['autocomplete'] = 'new-password'
+
         self.fields['password2'].label = 'Confirm password:'
         self.fields['email2'].label = 'Confirm email:'
         set_form_field_order(self, self.field_order)
@@ -41,6 +46,8 @@ class LoginForm(IndentedInvalidFieldsMixin, forms.LoginForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.fields['remember'].label = 'Remember me:'
+        self.fields['login'].widget.attrs['autocomplete'] = 'new-password'
+        self.fields['password'].widget.attrs['autocomplete'] = 'new-password'
 
 
 class UserForm(IndentedInvalidFieldsMixin, forms.UserForm):
@@ -62,6 +69,9 @@ class SetPasswordForm(IndentedInvalidFieldsMixin, forms.SetPasswordForm):
 
 
 class ResetPasswordForm(IndentedInvalidFieldsMixin, forms.ResetPasswordForm):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['email'].widget.attrs['autocomplete'] = 'new-password'
 
     def clean_email(self):
         """Overrides allauth's method for security reasons.
