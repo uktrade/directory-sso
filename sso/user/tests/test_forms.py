@@ -144,3 +144,23 @@ def test_signup_accepts_password_length_ten_or_more():
 
     assert form.is_valid() is False
     assert 'password1' not in form.errors
+
+
+def test_signup_autocomplete():
+    # http://stackoverflow.com/a/30976223/904887
+    form = forms.SignupForm()
+    for name in ['email', 'email2', 'password1', 'password2']:
+        assert form.fields[name].widget.attrs['autocomplete'] == 'new-password'
+
+
+def test_login_autocomplete():
+    # http://stackoverflow.com/a/30976223/904887
+    form = forms.LoginForm()
+    for name in ['login', 'password']:
+        assert form.fields[name].widget.attrs['autocomplete'] == 'new-password'
+
+
+def test_password_reset_autocomplete():
+    # http://stackoverflow.com/a/30976223/904887
+    form = forms.ResetPasswordForm()
+    assert form.fields['email'].widget.attrs['autocomplete'] == 'new-password'
