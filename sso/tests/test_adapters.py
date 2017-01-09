@@ -82,6 +82,9 @@ def test_next_validation_copes_when_no_protocol_given(settings):
 
 
 def test_next_validation_doesnt_accept_urls_starting_with_slash(settings):
+    # This tests for the bug found in penetration testing (ED-661)
+    # which was allowing redirects to unauthorized domains if
+    # the next param started with //
     valid = is_valid_redirect('//google.com')
     assert valid is False
 

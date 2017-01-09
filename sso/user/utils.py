@@ -22,6 +22,9 @@ def is_valid_redirect(next_param):
 
     # Allow internal redirects
     is_domain = bool(extracted_domain.domain) and bool(extracted_domain.suffix)
+    # NOTE: The extra is_domain check is necessary because otherwise
+    # for example ?next=//satan.com would redirect even if
+    # satan.com is not an allowed redirect domain
     if next_param.startswith('/') and not is_domain:
         return True
 
