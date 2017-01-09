@@ -81,6 +81,14 @@ def test_next_validation_copes_when_no_protocol_given(settings):
     assert valid is True
 
 
+def test_next_validation_doesnt_accept_urls_starting_with_slash(settings):
+    # This tests for the bug found in penetration testing (ED-661)
+    # which was allowing redirects to unauthorized domains if
+    # the next param started with //
+    valid = is_valid_redirect('//google.com')
+    assert valid is False
+
+
 @patch('allauth.account.adapter.DefaultAccountAdapter.'
        'get_email_confirmation_url', Mock(return_value='default_url'))
 def test_account_adapter_returns_default_url_if_no_next_param(
