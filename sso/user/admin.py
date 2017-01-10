@@ -15,7 +15,8 @@ class UserAdmin(admin.ModelAdmin):
     actions = ['download_csv']
 
     csv_excluded_fields = (
-        'password',
+        'password', 'refreshtoken', 'socialaccount', 'logentry', 'grant',
+        'groups', 'accesstoken', 'emailaddress', 'user_permissions'
     )
 
     def download_csv(self, request, queryset):
