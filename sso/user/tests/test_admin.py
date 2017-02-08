@@ -13,7 +13,7 @@ class DownloadCaseStudyCSVTestCase(TestCase):
 
     header = (
         'created,date_joined,email,id,is_active,is_staff,is_superuser,'
-        'last_login,modified,oauth2_provider_application'
+        'last_login,modified,oauth2_provider_application,utm'
     )
 
     def setUp(self):
@@ -38,7 +38,7 @@ class DownloadCaseStudyCSVTestCase(TestCase):
 
         row_one = (
             "{created},{date_joined},admin@example.com,{id},True,True,True,"
-            "{last_login},{modified},"
+            "{last_login},{modified},,"
         ).format(
             created=self.superuser.created,
             date_joined=self.superuser.date_joined,
@@ -71,7 +71,7 @@ class DownloadCaseStudyCSVTestCase(TestCase):
         user_one = User.objects.all()[2]
         row_one = (
             '{created},{date_joined},{email},{id},{is_active},{is_staff},'
-            '{is_superuser},,{modified},'
+            '{is_superuser},,{modified},,'
         ).format(
             created=user_one.created,
             date_joined=user_one.date_joined,
@@ -86,7 +86,7 @@ class DownloadCaseStudyCSVTestCase(TestCase):
         user_two = User.objects.all()[1]
         row_two = (
             '{created},{date_joined},{email},{id},{is_active},{is_staff},'
-            '{is_superuser},,{modified},'
+            '{is_superuser},,{modified},,'
         ).format(
             created=user_two.created,
             date_joined=user_two.date_joined,
@@ -101,7 +101,7 @@ class DownloadCaseStudyCSVTestCase(TestCase):
         user_three = User.objects.all()[0]
         row_three = (
             '{created},{date_joined},{email},{id},{is_active},{is_staff},'
-            '{is_superuser},{last_login},{modified},'
+            '{is_superuser},{last_login},{modified},,'
         ).format(
             created=user_three.created,
             date_joined=user_three.date_joined,

@@ -1,6 +1,7 @@
 import urllib.parse
 
 import http
+from http.cookies import SimpleCookie
 
 from django.core import mail
 from django.core.urlresolvers import reverse
@@ -740,3 +741,30 @@ def test_login_page_password_reset_has_next(
         '/password/reset/?next=http%3A%2F%2Fexample.com%2F%3Fparam%3Dtest'
     )
     assert expected_password_reset_url in response.rendered_content
+
+
+@pytest.mark.django_db
+def test_signup_saves_utm(
+    settings, client, email_confirmation
+):
+
+    ed_utm_cookie_value = (
+        '{"utm_campaign": "whatever", "utm_content": "whatever",'
+        '"utm_medium": "whatever", "utm_source": "whatever", '
+        '"utm_term": "whatever"}'
+    )
+    client.cookies = SimpleCookie({'ed_utm': ed_utm_cookie_value})
+
+    client.post(
+        reverse('account_signup'),
+        data={
+            'email': 'jim@example.com',
+            'email2': 'jim@example.com',
+            'terms_agreed': True,
+            'password1': '*' * 10,
+            'password2': '*' * 10,
+        }
+    )
+
+    user = User.objects.last()
+    assert user.utm == ed_utm_cookie_value

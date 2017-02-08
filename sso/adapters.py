@@ -50,3 +50,19 @@ class AccountAdapter(DefaultAccountAdapter):
         # Although email has to be unique, as it is user login, do not validate
         # it, so that e-mail enumeration is not possible - security requirement
         return email
+
+    def save_user(self, request, user, form, commit=True):
+        """
+        Saves a new `User` instance using information provided in the
+        signup form.
+        """
+        user = super().save_user(
+            request, user, form, commit=False
+        )
+
+        user.utm = request.COOKIES.get('ed_utm', {})
+
+        if commit:
+            user.save()
+
+        return user
