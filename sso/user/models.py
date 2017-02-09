@@ -2,6 +2,7 @@ from django.db import models
 from django.contrib.auth.models import (
     AbstractBaseUser, BaseUserManager, PermissionsMixin
 )
+from django.contrib.postgres.fields import JSONField
 from django.utils import timezone
 from django.utils.translation import ugettext_lazy as _
 
@@ -67,6 +68,14 @@ class User(AbstractBaseUser, PermissionsMixin, TimeStampedModel):
     date_joined = models.DateTimeField(
         _('date joined'),
         default=timezone.now,
+    )
+
+    utm = JSONField(
+        blank=True,
+        default={},
+        help_text=_(
+            'Urchin Tracking Module query parameters passed in the URL'
+        ),
     )
 
     objects = UserManager()
