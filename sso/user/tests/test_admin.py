@@ -38,13 +38,14 @@ class DownloadCaseStudyCSVTestCase(TestCase):
 
         row_one = (
             "{created},{date_joined},admin@example.com,{id},True,True,True,"
-            "{last_login},{modified},,"
+            "{last_login},{modified},,{utm}"
         ).format(
             created=self.superuser.created,
             date_joined=self.superuser.date_joined,
             id=self.superuser.id,
             last_login=self.superuser.last_login,
             modified=self.superuser.modified,
+            utm=self.superuser.utm,
         )
         actual = str(response.content, 'utf-8').split('\r\n')
 
@@ -71,7 +72,7 @@ class DownloadCaseStudyCSVTestCase(TestCase):
         user_one = User.objects.all()[2]
         row_one = (
             '{created},{date_joined},{email},{id},{is_active},{is_staff},'
-            '{is_superuser},,{modified},,'
+            '{is_superuser},,{modified},,{utm}'
         ).format(
             created=user_one.created,
             date_joined=user_one.date_joined,
@@ -81,12 +82,13 @@ class DownloadCaseStudyCSVTestCase(TestCase):
             is_staff=user_one.is_staff,
             is_superuser=user_one.is_superuser,
             modified=user_one.modified,
+            utm=user_one.utm,
         )
 
         user_two = User.objects.all()[1]
         row_two = (
             '{created},{date_joined},{email},{id},{is_active},{is_staff},'
-            '{is_superuser},,{modified},,'
+            '{is_superuser},,{modified},,{utm}'
         ).format(
             created=user_two.created,
             date_joined=user_two.date_joined,
@@ -96,12 +98,13 @@ class DownloadCaseStudyCSVTestCase(TestCase):
             is_staff=user_two.is_staff,
             is_superuser=user_two.is_superuser,
             modified=user_two.modified,
+            utm=user_two.utm,
         )
 
         user_three = User.objects.all()[0]
         row_three = (
             '{created},{date_joined},{email},{id},{is_active},{is_staff},'
-            '{is_superuser},{last_login},{modified},,'
+            '{is_superuser},{last_login},{modified},,{utm}'
         ).format(
             created=user_three.created,
             date_joined=user_three.date_joined,
@@ -112,6 +115,7 @@ class DownloadCaseStudyCSVTestCase(TestCase):
             is_superuser=user_three.is_superuser,
             last_login=user_three.last_login,
             modified=user_three.modified,
+            utm=user_three.utm,
         )
 
         actual = str(response.content, 'utf-8').split('\r\n')
