@@ -12,6 +12,10 @@ html {
     box-sizing: inherit
 }
 
+.icon-menu{
+  background-image:url("Dit-Pattern-Styling/public/images/icons/menu.svg")
+}
+
 html input:focus:invalid:focus,
 html textarea:focus:invalid:focus,
 html select:focus:invalid:focus {
@@ -426,10 +430,6 @@ input[type="submit"], button:focus {
 
 body {
     background-color: #fafafa;
-    font-family: 'Roboto', sans-serif;
-    font-size: 18px;
-    font-weight: 300;
-    line-height: 24px
 }
 
 @media (max-width: 979px) {
