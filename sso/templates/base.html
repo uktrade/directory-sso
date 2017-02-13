@@ -6,6 +6,7 @@
 <!--[if gt IE 8]><!--> <html lang="en" class="ie8"> <!--<![endif]-->
     <head>
         {% include 'google_tag_manager_head.html' %}
+        <meta id="utmCookieDomain" value="{{ analytics.UTM_COOKIE_DOMAIN }}" />
         <meta charset="utf-8" />
         <title>{% block head_title %}{% endblock %}</title>
         {% block extra_head %}{% endblock %}
@@ -183,6 +184,7 @@
                 </div>
             </div>
           </footer>
+        <script type="text/javascript" src="{% static 'javascripts/index.js' %}"></script>
         <script src="{% static 'Dit-Pattern-Styling/public/js/jquery.js' %}"></script>
         <!--[if IE 8]><script src="{% static 'Dit-Pattern-Styling/public/js/ie8.js' }"></script><![endif]-->
         <!--[if IE 8]><script type="text/javascript" src="js/selectivizr.js"></script><![endif]-->

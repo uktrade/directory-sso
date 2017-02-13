@@ -73,6 +73,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'sso.user.context_processors.redirect_next_processor',
+                'sso.context_processors.analytics',
             ],
             'loaders': [
                 'django.template.loaders.filesystem.Loader',
@@ -331,3 +332,7 @@ URLS_EXCLUDED_FROM_SIGNATURE_CHECK = (
 # Use proxy host name when generating links (e.g. in emails)
 USE_X_FORWARDED_HOST = True
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+
+
+# Google tag manager
+UTM_COOKIE_DOMAIN = os.environ['UTM_COOKIE_DOMAIN']
