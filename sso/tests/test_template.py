@@ -73,3 +73,14 @@ def test_logged_out_hedaer():
     html = render_to_string('base.html')
 
     assert '>Login<' in html
+
+
+def test_utm_cookie_domain():
+    context = {
+        'analytics': {
+            'UTM_COOKIE_DOMAIN': '.thing.com',
+        }
+    }
+    html = render_to_string('base.html', context)
+
+    assert '<meta id="utmCookieDomain" value=".thing.com" />' in html
