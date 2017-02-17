@@ -131,6 +131,12 @@ debug_manage:
 
 debug: test_requirements debug_db debug_test
 
+dumpdata:
+	$(DEBUG_SET_ENV_VARS) $(printf "\033c") && ./manage.py dumpdata --all --indent=4> fixtures/development.json
+
+loaddata:
+	$(DEBUG_SET_ENV_VARS) && ./manage.py loaddata fixtures/development.json
+
 migrations:
 	$(DEBUG_SET_ENV_VARS) && ./manage.py makemigrations user oauth2
 
