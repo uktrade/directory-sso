@@ -1,5 +1,7 @@
 # directory-sso
 
+This is the service for authenticating users for services that serve the Exporting is Great campaign for the Department for International Trade (DIT).
+
 ## Build status
 
 [![CircleCI](https://circleci.com/gh/uktrade/directory-sso/tree/master.svg?style=svg)](https://circleci.com/gh/uktrade/directory-sso/tree/master)
@@ -32,6 +34,30 @@ Provides defaults for all environment variables.
 ### Host environment variables for docker-compose
 ``.env`` files will be automatically created with ``env_writer.py``, based on ``env.json`` and ``env-postgres.json``.
 
+## Running locally without Docker
+
+### Installing
+
+```bash
+$ git clone https://github.com/uktrade/directory-sso
+$ cd directory-sso
+$ virtualenv .venv -p python3.5
+$ source .venv/bin/activate
+$ pip install -r requirements_text.txt
+```
+
+### Running the webserver
+
+```bash
+$ source .venv/bin/activate
+$ make debug_webserver
+```
+
+### Running the tests
+
+```bash
+$ make debug_test
+```
 
 ## Debugging
 
@@ -47,3 +73,21 @@ Requires locally running PostgreSQL (e.g. [Postgres.app](http://postgresapp.com/
 ### Run debug tests
 
     $ make debug_test
+
+## Development data
+
+For development efficiency a dummy user can be loaded into the database from `fixtures/development.json`. To do this run:
+
+```bash
+make loaddata
+```
+
+The credentials for the development user `dev@example.com`:`password`.
+
+To update `fixtures/development.json` with the current contents of the database run:
+
+```bash
+make dumpdata
+```
+
+Then check the contents of `fixtures/development.json`.
