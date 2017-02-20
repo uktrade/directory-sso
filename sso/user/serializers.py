@@ -11,3 +11,13 @@ class UserSerializer(serializers.ModelSerializer):
             'id',
             'email',
         )
+
+
+class LastLoginSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+
+        fields = (
+            'id',
+            'last_login',
+        )
