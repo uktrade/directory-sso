@@ -69,10 +69,25 @@ def test_get_last_login_for_all_users():
     assert response.status_code == status.HTTP_200_OK
     date_format = '%Y-%m-%dT%H:%M:%S.%fZ'
     expected = [
-        {'id': users[0].id, 'last_login': users[0].last_login.strftime(date_format)},
-        {'id': users[1].id, 'last_login': users[1].last_login.strftime(date_format)},
-        {'id': users[2].id, 'last_login': users[2].last_login.strftime(date_format)},
-        {'id': users[3].id, 'last_login': users[3].last_login.strftime(date_format)},
-        {'id': users[4].id, 'last_login': users[4].last_login.strftime(date_format)},
+        {
+            'id': users[0].id,
+            'last_login': users[0].last_login.strftime(date_format)
+        },
+        {
+            'id': users[1].id,
+            'last_login': users[1].last_login.strftime(date_format)
+        },
+        {
+            'id': users[2].id,
+            'last_login': users[2].last_login.strftime(date_format)
+        },
+        {
+            'id': users[3].id,
+            'last_login': users[3].last_login.strftime(date_format)
+        },
+        {
+            'id': users[4].id,
+            'last_login': users[4].last_login.strftime(date_format)
+        },
     ]
     assert response.json() == expected
