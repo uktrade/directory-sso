@@ -59,8 +59,9 @@ def test_get_session_user_valid_api_key_no_user():
 
 
 @pytest.mark.django_db
-def test_get_last_login_for_all_users():
+def test_get_last_login():
     users = UserFactory.create_batch(5)
+    setup_data()  # creates active user that should not be in response
     client = APIClient()
 
     with mock.patch('sso.api.permissions.APIClientPermission.has_permission'):

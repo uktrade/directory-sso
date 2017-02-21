@@ -1,4 +1,5 @@
 from django.contrib.sessions.models import Session
+from django.utils import timezone
 
 from rest_framework.generics import (
     RetrieveAPIView, get_object_or_404, ListAPIView)
@@ -29,4 +30,15 @@ class LastLoginAPIView(ListAPIView):
     permission_classes = [APIClientPermission]
     authentication_classes = []
     serializer_class = LastLoginSerializer
-    queryset = User.objects
+
+    def get_queryset(self):
+        """Excludes users who are currently logged in"""
+        active_sessions = Session.objects.filter(
+            expire_date__gte=timezone.now())
+
+        active_user_ids = []
+        for session in active_sessions:
+            data = session.get_decoded()
+            active_user_ids.append(data.get('_auth_user_id', None))
+
+        return User.objects.exclude(id__in=active_user_ids)
