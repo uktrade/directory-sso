@@ -1,0 +1,59 @@
+{% load static from staticfiles %}
+{% load external_url from constants_tags %}
+<footer role="contentinfo">
+  <div class="footer background--great-blue soft--top">
+      <div class="outer-container">
+        <div class="footer-section">
+          <div class="col-8">
+            <a href="https://www.exportingisgreat.gov.uk/" title="Go to the Exporting is Great homepage">
+              <img src="{% static 'images/EiG-logo-stacked.svg' %}" alt="Exporting is Great logo" class="footer-logo">
+            </a>
+          </div>
+
+          <div class="col-4">
+            <ul class="footer-links footer-links--border">
+              <li class="push-half--bottom"><a href="{% external_url 'new_to_exporting' %}" title="New to exporting">New to exporting</a></li>
+              <li class="push-half--bottom"><a href="{% external_url 'occasional_exporter' %}" title="Occasional exporter">Occasional exporter</a></li>
+              <li><a href="{% external_url 'regular_exporter' %}" title="Regular exporter">Regular exporter</a></li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="footer-section footer-section-right">
+
+          <div class="col-6">
+            <ul class="footer-links footer-middle-section">
+              <li class="push-half--bottom"><a href="{% external_url 'export_opportunities' %}" title="Export opportunities">Export opportunities</a></li>
+              <li class="push-half--bottom"><a href="{% external_url 'find_a_buyer' %}" title="Find a buyer">Find a buyer</a></li>
+              <li class="push-half--bottom"><a href="{% external_url 'selling_online_overseas' %}" title="Selling online overseas">Selling online overseas</a></li>
+              <li class="push-half--bottom"><a href="" title="UK Export Finance">UK Export Finance</a></li>
+              <li class=""><a href="{% external_url 'events' %}" title="Exporting Events">Exporting Events</a></li>
+            </ul>
+          </div>
+
+          <div class="col-6">
+            <ul class="footer-links footer-links--border">
+              <li class="push-half--bottom"><a href="{% external_url 'about' %}" title="About">About</a></li>
+              <li class="push-half--bottom"><a href="{% external_url 'contact_sso' %}" title="">Contact us</a></li>
+              <li class="push-half--bottom"><a href="{% external_url 'privacy' %}" title="Privacy and Cookies">Privacy &amp; cookies</a></li>
+              <li class="push-half--bottom"><a href="{% external_url 'terms' %}" title="Terms and conditions">Terms &amp; conditions</a></li>
+              <li><a href="{% external_url 'DIT' %}" title="Department for International Trade">Department for International Trade</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="outer-container">
+        <div class="footer-bottom">
+          <div class="navigation-strip">
+            <ul class="list-inline list-separators">
+              <li class="float--left soft--right"><a class="" href="https://www.gov.uk/" title="hm government"><img src="{% static 'images/hm-gov-horizontal.svg' %}"></a></li>
+              <li class="float--left soft--left footer-links--border"><a class="link--grey"  href="https://www.exportingisgreat.gov.uk/" title="part of great.gov.uk">Part of <strong>Great.gov.uk</strong></a></li>
+            </ul>
+          </div>
+          <div class="footer-copy font-light-grey font-xsmall">
+            <p>&copy; Crown copyright {% now "Y" %}. All rights reserved.</p>
+          </div>
+        </div>
+      </div>
+  </div>
+</footer>
