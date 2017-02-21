@@ -34,76 +34,25 @@
                 }
             </style>
         </noscript>
+        <style type="text/css">
+            {% if not features.FEATURE_NEW_HEADER_FOOTER_ENABLED %}
+                .outer-container {
+                    max-width: 960px;
+                }
+            {% endif %}
+        </style>
     </head>
 
 
     <body>
         {% include 'google_tag_manager_body.html' %}
-        <header role="banner">
-          <div class="navigation">
-            <div class="navigation-strip background--dark-navy">
-              <div class="outer-container">
-                <ul class="list-inline list-separators">
-                  <li class="float--left soft--right"><a class="logo-hmg" href="https://www.gov.uk/" title="hm government"><img src="{% static 'images/hm-gov-horizontal.svg' %}"></a></li>
-                  <li class="float--left soft--left"><a class="link--grey" href="https://www.exportingisgreat.gov.uk/" title="part of great.gov.uk">Part of <strong>Great.gov.uk</strong></a></li>
-                </ul>
-                <ul class="list-inline list-separators float--right">
-                  {% if not request.user.is_authenticated %}
-                      <li class="float--left soft--right"><a href="{{ sso_login_url }}" target="_self" title="Login" class="link--grey">Login</a></li>
-                  {% else %}
-                      <li class="float--left soft--left"><a href="{{ sso_logout_url }}" target="_self" title="Logout" class="link--grey">Logout</a></li>
-                  {% endif %}
-                </ul>
-              </div>
-            </div>
-            <div class="background--great-blue">
-              <div class="outer-container">
-                <a href="https://www.exportingisgreat.gov.uk" title="Go to the Exporting is great homepage" class="navigation-logo-link float--left">
-                  <img src="{% static 'images/EiG_logo_horizontal.svg' %}" alt="Exporting is great logo" class="navigation-logo">
-                </a>
-              </div>
-            </div>
-            <div class="navigation-main background--dark-blue">
-              <div class="navigation-main-section outer-container">
-                <nav>
-                  <ul class="list-inline list-separators navigation-main-menu">
-                    <li><a title="new to exporting" href="https://www.exportingisgreat.gov.uk/new/" class="navigation-main-link navigation-main-link--primary background--light-blue font-regular">New to exporting</a></li>
-                    <li><a title="occasional exporter" href="https://www.exportingisgreat.gov.uk/occasional/" class="navigation-main-link navigation-main-link--primary background--light-blue font-regular">Occasional exporter</a></li>
-                    <li><a title="regular exporter" href="https://www.exportingisgreat.gov.uk/regular/" class="navigation-main-link navigation-main-link--primary background--light-blue font-regular">Regular exporter</a></li>
-                    <li><a href="https://www.exportingisgreat.gov.uk/opportunities" title="Export opportunities" class="navigation-main-link navigation-main-link--secondary">Export opportunities</a></li>
-                    <li><a href="http://find-a-buyer.export.great.gov.uk/" title="Find a buyer" class="navigation-main-link navigation-main-link--secondary navigation-main-link--active">Find a buyer</a></li>
-                    <li><a href="https://selling-online-overseas.export.great.gov.uk/markets/" title="Selling online overseas" class="navigation-main-link navigation-main-link--secondary">Selling online overseas</a></li>
-                    <li><a href="" title="UK Export Finance" class="navigation-main-link navigation-main-link--secondary">UK Export Finance</a></li>
-                    <li><a href="https://events.trade.gov.uk/" title="Export Events" class="navigation-main-link navigation-main-link--secondary">Export events</a></li>
-                  </ul>
-                </nav>
-                <a class="button navigation-main-button font-white" title="" href=""><i class="icon icon-menu"></i>All</a>
-              </div>
-              <div class="navigation-toggle background--dark-navy">
-                <div class="outer-container">
-                  <ul class="col-3">
-                    <li class="navigation-toggle-item navigation-toggle-services"><a title="new to exporting" href="https://www.exportingisgreat.gov.uk/new/">New to exporting</a></li>
-                    <li class="navigation-toggle-item navigation-toggle-services"><a title="occasional exporter" href="https://www.exportingisgreat.gov.uk/occasional/">Occasional exporter</a></li>
-                    <li class="navigation-toggle-item navigation-toggle-services"><a title="regular exporter" href="https://www.exportingisgreat.gov.uk/regular/" class="last">Regular exporter</a></li>
-                  </ul>
-                  <ul class="col-3 navigation-toggle-middle">
-                    <li class="navigation-toggle-item"><a href="https://www.exportingisgreat.gov.uk/opportunities" title="Export opportunities">Export opportunities</a></li>
-                    <li class="navigation-toggle-item"><a href="http://find-a-buyer.export.great.gov.uk/" title="Find a buyer" class="navigation-toggle-active">Find a buyer</a></li>
-                    <li class="navigation-toggle-item"><a href="https://selling-online-overseas.export.great.gov.uk/markets/" title="Selling online overseas">Selling online overseas</a></li>
-                  </ul>
-                  <ul class="col-3 navigation-toggle-middle">
-                    <li class="navigation-toggle-item"><a href="" title="UK Export Finance">UK Export Finance</a></li>
-                    <li class="navigation-toggle-item"><a href="https://events.trade.gov.uk/" title="Export Events">Export events</a></li>
-                  </ul>
-                  <ul class="col-3 navigation-toggle-middle">
-                    <li class="navigation-toggle-item"><a href="https://www.exportingisgreat.gov.uk/about/" title="About">About</a></li>
-                    <li class="navigation-toggle-item"><a href="https://contact-us.export.great.gov.uk/selling_online_overseas" title="Contact us" class="last">Contact us</a></li>
-                  </ul>
-                </div>
-              </div>
-            </div>
-          </div>
-        </header>
+
+        {% if features.FEATURE_NEW_HEADER_FOOTER_ENABLED %}
+            {% include 'header.html' %}
+        {% else %}
+            {% include 'header_old.html' %}
+        {% endif %}
+
         <div id="content" class="sso-content outer-container">
           <div class="span6">
             {% block body %}
@@ -126,63 +75,12 @@
             {% endblock %}
         </div>
 
-        <footer role="contentinfo">
-            <div class="footer background--great-blue soft--top">
-                <div class="outer-container">
-                  <div class="footer-section">
-                    <div class="col-8">
-                      <a href="https://www.exportingisgreat.gov.uk/" title="Go to the Exporting is Great homepage">
-                        <img src="{% static 'images/EiG-logo-stacked.svg' %}" alt="Exporting is Great logo" class="footer-logo">
-                      </a>
-                    </div>
+        {% if features.FEATURE_NEW_HEADER_FOOTER_ENABLED %}
+            {% include 'footer.html' %}
+        {% else %}
+            {% include 'footer_old.html' %}
+        {% endif %}
 
-                    <div class="col-4">
-                      <ul class="footer-links footer-links--border">
-                        <li class="push-half--bottom"><a href="{% external_url 'new_to_exporting' %}" title="New to exporting">New to exporting</a></li>
-                        <li class="push-half--bottom"><a href="{% external_url 'occasional_exporter' %}" title="Occasional exporter">Occasional exporter</a></li>
-                        <li><a href="{% external_url 'regular_exporter' %}" title="Regular exporter">Regular exporter</a></li>
-                      </ul>
-                    </div>
-                  </div>
-
-                  <div class="footer-section footer-section-right">
-
-                    <div class="col-6">
-                      <ul class="footer-links footer-middle-section">
-                        <li class="push-half--bottom"><a href="{% external_url 'export_opportunities' %}" title="Export opportunities">Export opportunities</a></li>
-                        <li class="push-half--bottom"><a href="{% external_url 'find_a_buyer' %}" title="Find a buyer">Find a buyer</a></li>
-                        <li class="push-half--bottom"><a href="{% external_url 'selling_online_overseas' %}" title="Selling online overseas">Selling online overseas</a></li>
-                        <li class="push-half--bottom"><a href="" title="UK Export Finance">UK Export Finance</a></li>
-                        <li class=""><a href="{% external_url 'events' %}" title="Exporting Events">Exporting Events</a></li>
-                      </ul>
-                    </div>
-
-                    <div class="col-6">
-                      <ul class="footer-links footer-links--border">
-                        <li class="push-half--bottom"><a href="{% external_url 'about' %}" title="About">About</a></li>
-                        <li class="push-half--bottom"><a href="{% external_url 'contact_sso' %}" title="">Contact us</a></li>
-                        <li class="push-half--bottom"><a href="{% external_url 'privacy' %}" title="Privacy and Cookies">Privacy &amp; cookies</a></li>
-                        <li class="push-half--bottom"><a href="{% external_url 'terms' %}" title="Terms and conditions">Terms &amp; conditions</a></li>
-                        <li><a href="{% external_url 'DIT' %}" title="Department for International Trade">Department for International Trade</a></li>
-                      </ul>
-                    </div>
-                  </div>
-                </div>
-                <div class="outer-container">
-                  <div class="footer-bottom">
-                    <div class="navigation-strip">
-                      <ul class="list-inline list-separators">
-                        <li class="float--left soft--right"><a class="" href="https://www.gov.uk/" title="hm government"><img src="{% static 'images/hm-gov-horizontal.svg' %}"></a></li>
-                        <li class="float--left soft--left footer-links--border"><a class="link--grey"  href="https://www.exportingisgreat.gov.uk/" title="part of great.gov.uk">Part of <strong>Great.gov.uk</strong></a></li>
-                      </ul>
-                    </div>
-                    <div class="footer-copy font-light-grey font-xsmall">
-                      <p>&copy; Crown copyright {% now "Y" %}. All rights reserved.</p>
-                    </div>
-                  </div>
-                </div>
-            </div>
-          </footer>
         <script src="{% static 'Dit-Pattern-Styling/public/js/jquery.js' %}"></script>
         <!--[if IE 8]><script src="{% static 'Dit-Pattern-Styling/public/js/ie8.js' }"></script><![endif]-->
         <!--[if IE 8]><script type="text/javascript" src="js/selectivizr.js"></script><![endif]-->
