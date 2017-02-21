@@ -32,13 +32,25 @@ class LastLoginAPIView(ListAPIView):
     serializer_class = LastLoginSerializer
 
     def get_queryset(self):
-        """Excludes users who are currently logged in"""
+        """
+        Excludes users who are currently logged in.
+        Filters based on GET params (start/end for last_login field).
+
+        """
         active_sessions = Session.objects.filter(
             expire_date__gte=timezone.now())
-
         active_user_ids = []
         for session in active_sessions:
             data = session.get_decoded()
             active_user_ids.append(data.get('_auth_user_id', None))
 
-        return User.objects.exclude(id__in=active_user_ids)
+        start_date = self.request.query_params.get('start', None)
+        end_date = self.request.query_params.get('end', None)
+
+        users = User.objects.exclude(id__in=active_user_ids)
+        if start_date:
+            users = users.filter(last_login__gte=start_date)
+        if end_date:
+            users = users.filter(last_login__lte=end_date)
+
+        return users

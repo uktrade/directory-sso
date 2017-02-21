@@ -1,3 +1,4 @@
+from datetime import date
 from unittest import mock
 
 from django.core.urlresolvers import reverse
@@ -89,6 +90,40 @@ def test_get_last_login():
         {
             'id': users[4].id,
             'last_login': users[4].last_login.strftime(date_format)
+        },
+    ]
+    assert response.json() == expected
+
+
+@pytest.mark.django_db
+def test_get_last_login_with_params():
+    user1 = UserFactory(last_login=date(2016, 12, 25))
+    user2 = UserFactory(last_login=date(2017, 1, 1))
+    user3 = UserFactory(last_login=date(2016, 12, 26))
+    # outside of filtered params, should not be in response
+    UserFactory(last_login=date(2016, 12, 24))
+    UserFactory(last_login=date(2017, 1, 2))
+    setup_data()  # creates active user that should not be in response
+    client = APIClient()
+
+    with mock.patch('sso.api.permissions.APIClientPermission.has_permission'):
+        response = client.get(reverse('last-login'),
+                              {'start': '2016-12-25', 'end': '2017-01-01'})
+
+    assert response.status_code == status.HTTP_200_OK
+    date_format = '%Y-%m-%dT%H:%M:%SZ'
+    expected = [
+        {
+            'id': user1.id,
+            'last_login': user1.last_login.strftime(date_format)
+        },
+        {
+            'id': user2.id,
+            'last_login': user2.last_login.strftime(date_format)
+        },
+        {
+            'id': user3.id,
+            'last_login': user3.last_login.strftime(date_format)
         },
     ]
     assert response.json() == expected
