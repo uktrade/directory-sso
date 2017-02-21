@@ -74,6 +74,7 @@ TEMPLATES = [
                 'django.contrib.auth.context_processors.auth',
                 'sso.user.context_processors.redirect_next_processor',
                 'sso.context_processors.analytics',
+                'sso.context_processors.feature_flags',
             ],
             'loaders': [
                 'django.template.loaders.filesystem.Loader',
@@ -336,3 +337,7 @@ SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
 # Google tag manager
 UTM_COOKIE_DOMAIN = os.environ['UTM_COOKIE_DOMAIN']
+
+FEATURE_NEW_HEADER_FOOTER_ENABLED = (
+    os.getenv('FEATURE_NEW_HEADER_FOOTER_ENABLED') == 'true'
+)

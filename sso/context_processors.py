@@ -7,3 +7,13 @@ def analytics(request):
             'UTM_COOKIE_DOMAIN': settings.UTM_COOKIE_DOMAIN,
         }
     }
+
+
+def feature_flags(request):
+    return {
+        'features': {
+            'FEATURE_NEW_HEADER_FOOTER_ENABLED': (
+                settings.FEATURE_NEW_HEADER_FOOTER_ENABLED
+            ),
+        }
+    }
