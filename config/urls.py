@@ -14,7 +14,7 @@ from sso.user.views import (
 )
 from sso.healthcheck.views import HealthCheckAPIView
 from sso.oauth2.views_user import UserRetrieveAPIView
-from sso.api.views_user import SessionUserAPIView
+from sso.api.views_user import SessionUserAPIView, LastLoginAPIView
 
 
 admin.autodiscover()
@@ -113,6 +113,11 @@ api_urlpatterns = [
         r'^session-user/$',
         SessionUserAPIView.as_view(),
         name='session-user'
+    ),
+    url(
+        r'^last-login/$',
+        LastLoginAPIView.as_view(),
+        name='last-login'
     ),
 ]
 
