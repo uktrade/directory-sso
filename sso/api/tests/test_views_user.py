@@ -69,6 +69,7 @@ def test_get_last_login():
         response = client.get(reverse('last-login'))
 
     assert response.status_code == status.HTTP_200_OK
+    assert len(response.json()) == 5
     date_format = '%Y-%m-%dT%H:%M:%S.%fZ'
     expected = [
         {
@@ -111,6 +112,7 @@ def test_get_last_login_with_params():
                               {'start': '2016-12-25', 'end': '2017-01-01'})
 
     assert response.status_code == status.HTTP_200_OK
+    assert len(response.json()) == 3
     date_format = '%Y-%m-%dT%H:%M:%SZ'
     expected = [
         {
@@ -127,3 +129,18 @@ def test_get_last_login_with_params():
         },
     ]
     assert response.json() == expected
+
+
+@pytest.mark.django_db
+def test_get_last_login_with_invalid_date_params(client):
+    UserFactory(last_login=date(2016, 12, 25))
+    UserFactory(last_login=date(2017, 1, 1))
+    UserFactory(last_login=date(2016, 12, 26))
+    setup_data()
+
+    with mock.patch('sso.api.permissions.APIClientPermission.has_permission'):
+        response = client.get(reverse('last-login'),
+                              {'start': '2016-A-25', 'end': '2017-B-01'})
+
+    assert response.status_code == status.HTTP_200_OK
+    assert len(response.json()) == 0
