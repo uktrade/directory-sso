@@ -1,7 +1,12 @@
-from django.contrib.sessions.models import Session
+import http
 
 from rest_framework.generics import (
-    RetrieveAPIView, get_object_or_404, ListAPIView)
+    RetrieveAPIView, get_object_or_404, ListAPIView
+)
+from rest_framework.response import Response
+
+from django.contrib.sessions.models import Session
+from django.core.exceptions import ValidationError
 
 from sso.api import filters
 from sso.api.permissions import APIClientPermission
@@ -32,3 +37,8 @@ class LastLoginAPIView(ListAPIView):
     permission_classes = [APIClientPermission]
     queryset = User.objects.exclude(last_login__isnull=True)
     serializer_class = LastLoginSerializer
+
+    def handle_exception(self, exception):
+        if isinstance(exception, ValidationError):
+            return Response(exception.message_dict, http.client.BAD_REQUEST)
+        return super().handle_exception(exception)
