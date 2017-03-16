@@ -1,5 +1,6 @@
 from datetime import date
 from unittest import mock
+from unittest.mock import Mock
 
 from django.core.urlresolvers import reverse
 from django.test.client import Client
@@ -28,16 +29,16 @@ def setup_data():
 
 
 @pytest.mark.django_db
+@mock.patch('sso.api.permissions.APIClientPermission.has_permission', Mock)
 def test_get_session_user_valid_api_key():
     user, user_session = setup_data()
 
     client = APIClient()
 
-    with mock.patch('sso.api.permissions.APIClientPermission.has_permission'):
-        response = client.get(
-            reverse('session-user'),
-            data={"session_key": user_session._session_key},
-        )
+    response = client.get(
+        reverse('session-user'),
+        data={"session_key": user_session._session_key},
+    )
 
     assert response.status_code == status.HTTP_200_OK
     assert response.data['email'] == user.email
@@ -45,30 +46,30 @@ def test_get_session_user_valid_api_key():
 
 
 @pytest.mark.django_db
+@mock.patch('sso.api.permissions.APIClientPermission.has_permission', Mock)
 def test_get_session_user_valid_api_key_no_user():
     user, user_session = setup_data()
 
     client = APIClient()
 
-    with mock.patch('sso.api.permissions.APIClientPermission.has_permission'):
-        response = client.get(
-            reverse('session-user'),
-            data={"session_key": 'non-existent'},
-        )
+    response = client.get(
+        reverse('session-user'), data={"session_key": 'non-existent'},
+    )
 
     assert response.status_code == status.HTTP_404_NOT_FOUND
 
 
 @pytest.mark.django_db
+@mock.patch('sso.api.permissions.APIClientPermission.has_permission', Mock)
 def test_get_last_login():
     users = UserFactory.create_batch(5)
     setup_data()  # creates active user that should not be in response
     client = APIClient()
 
-    with mock.patch('sso.api.permissions.APIClientPermission.has_permission'):
-        response = client.get(reverse('last-login'))
+    response = client.get(reverse('last-login'))
 
     assert response.status_code == status.HTTP_200_OK
+    assert len(response.json()) == 5
     date_format = '%Y-%m-%dT%H:%M:%S.%fZ'
     expected = [
         {
@@ -96,6 +97,7 @@ def test_get_last_login():
 
 
 @pytest.mark.django_db
+@mock.patch('sso.api.permissions.APIClientPermission.has_permission', Mock)
 def test_get_last_login_with_params():
     user1 = UserFactory(last_login=date(2016, 12, 25))
     user2 = UserFactory(last_login=date(2017, 1, 1))
@@ -106,11 +108,12 @@ def test_get_last_login_with_params():
     setup_data()  # creates active user that should not be in response
     client = APIClient()
 
-    with mock.patch('sso.api.permissions.APIClientPermission.has_permission'):
-        response = client.get(reverse('last-login'),
-                              {'start': '2016-12-25', 'end': '2017-01-01'})
+    response = client.get(
+        reverse('last-login'), {'start': '2016-12-25', 'end': '2017-01-01'}
+    )
 
     assert response.status_code == status.HTTP_200_OK
+    assert len(response.json()) == 3
     date_format = '%Y-%m-%dT%H:%M:%SZ'
     expected = [
         {
@@ -127,3 +130,27 @@ def test_get_last_login_with_params():
         },
     ]
     assert response.json() == expected
+
+
+@pytest.mark.django_db
+@mock.patch('sso.api.permissions.APIClientPermission.has_permission', Mock)
+def test_get_last_login_with_invalid_date_params(client, settings):
+    UserFactory(last_login=date(2016, 12, 25))
+    UserFactory(last_login=date(2017, 1, 1))
+    UserFactory(last_login=date(2016, 12, 26))
+    setup_data()
+
+    response = client.get(
+        reverse('last-login'), {'start': '2016-A-25', 'end': '2017-B-01'}
+    )
+
+    format_error = (
+        'Invalid date format. Expected %Y-%m-%d, %m/%d/%Y, %m/%d/%y,'
+        ' %b %d %Y, %b %d, %Y, %d %b %Y, %d %b, %Y, %B %d %Y, %B %d, %Y,'
+        ' %d %B %Y, %d %B, %Y'
+    )
+    expected_errors = {
+        'end': [format_error],
+        'start': [format_error]
+    }
+    assert response.json() == expected_errors
