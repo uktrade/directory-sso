@@ -304,12 +304,6 @@ textarea {
     font-family: 'Roboto', sans-serif
 }
 
-.input-field-container input:focus,
-.input-field-container select:focus,
-.input-field-container textarea:focus {
-    border: 3px solid #007EA3
-}
-
 .input-field-container input[type='checkbox'] {
     height: 14px;
     width: 14px
@@ -405,7 +399,6 @@ input[type="submit"], button {
 }
 input[type="submit"], button:focus {
   background: #007EA3;
-  outline: 0;
 }
 
 
