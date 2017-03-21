@@ -8,17 +8,17 @@ from sso.user import models
 class LastLoginFilter(django_filters.rest_framework.FilterSet):
     error_messages = {
         'invalid': 'Invalid date format. Expected {0}'.format(
-            ', '.join(settings.DATE_INPUT_FORMATS)
+            ', '.join(settings.DATETIME_INPUT_FORMATS)
         )
     }
 
-    start = django_filters.DateFilter(
+    start = django_filters.DateTimeFilter(
         name='last_login', lookup_expr='gte', error_messages=error_messages,
-        input_formats=settings.DATE_INPUT_FORMATS,
+        input_formats=settings.DATETIME_INPUT_FORMATS,
     )
-    end = django_filters.DateFilter(
+    end = django_filters.DateTimeFilter(
         name='last_login', lookup_expr='lte', error_messages=error_messages,
-        input_formats=settings.DATE_INPUT_FORMATS,
+        input_formats=settings.DATETIME_INPUT_FORMATS,
     )
 
     class Meta:
