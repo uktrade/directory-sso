@@ -153,4 +153,5 @@ def test_get_last_login_with_invalid_date_params(client, settings):
         'end': [format_error],
         'start': [format_error]
     }
+    assert response.status_code == status.HTTP_400_BAD_REQUEST
     assert response.json() == expected_errors
