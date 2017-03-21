@@ -1,5 +1,3 @@
-import http
-
 from rest_framework.generics import (
     RetrieveAPIView, get_object_or_404, ListAPIView
 )
