@@ -1,9 +1,8 @@
-import http
-
 from rest_framework.generics import (
     RetrieveAPIView, get_object_or_404, ListAPIView
 )
 from rest_framework.response import Response
+from rest_framework import status
 
 from django.contrib.sessions.models import Session
 from django.core.exceptions import ValidationError
@@ -40,5 +39,7 @@ class LastLoginAPIView(ListAPIView):
 
     def handle_exception(self, exception):
         if isinstance(exception, ValidationError):
-            return Response(exception.message_dict, http.client.BAD_REQUEST)
+            return Response(
+                exception.message_dict, status=status.HTTP_400_BAD_REQUEST
+            )
         return super().handle_exception(exception)
