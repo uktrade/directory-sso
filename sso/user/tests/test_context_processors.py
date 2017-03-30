@@ -1,3 +1,5 @@
+from unittest.mock import Mock
+
 import pytest
 
 from sso.user import context_processors
@@ -5,12 +7,16 @@ from sso.user import context_processors
 
 @pytest.fixture
 def request_with_next(rf):
-    return rf.get('/', {'next': 'http://www.example.com'})
+    request = rf.get('/', {'next': 'http://www.example.com'})
+    request.user = Mock(is_authenticated=Mock(return_value=True))
+    return request
 
 
 @pytest.fixture
 def request_without_next(rf):
-    return rf.get('/')
+    request = rf.get('/')
+    request.user = Mock(is_authenticated=Mock(return_value=True))
+    return request
 
 
 def test_redirect_next_processor_installed(settings):
