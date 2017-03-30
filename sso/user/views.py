@@ -65,6 +65,7 @@ def response_with_sso_display_logged_in_cookie(response, value):
             'sso_display_logged_in',
             value=value,
             domain=settings.SESSION_COOKIE_DOMAIN,
+            max_age=settings.SESSION_COOKIE_AGE,
             secure=False,
             httponly=False
         )
