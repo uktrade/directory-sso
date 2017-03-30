@@ -768,3 +768,48 @@ def test_signup_saves_utm(
 
     user = User.objects.last()
     assert user.utm == ed_utm_cookie_value
+
+
+@pytest.mark.django_db
+def test_login_response_with_sso_display_logged_in_cookie(
+    client, verified_user
+):
+    response = client.post(
+        reverse('account_login'),
+        {'login': verified_user.email, 'password': 'password'}
+    )
+
+    assert response.cookies['sso_display_logged_in'].value == 'true'
+
+
+@pytest.mark.django_db
+def test_logout_response_with_sso_display_logged_in_cookie(
+    authed_client
+):
+    response = authed_client.post(reverse('account_logout'))
+
+    assert response.cookies['sso_display_logged_in'].value == 'false'
+
+
+@pytest.mark.django_db
+def test_confirm_email_login_response_with_sso_display_logged_in_cookie(
+    client, email_confirmation
+):
+
+    client.post(
+        reverse('account_signup'),
+        data={
+            'email': 'jim@example.com',
+            'email2': 'jim@example.com',
+            'terms_agreed': True,
+            'password1': '*' * 10,
+            'password2': '*' * 10,
+        }
+    )
+
+    message = mail.outbox[0]
+    body = message.body
+    url = body[body.find('/accounts/confirm-email/'):].split()[0]
+    response = client.get(url)
+
+    assert response.cookies['sso_display_logged_in'].value == 'true'

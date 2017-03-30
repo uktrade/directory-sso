@@ -59,16 +59,44 @@ class SignupView(RedirectToNextMixin, allauth_views.SignupView):
                 return exc.response
 
 
+def response_with_sso_display_logged_in_cookie(response, value):
+    if isinstance(response, HttpResponseRedirect):
+        response.set_cookie(
+            'sso_display_logged_in',
+            value=value,
+            domain=settings.SESSION_COOKIE_DOMAIN,
+            secure=False,
+            httponly=False
+        )
+
+    return response
+
+
 class LoginView(RedirectToNextMixin, allauth_views.LoginView):
-    pass
+
+    def form_valid(self, form):
+        return response_with_sso_display_logged_in_cookie(
+            response=super().form_valid(form),
+            value='true'
+        )
 
 
 class LogoutView(RedirectToNextMixin, allauth_views.LogoutView):
-    pass
+
+    def post(self, *args, **kwargs):
+        return response_with_sso_display_logged_in_cookie(
+            response=super().post(*args, **kwargs),
+            value='false'
+        )
 
 
 class ConfirmEmailView(RedirectToNextMixin, allauth_views.ConfirmEmailView):
-    pass
+
+    def login_on_confirm(self, confirmation):
+        return response_with_sso_display_logged_in_cookie(
+            response=super().login_on_confirm(confirmation),
+            value='true'
+        )
 
 
 class PasswordResetFromKeyView(
