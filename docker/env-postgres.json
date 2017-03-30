@@ -5,9 +5,7 @@
     "required": [
       "POSTGRES_DB",
       "POSTGRES_USER",
-      "POSTGRES_PASSWORD",
-      "LOGOUT_REDIRECT_URL",
-      "REDIRECT_FIELD_NAME"
+      "POSTGRES_PASSWORD"
     ],
     "optional": []
   }

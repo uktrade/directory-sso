@@ -7,7 +7,7 @@ clean:
 test_requirements:
 	pip install -r requirements_test.txt
 
-FLAKE8 := flake8 . --exclude=migrations
+FLAKE8 := flake8 . --exclude=migrations,.venv
 PYTEST := pytest . --cov=. $(pytest_args) --capture=no
 COLLECT_STATIC := python manage.py collectstatic --noinput
 
@@ -52,7 +52,8 @@ DOCKER_SET_DEBUG_ENV_VARS := \
 	export SSO_REDIRECT_FIELD_NAME=next; \
 	export SSO_ALLOWED_REDIRECT_DOMAINS=example.com,exportingisgreat.gov.uk,great.dev; \
 	export SSO_UTM_COOKIE_DOMAIN=.great.dev; \
-	export SSO_FEATURE_NEW_HEADER_FOOTER_ENABLED=true
+	export SSO_FEATURE_NEW_HEADER_FOOTER_ENABLED=true; \
+	export SSO_SSO_PROFILE_URL=http://profile.trade.great.dev:8006
 
 
 DOCKER_REMOVE_ALL := \
@@ -107,7 +108,8 @@ DEBUG_SET_ENV_VARS := \
 	export REDIRECT_FIELD_NAME=next; \
 	export ALLOWED_REDIRECT_DOMAINS=example.com,exportingisgreat.gov.uk,great.dev; \
 	export UTM_COOKIE_DOMAIN=.great.dev; \
-	export FEATURE_NEW_HEADER_FOOTER_ENABLED=true
+	export FEATURE_NEW_HEADER_FOOTER_ENABLED=true; \
+	export SSO_PROFILE_URL=http://profile.trade.great.dev:8006
 
 
 debug_webserver:

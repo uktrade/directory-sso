@@ -888,10 +888,6 @@ body #content .container .sorry h2 {
     margin-bottom: 40px
 }
 
-body.js-enabled .js-header-nav-menu.js-header-nav-menu-hide {
-    display: none
-}
-
 .header-nav-menu-toggle-button {
     color: white;
     font-weight: bold;
@@ -920,8 +916,4 @@ body.js-enabled .js-header-nav-menu.js-header-nav-menu-hide {
     .header-main-logo {
         width: 70%
     }
-}
-
-body.js-enabled .js-header-nav-menu.js-header-nav-menu-hide {
-    display: none;
 }
