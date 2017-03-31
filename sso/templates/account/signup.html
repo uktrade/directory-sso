@@ -5,11 +5,15 @@
 {% block head_title %}{% trans "Register" %}{% endblock %}
 
 {% block content %}
-<h1>{% trans "Register" %}</h1>
+<div id="profile-register-intro">
+	<h1>{% trans "Register" %}</h1>
 
-<p>If you already have an Exporting is GREAT account, please <a href="{{ sso_login_url }}">login</a>.</p>
-<p>Before you register, make sure you’re familiar with our guides for <a href="{% external_url 'new_to_exporting' %}" target="_blank">new</a>, <a href="{% external_url 'occasional_exporter' %}" target="_blank">occasional</a> and <a href="{% external_url 'regular_exporter' %}" target="_blank">regular</a> exporters.</p>
-
+	<p>Create an Exporting is Great account and you can:</p>
+	<ul>
+		<li>gain access to worldwide exporting opportunities</li>
+		<li>promote your business to international buyers</li>
+	</ul>
+</div>
 <form class="signup" id="signup_form" method="post" action="{% url 'account_signup' %}">
   {% csrf_token %}
   {{ form.as_p }}
