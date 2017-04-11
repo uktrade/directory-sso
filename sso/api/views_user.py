@@ -8,13 +8,13 @@ from django.contrib.sessions.models import Session
 from django.core.exceptions import ValidationError
 
 from sso.api import filters
-from sso.api.permissions import APIClientPermission
+from config.signature import SignatureCheckPermission
 from sso.user.serializers import UserSerializer, LastLoginSerializer
 from sso.user.models import User
 
 
 class SessionUserAPIView(RetrieveAPIView):
-    permission_classes = [APIClientPermission]
+    permission_classes = [SignatureCheckPermission]
     authentication_classes = []
     serializer_class = UserSerializer
     lookup_field = 'session_key'
@@ -33,7 +33,7 @@ class SessionUserAPIView(RetrieveAPIView):
 class LastLoginAPIView(ListAPIView):
     authentication_classes = []
     filter_class = filters.LastLoginFilter
-    permission_classes = [APIClientPermission]
+    permission_classes = [SignatureCheckPermission]
     queryset = User.objects.exclude(last_login__isnull=True)
     serializer_class = LastLoginSerializer
 

@@ -5,7 +5,8 @@ class SSODisplayLoggedInCookieMiddleware:
 
     def process_response(self, request, response):
         cookie_value = 'false'
-        if request.user and request.user.is_authenticated():
+        user = getattr(request, 'user', None)
+        if user and user.is_authenticated():
             cookie_value = 'true'
         response.set_cookie(
             'sso_display_logged_in',
