@@ -33,8 +33,6 @@ DOCKER_SET_DEBUG_ENV_VARS := \
 	export SSO_PORT=8003; \
 	export SSO_DEBUG=true; \
 	export SSO_SECRET_KEY=debug; \
-	export SSO_API_SIGNATURE_SECRET=api_signature_debug; \
-	export SSO_PROXY_SIGNATURE_SECRET=proxy_signature_debug; \
 	export SSO_POSTGRES_USER=debug; \
 	export SSO_POSTGRES_PASSWORD=debug; \
 	export SSO_POSTGRES_DB=sso_debug; \
@@ -53,6 +51,7 @@ DOCKER_SET_DEBUG_ENV_VARS := \
 	export SSO_ALLOWED_REDIRECT_DOMAINS=example.com,exportingisgreat.gov.uk,great.dev; \
 	export SSO_UTM_COOKIE_DOMAIN=.great.dev; \
 	export SSO_FEATURE_NEW_HEADER_FOOTER_ENABLED=true; \
+	export SSO_SIGNATURE_SECRET=signature_secret_debug; \
 	export SSO_SSO_PROFILE_URL=http://profile.trade.great.dev:8006
 
 
@@ -87,8 +86,7 @@ docker_test: docker_remove_all
 
 DEBUG_SET_ENV_VARS := \
 	export SECRET_KEY=debug; \
-	export API_SIGNATURE_SECRET=api_signature_debug; \
-	export PROXY_SIGNATURE_SECRET=proxy_signature_debug; \
+	export SIGNATURE_SECRET=signature_secret_debug; \
 	export PORT=8003; \
 	export DEBUG=true; \
 	export DB_NAME=sso_debug; \
