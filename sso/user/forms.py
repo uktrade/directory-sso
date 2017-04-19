@@ -14,6 +14,8 @@ class IndentedInvalidFieldsMixin:
 
 
 class SignupForm(IndentedInvalidFieldsMixin, forms.SignupForm):
+    PASSWORD_HELP_TEXT = 'Must contain at least 10 characters.'
+
     terms_agreed = BooleanField(
         label=mark_safe(
             'Tick this box to accept the '
@@ -37,6 +39,7 @@ class SignupForm(IndentedInvalidFieldsMixin, forms.SignupForm):
         self.fields['password1'].widget.attrs['autocomplete'] = 'new-password'
         self.fields['password2'].widget.attrs['autocomplete'] = 'new-password'
 
+        self.fields['password1'].help_text = self.PASSWORD_HELP_TEXT
         self.fields['password2'].label = 'Confirm password:'
         self.fields['email2'].label = 'Confirm email:'
         set_form_field_order(self, self.field_order)

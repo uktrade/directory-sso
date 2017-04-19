@@ -40,6 +40,7 @@ def test_signup_form_customization():
     form = forms.SignupForm()
 
     assert form.fields['password2'].label == 'Confirm password:'
+    assert form.fields['password1'].help_text == form.PASSWORD_HELP_TEXT
 
 
 def test_login_form_customization():
