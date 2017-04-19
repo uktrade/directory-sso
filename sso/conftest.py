@@ -1,14 +1,12 @@
-from unittest import mock
+from unittest.mock import patch
 
 import pytest
 
-from signature.utils import SignatureRejection
-
 
 @pytest.fixture(autouse=True)
-def mock_signature_rejection(monkeypatch):
-    monkeypatch.setattr(
-        SignatureRejection,
-        'test_signature',
-        mock.Mock(return_value=True)
-    )
+def mock_signature_checker():
+    mock_path = 'sigauth.utils.RequestSignatureChecker.test_signature'
+    patcher = patch(mock_path, return_value=True)
+    patcher.start()
+    yield
+    patcher.stop()

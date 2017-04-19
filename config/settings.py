@@ -34,7 +34,6 @@ INSTALLED_APPS = [
     'rest_framework',
     'django_filters',
     'corsheaders',
-    'signature',
     'sso',
     'sso.oauth2',
     'sso.user',
@@ -47,7 +46,7 @@ MIDDLEWARE_CLASSES = [
     'config.middleware.SSODisplayLoggedInCookieMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',
-    'signature.middleware.SignatureRejectionMiddleware',
+    'config.signature.SignatureCheckMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
@@ -325,11 +324,6 @@ for domain in ALLOWED_REDIRECT_DOMAINS:
 # Signature check
 PROXY_SIGNATURE_SECRET = os.environ['PROXY_SIGNATURE_SECRET']
 API_SIGNATURE_SECRET = os.environ['API_SIGNATURE_SECRET']
-
-SIGNATURE_HEADERS = {
-    PROXY_SIGNATURE_SECRET: 'HTTP_X_PROXY_SIGNATURE',
-    API_SIGNATURE_SECRET: 'HTTP_X_SIGNATURE',
-}
 
 URLS_EXCLUDED_FROM_SIGNATURE_CHECK = (
     '/api/v1/',
