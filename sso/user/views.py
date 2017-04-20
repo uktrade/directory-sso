@@ -7,9 +7,9 @@ from django.views.generic import RedirectView
 from allauth.account import views as allauth_views
 from allauth.account.utils import complete_signup
 import allauth.exceptions
-from furl import furl
 
-from sso.user.utils import get_redirect_url
+from sso.user.utils import get_redirect_url, UrlParser
+
 
 class RedirectToNextMixin:
 
@@ -67,39 +67,18 @@ class LogoutView(RedirectToNextMixin, allauth_views.LogoutView):
     pass
 
 
-from django.http.request import QueryDict
-from urllib.parse import urlparse, ParseResult, unquote, quote_plus
-def add_new_user_to_url(url):
-    parsed = urlparse(url)
-    querydict = QueryDict(parsed.query, mutable=True)
-    querydict['new-user'] = 'true'
-    return ParseResult(
-        scheme=parsed.scheme,
-        netloc=parsed.netloc,
-        path=parsed.path,
-        params=parsed.params,
-        query=querydict.urlencode(),
-        fragment=parsed.fragment
-    ).geturl()
-
-
 class ConfirmEmailView(RedirectToNextMixin, allauth_views.ConfirmEmailView):
     def get_redirect_url(self):
         url = super().get_redirect_url()
-        parsed = urlparse(url)
-        querydict = QueryDict(parsed.query, mutable=True)
-        if 'next' in querydict:
-            unquoted_url = unquote(querydict['next'])
-            querydict['next'] = add_new_user_to_url(unquoted_url)
-            url = ParseResult(
-                scheme=parsed.scheme,
-                netloc=parsed.netloc,
-                path=parsed.path,
-                params=parsed.params,
-                query=querydict.urlencode(),
-                fragment=parsed.fragment
-            ).geturl()
-        return url
+        parsed_url = UrlParser(url)
+        if 'next' in parsed_url.args:
+            parsed_next_url = UrlParser(parsed_url.args['next'])
+            parsed_next_url.args['new-user'] = 'true'
+            parsed_url.args['next'] = parsed_next_url.url
+        else:
+            parsed_url.args['new-user'] = 'true'
+        return parsed_url.url
+
 
 class PasswordResetFromKeyView(
     RedirectToNextMixin, allauth_views.PasswordResetFromKeyView

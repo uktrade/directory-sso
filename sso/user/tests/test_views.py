@@ -263,7 +263,7 @@ def test_confirm_email_redirect_next_param_if_next_param_valid(
 ):
     settings.DEFAULT_REDIRECT_URL = 'http://other.com'
     settings.ALLOWED_REDIRECT_DOMAINS = ['example.com', 'other.com']
-    expected = 'http://www.example.com'
+    expected = 'http://www.example.com?new-user=true'
     signup_url = '{url}?next={next}'.format(
         url=reverse('account_signup'), next=urllib.parse.quote(expected)
     )
@@ -294,7 +294,7 @@ def test_confirm_email_redirect_next_param_if_next_param_valid(
     next_url = response.get('Location')
 
     assert next_url == (
-        '/accounts/login/?next=http%3A%2F%2Fwww.example.com'
+        '/accounts/login/?next=http%3A%2F%2Fwww.example.com%3Fnew-user%3Dtrue'
     )
 
     response = client.get(next_url)
@@ -340,11 +340,11 @@ def test_confirm_email_redirect_next_param_if_next_param_invalid(
     next_url = response.get('Location')
 
     assert next_url == (
-        '/accounts/login/?next=http%3A%2F%2Fother.com'
+        '/accounts/login/?next=http%3A%2F%2Fother.com%3Fnew-user%3Dtrue'
     )
 
     response = client.get(next_url)
-    assert response.get('Location') == settings.DEFAULT_REDIRECT_URL
+    assert response.get('Location') == 'http://other.com?new-user=true'
 
 
 @pytest.mark.django_db
@@ -353,7 +353,7 @@ def test_confirm_email_redirect_next_param_if_next_param_internal(
 ):
     settings.DEFAULT_REDIRECT_URL = 'http://other.com'
     settings.ALLOWED_REDIRECT_DOMAINS = ['example.com', 'other.com']
-    expected = '/exporting/'
+    expected = '/exporting/?new-user=true'
     signup_url = reverse('account_signup') + "?next={}".format(expected)
 
     # signup with `next` param and send 'confirm email' email
@@ -385,7 +385,9 @@ def test_confirm_email_redirect_next_param_if_next_param_internal(
 
     next_url = response.get('Location')
 
-    assert next_url == '/accounts/login/?next=%2Fexporting%2F'
+    assert next_url == (
+        '/accounts/login/?next=%2Fexporting%2F%3Fnew-user%3Dtrue'
+    )
 
     response = client.get(next_url)
     assert response.get('Location') == expected
@@ -637,7 +639,7 @@ def test_confirm_email_redirect_next_param_oath2(
         '%3Daisudhgfg943287895as%26redirect_uri%3Dhttps%253A%252F%252F'
         'uktieig-secondary.staging.dxw.net%252Fusers%252Fauth%252F'
         'exporting_is_great%252Fcallback%26response_type%3Dcode'
-        '%26scope%3Dprofile%26state%3D23947asdoih4380'
+        '%26scope%3Dprofile%26state%3D23947asdoih4380%26new-user%3Dtrue'
     )
 
     response = client.get(next_url)
@@ -645,7 +647,7 @@ def test_confirm_email_redirect_next_param_oath2(
         '/oauth2/authorize/?client_id=aisudhgfg943287895as&redirect_uri'
         '=https%3A%2F%2Fuktieig-secondary.staging.dxw.net%2Fusers%2Fauth'
         '%2Fexporting_is_great%2Fcallback&response_type=code&scope=profile'
-        '&state=23947asdoih4380'
+        '&state=23947asdoih4380&new-user=true'
     )
 
 
@@ -681,11 +683,14 @@ def test_confirm_email_redirect_next_param(
     next_url = response.get('Location')
 
     assert next_url == (
-        '/accounts/login/?next=http%3A%2F%2Fwww.test.example.com%2Fregister%3Fnew-user%3Dtrue'
+        '/accounts/login/?next=http%3A%2F%2Fwww.test.example.com%2Fregister'
+        '%3Fnew-user%3Dtrue'
     )
 
     response = client.get(next_url)
-    assert response.get('Location') == 'http://www.test.example.com/register?new-user=true'
+    assert response.get('Location') == (
+        'http://www.test.example.com/register?new-user=true'
+    )
 
 
 @pytest.mark.django_db
