@@ -418,7 +418,9 @@ def test_confirm_email_redirect_default_param_if_no_next_param(
     assert url in txt
     assert url in html
     assert response.status_code == http.client.FOUND
-    assert response.get('Location') == settings.DEFAULT_REDIRECT_URL
+    assert response.get('Location') == (
+        'https://find-a-buyer.export.great.gov.uk/?new-user=true'
+    )
 
 
 @pytest.mark.django_db
@@ -679,11 +681,11 @@ def test_confirm_email_redirect_next_param(
     next_url = response.get('Location')
 
     assert next_url == (
-        '/accounts/login/?next=http%3A%2F%2Fwww.test.example.com%2Fregister'
+        '/accounts/login/?next=http%3A%2F%2Fwww.test.example.com%2Fregister%3Fnew-user%3Dtrue'
     )
 
     response = client.get(next_url)
-    assert response.get('Location') == 'http://www.test.example.com/register'
+    assert response.get('Location') == 'http://www.test.example.com/register?new-user=true'
 
 
 @pytest.mark.django_db

@@ -8,7 +8,7 @@ test_requirements:
 	pip install -r requirements_test.txt
 
 FLAKE8 := flake8 . --exclude=migrations,.venv
-PYTEST := pytest . --cov=. $(pytest_args) --capture=no
+PYTEST := pytest /home/richtier/workspace/directory-sso/sso/user/tests/test_views.py::test_confirm_email_redirect_next_param $(pytest_args) --capture=no
 COLLECT_STATIC := python manage.py collectstatic --noinput
 
 test:
@@ -51,7 +51,7 @@ DOCKER_SET_DEBUG_ENV_VARS := \
 	export SSO_ALLOWED_REDIRECT_DOMAINS=example.com,exportingisgreat.gov.uk,great.dev; \
 	export SSO_UTM_COOKIE_DOMAIN=.great.dev; \
 	export SSO_FEATURE_NEW_HEADER_FOOTER_ENABLED=true; \
-	export SSO_SIGNATURE_SECRET=signature_secret_debug; \
+	export SSO_SIGNATURE_SECRET=api_signature_debug; \
 	export SSO_SSO_PROFILE_URL=http://profile.trade.great.dev:8006
 
 
@@ -86,7 +86,7 @@ docker_test: docker_remove_all
 
 DEBUG_SET_ENV_VARS := \
 	export SECRET_KEY=debug; \
-	export SIGNATURE_SECRET=signature_secret_debug; \
+	export SIGNATURE_SECRET=api_signature_debug; \
 	export PORT=8003; \
 	export DEBUG=true; \
 	export DB_NAME=sso_debug; \
