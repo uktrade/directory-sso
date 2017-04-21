@@ -86,7 +86,7 @@ docker_test: docker_remove_all
 
 DEBUG_SET_ENV_VARS := \
 	export SECRET_KEY=debug; \
-	export SIGNATURE_SECRET=signature_secret_debug; \
+	export SIGNATURE_SECRET=api_signature_debug; \
 	export PORT=8003; \
 	export DEBUG=true; \
 	export DB_NAME=sso_debug; \
