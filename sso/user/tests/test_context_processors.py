@@ -40,7 +40,7 @@ def test_redirect_next_processor_appends_next_param(request_with_next):
     assert context['sso_reset_password_url'] == (
         '/accounts/password/reset/?next=http%3A%2F%2Fwww.example.com'
     )
-    assert context['sso_signup_url'] == (
+    assert context['sso_register_url'] == (
         '/accounts/signup/?next=http%3A%2F%2Fwww.example.com'
     )
 
@@ -64,7 +64,7 @@ def test_redirect_next_processor_handles_no_next_param(
         '/accounts/password/reset/?'
         'next=https%3A%2F%2Ffind-a-buyer.export.great.gov.uk%2F'
     )
-    assert context['sso_signup_url'] == (
+    assert context['sso_register_url'] == (
         '/accounts/signup/?'
         'next=https%3A%2F%2Ffind-a-buyer.export.great.gov.uk%2F'
     )

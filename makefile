@@ -50,7 +50,6 @@ DOCKER_SET_DEBUG_ENV_VARS := \
 	export SSO_REDIRECT_FIELD_NAME=next; \
 	export SSO_ALLOWED_REDIRECT_DOMAINS=example.com,exportingisgreat.gov.uk,great.dev; \
 	export SSO_UTM_COOKIE_DOMAIN=.great.dev; \
-	export SSO_FEATURE_NEW_HEADER_FOOTER_ENABLED=true; \
 	export SSO_SIGNATURE_SECRET=signature_secret_debug; \
 	export SSO_SSO_PROFILE_URL=http://profile.trade.great.dev:8006
 
@@ -106,7 +105,6 @@ DEBUG_SET_ENV_VARS := \
 	export REDIRECT_FIELD_NAME=next; \
 	export ALLOWED_REDIRECT_DOMAINS=example.com,exportingisgreat.gov.uk,great.dev; \
 	export UTM_COOKIE_DOMAIN=.great.dev; \
-	export FEATURE_NEW_HEADER_FOOTER_ENABLED=true; \
 	export SSO_PROFILE_URL=http://profile.trade.great.dev:8006
 
 

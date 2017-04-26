@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'sso.oauth2',
     'sso.user',
     'directory_constants',
+    'directory_header_footer',
 ]
 
 SITE_ID = 1
@@ -336,9 +337,10 @@ SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 # Google tag manager
 UTM_COOKIE_DOMAIN = os.environ['UTM_COOKIE_DOMAIN']
 
-FEATURE_NEW_HEADER_FOOTER_ENABLED = (
-    os.getenv('FEATURE_NEW_HEADER_FOOTER_ENABLED') == 'true'
-)
-
 # sso profile
 SSO_PROFILE_URL = os.environ['SSO_PROFILE_URL']
+
+HEADER_FOOTER_CONTACT_US_URL = os.getenv(
+    'HEADER_FOOTER_CONTACT_US_URL',
+    'https://contact-us.export.great.gov.uk/directory',
+)

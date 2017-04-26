@@ -62,17 +62,18 @@ def test_google_tag_manager():
     assert 'www.googletagmanager.com' in expected_body
 
 
-def test_logged_in_header(authenticated_request):
-    context = {'request': authenticated_request}
+def test_logged_in_header():
+    context = {'sso_is_logged_in': True}
     html = render_to_string('base.html', context)
 
-    assert '>Logout<' in html
+    assert '>Sign out<' in html
 
 
 def test_logged_out_hedaer():
-    html = render_to_string('base.html')
+    context = {'sso_is_logged_in': False}
+    html = render_to_string('base.html', context)
 
-    assert '>Login<' in html
+    assert '>Sign in<' in html
 
 
 def test_utm_cookie_domain():
@@ -84,33 +85,3 @@ def test_utm_cookie_domain():
     html = render_to_string('base.html', context)
 
     assert '<meta id="utmCookieDomain" value=".thing.com" />' in html
-
-
-def test_shared_style_enabled():
-    context = {
-        'features': {
-            'FEATURE_NEW_HEADER_FOOTER_ENABLED': True,
-        }
-    }
-
-    html = render_to_string('base.html', context)
-
-    assert render_to_string('header.html') in html
-    assert render_to_string('footer.html') in html
-    assert render_to_string('header_old.html') not in html
-    assert render_to_string('footer_old.html') not in html
-
-
-def test_shared_style_disabled():
-    context = {
-        'features': {
-            'FEATURE_NEW_HEADER_FOOTER_ENABLED': False,
-        }
-    }
-
-    html = render_to_string('base.html', context)
-
-    assert render_to_string('header.html') not in html
-    assert render_to_string('footer.html') not in html
-    assert render_to_string('header_old.html') in html
-    assert render_to_string('footer_old.html') in html

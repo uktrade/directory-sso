@@ -11,9 +11,5 @@ def analytics(request):
 
 def feature_flags(request):
     return {
-        'features': {
-            'FEATURE_NEW_HEADER_FOOTER_ENABLED': (
-                settings.FEATURE_NEW_HEADER_FOOTER_ENABLED
-            ),
-        }
+        'features': {}
     }
