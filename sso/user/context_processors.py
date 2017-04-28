@@ -19,9 +19,8 @@ def redirect_next_processor(request):
         'redirect_field_value': redirect_url or None,
         'sso_logout_url': add_next(reverse('account_logout')),
         'sso_login_url': add_next(reverse('account_login')),
-        'sso_register_url': add_next(reverse('account_signup')),
         'sso_reset_password_url': add_next(reverse('account_reset_password')),
-        'sso_signup_url': add_next(reverse('account_signup')),
+        'sso_register_url': add_next(reverse('account_signup')),
         'sso_is_logged_in': request.user.is_authenticated(),
         'sso_profile_url': settings.SSO_PROFILE_URL,
     }
