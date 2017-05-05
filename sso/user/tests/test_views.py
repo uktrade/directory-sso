@@ -285,7 +285,7 @@ def test_confirm_email_redirect_next_param_if_next_param_valid(
     # Extract URL for `password_reset_from_key` view and access it
     url = txt[txt.find('/accounts/confirm-email/'):].split()[0]
 
-    response = client.get(url)
+    response = client.post(url)
 
     assert url in txt
     assert url in html
@@ -331,7 +331,7 @@ def test_confirm_email_redirect_next_param_if_next_param_invalid(
     # Extract URL for `password_reset_from_key` view and access it
     url = txt[txt.find('/accounts/confirm-email/'):].split()[0]
 
-    response = client.get(url)
+    response = client.post(url)
 
     assert url in txt
     assert url in html
@@ -377,7 +377,7 @@ def test_confirm_email_redirect_next_param_if_next_param_internal(
     # Extract URL for `password_reset_from_key` view and access it
     url = txt[txt.find('/accounts/confirm-email/'):].split()[0]
 
-    response = client.get(url)
+    response = client.post(url)
 
     assert url in txt
     assert url in html
@@ -413,7 +413,7 @@ def test_confirm_email_redirect_default_param_if_no_next_param(
     # Extract URL for `password_reset_from_key` view and access it
     url = txt[txt.find('/accounts/confirm-email/'):].split()[0]
 
-    response = client.get(url)
+    response = client.post(url)
 
     assert url in txt
     assert url in html
@@ -623,7 +623,7 @@ def test_confirm_email_redirect_next_param_oath2(
     html = message.alternatives[0][0]
     # Extract URL for `password_reset_from_key` view and access it
     url = txt[txt.find('/accounts/confirm-email/'):].split()[0]
-    response = client.get(url)
+    response = client.post(url)
     assert url in txt
     assert url in html
     assert response.status_code == http.client.FOUND
@@ -672,7 +672,7 @@ def test_confirm_email_redirect_next_param(
     html = message.alternatives[0][0]
     # Extract URL for `password_reset_from_key` view and access it
     url = txt[txt.find('/accounts/confirm-email/'):].split()[0]
-    response = client.get(url)
+    response = client.post(url)
     assert url in txt
     assert url in html
     assert response.status_code == http.client.FOUND
@@ -810,6 +810,6 @@ def test_confirm_email_login_response_with_sso_display_logged_in_cookie(
     message = mail.outbox[0]
     body = message.body
     url = body[body.find('/accounts/confirm-email/'):].split()[0]
-    response = client.get(url)
+    response = client.post(url)
 
     assert response.cookies['sso_display_logged_in'].value == 'true'
