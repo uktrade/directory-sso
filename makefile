@@ -63,7 +63,7 @@ DOCKER_REMOVE_ALL := \
 docker_remove_all:
 	$(DOCKER_REMOVE_ALL)
 
-docker_debug:
+docker_debug: docker_remove_all
 	$(DOCKER_SET_DEBUG_ENV_VARS) && \
 	$(DOCKER_COMPOSE_CREATE_ENVS) && \
 	docker-compose pull && \
