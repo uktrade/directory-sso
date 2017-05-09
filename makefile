@@ -68,6 +68,7 @@ docker_debug: docker_remove_all
 	$(DOCKER_COMPOSE_CREATE_ENVS) && \
 	docker-compose pull && \
 	docker-compose build && \
+	docker-compose run webserver python manage.py migrate && \
 	docker-compose run webserver python manage.py loaddata fixtures/development.json && \
 	docker-compose run --service-ports webserver make django_webserver
 
