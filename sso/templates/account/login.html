@@ -13,7 +13,7 @@
 
 {% if socialaccount_providers %}
 <p>Please login with one
-of your existing third party accounts. Or, <a href="{{ sso_signup_url }}">Register</a>
+of your existing third party accounts. Or, <a href="{{ sso_register_url }}">Register</a>
 for a {{ site.name }} account and login below:</p>
 
 <div class="socialaccount_ballot">
@@ -30,7 +30,7 @@ for a {{ site.name }} account and login below:</p>
 
 {% else %}
 <p>If you have not created an account yet, then please
-<a href="{{ sso_signup_url }}">register</a> first.</p>
+<a href="{{ sso_register_url }}">register</a> first.</p>
 {% endif %}
 
 <form class="login" method="POST" action="{% url 'account_login' %}">
