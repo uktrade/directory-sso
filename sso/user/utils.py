@@ -1,10 +1,11 @@
 import urllib.parse
 
+import furl
+import tldextract
+
 from allauth.account.utils import get_request_param
 from django.conf import settings
 from django.utils.http import urlencode
-
-import tldextract
 
 
 def get_url_with_redirect(url, redirect_url):
@@ -41,3 +42,10 @@ def get_redirect_url(request, redirect_field_name):
         if is_valid_redirect(urllib.parse.unquote(redirect_param_value)):
             redirect_url = redirect_param_value
     return redirect_url
+
+
+class UrlParser(furl.furl):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.query.SAFE_KEY_CHARS = ''
+        self.query.SAFE_VALUE_CHARS = ''

@@ -8,7 +8,7 @@ from allauth.account import views as allauth_views
 from allauth.account.utils import complete_signup
 import allauth.exceptions
 
-from sso.user.utils import get_redirect_url
+from sso.user.utils import get_redirect_url, UrlParser
 
 
 class RedirectToNextMixin:
@@ -68,7 +68,16 @@ class LogoutView(RedirectToNextMixin, allauth_views.LogoutView):
 
 
 class ConfirmEmailView(RedirectToNextMixin, allauth_views.ConfirmEmailView):
-    pass
+    def get_redirect_url(self):
+        url = super().get_redirect_url()
+        parsed_url = UrlParser(url)
+        if 'next' in parsed_url.args:
+            parsed_next_url = UrlParser(parsed_url.args['next'])
+            parsed_next_url.args['new-user'] = 'true'
+            parsed_url.args['next'] = parsed_next_url.url
+        else:
+            parsed_url.args['new-user'] = 'true'
+        return parsed_url.url
 
 
 class PasswordResetFromKeyView(
