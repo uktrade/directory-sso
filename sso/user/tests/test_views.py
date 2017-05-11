@@ -813,3 +813,31 @@ def test_confirm_email_login_response_with_sso_display_logged_in_cookie(
     response = client.post(url)
 
     assert response.cookies['sso_display_logged_in'].value == 'true'
+
+
+@pytest.mark.django_db
+def test_confirm_email_login_response_with_sso_handles_next(
+    client, email_confirmation
+):
+    querystring = '?next=http%3A//buyer.trade.great.dev%3A8001/company-profile'
+    client.post(
+        reverse('account_signup') + querystring,
+        data={
+            'email': 'jim@example.com',
+            'email2': 'jim@example.com',
+            'terms_agreed': True,
+            'password1': '*' * 10,
+            'password2': '*' * 10,
+        }
+    )
+
+    message = mail.outbox[0]
+    body = message.body
+    url = body[body.find('/accounts/confirm-email/'):].split()[0]
+    response = client.post(url)
+
+    assert response.status_code == 302
+    assert response.get('Location') == (
+       "/accounts/login/"
+       "?next=http%3A%2F%2Fbuyer.trade.great.dev%3A8001%2Fcompany-profile"
+    )
