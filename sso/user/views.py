@@ -68,12 +68,15 @@ class LogoutView(RedirectToNextMixin, allauth_views.LogoutView):
 
 
 class ConfirmEmailView(RedirectToNextMixin, allauth_views.ConfirmEmailView):
+
     def get_context_data(self, **kwargs):
-        form_url = get_url_with_redirect(
-            url=reverse('account_confirm_email', args=(self.object.key,)),
-            redirect_url=self.get_redirect_url(),
-        )
-        return super().get_context_data(**kwargs, form_url=form_url)
+        if self.object:
+            kwargs['form_url'] = get_url_with_redirect(
+                url=reverse('account_confirm_email', args=(self.object.key,)),
+                redirect_url=self.get_redirect_url(),
+            )
+
+        return super().get_context_data(**kwargs)
 
 
 class PasswordResetFromKeyView(

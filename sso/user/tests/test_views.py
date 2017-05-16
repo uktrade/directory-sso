@@ -258,6 +258,18 @@ def test_logout_redirect_next_param_if_next_param_internal(
 
 
 @pytest.mark.django_db
+def test_confirm_email_invalid_key(
+    settings, client, email_confirmation
+):
+    response = client.get(
+        '/accounts/confirm-email/invalid/'
+    )
+
+    assert response.status_code == http.client.OK
+    assert "confirmation link expired or is invalid" in str(response.content)
+
+
+@pytest.mark.django_db
 def test_confirm_email_redirect_next_param_if_next_param_valid(
     settings, client, email_confirmation
 ):
