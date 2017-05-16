@@ -13,9 +13,11 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         verified_user = create_verified_integration_test_user()
-        create_login_for_token_integration_test_user(verified_user)
+        create_login_for_token_integration_test_user(verified_user,
+                                                     token='ver123456789')
         unverified_user = create_unverified_integration_test_user()
-        create_login_for_token_integration_test_user(unverified_user)
+        create_login_for_token_integration_test_user(unverified_user,
+                                                     token='unver123456789')
 
 
 def create_verified_integration_test_user():
@@ -55,11 +57,11 @@ def create_application(user):
     )
 
 
-def create_login_for_token_integration_test_user(user):
+def create_login_for_token_integration_test_user(user, token):
     AccessToken.objects.create(
         user=user,
         application=create_application(user),
-        token='1234567890',
+        token=token,
         expires=datetime.datetime.now() + datetime.timedelta(days=1000),
         scope='profile'
     )
