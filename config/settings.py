@@ -291,6 +291,12 @@ ACCOUNT_ADAPTER = 'sso.adapters.AccountAdapter'
 ACCOUNT_LOGIN_ON_EMAIL_CONFIRMATION = True
 
 # Email
+EMAIL_BACKED_CLASSES = {
+    'default': 'django.core.mail.backends.smtp.EmailBackend',
+    'console': 'django.core.mail.backends.console.EmailBackend'
+}
+EMAIL_BACKED_CLASS_NAME = os.getenv('EMAIL_BACKEND_CLASS_NAME', 'default')
+EMAIL_BACKEND = EMAIL_BACKED_CLASSES[EMAIL_BACKED_CLASS_NAME]
 EMAIL_HOST = os.environ["EMAIL_HOST"]
 EMAIL_PORT = os.environ["EMAIL_PORT"]
 EMAIL_HOST_USER = os.environ["EMAIL_HOST_USER"]

@@ -107,7 +107,9 @@ DEBUG_SET_ENV_VARS := \
 	export REDIRECT_FIELD_NAME=next; \
 	export ALLOWED_REDIRECT_DOMAINS=example.com,exportingisgreat.gov.uk,great.dev; \
 	export UTM_COOKIE_DOMAIN=.great.dev; \
-	export SSO_PROFILE_URL=http://profile.trade.great.dev:8006
+	export SSO_PROFILE_URL=http://profile.trade.great.dev:8006; \
+	export EMAIL_BACKEND_CLASS_NAME=console; \
+	export DEFAULT_REDIRECT_URL=http://buyer.trade.great.dev:8001
 
 
 debug_webserver:
