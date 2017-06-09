@@ -76,6 +76,8 @@ TEMPLATES = [
                 'sso.user.context_processors.redirect_next_processor',
                 'sso.context_processors.analytics',
                 'sso.context_processors.feature_flags',
+                ('directory_header_footer.context_processors.'
+                 'header_footer_context_processor'),
             ],
             'loaders': [
                 'django.template.loaders.filesystem.Loader',
