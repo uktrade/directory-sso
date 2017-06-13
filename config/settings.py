@@ -350,3 +350,8 @@ HEADER_FOOTER_CONTACT_US_URL = os.getenv(
     'HEADER_FOOTER_CONTACT_US_URL',
     'https://contact-us.export.great.gov.uk/directory',
 )
+
+FEEDBACK_FORM_URL = os.getenv(
+    'SSO_FEEDBACK_FORM_URL',
+    'https://contact-us.export.great.gov.uk/feedback/directory/'
+)

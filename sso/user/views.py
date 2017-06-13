@@ -79,6 +79,14 @@ class ConfirmEmailView(RedirectToNextMixin, allauth_views.ConfirmEmailView):
         return super().get_context_data(**kwargs)
 
 
+class EmailVerificationSentView(allauth_views.EmailVerificationSentView):
+
+    def get_context_data(self, **kwargs):
+        ctx = super().get_context_data(**kwargs)
+        ctx['feedback_sso'] = settings.FEEDBACK_FORM_URL
+        return ctx
+
+
 class PasswordResetFromKeyView(
     RedirectToNextMixin, allauth_views.PasswordResetFromKeyView
 ):
