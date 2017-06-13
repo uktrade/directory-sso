@@ -853,3 +853,11 @@ def test_confirm_email_login_response_with_sso_handles_next(
        "/accounts/login/"
        "?next=http%3A%2F%2Fbuyer.trade.great.dev%3A8001%2Fcompany-profile"
     )
+
+
+def test_email_verification_sent_view_feedback_url(client, settings):
+    settings.FEEDBACK_FORM_URL = 'http://test.com'
+    url = reverse('account_email_verification_sent')
+    response = client.get(url)
+
+    assert 'http://test.com' in response.rendered_content
