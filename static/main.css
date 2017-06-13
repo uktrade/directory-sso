@@ -307,8 +307,24 @@ textarea {
 }
 
 .input-field-container input[type='checkbox'] {
-    height: 14px;
-    width: 14px
+  -webkit-appearance: none;
+  border: 1px solid grey;
+  border-radius: 5px;
+  height: 2.5ex;
+  margin: 0;
+  padding: 0;
+  position: relative;
+  top: 5px;
+  width: 2.5ex;
+}
+
+.input-field-container input[type='checkbox']::after {
+  left: 3px;
+  position: absolute;
+}
+
+.input-field-container input[type='checkbox']:checked::after {
+  content: '\2714';
 }
 
 .input-field-container select {
