@@ -6,6 +6,7 @@ import allauth.account.views
 
 from sso.user.views import (
     ConfirmEmailView,
+    EmailVerificationSentView,
     LoginView,
     LogoutView,
     PasswordResetFromKeyView,
@@ -43,7 +44,7 @@ allauth_urlpatterns = [
     ),
     url(
         r"^confirm-email/$",
-        allauth.account.views.email_verification_sent,
+        EmailVerificationSentView.as_view(),
         name="account_email_verification_sent"
     ),
     url(
