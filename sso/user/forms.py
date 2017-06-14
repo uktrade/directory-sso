@@ -8,6 +8,8 @@ from allauth.utils import set_form_field_order
 
 from directory_constants.constants import urls
 
+from sso.user.widgets import CheckboxWithInlineLabel
+
 
 class IndentedInvalidFieldsMixin:
     error_css_class = 'input-field-container has-error'
@@ -15,14 +17,17 @@ class IndentedInvalidFieldsMixin:
 
 class SignupForm(IndentedInvalidFieldsMixin, forms.SignupForm):
     PASSWORD_HELP_TEXT = 'Must contain at least 10 characters.'
-
     terms_agreed = BooleanField(
-        label=mark_safe(
-            'Tick this box to accept the '
-            '<a href="{url}" target="_blank">terms and '
-            'conditions</a> of the Exporting is GREAT service.'.format(
-                url=urls.TERMS_AND_CONDITIONS_URL)
+        label='',
+        widget=CheckboxWithInlineLabel(
+            label=mark_safe(
+                'Tick this box to accept the '
+                '<a href="{url}" target="_blank">terms and '
+                'conditions</a> of the Exporting is GREAT service.'.format(
+                    url=urls.TERMS_AND_CONDITIONS_URL)
+            )
         )
+
     )
     field_order = [
         'email',
