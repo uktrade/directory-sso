@@ -10,7 +10,6 @@ This is the service for authenticating users for services that serve the Exporti
 
 [![codecov](https://codecov.io/gh/uktrade/directory-sso/branch/master/graph/badge.svg)](https://codecov.io/gh/uktrade/directory-sso)
 
-
 ## Requirements
 [Docker >= 1.10](https://docs.docker.com/engine/installation/)
 
