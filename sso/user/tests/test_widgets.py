@@ -3,7 +3,6 @@ from django import forms
 from sso.user import widgets
 
 
-
 def test_checkbox_with_inline_label():
 
     class MyTestForm(forms.Form):
