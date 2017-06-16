@@ -8,6 +8,7 @@ from allauth.account.models import EmailAddress
 
 from sso.user import forms
 from sso.user.models import User
+from sso.user.widgets import CheckboxWithInlineLabel
 
 
 REQUIRED_MESSAGE = Field.default_error_messages['required']
@@ -44,9 +45,10 @@ def test_signup_form_customization():
 
 
 def test_login_form_customization():
-    form = forms.LoginForm()
+    field = forms.LoginForm().fields['remember']
 
-    assert form.fields['remember'].label == 'Remember me:'
+    assert field.label == ''
+    assert isinstance(field.widget, CheckboxWithInlineLabel)
 
 
 def test_change_password_form_customization():
@@ -104,6 +106,12 @@ def test_signup_rejects_missing_terms_agreed():
 
     assert form.is_valid() is False
     assert form.errors['terms_agreed'] == [REQUIRED_MESSAGE]
+
+
+def test_terms_agreed_widget():
+    field = forms.SignupForm().fields['terms_agreed']
+
+    assert isinstance(field.widget, CheckboxWithInlineLabel)
 
 
 def test_signup_accepts_present_terms_agreed():
