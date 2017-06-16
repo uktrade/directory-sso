@@ -51,9 +51,17 @@ class SignupForm(IndentedInvalidFieldsMixin, forms.SignupForm):
 
 
 class LoginForm(IndentedInvalidFieldsMixin, forms.LoginForm):
+
+    remember = BooleanField(
+        label='',
+        required=False,
+        widget=CheckboxWithInlineLabel(
+            label='Remember me:'
+        )
+    )
+
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.fields['remember'].label = 'Remember me:'
         self.fields['login'].widget.attrs['autocomplete'] = 'new-password'
         self.fields['password'].widget.attrs['autocomplete'] = 'new-password'
 

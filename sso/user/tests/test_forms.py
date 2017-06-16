@@ -45,9 +45,10 @@ def test_signup_form_customization():
 
 
 def test_login_form_customization():
-    form = forms.LoginForm()
+    field = forms.LoginForm().fields['remember']
 
-    assert form.fields['remember'].label == 'Remember me:'
+    assert field.label == ''
+    assert isinstance(field.widget, CheckboxWithInlineLabel)
 
 
 def test_change_password_form_customization():
