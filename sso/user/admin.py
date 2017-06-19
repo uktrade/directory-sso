@@ -1,32 +1,13 @@
 import csv
 import datetime
 
-from django.conf.urls import url
+from django.conf import settings
 from django.contrib import admin
 from django.http import HttpResponse
-from django.views.generic import TemplateView
-
 
 from sso.user.models import User
-from api_client import api_client
 
-
-
-class ExopsNotFabEmailsList(TemplateView):
-    template_name = 'admin/user/exops-not-fab-list.html'
-
-
-    def get_fab_user_ids(self):
-        response = api_client.supplier.list_supplier_sso_ids()
-        response.raise_for_status()
-        return response.json()
-
-    def get_context_data(self):
-        fab_user_ids = self.get_fab_user_ids()
-        queryset = User.objects.exclude(pk__in=fab_user_ids)
-        return {
-            'emails': queryset.values_list('email', flat=True)
-        }
+from directory_api_external_client import api_client
 
 
 @admin.register(User)
@@ -34,51 +15,74 @@ class UserAdmin(admin.ModelAdmin):
 
     search_fields = ('email', )
     readonly_fields = ('created', 'modified',)
-    actions = ['download_csv']
+    actions = ['download_csv', 'download_csv_exops_not_fab']
 
     csv_excluded_fields = (
         'password', 'refreshtoken', 'socialaccount', 'logentry', 'grant',
         'groups', 'accesstoken', 'emailaddress', 'user_permissions'
     )
 
-    def get_urls(self):
-        urls = super().get_urls()
-        additional_urls = [
-            url(
-                r'^exops-not-fab-emails/$',
-                self.admin_site.admin_view(
-                    ExopsNotFabEmailsList.as_view()
-                ),
-                name="exops-not-fab-emails-list"
-            ),
-        ]
-        return additional_urls + urls
+    @staticmethod
+    def get_fab_user_ids():
+        response = api_client.supplier.list_supplier_sso_ids()
+        response.raise_for_status()
+        return response.json()
 
-    def download_csv(self, request, queryset):
+    def get_user_database_field_names(self):
+        return sorted([
+            field.name for field in User._meta.get_fields()
+            if field.name not in self.csv_excluded_fields
+        ])
+
+    def generate_csv_for_queryset(self, queryset, filename_prefix):
         """
         Generates CSV report of selected users.
         """
         response = HttpResponse(content_type='text/csv')
         response['Content-Disposition'] = (
-            'attachment; filename="sso_users_{}.csv"'.format(
-                datetime.datetime.now().strftime("%Y%m%d%H%M%S")
+            'attachment; filename="{prefix}_{timestamp}.csv"'.format(
+                prefix=filename_prefix,
+                timestamp=datetime.datetime.now().strftime("%Y%m%d%H%M%S"),
             )
         )
 
-        field_names = sorted([
-            field.name for field in User._meta.get_fields()
-            if field.name not in self.csv_excluded_fields
-        ])
+        field_names = self.get_user_database_field_names()
 
-        users = queryset.all().values(*field_names)
         writer = csv.DictWriter(response, fieldnames=field_names)
         writer.writeheader()
-
-        for user in users:
+        for user in queryset.all().values(*field_names):
             writer.writerow(user)
 
         return response
 
+    def download_csv(self, request, queryset):
+        """
+        Generates CSV report of selected users.
+        """
+
+        return self.generate_csv_for_queryset(
+            queryset=queryset, filename_prefix='sso_users'
+        )
+
+    def download_csv_exops_not_fab(self, request, queryset):
+        """
+        Generates CSV report of all users that have ExOpps accounts but not FAB
+        """
+
+        client_id = settings.EXOPS_APPLICATION_CLIEND_ID
+        queryset = (
+            queryset
+            .exclude(pk__in=self.get_fab_user_ids())
+            .filter(accesstoken__application__client_id=client_id)
+        )
+        return self.generate_csv_for_queryset(
+            queryset=queryset, filename_prefix='exops_not_fab_sso_users'
+        )
+
     download_csv.short_description = (
         "Download CSV report for selected users"
+    )
+    download_csv_exops_not_fab.short_description = (
+        "Download CSV report for selected users that have an ExOpps account "
+        "but not a FAB account"
     )

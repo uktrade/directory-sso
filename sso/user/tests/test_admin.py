@@ -1,4 +1,6 @@
+from collections import OrderedDict
 from unittest import TestCase
+from unittest.mock import patch
 
 import pytest
 
@@ -6,6 +8,7 @@ from django.test import Client
 from django.core.urlresolvers import reverse
 
 from sso.user.models import User
+from sso.oauth2.tests.factories import AccessTokenFactory, ApplicationFactory
 
 
 @pytest.mark.django_db
@@ -124,3 +127,66 @@ class DownloadCaseStudyCSVTestCase(TestCase):
         assert actual[1] == row_one
         assert actual[2] == row_two
         assert actual[3] == row_three
+
+
+@pytest.fixture
+def superuser():
+    return User.objects.create_superuser(
+        email='admin@example.com', password='test'
+    )
+
+
+@pytest.fixture
+def superuser_client(superuser):
+    client = Client()
+    client.force_login(superuser)
+    return client
+
+
+@pytest.mark.django_db
+@patch('sso.user.admin.UserAdmin.get_fab_user_ids')
+def test_download_csv_exops_not_fab(
+    mock_get_fab_user_ids, settings, superuser_client
+):
+
+    settings.EXOPS_APPLICATION_CLIEND_ID = 'debug'
+    application = ApplicationFactory(client_id='debug')
+    user_one = AccessTokenFactory.create(
+        application=application
+    ).user  # should be in the csv
+    user_two = AccessTokenFactory.create(
+        application=application
+    ).user  # should not be in the csv
+    AccessTokenFactory.create().user  # should not be in the csv
+
+    mock_get_fab_user_ids.return_value = [user_two.pk]
+    data = {
+        'action': 'download_csv_exops_not_fab',
+        '_selected_action': User.objects.all().values_list(
+            'pk', flat=True
+        )
+    }
+    response = superuser_client.post(
+        reverse('admin:user_user_changelist'),
+        data,
+        follow=True
+    )
+
+    expected_row = OrderedDict([
+        ('created', user_one.created),
+        ('date_joined', user_one.date_joined),
+        ('email', user_one.email),
+        ('id', user_one.id),
+        ('is_active', user_one.is_active),
+        ('is_staff', user_one.is_staff),
+        ('is_superuser', user_one.is_superuser),
+        ('last_login', user_one.last_login),
+        ('modified', user_one.modified),
+        ('oauth2_provider_application', ''),
+        ('utm', user_one.utm),
+    ])
+
+    actual = str(response.content, 'utf-8').split('\r\n')
+
+    assert actual[0] == ','.join(expected_row.keys())
+    assert actual[1] == ','.join(map(str, expected_row.values()))
