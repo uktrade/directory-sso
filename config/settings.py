@@ -355,3 +355,23 @@ FEEDBACK_FORM_URL = os.getenv(
     'SSO_FEEDBACK_FORM_URL',
     'https://contact-us.export.great.gov.uk/feedback/directory/'
 )
+
+# directory-external-api
+DIRECTORY_API_EXTERNAL_CLIENT_CLASSES = {
+    'default': 'directory_api_external.client.DirectoryAPIExternalClient',
+    'unit-test': (
+        'directory_api_external.dummy_client.DummyDirectoryAPIExternalClient'
+    ),
+}
+DIRECTORY_API_EXTERNAL_CLIENT_CLASS_NAME = os.getenv(
+    'DIRECTORY_API_EXTERNAL_CLIENT_CLASS_NAME', 'default'
+)
+DIRECTORY_API_EXTERNAL_CLIENT_CLASS = DIRECTORY_API_EXTERNAL_CLIENT_CLASSES[
+    DIRECTORY_API_EXTERNAL_CLIENT_CLASS_NAME
+]
+DIRECTORY_API_EXTERNAL_SIGNATURE_SECRET = os.environ[
+    'DIRECTORY_API_EXTERNAL_SIGNATURE_SECRET'
+]
+DIRECTORY_API_EXTERNAL_CLIENT_BASE_URL = os.environ[
+    'DIRECTORY_API_EXTERNAL_CLIENT_BASE_URL'
+]
