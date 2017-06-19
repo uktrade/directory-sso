@@ -1,5 +1,5 @@
 from unittest import TestCase
-from unittest.mock import patch
+
 import pytest
 
 from django.test import Client
@@ -12,9 +12,8 @@ from sso.user.models import User
 class DownloadCaseStudyCSVTestCase(TestCase):
 
     header = (
-        'created,date_joined,email,id,is_active,is_exops_user,is_fab_user,'
-        'is_staff,is_superuser,last_login,modified,'
-        'oauth2_provider_application,utm'
+        'created,date_joined,email,id,is_active,is_staff,is_superuser,'
+        'last_login,modified,oauth2_provider_application,utm'
     )
 
     def setUp(self):
@@ -38,8 +37,7 @@ class DownloadCaseStudyCSVTestCase(TestCase):
         )
 
         row_one = (
-            "{created},{date_joined},admin@example.com,{id},True,"
-            "{is_exops_user},{is_fab_user},True,True,"
+            "{created},{date_joined},admin@example.com,{id},True,True,True,"
             "{last_login},{modified},,{utm}"
         ).format(
             created=self.superuser.created,
@@ -48,42 +46,6 @@ class DownloadCaseStudyCSVTestCase(TestCase):
             last_login=self.superuser.last_login,
             modified=self.superuser.modified,
             utm=self.superuser.utm,
-            is_exops_user=False,
-            is_fab_user=False,
-        )
-        actual = str(response.content, 'utf-8').split('\r\n')
-
-        assert actual[0] == self.header
-        assert actual[1] == row_one
-
-    @patch('sso.user.admin.UserAdmin.get_fab_user_ids')
-    def test_download_csv_single_fab_user(self, mock_get_fab_user_ids):
-        mock_get_fab_user_ids.return_value = [self.superuser.pk]
-        data = {
-            'action': 'download_csv',
-            '_selected_action': User.objects.all().values_list(
-                'pk', flat=True
-            )
-        }
-        response = self.client.post(
-            reverse('admin:user_user_changelist'),
-            data,
-            follow=True
-        )
-
-        row_one = (
-            "{created},{date_joined},admin@example.com,{id},True,"
-            "{is_exops_user},{is_fab_user},True,True,"
-            "{last_login},{modified},,{utm}"
-        ).format(
-            created=self.superuser.created,
-            date_joined=self.superuser.date_joined,
-            id=self.superuser.id,
-            last_login=self.superuser.last_login,
-            modified=self.superuser.modified,
-            utm=self.superuser.utm,
-            is_exops_user=False,
-            is_fab_user=True,
         )
         actual = str(response.content, 'utf-8').split('\r\n')
 
@@ -106,10 +68,11 @@ class DownloadCaseStudyCSVTestCase(TestCase):
             data,
             follow=True
         )
+
         user_one = User.objects.all()[2]
         row_one = (
-            '{created},{date_joined},{email},{id},{is_active},{is_exops_user},'
-            '{is_fab_user},{is_staff},{is_superuser},,{modified},,{utm}'
+            '{created},{date_joined},{email},{id},{is_active},{is_staff},'
+            '{is_superuser},,{modified},,{utm}'
         ).format(
             created=user_one.created,
             date_joined=user_one.date_joined,
@@ -120,14 +83,12 @@ class DownloadCaseStudyCSVTestCase(TestCase):
             is_superuser=user_one.is_superuser,
             modified=user_one.modified,
             utm=user_one.utm,
-            is_exops_user=False,
-            is_fab_user=False,
         )
 
         user_two = User.objects.all()[1]
         row_two = (
-            '{created},{date_joined},{email},{id},{is_active},{is_exops_user},'
-            '{is_fab_user},{is_staff},{is_superuser},,{modified},,{utm}'
+            '{created},{date_joined},{email},{id},{is_active},{is_staff},'
+            '{is_superuser},,{modified},,{utm}'
         ).format(
             created=user_two.created,
             date_joined=user_two.date_joined,
@@ -138,15 +99,12 @@ class DownloadCaseStudyCSVTestCase(TestCase):
             is_superuser=user_two.is_superuser,
             modified=user_two.modified,
             utm=user_two.utm,
-            is_exops_user=False,
-            is_fab_user=False,
         )
 
         user_three = User.objects.all()[0]
         row_three = (
-            '{created},{date_joined},{email},{id},{is_active},{is_exops_user},'
-            '{is_fab_user},{is_staff},{is_superuser},{last_login},{modified},,'
-            '{utm}'
+            '{created},{date_joined},{email},{id},{is_active},{is_staff},'
+            '{is_superuser},{last_login},{modified},,{utm}'
         ).format(
             created=user_three.created,
             date_joined=user_three.date_joined,
@@ -158,8 +116,6 @@ class DownloadCaseStudyCSVTestCase(TestCase):
             last_login=user_three.last_login,
             modified=user_three.modified,
             utm=user_three.utm,
-            is_exops_user=False,
-            is_fab_user=False,
         )
 
         actual = str(response.content, 'utf-8').split('\r\n')
