@@ -61,7 +61,7 @@ DOCKER_SET_DEBUG_ENV_VARS := \
 	export SSO_SSO_PROFILE_URL=http://profile.trade.great.dev:8006; \
 	export SSO_DIRECTORY_API_EXTERNAL_CLIENT_BASE_URL=http://buyer.trade.great.dev:8001/api/external/; \
 	export SSO_DIRECTORY_API_EXTERNAL_SIGNATURE_SECRET=debug; \
-	export SSO_EXOPS_APPLICATION_CLIEND_ID=debug
+	export SSO_EXOPS_APPLICATION_CLIENT_ID=debug
 
 DOCKER_REMOVE_ALL := \
 	docker ps -a | \
@@ -122,7 +122,7 @@ DEBUG_SET_ENV_VARS := \
 	export DEFAULT_REDIRECT_URL=http://buyer.trade.great.dev:8001; \
 	export DIRECTORY_API_EXTERNAL_CLIENT_BASE_URL=http://buyer.trade.great.dev:8001/api/external/; \
 	export DIRECTORY_API_EXTERNAL_SIGNATURE_SECRET=debug; \
-	export EXOPS_APPLICATION_CLIEND_ID=debug
+	export EXOPS_APPLICATION_CLIENT_ID=debug
 
 
 debug_webserver:

@@ -149,7 +149,7 @@ def test_download_csv_exops_not_fab(
     mock_get_fab_user_ids, settings, superuser_client
 ):
 
-    settings.EXOPS_APPLICATION_CLIEND_ID = 'debug'
+    settings.EXOPS_APPLICATION_CLIENT_ID = 'debug'
     application = ApplicationFactory(client_id='debug')
     user_one = AccessTokenFactory.create(
         application=application

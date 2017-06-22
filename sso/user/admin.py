@@ -69,7 +69,7 @@ class UserAdmin(admin.ModelAdmin):
         Generates CSV report of all users that have ExOpps accounts but not FAB
         """
 
-        client_id = settings.EXOPS_APPLICATION_CLIEND_ID
+        client_id = settings.EXOPS_APPLICATION_CLIENT_ID
         queryset = (
             queryset
             .exclude(pk__in=self.get_fab_user_ids())
