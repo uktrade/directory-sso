@@ -23,7 +23,7 @@ class SignupForm(IndentedInvalidFieldsMixin, forms.SignupForm):
             label=mark_safe(
                 'Tick this box to accept the '
                 '<a href="{url}" target="_blank">terms and '
-                'conditions</a> of the Exporting is GREAT service.'.format(
+                'conditions</a> of the great.gov.uk service.'.format(
                     url=urls.TERMS_AND_CONDITIONS_URL)
             )
         )
