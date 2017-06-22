@@ -33,6 +33,9 @@ docker_run:
 	$(DOCKER_COMPOSE_REMOVE_AND_PULL) && \
 	docker-compose up --build
 
+DEBUG_TEST_SET_ENV_VARS := \
+	export DIRECTORY_API_EXTERNAL_CLIENT_CLASS_NAME='unit-test'
+
 DOCKER_SET_DEBUG_ENV_VARS := \
 	export SSO_PORT=8003; \
 	export SSO_DEBUG=true; \
@@ -55,8 +58,10 @@ DOCKER_SET_DEBUG_ENV_VARS := \
 	export SSO_ALLOWED_REDIRECT_DOMAINS=example.com,exportingisgreat.gov.uk,great.dev; \
 	export SSO_UTM_COOKIE_DOMAIN=.great.dev; \
 	export SSO_SIGNATURE_SECRET=signature_secret_debug; \
-	export SSO_SSO_PROFILE_URL=http://profile.trade.great.dev:8006
-
+	export SSO_SSO_PROFILE_URL=http://profile.trade.great.dev:8006; \
+	export SSO_DIRECTORY_API_EXTERNAL_CLIENT_BASE_URL=http://buyer.trade.great.dev:8001/api/external/; \
+	export SSO_DIRECTORY_API_EXTERNAL_SIGNATURE_SECRET=debug; \
+	export SSO_EXOPS_APPLICATION_CLIEND_ID=debug
 
 DOCKER_REMOVE_ALL := \
 	docker ps -a | \
@@ -84,6 +89,7 @@ docker_psql:
 
 docker_test: docker_remove_all
 	$(DOCKER_SET_DEBUG_ENV_VARS) && \
+	$(DEBUG_TEST_SET_ENV_VARS) && \
 	$(DOCKER_COMPOSE_CREATE_ENVS) && \
 	$(DOCKER_COMPOSE_REMOVE_AND_PULL) && \
 	docker-compose -f docker-compose-test.yml build && \
@@ -113,7 +119,10 @@ DEBUG_SET_ENV_VARS := \
 	export UTM_COOKIE_DOMAIN=.great.dev; \
 	export SSO_PROFILE_URL=http://profile.trade.great.dev:8006; \
 	export EMAIL_BACKEND_CLASS_NAME=console; \
-	export DEFAULT_REDIRECT_URL=http://buyer.trade.great.dev:8001
+	export DEFAULT_REDIRECT_URL=http://buyer.trade.great.dev:8001; \
+	export DIRECTORY_API_EXTERNAL_CLIENT_BASE_URL=http://buyer.trade.great.dev:8001/api/external/; \
+	export DIRECTORY_API_EXTERNAL_SIGNATURE_SECRET=debug; \
+	export EXOPS_APPLICATION_CLIEND_ID=debug
 
 
 debug_webserver:
