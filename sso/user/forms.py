@@ -40,7 +40,12 @@ class SignupForm(IndentedInvalidFieldsMixin, forms.SignupForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.fields['email'].widget.attrs['autocomplete'] = 'new-password'
+        self.fields['email'].widget.attrs['placeholder'] = 'Email address'
+        self.fields['email'].label = 'Email:'
         self.fields['email2'].widget.attrs['autocomplete'] = 'new-password'
+        self.fields['email2'].widget.attrs['placeholder'] = (
+            'Email address confirmation'
+        )
         self.fields['password1'].widget.attrs['autocomplete'] = 'new-password'
         self.fields['password2'].widget.attrs['autocomplete'] = 'new-password'
 
@@ -63,6 +68,9 @@ class LoginForm(IndentedInvalidFieldsMixin, forms.LoginForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.fields['login'].widget.attrs['autocomplete'] = 'new-password'
+        self.fields['login'].label = 'Email'
+        self.fields['login'].widget.attrs['placeholder'] = 'Email address'
+
         self.fields['password'].widget.attrs['autocomplete'] = 'new-password'
 
 
