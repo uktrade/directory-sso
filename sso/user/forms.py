@@ -54,6 +54,12 @@ class SignupForm(IndentedInvalidFieldsMixin, forms.SignupForm):
         self.fields['email2'].label = 'Confirm email:'
         set_form_field_order(self, self.field_order)
 
+    def clean_email2(self):
+        """Email2 field needs to be cleaned as well."""
+        value = self.cleaned_data['email2']
+        value = get_adapter().clean_email(value)
+        return value
+
 
 class LoginForm(IndentedInvalidFieldsMixin, forms.LoginForm):
 
