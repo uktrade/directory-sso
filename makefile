@@ -161,11 +161,11 @@ loaddata:
 migrations:
 	$(DEBUG_SET_ENV_VARS) && ./manage.py makemigrations user oauth2
 
-smoke_tests:
+integration_tests:
 	cd $(mktemp -d) && \
 	git clone https://github.com/uktrade/directory-tests && \
 	cd directory-tests && \
-	make docker_smoke_test
+	make docker_integration_tests
 
 heroku_deploy_dev:
 	docker build -t registry.heroku.com/directory-sso-dev/web .
