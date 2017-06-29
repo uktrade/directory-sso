@@ -63,6 +63,10 @@ DOCKER_SET_DEBUG_ENV_VARS := \
 	export SSO_DIRECTORY_API_EXTERNAL_SIGNATURE_SECRET=debug; \
 	export SSO_EXOPS_APPLICATION_CLIENT_ID=debug
 
+docker_test_env_files:
+	$(DOCKER_SET_DEBUG_ENV_VARS) && \
+	$(DOCKER_COMPOSE_CREATE_ENVS)
+
 DOCKER_REMOVE_ALL := \
 	docker ps -a | \
 	grep -e sso_ | \
