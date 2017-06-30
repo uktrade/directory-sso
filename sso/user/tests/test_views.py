@@ -795,6 +795,16 @@ def test_login_response_with_sso_display_logged_in_cookie(
 
 
 @pytest.mark.django_db
+def test_login_case_insensitive_email(client, verified_user):
+    response = client.post(
+        reverse('account_login'),
+        {'login': verified_user.email.upper(), 'password': 'password'}
+    )
+    assert response
+    assert response.cookies['sso_display_logged_in'].value == 'true'
+
+
+@pytest.mark.django_db
 def test_logout_response_with_sso_display_logged_in_cookie(
     authed_client
 ):
