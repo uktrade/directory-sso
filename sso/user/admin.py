@@ -74,6 +74,7 @@ class UserAdmin(admin.ModelAdmin):
             queryset
             .exclude(pk__in=self.get_fab_user_ids())
             .filter(accesstoken__application__client_id=client_id)
+            .distinct()
         )
         return self.generate_csv_for_queryset(
             queryset=queryset, filename_prefix='exops_not_fab_sso_users'
