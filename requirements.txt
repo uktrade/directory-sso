@@ -17,11 +17,11 @@ django-braces==1.11.0     # via django-oauth-toolkit
 django-cors-headers==1.2.2
 django-filter==1.0.1
 django-oauth-toolkit==0.10.0
-django==1.9.13            # via django-allauth, django-oauth-toolkit
+django-pglocks==1.0.2
+django==1.9.13
 django_extensions==1.6.7
 djangorestframework==3.4.7
 docutils==0.13.1          # via botocore
-futures==3.1.1            # via s3transfer
 gunicorn==19.5.0
 idna==2.5                 # via tldextract
 jmespath==0.9.3           # via boto3, botocore
