@@ -11,27 +11,25 @@
 boto3==1.4.0
 botocore==1.4.93          # via boto3, s3transfer
 codecov==2.0.9
-configparser==3.5.0       # via flake8
 contextlib2==0.5.5        # via raven
 coverage==4.4.1           # via codecov, pytest-cov
+defusedxml==0.5.0         # via python3-openid
 dj-database-url==0.4.1
 django-allauth==0.28.0
 django-braces==1.11.0     # via django-oauth-toolkit
 django-cors-headers==1.2.2
 django-filter==1.0.1
 django-oauth-toolkit==0.10.0
-django==1.9.13            # via django-allauth, django-oauth-toolkit
+django-pglocks==1.0.2
+django==1.9.13
 django_extensions==1.6.7
 djangorestframework==3.4.7
 docutils==0.13.1          # via botocore
-enum34==1.1.6             # via flake8
 factory-boy==2.8.1
 faker==0.7.17             # via factory-boy
 flake8==3.0.4
-futures==3.1.1            # via s3transfer
 gunicorn==19.5.0
 idna==2.5                 # via tldextract
-ipaddress==1.0.18         # via faker
 jmespath==0.9.3           # via boto3, botocore
 mccabe==0.5.3             # via flake8
 monotonic==1.2
@@ -45,7 +43,7 @@ pytest-django==3.0.0
 pytest-sugar==0.8.0
 pytest==3.0.2
 python-dateutil==2.6.0    # via botocore, faker
-python-openid==2.2.5      # via django-allauth
+python3-openid==3.1.0     # via django-allauth
 raven==5.19.0
 requests-file==1.4.2      # via tldextract
 requests-oauthlib==0.8.0  # via django-allauth
