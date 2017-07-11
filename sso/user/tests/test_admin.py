@@ -190,3 +190,40 @@ def test_download_csv_exops_not_fab(
 
     assert actual[0] == ','.join(expected_row.keys())
     assert actual[1] == ','.join(map(str, expected_row.values()))
+
+
+@pytest.mark.django_db
+@patch('sso.user.admin.UserAdmin.get_fab_user_ids')
+def test_download_csv_exops_not_fab_distinct(
+    mock_get_fab_user_ids, settings, superuser_client
+):
+
+    settings.EXOPS_APPLICATION_CLIENT_ID = 'debug'
+    application = ApplicationFactory(client_id='debug')
+    # given a user has created multiple tokens
+    token_one = AccessTokenFactory.create(
+        application=application
+    )
+    token_one = AccessTokenFactory.create(
+        application=application,
+        user=token_one.user,
+    )
+
+    mock_get_fab_user_ids.return_value = []
+    data = {
+        'action': 'download_csv_exops_not_fab',
+        '_selected_action': User.objects.all().values_list(
+            'pk', flat=True
+        )
+    }
+    # when the export csv is created
+    response = superuser_client.post(
+        reverse('admin:user_user_changelist'),
+        data,
+        follow=True
+    )
+
+    rows = str(response.content, 'utf-8').strip().split('\r\n')
+
+    # then the user is listed only once, not once per token created
+    assert len(rows) == 2  # header and single row
