@@ -1,5 +1,5 @@
 from datetime import date
-from unittest import mock
+from unittest.mock import patch, Mock
 
 from django.core.urlresolvers import reverse
 from django.test.client import Client
@@ -28,7 +28,7 @@ def setup_data():
 
 
 @pytest.mark.django_db
-@mock.patch('config.signature.SignatureCheckPermission.has_permission')
+@patch('config.signature.SignatureCheckPermission.has_permission')
 def test_get_session_user_valid_api_key(mock_has_permission):
     user, user_session = setup_data()
 
@@ -45,7 +45,22 @@ def test_get_session_user_valid_api_key(mock_has_permission):
 
 
 @pytest.mark.django_db
-@mock.patch('config.signature.SignatureCheckPermission.has_permission')
+@patch('config.signature.SignatureCheckPermission.has_permission', Mock)
+def test_get_session_user_expired():
+    user, user_session = setup_data()
+    user_session.set_expiry(-1)
+    user_session.save()
+
+    response = APIClient().get(
+        reverse('session-user'),
+        data={"session_key": user_session._session_key},
+    )
+
+    assert response.status_code == status.HTTP_404_NOT_FOUND
+
+
+@pytest.mark.django_db
+@patch('config.signature.SignatureCheckPermission.has_permission')
 def test_get_session_user_valid_api_key_no_user(mock_has_permission):
     user, user_session = setup_data()
 
@@ -59,7 +74,7 @@ def test_get_session_user_valid_api_key_no_user(mock_has_permission):
 
 
 @pytest.mark.django_db
-@mock.patch('config.signature.SignatureCheckPermission.has_permission')
+@patch('config.signature.SignatureCheckPermission.has_permission')
 def test_get_last_login(mock_has_permission):
     users = UserFactory.create_batch(5)
     setup_data()  # creates active user that should not be in response
@@ -96,7 +111,7 @@ def test_get_last_login(mock_has_permission):
 
 
 @pytest.mark.django_db
-@mock.patch('config.signature.SignatureCheckPermission.has_permission')
+@patch('config.signature.SignatureCheckPermission.has_permission')
 def test_get_last_login_with_params(mock_has_permission):
     user1 = UserFactory(last_login=date(2016, 12, 25))
     user2 = UserFactory(last_login=date(2017, 1, 1))
@@ -132,7 +147,7 @@ def test_get_last_login_with_params(mock_has_permission):
 
 
 @pytest.mark.django_db
-@mock.patch('config.signature.SignatureCheckPermission.has_permission')
+@patch('config.signature.SignatureCheckPermission.has_permission')
 def test_get_last_login_with_invalid_date_params(
     mock_has_permission, client,
 ):

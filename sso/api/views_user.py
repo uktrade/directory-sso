@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from rest_framework.generics import (
     RetrieveAPIView, get_object_or_404, ListAPIView
 )
@@ -19,14 +21,15 @@ class SessionUserAPIView(RetrieveAPIView):
     serializer_class = UserSerializer
     lookup_field = 'session_key'
 
+    def get_queryset(self):
+        utcnow = datetime.utcnow()
+        return Session.objects.filter(expire_date__gt=utcnow)
+
     def get_object(self):
         session_key = self.request.query_params.get('session_key')
-        session = get_object_or_404(Session, session_key=session_key)
-
-        session_data = session.get_decoded()
-
-        user_id = session_data.get('_auth_user_id')
-
+        queryset = self.get_queryset()
+        session = get_object_or_404(queryset, session_key=session_key)
+        user_id = session.get_decoded().get('_auth_user_id')
         return get_object_or_404(User, pk=user_id)
 
 
