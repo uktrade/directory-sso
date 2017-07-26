@@ -7,7 +7,7 @@ from django.http import HttpResponse
 
 from sso.user.models import User
 
-from directory_api_external_client import api_client
+from sso.user.utils import api_client
 
 
 @admin.register(User)
