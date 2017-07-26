@@ -35,7 +35,6 @@ INSTALLED_APPS = [
     'django_filters',
     'corsheaders',
     'sso',
-    'core.apps.CoreConfig',
     'sso.oauth2',
     'sso.user',
     'directory_constants',

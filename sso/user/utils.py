@@ -1,10 +1,18 @@
 import urllib.parse
 
 from allauth.account.utils import get_request_param
+import tldextract
+
 from django.conf import settings
+from django.utils.module_loading import import_string
 from django.utils.http import urlencode
 
-import tldextract
+
+ClientClass = import_string(settings.DIRECTORY_API_EXTERNAL_CLIENT_CLASS)
+api_client = ClientClass(
+    base_url=settings.DIRECTORY_API_EXTERNAL_CLIENT_BASE_URL,
+    api_key=settings.DIRECTORY_API_EXTERNAL_SIGNATURE_SECRET,
+)
 
 
 def get_url_with_redirect(url, redirect_url):
