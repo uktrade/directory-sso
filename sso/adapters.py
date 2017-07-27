@@ -66,3 +66,12 @@ class AccountAdapter(DefaultAccountAdapter):
             user.save()
 
         return user
+
+    def clean_email(self, email):
+        """Lowercase email."""
+        return email.lower()
+
+    def clean_username(self, username, shallow=False):
+        """Lowercase username (email) before logging in.i"""
+        username = username.lower()
+        return super().clean_username(username, shallow)

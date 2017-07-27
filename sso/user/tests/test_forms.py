@@ -121,6 +121,18 @@ def test_signup_accepts_present_terms_agreed():
     assert 'terms_agreed' not in form.errors
 
 
+def test_signup_lowercase_email():
+    form = forms.SignupForm(data={
+        'email': 'Foo@bar.com',
+        'email2': 'Foo@bar.com',
+        'password1': 'passwordpassword',
+        'password2': 'passwordpassword',
+        'terms_agreed': True
+    })
+    assert form.is_valid()
+    assert form.cleaned_data['email'] == 'foo@bar.com'
+
+
 def test_signup_field_order():
     expected_field_order = [
         'email',
