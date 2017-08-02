@@ -1,5 +1,6 @@
 from django.conf.urls import url, include
 from django.contrib import admin
+from django.views.decorators.cache import cache_page
 
 import oauth2_provider.views
 import allauth.account.views
@@ -16,7 +17,6 @@ from sso.user.views import (
 from sso.healthcheck.views import HealthCheckAPIView
 from sso.oauth2.views_user import UserRetrieveAPIView
 from sso.api.views_user import SessionUserAPIView, LastLoginAPIView
-
 
 admin.autodiscover()
 
@@ -112,7 +112,7 @@ api_urlpatterns = [
     ),
     url(
         r'^session-user/$',
-        SessionUserAPIView.as_view(),
+        cache_page(60 * 15)(SessionUserAPIView.as_view()),
         name='session-user'
     ),
     url(

@@ -98,6 +98,14 @@ DATABASES = {
     'default': dj_database_url.config()
 }
 
+CACHES = {
+    'default': {
+        'BACKEND': os.getenv(
+            'CACHE_BACKEND', 'django.core.cache.backends.dummy.DummyCache'
+        )
+    }
+}
+
 # Internationalization
 # https://docs.djangoproject.com/en/1.9/topics/i18n/
 
