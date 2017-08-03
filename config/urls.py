@@ -1,6 +1,5 @@
 from django.conf.urls import url, include
 from django.contrib import admin
-from django.views.decorators.cache import cache_page
 
 import oauth2_provider.views
 import allauth.account.views
@@ -112,7 +111,7 @@ api_urlpatterns = [
     ),
     url(
         r'^session-user/$',
-        cache_page(60 * 15)(SessionUserAPIView.as_view()),
+        SessionUserAPIView.as_view(),
         name='session-user'
     ),
     url(

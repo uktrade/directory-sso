@@ -36,7 +36,7 @@ INSTALLED_APPS = [
     'corsheaders',
     'sso',
     'sso.oauth2',
-    'sso.user',
+    'sso.user.apps.UserConfig',
     'directory_constants',
     'directory_header_footer',
 ]
@@ -102,6 +102,9 @@ CACHES = {
     'default': {
         'BACKEND': os.getenv(
             'CACHE_BACKEND', 'django.core.cache.backends.dummy.DummyCache'
+        ),
+        'LOCATION': (
+            [os.environ['REDIS_URL']] if 'REDIS_URL' in os.environ else None
         )
     }
 }

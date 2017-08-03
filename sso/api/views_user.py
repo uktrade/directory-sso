@@ -13,6 +13,7 @@ from sso.api import filters
 from config.signature import SignatureCheckPermission
 from sso.user.serializers import UserSerializer, LastLoginSerializer
 from sso.user.models import User
+from sso.user.helpers import UserCache
 
 
 class SessionUserAPIView(RetrieveAPIView):
@@ -27,10 +28,17 @@ class SessionUserAPIView(RetrieveAPIView):
 
     def get_object(self):
         session_key = self.request.query_params.get('session_key')
+
+        user_details = UserCache.get(session_key=session_key)
+        if user_details:
+            return User(email=user_details['email'], id=user_details['id'])
+
         queryset = self.get_queryset()
         session = get_object_or_404(queryset, session_key=session_key)
         user_id = session.get_decoded().get('_auth_user_id')
-        return get_object_or_404(User, pk=user_id)
+        user = get_object_or_404(User, pk=user_id)
+        UserCache.set(user=user, session=session)
+        return user
 
 
 class LastLoginAPIView(ListAPIView):
