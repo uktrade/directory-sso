@@ -1,21 +1,22 @@
-from datetime import date
+from datetime import date, timedelta
 from unittest.mock import patch, Mock
+
+from freezegun import freeze_time
+import pytest
+from rest_framework import status
+from rest_framework.test import APIClient
 
 from django.core.urlresolvers import reverse
 from django.test.client import Client
 
-import pytest
-
-from rest_framework import status
-from rest_framework.test import APIClient
-
 from sso.user.models import User
 from sso.user.tests.factories import UserFactory
+from sso.user.helpers import UserCache
 
 
-def setup_data():
+def setup_data(email='user@example.com'):
     user = User.objects.create_user(
-        email='user@example.com',
+        email=email,
         password='pass',
     )
     client = Client()
@@ -71,6 +72,92 @@ def test_get_session_user_valid_api_key_no_user(mock_has_permission):
     )
 
     assert response.status_code == status.HTTP_404_NOT_FOUND
+
+
+@pytest.mark.django_db
+@patch('config.signature.SignatureCheckPermission.has_permission', Mock)
+@patch.object(UserCache, 'set', wraps=UserCache.set)
+def test_get_session_user_cached_response(mock_set):
+    user, user_session = setup_data()
+
+    client = APIClient()
+
+    response_one = client.get(
+        reverse('session-user'),
+        data={"session_key": user_session._session_key},
+    )
+    response_two = client.get(
+        reverse('session-user'),
+        data={"session_key": user_session._session_key},
+    )
+
+    for response in [response_one, response_two]:
+        assert response.status_code == status.HTTP_200_OK
+        assert response.data['email'] == user.email
+        assert response.data['id'] == user.id
+
+    assert mock_set.call_count == 1
+
+
+@pytest.mark.django_db
+@patch('config.signature.SignatureCheckPermission.has_permission', Mock)
+@patch.object(UserCache, 'set', wraps=UserCache.set)
+def test_get_session_user_cached_response_expires(mock_set):
+    user, user_session = setup_data()
+
+    client = APIClient()
+
+    response_one = client.get(
+        reverse('session-user'),
+        data={"session_key": user_session._session_key},
+    )
+
+    assert response_one.status_code == status.HTTP_200_OK
+    assert response_one.data['email'] == user.email
+    assert response_one.data['id'] == user.id
+
+    assert mock_set.call_count == 1
+
+    assert UserCache.get(user_session._session_key) == {
+        'email': user.email,
+        'id': user.id,
+    }
+
+    with freeze_time(user_session.get_expiry_date() + timedelta(seconds=1)):
+        response_two = client.get(
+            reverse('session-user'),
+            data={"session_key": user_session._session_key},
+        )
+        assert response_two.status_code == status.HTTP_404_NOT_FOUND
+
+    assert mock_set.call_count == 1
+    assert UserCache.get(user_session._session_key) is None
+
+
+@pytest.mark.django_db
+@patch('config.signature.SignatureCheckPermission.has_permission', Mock)
+@patch.object(UserCache, 'set', wraps=UserCache.set)
+def test_get_session_user_cached_response_multiple_users(mock_set):
+    client = APIClient()
+    user_session_groups = [
+        setup_data(email='user@one.com'),
+        setup_data(email='user@two.com'),
+        setup_data(email='user@three.com'),
+    ]
+
+    # when multiple request for multiple users are made
+    for user, session in (user_session_groups * 2):
+        response = client.get(
+            reverse('session-user'),
+            data={"session_key": session._session_key},
+        )
+        # then the expected response is returned
+        assert response.status_code == status.HTTP_200_OK
+        assert response.data['email'] == user.email
+        assert response.data['id'] == user.id
+
+    # but the number of unique requests is only three
+    assert mock_set.call_count == 3
 
 
 @pytest.mark.django_db

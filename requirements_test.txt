@@ -11,6 +11,7 @@
 boto3==1.4.0
 botocore==1.4.93          # via boto3, s3transfer
 codecov==2.0.9
+freezegun==0.3.8
 contextlib2==0.5.5        # via raven
 coverage==4.4.1           # via codecov, pytest-cov
 defusedxml==0.5.0         # via python3-openid
@@ -22,6 +23,7 @@ django-filter==1.0.1
 django-oauth-toolkit==0.10.0
 django-pglocks==1.0.2
 django==1.9.13
+django-redis==4.8.0
 django_extensions==1.6.7
 djangorestframework==3.4.7
 docutils==0.13.1          # via botocore
@@ -45,6 +47,7 @@ pytest==3.0.2
 python-dateutil==2.6.0    # via botocore, faker
 python3-openid==3.1.0     # via django-allauth
 raven==5.19.0
+redis==2.10.5
 requests-file==1.4.2      # via tldextract
 requests-oauthlib==0.8.0  # via django-allauth
 requests==2.11.1          # via codecov, django-allauth, requests-file, requests-oauthlib, tldextract

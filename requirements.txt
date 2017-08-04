@@ -19,6 +19,7 @@ django-filter==1.0.1
 django-oauth-toolkit==0.10.0
 django-pglocks==1.0.2
 django==1.9.13
+django-redis==4.8.0
 django_extensions==1.6.7
 djangorestframework==3.4.7
 docutils==0.13.1          # via botocore
@@ -31,6 +32,7 @@ psycopg2==2.6.1
 python-dateutil==2.6.0    # via botocore
 python-openid==2.2.5      # via django-allauth
 raven==5.19.0
+redis==2.10.5
 requests-file==1.4.2      # via tldextract
 requests-oauthlib==0.8.0  # via django-allauth
 requests==2.11.1          # via django-allauth, requests-file, requests-oauthlib, tldextract

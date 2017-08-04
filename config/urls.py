@@ -17,7 +17,6 @@ from sso.healthcheck.views import HealthCheckAPIView
 from sso.oauth2.views_user import UserRetrieveAPIView
 from sso.api.views_user import SessionUserAPIView, LastLoginAPIView
 
-
 admin.autodiscover()
 
 
