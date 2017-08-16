@@ -98,14 +98,16 @@ DATABASES = {
     'default': dj_database_url.config()
 }
 
+CACHE_BACKENDS = {
+    'redis': 'django_redis.cache.RedisCache',
+    'dummy': 'django.core.cache.backends.dummy.DummyCache',
+    'locmem': 'django.core.cache.backends.locmem.LocMemCache'
+}
+
 CACHES = {
     'default': {
-        'BACKEND': os.getenv(
-            'CACHE_BACKEND', 'django.core.cache.backends.dummy.DummyCache'
-        ),
-        'LOCATION': (
-            [os.environ['REDIS_URL']] if 'REDIS_URL' in os.environ else None
-        )
+        'BACKEND': CACHE_BACKENDS[os.getenv('CACHE_BACKEND', 'redis')],
+        'LOCATION': os.getenv('REDIS_URL')
     }
 }
 

@@ -62,7 +62,7 @@ DOCKER_SET_DEBUG_ENV_VARS := \
 	export SSO_DIRECTORY_API_EXTERNAL_CLIENT_BASE_URL=http://buyer.trade.great.dev:8001/api/external/; \
 	export SSO_DIRECTORY_API_EXTERNAL_SIGNATURE_SECRET=debug; \
 	export SSO_EXOPS_APPLICATION_CLIENT_ID=debug; \
-	export SSO_CACHE_BACKEND=django.core.cache.backends.locmem.LocMemCache
+	export SSO_CACHE_BACKEND=locmem
 
 
 docker_test_env_files:
@@ -129,7 +129,7 @@ DEBUG_SET_ENV_VARS := \
 	export DIRECTORY_API_EXTERNAL_CLIENT_BASE_URL=http://buyer.trade.great.dev:8001/api/external/; \
 	export DIRECTORY_API_EXTERNAL_SIGNATURE_SECRET=debug; \
 	export EXOPS_APPLICATION_CLIENT_ID=debug; \
-	export CACHE_BACKEND=django.core.cache.backends.locmem.LocMemCache
+	export CACHE_BACKEND=locmem
 
 
 debug_webserver:
