@@ -103,13 +103,15 @@ CACHE_BACKENDS = {
     'dummy': 'django.core.cache.backends.dummy.DummyCache',
     'locmem': 'django.core.cache.backends.locmem.LocMemCache'
 }
-
 CACHES = {
     'default': {
         'BACKEND': CACHE_BACKENDS[os.getenv('CACHE_BACKEND', 'redis')],
         'LOCATION': os.getenv('REDIS_URL')
     }
 }
+
+SESSION_ENGINE = 'django.contrib.sessions.backends.cached_db'
+
 
 # Internationalization
 # https://docs.djangoproject.com/en/1.9/topics/i18n/
