@@ -77,7 +77,9 @@ def test_get_session_user_valid_api_key_no_user(mock_has_permission):
 @pytest.mark.django_db
 @patch('config.signature.SignatureCheckPermission.has_permission', Mock)
 @patch.object(UserCache, 'set', wraps=UserCache.set)
-def test_get_session_user_cached_response(mock_set):
+def test_get_session_user_cached_response(mock_set, settings):
+    settings.FEATURE_REDIS_CACHE_ENABLED = True
+
     user, user_session = setup_data()
 
     client = APIClient()
@@ -102,7 +104,9 @@ def test_get_session_user_cached_response(mock_set):
 @pytest.mark.django_db
 @patch('config.signature.SignatureCheckPermission.has_permission', Mock)
 @patch.object(UserCache, 'set', wraps=UserCache.set)
-def test_get_session_user_cached_response_expires(mock_set):
+def test_get_session_user_cached_response_expires(mock_set, settings):
+    settings.FEATURE_REDIS_CACHE_ENABLED = True
+
     user, user_session = setup_data()
 
     client = APIClient()
@@ -137,7 +141,9 @@ def test_get_session_user_cached_response_expires(mock_set):
 @pytest.mark.django_db
 @patch('config.signature.SignatureCheckPermission.has_permission', Mock)
 @patch.object(UserCache, 'set', wraps=UserCache.set)
-def test_get_session_user_cached_response_multiple_users(mock_set):
+def test_get_session_user_cached_response_multiple_users(mock_set, settings):
+    settings.FEATURE_REDIS_CACHE_ENABLED = True
+
     client = APIClient()
     user_session_groups = [
         setup_data(email='user@one.com'),

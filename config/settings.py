@@ -391,3 +391,7 @@ DIRECTORY_API_EXTERNAL_CLIENT_BASE_URL = os.environ[
 
 # Export Opportunities
 EXOPS_APPLICATION_CLIENT_ID = os.environ['EXOPS_APPLICATION_CLIENT_ID']
+
+# Redis cache enabled
+FEATURE_REDIS_CACHE_ENABLED = os.getenv(
+    'FEATURE_REDIS_CACHE_ENABLED') == 'true'
