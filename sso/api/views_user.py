@@ -6,6 +6,7 @@ from rest_framework.generics import (
 from rest_framework.response import Response
 from rest_framework import status
 
+from django.conf import settings
 from django.contrib.sessions.models import Session
 from django.core.exceptions import ValidationError
 
@@ -29,15 +30,19 @@ class SessionUserAPIView(RetrieveAPIView):
     def get_object(self):
         session_key = self.request.query_params.get('session_key')
 
-        user_details = UserCache.get(session_key=session_key)
-        if user_details:
-            return User(email=user_details['email'], id=user_details['id'])
+        if settings.FEATURE_REDIS_CACHE_ENABLED:
+            user_details = UserCache.get(session_key=session_key)
+            if user_details:
+                return User(email=user_details['email'], id=user_details['id'])
 
         queryset = self.get_queryset()
         session = get_object_or_404(queryset, session_key=session_key)
         user_id = session.get_decoded().get('_auth_user_id')
         user = get_object_or_404(User, pk=user_id)
-        UserCache.set(user=user, session=session)
+
+        if settings.FEATURE_REDIS_CACHE_ENABLED:
+            UserCache.set(user=user, session=session)
+
         return user
 
 
