@@ -1,23 +1,22 @@
+from unittest.mock import patch
 import urllib.parse
-
 import http
 from http.cookies import SimpleCookie
 
 from django.core import mail
 from django.core.urlresolvers import reverse
+from django.http import HttpResponse
 
-from allauth.account.models import (
-    EmailAddress,
-    EmailConfirmationHMAC
-)
+from allauth.account.models import EmailAddress, EmailConfirmationHMAC
+from allauth.exceptions import ImmediateHttpResponse
 import pytest
 
-from sso.user.models import User
+from sso.user import models, views
 
 
 @pytest.fixture
 def user():
-    return User.objects.create_user(
+    return models.User.objects.create_user(
         email='test@example.com',
         password='password',
     )
@@ -25,7 +24,7 @@ def user():
 
 @pytest.fixture
 def verified_user():
-    user = User.objects.create_user(
+    user = models.User.objects.create_user(
         email='verified@example.com',
         password='password',
     )
@@ -596,12 +595,47 @@ def test_signup_email_enumeration_not_possible(client, verified_user):
         }
     )
     assert response.status_code == 302
-    assert User.objects.all().count() == 1
-    assert User.objects.all().last() == verified_user
+    assert models.User.objects.all().count() == 1
+    assert models.User.objects.all().last() == verified_user
     assert response.get('Location') == reverse(
         'account_email_verification_sent'
     )
     assert len(mail.outbox) == 0
+
+
+@pytest.mark.django_db(transaction=True)
+@patch.object(
+    views, 'complete_signup',
+    side_effect=ImmediateHttpResponse(response=HttpResponse(b'hello'))
+)
+def test_signup_email_raises_exception_allauth(mock_complete_signup, client):
+    response = client.post(
+        reverse('account_signup'),
+        data={
+            'email': 'fred@exmaple.com',
+            'email2': 'fred@exmaple.com',
+            'terms_agreed': True,
+            'password1': 'passpasspass',
+            'password2': 'passpasspass'
+        }
+    )
+    assert response.content == b'hello'
+
+
+@pytest.mark.django_db(transaction=True)
+@patch.object(views.SignupView.form_class, 'save', side_effect=Exception())
+def test_signup_email_raises_exception(mock_save, client):
+    with pytest.raises(Exception):
+        client.post(
+            reverse('account_signup'),
+            data={
+                'email': 'fred@exmaple.com',
+                'email2': 'fred@exmaple.com',
+                'terms_agreed': True,
+                'password1': 'passpasspass',
+                'password2': 'passpasspass'
+            }
+        )
 
 
 @pytest.mark.django_db
@@ -778,7 +812,7 @@ def test_signup_saves_utm(
         }
     )
 
-    user = User.objects.last()
+    user = models.User.objects.last()
     assert user.utm == ed_utm_cookie_value
 
 
