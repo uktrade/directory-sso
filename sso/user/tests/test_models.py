@@ -92,3 +92,24 @@ def test_user_model_has_update_create_timestamps():
     assert 'modified' in field_names
     modified_field = User._meta.get_field_by_name('modified')[0]
     assert modified_field.__class__ is ModificationDateTimeField
+
+
+def test_create_user():
+    with pytest.raises(ValueError, message='Email must be set'):
+        User.objects.create_user()
+
+
+def test_create_superuser_not_staff():
+    message = 'Superuser must have is_staff=True'
+    with pytest.raises(ValueError, message=message):
+        User.objects.create_superuser(
+            is_staff=False, email=None, password=None,
+        )
+
+
+def test_create_superuser_not_superuser():
+    message = 'Superuser must have is_superuser=True'
+    with pytest.raises(ValueError, message=message):
+        User.objects.create_superuser(
+            is_superuser=False, email=None, password=None,
+        )
