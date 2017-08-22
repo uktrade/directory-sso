@@ -12,7 +12,7 @@ boto3==1.4.0
 botocore==1.4.93          # via boto3, s3transfer
 contextlib2==0.5.5        # via raven
 dj-database-url==0.4.1
-django-allauth==0.28.0
+django-allauth==0.33.0
 django-braces==1.11.0     # via django-oauth-toolkit
 django-cors-headers==1.2.2
 django-filter==1.0.1
