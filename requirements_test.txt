@@ -16,7 +16,7 @@ contextlib2==0.5.5        # via raven
 coverage==4.4.1           # via codecov, pytest-cov
 defusedxml==0.5.0         # via python3-openid
 dj-database-url==0.4.1
-django-allauth==0.28.0
+django-allauth==0.33.0
 django-braces==1.11.0     # via django-oauth-toolkit
 django-cors-headers==1.2.2
 django-filter==1.0.1
