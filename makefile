@@ -20,7 +20,7 @@ test:
 
 DJANGO_WEBSERVER := \
 	python manage.py distributed_migrate; \
-	python manage.py runserver 0.0.0.0:$$PORT
+	python -Wd manage.py runserver 0.0.0.0:$$PORT
 
 django_webserver:
 	$(DJANGO_WEBSERVER)

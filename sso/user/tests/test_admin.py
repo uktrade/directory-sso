@@ -224,6 +224,5 @@ def test_download_csv_exops_not_fab_distinct(
     )
 
     rows = str(response.content, 'utf-8').strip().split('\r\n')
-
     # then the user is listed only once, not once per token created
     assert len(rows) == 2  # header and single row
