@@ -17,6 +17,7 @@ class AccessTokenFactory(factory.django.DjangoModelFactory):
     application = factory.SubFactory(ApplicationFactory)
     user = factory.SubFactory(UserFactory)
     expires = datetime.now() + timedelta(minutes=60)
+    token = factory.fuzzy.FuzzyText()
 
     class Meta:
         model = AccessToken
