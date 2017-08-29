@@ -54,17 +54,17 @@ def test_redirect_next_processor_handles_no_next_param(
     assert context['redirect_field_value'] == settings.DEFAULT_REDIRECT_URL
     assert context['sso_logout_url'] == (
         '/accounts/logout/?'
-        'next=https%3A%2F%2Ffind-a-buyer.export.great.gov.uk%2F'
+        'next=http%3A%2F%2Fbuyer.trade.great.dev%3A8001'
     )
     assert context['sso_login_url'] == (
         '/accounts/login/?'
-        'next=https%3A%2F%2Ffind-a-buyer.export.great.gov.uk%2F'
+        'next=http%3A%2F%2Fbuyer.trade.great.dev%3A8001'
     )
     assert context['sso_reset_password_url'] == (
         '/accounts/password/reset/?'
-        'next=https%3A%2F%2Ffind-a-buyer.export.great.gov.uk%2F'
+        'next=http%3A%2F%2Fbuyer.trade.great.dev%3A8001'
     )
     assert context['sso_register_url'] == (
         '/accounts/signup/?'
-        'next=https%3A%2F%2Ffind-a-buyer.export.great.gov.uk%2F'
+        'next=http%3A%2F%2Fbuyer.trade.great.dev%3A8001'
     )

@@ -202,9 +202,9 @@ def test_download_csv_exops_not_fab_distinct(
     application = ApplicationFactory(client_id='debug')
     # given a user has created multiple tokens
     token_one = AccessTokenFactory.create(
-        application=application
+        application=application,
     )
-    token_one = AccessTokenFactory.create(
+    AccessTokenFactory.create(
         application=application,
         user=token_one.user,
     )
