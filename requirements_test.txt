@@ -50,7 +50,7 @@ raven==5.19.0
 redis==2.10.5
 requests-file==1.4.2      # via tldextract
 requests-oauthlib==0.8.0  # via django-allauth
-requests==2.11.1          # via codecov, django-allauth, requests-file, requests-oauthlib, tldextract
+requests>=2.13.0          # via codecov, django-allauth, requests-file, requests-oauthlib, tldextract
 s3transfer==0.1.10        # via boto3
 setuptools-git==1.2
 six==1.10.0               # via django-extensions, django-oauth-toolkit, faker, python-dateutil, requests-file
