@@ -1,6 +1,6 @@
 from rest_framework import permissions
 from rest_framework.generics import RetrieveAPIView
-from oauth2_provider.ext.rest_framework import TokenHasScope
+from oauth2_provider.contrib.rest_framework import TokenHasScope
 
 from sso.user.serializers import UserSerializer
 

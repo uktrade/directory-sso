@@ -21,3 +21,23 @@ class AccessTokenFactory(factory.django.DjangoModelFactory):
 
     class Meta:
         model = AccessToken
+
+
+def build_historic_access_token_factory(apps):
+
+    class HistoricUserFactory(UserFactory):
+        class Meta:
+            model = apps.get_model('user', 'User')
+
+    class HistoricApplicationFactory(ApplicationFactory):
+        class Meta:
+            model = apps.get_model('oauth2_provider', 'Application')
+        user = factory.SubFactory(HistoricUserFactory)
+
+    class HistoricAccessTokenFactory(AccessTokenFactory):
+        class Meta:
+            model = apps.get_model('oauth2_provider', 'AccessToken')
+        user = factory.SubFactory(HistoricUserFactory)
+        application = factory.SubFactory(HistoricApplicationFactory)
+
+    return HistoricAccessTokenFactory

@@ -18,8 +18,10 @@ class UserAdmin(admin.ModelAdmin):
     actions = ['download_csv', 'download_csv_exops_not_fab']
 
     csv_excluded_fields = (
-        'password', 'refreshtoken', 'socialaccount', 'logentry', 'grant',
-        'groups', 'accesstoken', 'emailaddress', 'user_permissions'
+        'password', 'oauth2_provider_refreshtoken',
+        'socialaccount', 'logentry', 'oauth2_provider_grant',
+        'groups', 'oauth2_provider_accesstoken', 'emailaddress',
+        'user_permissions'
     )
 
     @staticmethod
@@ -73,7 +75,9 @@ class UserAdmin(admin.ModelAdmin):
         queryset = (
             queryset
             .exclude(pk__in=self.get_fab_user_ids())
-            .filter(accesstoken__application__client_id=client_id)
+            .filter(
+                oauth2_provider_accesstoken__application__client_id=client_id
+            )
             .distinct()
         )
         return self.generate_csv_for_queryset(
