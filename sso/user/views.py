@@ -1,7 +1,10 @@
+import urllib
+
 from django.db import IntegrityError
 from django.conf import settings
 from django.core.urlresolvers import reverse
 from django.http import HttpResponseRedirect
+from django.shortcuts import redirect
 from django.views.generic import RedirectView
 
 from allauth.account import views as allauth_views
@@ -90,7 +93,16 @@ class EmailVerificationSentView(allauth_views.EmailVerificationSentView):
 class PasswordResetFromKeyView(
     RedirectToNextMixin, allauth_views.PasswordResetFromKeyView
 ):
-    pass
+    def dispatch(self, request, uidb36, key, **kwargs):
+        response = super().dispatch(request, uidb36, key, **kwargs)
+        if key != allauth_views.INTERNAL_RESET_URL_KEY:
+            if response.status_code == 302:
+                redirect_url = get_url_with_redirect(
+                    url=response.url,
+                    redirect_url=self.get_redirect_url()
+                )
+                return redirect(urllib.parse.unquote(redirect_url))
+        return response
 
 
 class SSOLandingPage(RedirectView):

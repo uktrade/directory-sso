@@ -451,9 +451,12 @@ def test_password_reset_redirect_default_param_if_no_next_param(
     url = txt[txt.find('/accounts/password/reset/'):].split()[0]
 
     # Reset the password
+    preflight_response = client.post(url)
     response = client.post(
-        url, {'password1': new_password, 'password2': new_password}
+        preflight_response.get('Location'),
+        {'password1': new_password, 'password2': new_password}
     )
+
     assert url in txt
     assert url in html
     assert response.status_code == http.client.FOUND
@@ -487,7 +490,11 @@ def test_password_reset_redirect_next_param_if_next_param_valid(
         'password2': new_password,
         'next': expected
     }
-    response = client.post(url, data)
+    preflight_response = client.post(url)
+    response = client.post(
+        preflight_response.get('Location'),
+        data,
+    )
 
     assert url in txt
     assert url in html
@@ -517,8 +524,10 @@ def test_password_reset_redirect_next_param_if_next_param_invalid(
     url = txt[txt.find('/accounts/password/reset/'):].split()[0]
 
     # Reset the password
+    preflight_response = client.post(url)
     response = client.post(
-        url, {'password1': new_password, 'password2': new_password}
+        preflight_response.get('Location'),
+        {'password1': new_password, 'password2': new_password}
     )
 
     assert url in txt
@@ -549,8 +558,10 @@ def test_password_reset_redirect_next_param_if_next_param_internal(
     url = txt[txt.find('/accounts/password/reset/'):].split()[0]
 
     # Reset the password
+    preflight_response = client.post(url)
     response = client.post(
-        url, {'password1': new_password, 'password2': new_password}
+        preflight_response.get('Location'),
+        {'password1': new_password, 'password2': new_password}
     )
 
     assert url in txt
