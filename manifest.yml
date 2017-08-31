@@ -1,0 +1,6 @@
+---
+applications:
+- name: directory-sso
+  memory: 256M
+  disk_quota: 2G
+  buildpack: python_buildpack
