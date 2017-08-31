@@ -30,7 +30,7 @@ class SessionUserAPIView(RetrieveAPIView):
     def get_object(self):
         session_key = self.request.query_params.get('session_key')
 
-        if settings.FEATURE_REDIS_CACHE_ENABLED:
+        if settings.FEATURE_CACHE_ENABLED:
             user_details = UserCache.get(session_key=session_key)
             if user_details:
                 return User(email=user_details['email'], id=user_details['id'])
@@ -40,7 +40,7 @@ class SessionUserAPIView(RetrieveAPIView):
         user_id = session.get_decoded().get('_auth_user_id')
         user = get_object_or_404(User, pk=user_id)
 
-        if settings.FEATURE_REDIS_CACHE_ENABLED:
+        if settings.FEATURE_CACHE_ENABLED:
             UserCache.set(user=user, session=session)
 
         return user
