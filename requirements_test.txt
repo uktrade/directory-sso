@@ -4,32 +4,32 @@
 #
 #    pip-compile --output-file requirements_test.txt requirements_test.ini
 #
--e git+https://github.com/uktrade/directory-api-client-external.git@v0.5.0#egg=directory_api_external
--e git+https://github.com/uktrade/directory-constants.git@v2.1.0#egg=directory_constants
--e git+https://github.com/uktrade/directory-header-footer.git@v0.4.0#egg=directory_header_footer
--e git+https://github.com/uktrade/directory-signature-auth.git@v0.2.0#egg=sigauth
+-e git+https://github.com/steadysupply/directory-api-client-external.git@dd460d4#egg=directory_api_external
+-e git+https://github.com/steadysupply/directory-constants.git@84b0b2f#egg=directory_constants
+-e git+https://github.com/steadysupply/directory-header-footer.git@c799703#egg=directory_header_footer
+-e git+https://github.com/steadysupply/directory-sso-api-client.git@8517dc9#egg=directory_sso_api_client
+-e git+https://github.com/steadysupply/directory-signature-auth.git@7571ce2#egg=sigauth
 boto3==1.4.0
 botocore==1.4.93          # via boto3, s3transfer
 codecov==2.0.9
-freezegun==0.3.8
 contextlib2==0.5.5        # via raven
 coverage==4.4.1           # via codecov, pytest-cov
 defusedxml==0.5.0         # via python3-openid
 dj-database-url==0.4.1
 django-allauth==0.33.0
-django-braces==1.11.0     # via django-oauth-toolkit
 django-cors-headers==1.3.1
 django-filter==1.0.4
 django-oauth-toolkit==1.0.0
 django-pglocks==1.0.2
-Django==1.11.4
 django-redis==4.8.0
+django==1.11.4
 django_extensions==1.9.0
-djangorestframework==3.6.4
+djangorestframework==3.4.7
 docutils==0.13.1          # via botocore
 factory-boy==2.8.1
 faker==0.7.17             # via factory-boy
 flake8==3.0.4
+freezegun==0.3.8
 gunicorn==19.5.0
 idna==2.5                 # via tldextract
 jmespath==0.9.3           # via boto3, botocore
@@ -44,16 +44,17 @@ pytest-cov==2.3.1
 pytest-django==3.0.0
 pytest-sugar==0.8.0
 pytest==3.0.2
-python-dateutil==2.6.0    # via botocore, faker
+python-dateutil==2.6.0    # via botocore, faker, freezegun
 python3-openid==3.1.0     # via django-allauth
+pytz==2017.2              # via django
 raven==5.19.0
 redis==2.10.5
 requests-file==1.4.2      # via tldextract
 requests-oauthlib==0.8.0  # via django-allauth
-requests>=2.13.0          # via codecov, django-allauth, requests-file, requests-oauthlib, tldextract
+requests==2.13.0          # via codecov, django-allauth, django-oauth-toolkit, requests-file, requests-oauthlib, tldextract
 s3transfer==0.1.10        # via boto3
 setuptools-git==1.2
-six==1.10.0               # via django-extensions, django-oauth-toolkit, faker, python-dateutil, requests-file
+six==1.10.0               # via django-extensions, faker, freezegun, python-dateutil, requests-file
 termcolor==1.1.0          # via pytest-sugar
 tldextract==2.0.2
 whitenoise==3.3.0
