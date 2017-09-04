@@ -21,3 +21,8 @@ class LastLoginSerializer(serializers.ModelSerializer):
             'id',
             'last_login',
         )
+
+
+class PasswordCheckSerializer(serializers.Serializer):
+    password = serializers.CharField(style={'input_type': 'password'})
+    session_key = serializers.CharField(style={'input_type': 'password'})

@@ -28,14 +28,16 @@ def setup_data(email='user@example.com'):
     return user, user_session
 
 
+@pytest.fixture
+def api_client():
+    return APIClient()
+
+
 @pytest.mark.django_db
-@patch('config.signature.SignatureCheckPermission.has_permission')
-def test_get_session_user_valid_api_key(mock_has_permission):
+def test_get_session_user_valid_session_key(api_client):
     user, user_session = setup_data()
 
-    client = APIClient()
-
-    response = client.get(
+    response = api_client.get(
         reverse('session-user'),
         data={"session_key": user_session._session_key},
     )
@@ -47,12 +49,12 @@ def test_get_session_user_valid_api_key(mock_has_permission):
 
 @pytest.mark.django_db
 @patch('config.signature.SignatureCheckPermission.has_permission', Mock)
-def test_get_session_user_expired():
+def test_get_session_user_expired(api_client):
     user, user_session = setup_data()
     user_session.set_expiry(-1)
     user_session.save()
 
-    response = APIClient().get(
+    response = api_client.get(
         reverse('session-user'),
         data={"session_key": user_session._session_key},
     )
@@ -61,13 +63,10 @@ def test_get_session_user_expired():
 
 
 @pytest.mark.django_db
-@patch('config.signature.SignatureCheckPermission.has_permission')
-def test_get_session_user_valid_api_key_no_user(mock_has_permission):
+def test_get_session_user_valid_session_key_no_user(api_client):
     user, user_session = setup_data()
 
-    client = APIClient()
-
-    response = client.get(
+    response = api_client.get(
         reverse('session-user'), data={"session_key": 'non-existent'},
     )
 
@@ -77,18 +76,16 @@ def test_get_session_user_valid_api_key_no_user(mock_has_permission):
 @pytest.mark.django_db
 @patch('config.signature.SignatureCheckPermission.has_permission', Mock)
 @patch.object(UserCache, 'set', wraps=UserCache.set)
-def test_get_session_user_cached_response(mock_set, settings):
+def test_get_session_user_cached_response(mock_set, settings, api_client):
     settings.FEATURE_CACHE_ENABLED = True
 
     user, user_session = setup_data()
 
-    client = APIClient()
-
-    response_one = client.get(
+    response_one = api_client.get(
         reverse('session-user'),
         data={"session_key": user_session._session_key},
     )
-    response_two = client.get(
+    response_two = api_client.get(
         reverse('session-user'),
         data={"session_key": user_session._session_key},
     )
@@ -102,16 +99,15 @@ def test_get_session_user_cached_response(mock_set, settings):
 
 
 @pytest.mark.django_db
-@patch('config.signature.SignatureCheckPermission.has_permission', Mock)
 @patch.object(UserCache, 'set', wraps=UserCache.set)
-def test_get_session_user_cached_response_expires(mock_set, settings):
+def test_get_session_user_cached_response_expires(
+    mock_set, settings, api_client
+):
     settings.FEATURE_CACHE_ENABLED = True
 
     user, user_session = setup_data()
 
-    client = APIClient()
-
-    response_one = client.get(
+    response_one = api_client.get(
         reverse('session-user'),
         data={"session_key": user_session._session_key},
     )
@@ -128,7 +124,7 @@ def test_get_session_user_cached_response_expires(mock_set, settings):
     }
 
     with freeze_time(user_session.get_expiry_date() + timedelta(seconds=1)):
-        response_two = client.get(
+        response_two = api_client.get(
             reverse('session-user'),
             data={"session_key": user_session._session_key},
         )
@@ -141,10 +137,11 @@ def test_get_session_user_cached_response_expires(mock_set, settings):
 @pytest.mark.django_db
 @patch('config.signature.SignatureCheckPermission.has_permission', Mock)
 @patch.object(UserCache, 'set', wraps=UserCache.set)
-def test_get_session_user_cached_response_multiple_users(mock_set, settings):
+def test_get_session_user_cached_response_multiple_users(
+    mock_set, settings, api_client
+):
     settings.FEATURE_CACHE_ENABLED = True
 
-    client = APIClient()
     user_session_groups = [
         setup_data(email='user@one.com'),
         setup_data(email='user@two.com'),
@@ -153,7 +150,7 @@ def test_get_session_user_cached_response_multiple_users(mock_set, settings):
 
     # when multiple request for multiple users are made
     for user, session in (user_session_groups * 2):
-        response = client.get(
+        response = api_client.get(
             reverse('session-user'),
             data={"session_key": session._session_key},
         )
@@ -167,13 +164,11 @@ def test_get_session_user_cached_response_multiple_users(mock_set, settings):
 
 
 @pytest.mark.django_db
-@patch('config.signature.SignatureCheckPermission.has_permission')
-def test_get_last_login(mock_has_permission):
+def test_get_last_login(api_client):
     users = UserFactory.create_batch(5)
     setup_data()  # creates active user that should not be in response
-    client = APIClient()
 
-    response = client.get(reverse('last-login'))
+    response = api_client.get(reverse('last-login'))
 
     assert response.status_code == status.HTTP_200_OK
     assert len(response.json()) == 5
@@ -204,8 +199,7 @@ def test_get_last_login(mock_has_permission):
 
 
 @pytest.mark.django_db
-@patch('config.signature.SignatureCheckPermission.has_permission')
-def test_get_last_login_with_params(mock_has_permission):
+def test_get_last_login_with_params(api_client):
     user1 = UserFactory(last_login=date(2016, 12, 25))
     user2 = UserFactory(last_login=date(2017, 1, 1))
     user3 = UserFactory(last_login=date(2016, 12, 26))
@@ -213,9 +207,8 @@ def test_get_last_login_with_params(mock_has_permission):
     UserFactory(last_login=date(2016, 12, 24))
     UserFactory(last_login=date(2017, 1, 2))
     setup_data()  # creates active user that should not be in response
-    client = APIClient()
 
-    response = client.get(
+    response = api_client.get(
         reverse('last-login'), {'start': '2016-12-25', 'end': '2017-01-01'}
     )
 
@@ -240,10 +233,7 @@ def test_get_last_login_with_params(mock_has_permission):
 
 
 @pytest.mark.django_db
-@patch('config.signature.SignatureCheckPermission.has_permission')
-def test_get_last_login_with_invalid_date_params(
-    mock_has_permission, client,
-):
+def test_get_last_login_with_invalid_date_params(client):
     UserFactory(last_login=date(2016, 12, 25))
     UserFactory(last_login=date(2017, 1, 1))
     UserFactory(last_login=date(2016, 12, 26))
@@ -265,3 +255,53 @@ def test_get_last_login_with_invalid_date_params(
     }
     assert response.status_code == status.HTTP_400_BAD_REQUEST
     assert response.json() == expected_errors
+
+
+@pytest.mark.django_db
+def test_check_password_user_valid_data(api_client):
+    user, user_session = setup_data()
+
+    response = api_client.post(
+        reverse('password-check'),
+        data={'session_key': user_session._session_key, 'password': 'pass'},
+    )
+
+    assert response.status_code == status.HTTP_200_OK
+
+
+@pytest.mark.django_db
+def test_check_password_user_invalid_password(api_client):
+    user, user_session = setup_data()
+
+    response = api_client.post(
+        reverse('password-check'),
+        data={'session_key': user_session._session_key, 'password': '!!!'},
+    )
+
+    assert response.status_code == status.HTTP_400_BAD_REQUEST
+
+
+@pytest.mark.django_db
+def test_check_password_expired(api_client):
+    user, user_session = setup_data()
+    user_session.set_expiry(-1)
+    user_session.save()
+
+    response = api_client.post(
+        reverse('password-check'),
+        data={'session_key': user_session._session_key, 'password': 'pass'},
+    )
+
+    assert response.status_code == status.HTTP_404_NOT_FOUND
+
+
+@pytest.mark.django_db
+def test_check_password_valid_session_key_no_user(api_client):
+    user, user_session = setup_data()
+
+    response = api_client.post(
+        reverse('password-check'),
+        data={'session_key': 'non-existent', 'password': 'pass'},
+    )
+
+    assert response.status_code == status.HTTP_404_NOT_FOUND
