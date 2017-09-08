@@ -1,6 +1,13 @@
 # directory-sso
 
-This is the service for authenticating users for services that serve the Exporting is Great campaign for the Department for International Trade (DIT).
+[![code-climate-image]][code-climate]
+[![circle-ci-image]][circle-ci]
+[![codecov-image]][codecov]
+[![gemnasium-image]][gemnasium]
+
+---
+
+**Service for authenticating users for services that serve the Exporting is Great campaign for the Department for International Trade (DIT).**
 
 ## Build status
 
@@ -95,3 +102,16 @@ make dumpdata
 ```
 
 Then check the contents of `fixtures/development.json`.
+
+
+[code-climate-image]: https://codeclimate.com/github/uktrade/directory-sso/badges/issue_count.svg
+[code-climate]: https://codeclimate.com/github/uktrade/directory-sso
+
+[circle-ci-image]: https://circleci.com/gh/uktrade/directory-sso/tree/master.svg?style=svg
+[circle-ci]: https://circleci.com/gh/uktrade/directory-sso/tree/master
+
+[codecov-image]: https://codecov.io/gh/uktrade/directory-sso/branch/master/graph/badge.svg
+[codecov]: https://codecov.io/gh/uktrade/directory-sso
+
+[gemnasium-image]: https://gemnasium.com/badges/github.com/uktrade/directory-sso.svg
+[gemnasium]: https://gemnasium.com/github.com/uktrade/directory-sso
