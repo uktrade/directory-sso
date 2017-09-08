@@ -75,7 +75,7 @@ class PasswordCheckAPIView(GetUserBySessionKeyMixin, APIView):
     serializer_class = serializers.PasswordCheckSerializer
 
     def post(self, request, format=None):
-        serializer = self.serializer_class(data=request.POST)
+        serializer = self.serializer_class(data=request.data)
         serializer.is_valid(raise_exception=True)
         session_key = serializer.validated_data['session_key']
         user = self.get_session_key_user(session_key)
