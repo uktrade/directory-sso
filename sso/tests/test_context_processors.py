@@ -19,9 +19,13 @@ def test_analytics_installed(settings):
     assert 'sso.context_processors.analytics' in processors
 
 
-def test_feature_returns_expected_features():
+def test_feature_returns_expected_features(settings):
+    settings.FEATURE_NEW_SHARED_HEADER_ENABLED = True
+
     actual = context_processors.feature_flags(None)
 
     assert actual == {
-        'features': {}
+        'features': {
+            'FEATURE_NEW_SHARED_HEADER_ENABLED': True
+        }
     }

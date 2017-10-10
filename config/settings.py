@@ -100,6 +100,10 @@ DATABASES = {
 # Cache
 FEATURE_CACHE_ENABLED = os.getenv('FEATURE_CACHE_ENABLED', 'false') == 'true'
 
+FEATURE_NEW_SHARED_HEADER_ENABLED = os.getenv(
+    'FEATURE_NEW_SHARED_HEADER_ENABLED'
+) == 'true'
+
 if FEATURE_CACHE_ENABLED:
     CACHE_BACKENDS = {
         'redis': 'django_redis.cache.RedisCache',
