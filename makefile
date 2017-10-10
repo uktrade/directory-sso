@@ -135,7 +135,8 @@ DEBUG_SET_ENV_VARS := \
 	export EXOPS_APPLICATION_CLIENT_ID=debug; \
 	export CACHE_BACKEND=locmem; \
 	export PYTHONWARNINGS=all; \
-	export PYTHONDEBUG=true
+	export PYTHONDEBUG=true; \
+	export FEATURE_NEW_SHARED_HEADER_ENABLED=false
 
 
 debug_webserver:

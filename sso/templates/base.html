@@ -23,7 +23,15 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta property="og:image" content="{% static 'govuk-0.18.0/assets/images/opengraph-image.png' %}">
 
-        <link href="{% static 'Dit-Pattern-Styling/public/css/main.css' %}" media="all" rel="stylesheet" />
+        {% if features.FEATURE_NEW_SHARED_HEADER_ENABLED %}
+            <link href="{% static 'Dit-Pattern-Styling/public/css/main.css' %}" media="all" rel="stylesheet" />
+            <link href="{% static 'Dit-Pattern-Styling/public/css/compatibility.css' %}" media="all" rel="stylesheet" />
+            <script src="{% static 'Dit-Pattern-Styling/public/js/third-party.js' %}"></script>
+            <script src="{% static 'Dit-Pattern-Styling/public/js/script.js' %}"></script>
+        {% else %}
+            <link href="{% static 'Dit-Pattern-Styling/public/css/main_old.css' %}" media="all" rel="stylesheet" />
+        {% endif %}
+
         <link href="{% static 'vendor/bootstrap/css/bootstrap-grid-only.css' %}" media="all" rel="stylesheet" />
         <link href="{% static 'vendor/bootstrap/css/bootstrap-responsive.css' %}" media="all" rel="stylesheet" />
         <link href="{% static 'main.css' %}" media="all" rel="stylesheet" />
@@ -33,7 +41,11 @@
     <body>
         {% include 'google_tag_manager_body.html' %}
         <script>document.body.className = ((document.body.className) ? document.body.className + ' js-enabled' : 'js-enabled');</script>
-        {% include 'directory_header_footer/header.html' %}
+        {% if features.FEATURE_NEW_SHARED_HEADER_ENABLED %}
+            {% include 'directory_header_footer/header.html' %}
+        {% else %}
+            {% include 'directory_header_footer/header_old.html' %}
+        {% endif %}
 
         <div id="content" class="sso-content outer-container">
           <div class="span6">
@@ -57,12 +69,19 @@
             {% endblock %}
         </div>
 
-        {% include 'directory_header_footer/footer.html' %}
+        {% if features.FEATURE_NEW_SHARED_HEADER_ENABLED %}
+            {% include 'directory_header_footer/footer.html' %}
+        {% else %}
+            {% include 'directory_header_footer/footer_old.html' %}
+        {% endif %}
 
-        <script src="{% static 'Dit-Pattern-Styling/public/js/jquery.js' %}"></script>
-        <!--[if IE 8]><script src="{% static 'Dit-Pattern-Styling/public/js/ie8.js' %}"></script><![endif]-->
-        <!--[if IE 8]><script type="text/javascript" src="{% static 'Dit-Pattern-Styling/public/js/selectivizr.js' %}"></script><![endif]-->
-        <script type="text/javascript" src="{% static 'Dit-Pattern-Styling/public/js/navigation.js' %}"></script>
+        {% if not features.FEATURE_NEW_SHARED_HEADER_ENABLED %}
+
+            <script src="{% static 'Dit-Pattern-Styling/public/js/jquery.js' %}"></script>
+            <!--[if IE 8]><script src="{% static 'Dit-Pattern-Styling/public/js/ie8.js' %}"></script><![endif]-->
+            <!--[if IE 8]><script type="text/javascript" src="{% static 'Dit-Pattern-Styling/public/js/selectivizr.js' %}"></script><![endif]-->
+            <script type="text/javascript" src="{% static 'Dit-Pattern-Styling/public/js/navigation.js' %}"></script>
+        {% endif %}
         <script type="text/javascript" src="{% static 'javascripts/index.js' %}"></script>
         <script type="text/javascript">GOVUK.page.init();</script>
     </body>
