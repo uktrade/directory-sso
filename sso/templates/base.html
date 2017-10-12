@@ -11,8 +11,6 @@
         <title>{% block head_title %}{% endblock %}</title>
         {% block extra_head %}{% endblock %}
 
-        <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700,900" rel="stylesheet">
-
         <link rel="shortcut icon" href="{% static 'govuk-0.18.0/assets/images/favicon.ico' %}" type="image/x-icon" />
         <link rel="mask-icon" href="{% static 'govuk-0.18.0/assets/images/gov.uk_logotype_crown.svg' %}" color="#0b0c0c">
         <link rel="apple-touch-icon-precomposed" sizes="152x152" href="{% static 'govuk-0.18.0/assets/images/apple-touch-icon-152x152.png' %}">
@@ -36,7 +34,6 @@
         <link href="{% static 'vendor/bootstrap/css/bootstrap-responsive.css' %}" media="all" rel="stylesheet" />
         <link href="{% static 'main.css' %}" media="all" rel="stylesheet" />
     </head>
-
 
     <body>
         {% include 'google_tag_manager_body.html' %}
