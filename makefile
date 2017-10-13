@@ -136,7 +136,7 @@ DEBUG_SET_ENV_VARS := \
 	export CACHE_BACKEND=locmem; \
 	export PYTHONWARNINGS=all; \
 	export PYTHONDEBUG=true; \
-	export FEATURE_NEW_SHARED_HEADER_ENABLED=false
+	export FEATURE_NEW_SHARED_HEADER_ENABLED=true
 
 
 debug_webserver:

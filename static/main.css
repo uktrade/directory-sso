@@ -4,13 +4,22 @@ html {
     box-sizing: border-box
 }
 
-*,
-*:before,
-*:after {
-    -webkit-box-sizing: inherit;
-    -moz-box-sizing: inherit;
-    box-sizing: inherit
+@media (max-width: 979px) {
+  padding: 0;
+  .container {
+    max-width: 960px;
+    padding: 0 20px;
+    width: 100%;
+  }
 }
+
+@media (min-width: 979px) {
+  .container {
+    max-width: 960px;
+    width: 100%;
+  }
+}
+
 
 .icon-menu{
   background-image:url("Dit-Pattern-Styling/public/images/icons/menu.svg")
