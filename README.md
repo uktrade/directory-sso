@@ -9,13 +9,12 @@
 
 **Service for authenticating users for services that serve the Exporting is Great campaign for the Department for International Trade (DIT).**
 
-## Build status
+### See also: 
+| [directory-api](https://github.com/uktrade/directory-api) | [directory-ui-buyer](https://github.com/uktrade/directory-ui-buyer) | [directory-ui-supplier](https://github.com/uktrade/directory-ui-supplier) | [directory-ui-export-readiness](https://github.com/uktrade/directory-ui-export-readiness) |
+| --- | --- | --- | --- |
+| **[directory-sso](https://github.com/uktrade/directory-sso)** | **[directory-sso-proxy](https://github.com/uktrade/directory-sso-proxy)** | **[directory-sso-profile](https://github.com/uktrade/directory-sso-profile)** |  |
 
-[![CircleCI](https://circleci.com/gh/uktrade/directory-sso/tree/master.svg?style=svg)](https://circleci.com/gh/uktrade/directory-sso/tree/master)
-
-## Coverage
-
-[![codecov](https://codecov.io/gh/uktrade/directory-sso/branch/master/graph/badge.svg)](https://codecov.io/gh/uktrade/directory-sso)
+For more information on installation please check the [Developers Onboarding Checklist](https://uktrade.atlassian.net/wiki/spaces/ED/pages/32243946/Developers+onboarding+checklist) 
 
 ## Requirements
 [Docker >= 1.10](https://docs.docker.com/engine/installation/)
