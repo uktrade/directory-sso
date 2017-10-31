@@ -21,6 +21,8 @@ def redirect_next_processor(request):
         'sso_login_url': add_next(reverse('account_login')),
         'sso_reset_password_url': add_next(reverse('account_reset_password')),
         'sso_register_url': add_next(reverse('account_signup')),
-        'sso_is_logged_in': request.user.is_authenticated(),
+        'sso_is_logged_in': bool(
+            request.user and request.user.is_authenticated()
+        ),
         'sso_profile_url': settings.SSO_PROFILE_URL,
     }
