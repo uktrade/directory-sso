@@ -2,13 +2,9 @@ from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from config.signature import SignatureCheckPermission
-
 
 class HealthCheckAPIView(APIView):
-
-    permission_classes = (SignatureCheckPermission, )
-    authentication_classes = ()
+    permission_classes = []
     http_method_names = ("get", )
 
     def get(self, request, *args, **kwargs):
