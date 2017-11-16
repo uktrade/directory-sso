@@ -74,9 +74,7 @@
 
         {% if not features.FEATURE_NEW_SHARED_HEADER_ENABLED %}
 
-            <script src="{% static 'Dit-Pattern-Styling/public/js/jquery.js' %}"></script>
-            <!--[if IE 8]><script src="{% static 'Dit-Pattern-Styling/public/js/ie8.js' %}"></script><![endif]-->
-            <!--[if IE 8]><script type="text/javascript" src="{% static 'Dit-Pattern-Styling/public/js/selectivizr.js' %}"></script><![endif]-->
+            <script src="{% static 'Dit-Pattern-Styling/public/js/third-party.js' %}"></script>
             <script type="text/javascript" src="{% static 'Dit-Pattern-Styling/public/js/navigation.js' %}"></script>
         {% endif %}
         <script type="text/javascript" src="{% static 'javascripts/index.js' %}"></script>
