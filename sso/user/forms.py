@@ -61,7 +61,7 @@ class LoginForm(IndentedInvalidFieldsMixin, forms.LoginForm):
         label='',
         required=False,
         widget=CheckboxWithInlineLabel(
-            label='Remember me:'
+            label='Remember me'
         )
     )
 
