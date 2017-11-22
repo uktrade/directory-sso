@@ -358,6 +358,7 @@ URLS_EXCLUDED_FROM_SIGNATURE_CHECK = (
 )
 
 # Use proxy host name when generating links (e.g. in emails)
+SECURE_SSL_REDIRECT = os.getenv('SECURE_SSL_REDIRECT', 'true') == 'true'
 USE_X_FORWARDED_HOST = True
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
