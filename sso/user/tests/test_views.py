@@ -601,8 +601,8 @@ def test_signup_email_enumeration_not_possible(client, verified_user):
             'email': verified_user.email,
             'email2': verified_user.email,
             'terms_agreed': True,
-            'password1': 'passpasspass',
-            'password2': 'passpasspass'
+            'password1': 'q?{7EV]V3@Z',
+            'password2': 'q?{7EV]V3@Z'
         }
     )
     assert response.status_code == 302
@@ -626,8 +626,8 @@ def test_signup_email_raises_exception_allauth(mock_complete_signup, client):
             'email': 'fred@exmaple.com',
             'email2': 'fred@exmaple.com',
             'terms_agreed': True,
-            'password1': 'passpasspass',
-            'password2': 'passpasspass'
+            'password1': 'q?{7EV]V3@Z',
+            'password2': 'q?{7EV]V3@Z'
         }
     )
     assert response.content == b'hello'
@@ -643,8 +643,8 @@ def test_signup_email_raises_exception(mock_save, client):
                 'email': 'fred@exmaple.com',
                 'email2': 'fred@exmaple.com',
                 'terms_agreed': True,
-                'password1': 'passpasspass',
-                'password2': 'passpasspass'
+                'password1': 'q?{7EV]V3@Z',
+                'password2': 'q?{7EV]V3@Z'
             }
         )
 

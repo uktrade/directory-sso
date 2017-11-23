@@ -7,6 +7,7 @@
 -e git+https://github.com/uktrade/directory-api-client-external.git@v4.0.0#egg=directory_api_external
 -e git+https://github.com/uktrade/directory-constants.git@v5.0.0#egg=directory_constants
 -e git+https://github.com/uktrade/directory-header-footer.git@v2.1.2#egg=directory_header_footer
+-e git+https://github.com/uktrade/directory-validators.git@v4.3.0#egg=directory_validators
 -e git+https://github.com/uktrade/directory-signature-auth.git@v2.0.0#egg=sigauth
 boto3==1.4.0
 botocore==1.4.93          # via boto3, s3transfer
@@ -29,6 +30,9 @@ jmespath==0.9.3           # via boto3, botocore
 mohawk==0.3.4
 monotonic==1.2
 oauthlib==2.0.2           # via django-oauth-toolkit, requests-oauthlib
+olefile==0.44             # via pillow
+phonenumberslite==7.7.4
+pillow==4.2.1
 psycopg2==2.6.1
 python-dateutil==2.6.0    # via botocore
 python3-openid==3.1.0     # via django-allauth

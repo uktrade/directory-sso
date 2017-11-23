@@ -251,7 +251,21 @@ AUTH_PASSWORD_VALIDATORS = [
             'min_length': 10,
         }
     },
+    {
+        'NAME':
+            'django.contrib.auth.password_validation.CommonPasswordValidator',
+    },
+    {
+        'NAME':
+            'django.contrib.auth.password_validation.NumericPasswordValidator',
+    },
+    {
+        'NAME': 'directory_validators.password_validation.'
+                'AlphabeticPasswordValidator'
+    }
 ]
+
+
 AUTHENTICATION_BACKENDS = (
     'oauth2_provider.backends.OAuth2Backend',
     'django.contrib.auth.backends.ModelBackend',
