@@ -13,7 +13,7 @@ def test_count_authentication_backends_using_check_password_method(
 ):
     """
     The failed login attempts counter is hooked to the check_password()
-    method at the User model levels.
+    method at the User model level.
 
     Some, but not necessarily all, of the authentication backends call this
     method in their authenticate() method.
@@ -23,7 +23,7 @@ def test_count_authentication_backends_using_check_password_method(
     'allauth.account.auth_backends.AuthenticationBackend').
 
     This test is here to fail if we add a new backend that does use the
-    method so to make our calculations more explicit.
+    method so to make our calculation more explicit.
 
     The mock returns False so all the backends are used and counted.
 
