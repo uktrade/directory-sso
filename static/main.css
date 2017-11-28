@@ -998,3 +998,15 @@ body #content .container .sorry h2 {
   font-size: 16px;
   color: #333333;
 }
+
+.primaryAction.button {
+    margin-top: 20px;
+}
+
+.form-field.checkbox {
+    margin-top: 8px;
+}
+
+.login {
+    margin-top: 20px;
+}
