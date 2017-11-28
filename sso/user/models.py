@@ -78,6 +78,8 @@ class User(AbstractBaseUser, PermissionsMixin, TimeStampedModel):
         ),
     )
 
+    failed_login_attempts = models.PositiveSmallIntegerField(default=0)
+
     objects = UserManager()
 
     USERNAME_FIELD = 'email'
@@ -93,3 +95,14 @@ class User(AbstractBaseUser, PermissionsMixin, TimeStampedModel):
     def get_short_name(self):
         # django method that must be implemented
         return self.email
+
+    def check_password(self, raw_password):
+        """Hook to update the failed login attempt counter."""
+        is_correct = super().check_password(raw_password)
+        if is_correct:
+            self.failed_login_attempts = 0
+            self.save()
+        else:
+            self.failed_login_attempts += 1
+            self.save()
+        return is_correct
