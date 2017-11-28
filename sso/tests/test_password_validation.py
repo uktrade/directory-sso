@@ -9,7 +9,8 @@ from django.core.exceptions import ValidationError
         'ABCDEFGHILM',
         '1234567890',
         'passwordpassword',
-        'J[t2xT'
+        'J[t2xT',
+        'password123gdfgd'
     )
 )
 def test_invalid_password(password):
