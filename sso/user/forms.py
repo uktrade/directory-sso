@@ -16,7 +16,9 @@ class IndentedInvalidFieldsMixin:
 
 
 class SignupForm(IndentedInvalidFieldsMixin, forms.SignupForm):
-    PASSWORD_HELP_TEXT = 'Must contain at least 10 characters.'
+    PASSWORD_HELP_TEXT = 'Your password must contain at least 10 characters' \
+                         ', at least one letter, at least one number and ' \
+                         'not contain the word password'
     terms_agreed = BooleanField(
         label='',
         widget=CheckboxWithInlineLabel(
