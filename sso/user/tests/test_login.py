@@ -18,7 +18,7 @@ def test_count_authentication_backends_using_check_password_method(
     Some, but not necessarily all, of the authentication backends call this
     method in their authenticate() method.
 
-    As today (28 Nov 2017) 2 auth backends (out of 3 we use) in our settings
+    As of today (28 Nov 2017) 2 auth backends (out of 3 we use) in our settings
     are calling check_password() ('django.contrib.auth.backends.ModelBackend',
     'allauth.account.auth_backends.AuthenticationBackend').
 
