@@ -262,6 +262,10 @@ AUTH_PASSWORD_VALIDATORS = [
     {
         'NAME': 'directory_validators.password_validation.'
                 'AlphabeticPasswordValidator'
+    },
+    {
+        'NAME': 'directory_validators.password_validation.'
+                'PasswordWordPasswordValidator'
     }
 ]
 
