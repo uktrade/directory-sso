@@ -1,3 +1,5 @@
+from django.conf import settings
+from django.core.mail import send_mail
 from django.db import models
 from django.contrib.auth.models import (
     AbstractBaseUser, BaseUserManager, PermissionsMixin
@@ -105,4 +107,22 @@ class User(AbstractBaseUser, PermissionsMixin, TimeStampedModel):
         else:
             self.failed_login_attempts += 1
             self.save()
+        self.notify_suspicious_login_activity()
         return is_correct
+
+    def notify_suspicious_login_activity(self):
+        notification_threshold = settings.SSO_SUSPICIOUS_LOGIN_MAX_ATTEMPTS
+        if (self.failed_login_attempts == notification_threshold and
+                settings.SSO_SUSPICIOUS_ACTIVITY_NOTIFICATION_EMAIL):
+            body_message = "{user} tried to login {attempts} times".format(
+                user=self.email,
+                attempts=self.failed_login_attempts
+            )
+            send_mail(
+                subject='Suspicious activity on SSO',
+                message=body_message,
+                from_email=settings.DEFAULT_FROM_EMAIL,
+                recipient_list=[
+                    settings.SSO_SUSPICIOUS_ACTIVITY_NOTIFICATION_EMAIL
+                ]
+            )

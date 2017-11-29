@@ -1,4 +1,5 @@
 import pytest
+from django.conf import settings
 from django.contrib.auth import authenticate
 from unittest import mock
 
@@ -7,11 +8,14 @@ from sso.user.models import User
 
 @pytest.mark.django_db
 @mock.patch.object(User, 'check_password', return_value=False)
-def test_count_authentication_backends_using_check_password_method(
+def test_check_password_call_count(
         mocked_check_password,
         adminsuperuser
 ):
     """
+    Count the number of times the authentication backend uses the
+    check_password method
+
     The failed login attempts counter is hooked to the check_password()
     method at the User model level.
 
@@ -53,3 +57,15 @@ def test_correct_authentication_resets_counter(adminsuperuser):
     authenticate(username='foo@bar.com', password='3whitehallplace')
     adminsuperuser.refresh_from_db()
     assert adminsuperuser.failed_login_attempts == 0
+
+
+@pytest.mark.django_db
+@mock.patch('sso.user.models.send_mail')
+def test_incorrect_auth_threshold_email_trigger(
+        mock_send_mail,
+        adminsuperuser):
+    assert adminsuperuser.failed_login_attempts == 0
+    for i in range(settings.SSO_SUSPICIOUS_LOGIN_MAX_ATTEMPTS):
+        authenticate(username='foo@bar.com', password='foobarb1sdfdsfgds')
+
+    assert mock_send_mail.call_count == 1
