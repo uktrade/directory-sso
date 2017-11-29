@@ -1,5 +1,6 @@
 from unittest.mock import patch
 
+from django.contrib.auth import get_user_model
 from django.core.management import call_command
 from django.db import connection
 from django.db.migrations.executor import MigrationExecutor
@@ -63,3 +64,12 @@ def migration(transactional_db):
 
     yield Migrator()
     call_command('migrate')
+
+
+@pytest.fixture()
+def adminsuperuser():
+    User = get_user_model()
+    return User.objects.create_superuser(
+        email='foo@bar.com',
+        password='3whitehallplace'
+    )
