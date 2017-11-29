@@ -21,7 +21,7 @@ class UserAdmin(admin.ModelAdmin):
         'password', 'oauth2_provider_refreshtoken',
         'socialaccount', 'logentry', 'oauth2_provider_grant',
         'groups', 'oauth2_provider_accesstoken', 'emailaddress',
-        'user_permissions'
+        'user_permissions', 'failed_login_attempts'
     )
 
     @staticmethod

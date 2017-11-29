@@ -63,9 +63,17 @@ def test_correct_authentication_resets_counter(adminsuperuser):
 @mock.patch('sso.user.models.send_mail')
 def test_incorrect_auth_threshold_email_trigger(
         mock_send_mail,
-        adminsuperuser):
+        adminsuperuser,
+        settings):
+    settings.SSO_SUSPICIOUS_ACTIVITY_NOTIFICATION_EMAIL = 'foo@bar.com'
     assert adminsuperuser.failed_login_attempts == 0
     for i in range(settings.SSO_SUSPICIOUS_LOGIN_MAX_ATTEMPTS):
         authenticate(username='foo@bar.com', password='foobarb1sdfdsfgds')
 
     assert mock_send_mail.call_count == 1
+    assert mock_send_mail.call_args == mock.call(
+        from_email='debug',
+        message='foo@bar.com tried to login 10 times',
+        recipient_list=['foo@bar.com'],
+        subject='Suspicious activity on SSO'
+    )
