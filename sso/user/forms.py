@@ -16,9 +16,15 @@ class IndentedInvalidFieldsMixin:
 
 
 class SignupForm(IndentedInvalidFieldsMixin, forms.SignupForm):
-    PASSWORD_HELP_TEXT = 'Your password must contain at least 10 characters' \
-                         ', at least one letter, at least one number and ' \
-                         'not contain the word \'password\''
+    PASSWORD_HELP_TEXT = (
+        'Your password must:'
+        '<ul>'
+        '<li>be at least 10 characters</li>'
+        '<li>contain at least one letter</li>'
+        '<li>contain at least one number</li>'
+        '<li>not contain the word "password"</li>'
+        '</ul>'
+    )
     terms_agreed = BooleanField(
         label='',
         widget=CheckboxWithInlineLabel(
@@ -51,7 +57,7 @@ class SignupForm(IndentedInvalidFieldsMixin, forms.SignupForm):
         self.fields['password1'].widget.attrs['autocomplete'] = 'new-password'
         self.fields['password2'].widget.attrs['autocomplete'] = 'new-password'
 
-        self.fields['password1'].help_text = self.PASSWORD_HELP_TEXT
+        self.fields['password1'].help_text = mark_safe(self.PASSWORD_HELP_TEXT)
         self.fields['password2'].label = 'Confirm password:'
         self.fields['email2'].label = 'Confirm email:'
         set_form_field_order(self, self.field_order)
