@@ -466,3 +466,14 @@ INFO_PRIVACY_AND_COOKIES = os.getenv(
 INFO_TERMS_AND_CONDITIONS = os.getenv(
     'INFO_TERMS_AND_CONDITIONS',
     default_urls.INFO_TERMS_AND_CONDITIONS)
+
+# the following should be 5, but our auth backend are calling check_password
+# twice, so we use 2*5
+SSO_SUSPICIOUS_LOGIN_MAX_ATTEMPTS = os.getenv(
+    'SSO_SUSPICIOUS_LOGIN_MAX_ATTEMPTS',
+    10
+)
+SSO_SUSPICIOUS_ACTIVITY_NOTIFICATION_EMAIL = os.getenv(
+    'SSO_SUSPICIOUS_ACTIVITY_NOTIFICATION_EMAIL',
+    ''
+)
