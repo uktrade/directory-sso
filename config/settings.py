@@ -3,7 +3,6 @@ import os
 import dj_database_url
 
 from .helpers import is_valid_domain
-from directory_constants.constants import urls as default_urls
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
