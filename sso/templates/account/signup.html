@@ -6,20 +6,32 @@
 
 {% block content %}
 <div id="profile-register-intro">
-	<h1>{% trans "Register" %}</h1>
+    <h1>{% trans "Register" %}</h1>
 
-	<p>Create a great.gov.uk account and you can:</p>
-	<ul>
-		<li>gain access to worldwide exporting opportunities</li>
-		<li>promote your business to international buyers</li>
-	</ul>
+    <p>Create a great.gov.uk account and you can:</p>
+    <ul>
+        <li>gain access to worldwide exporting opportunities</li>
+        <li>promote your business to international buyers</li>
+    </ul>
 </div>
 <form class="signup" id="signup_form" method="post" action="{% url 'account_signup' %}">
-  {% csrf_token %}
-  {{ form.as_p }}
-  {% if redirect_field_value %}
-    <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
-  {% endif %}
+    {% csrf_token %}
+    {% for hidden in form.hidden_fields %}
+        {{ hidden }}
+    {% endfor %}
+    {% for field in form.visible_fields %}
+        <li class="{{ field.css_classes }}">
+            {{ field.errors }}
+            {{ field.label_tag }}
+            {% if field.help_text %}
+                <div class="helptext">{{ field.help_text|safe }}</div>
+            {% endif %}
+            {{ field }}
+        </li>
+    {% endfor %}
+    {% if redirect_field_value %}
+        <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
+    {% endif %}
   <button type="submit">{% trans "Register" %} &raquo;</button>
 </form>
 
