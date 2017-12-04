@@ -86,7 +86,7 @@ class EmailVerificationSentView(allauth_views.EmailVerificationSentView):
 
     def get_context_data(self, **kwargs):
         ctx = super().get_context_data(**kwargs)
-        ctx['feedback_sso'] = settings.FEEDBACK_FORM_URL
+        ctx['feedback_sso'] = settings.INFO_CONTACT_US_DIRECTORY
         return ctx
 
 
