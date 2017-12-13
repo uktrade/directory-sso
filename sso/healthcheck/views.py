@@ -1,18 +1,19 @@
-from rest_framework import status
-from rest_framework.response import Response
-from rest_framework.views import APIView
+from health_check.views import MainView
+
+from django.conf import settings
+from django.core.exceptions import PermissionDenied
+from django.utils.crypto import constant_time_compare
 
 
-class HealthCheckAPIView(APIView):
-    permission_classes = []
-    http_method_names = ("get", )
+class HealthCheckAPIView(MainView):
 
-    def get(self, request, *args, **kwargs):
-
-        return Response(
-            data={
-                "status_code": status.HTTP_200_OK,
-                "detail": "Hello world"
-            },
-            status=status.HTTP_200_OK,
+    def has_permission(self):
+        return constant_time_compare(
+            self.request.GET.get('token'),
+            settings.HEALTH_CHECK_TOKEN
         )
+
+    def get(self, *args, **kwargs):
+        if not self.has_permission():
+            raise PermissionDenied()
+        return super().get(*args, **kwargs)

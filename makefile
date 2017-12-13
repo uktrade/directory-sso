@@ -67,7 +67,8 @@ DOCKER_SET_DEBUG_ENV_VARS := \
 	export SSO_PYTHONWARNINGS=all; \
 	export SSO_PYTHONDEBUG=true; \
 	export SSO_FEATURE_NEW_SHARED_HEADER_ENABLED=true; \
-	export SSO_SECURE_SSL_REDIRECT=false
+	export SSO_SECURE_SSL_REDIRECT=false; \
+	export SSO_HEALTH_CHECK_TOKEN=debug
 
 
 
@@ -139,7 +140,8 @@ DEBUG_SET_ENV_VARS := \
 	export PYTHONWARNINGS=all; \
 	export PYTHONDEBUG=true; \
 	export FEATURE_NEW_SHARED_HEADER_ENABLED=true; \
-	export SECURE_SSL_REDIRECT=false
+	export SECURE_SSL_REDIRECT=false; \
+	export HEALTH_CHECK_TOKEN=debug
 
 
 debug_webserver:

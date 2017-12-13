@@ -34,6 +34,8 @@ INSTALLED_APPS = [
     'rest_framework',
     'django_filters',
     'corsheaders',
+    'health_check',
+    'health_check.db',
     'sso',
     'sso.oauth2',
     'sso.user.apps.UserConfig',
@@ -460,3 +462,6 @@ SSO_SUSPICIOUS_ACTIVITY_NOTIFICATION_EMAIL = os.getenv(
     'SSO_SUSPICIOUS_ACTIVITY_NOTIFICATION_EMAIL',
     ''
 )
+
+# Health check
+HEALTH_CHECK_TOKEN = os.environ['HEALTH_CHECK_TOKEN']
