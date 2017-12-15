@@ -367,7 +367,9 @@ CSRF_COOKIE_SECURE = os.getenv('CSRF_COOKIE_SECURE') != 'false'
 # Set with comma separated values in env
 ALLOWED_REDIRECT_DOMAINS = os.environ['ALLOWED_REDIRECT_DOMAINS'].split(',')
 for domain in ALLOWED_REDIRECT_DOMAINS:
-    assert is_valid_domain(domain) is True
+    # exclude the local development domain
+    if domain != 'great':
+        assert is_valid_domain(domain) is True
 
 # Signature check
 SIGNATURE_SECRET = os.environ['SIGNATURE_SECRET']

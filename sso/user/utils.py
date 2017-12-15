@@ -37,9 +37,13 @@ def is_valid_redirect(next_param):
         return True
 
     # Otherwise check we allow that domain/suffix
-    domain = '.'.join([extracted_domain.domain, extracted_domain.suffix])
-    return (domain in settings.ALLOWED_REDIRECT_DOMAINS) or (
-        extracted_domain.suffix in settings.ALLOWED_REDIRECT_DOMAINS)
+    # local domain has no suffix so do this instead
+    if extracted_domain.domain == 'great' and not extracted_domain.suffix:
+        return extracted_domain.domain in settings.ALLOWED_REDIRECT_DOMAINS
+    else:
+        domain = '.'.join([extracted_domain.domain, extracted_domain.suffix])
+        return (domain in settings.ALLOWED_REDIRECT_DOMAINS) or (
+            extracted_domain.suffix in settings.ALLOWED_REDIRECT_DOMAINS)
 
 
 def get_redirect_url(request, redirect_field_name):
