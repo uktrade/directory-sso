@@ -13,7 +13,7 @@ from sso.user.views import (
     SSOLandingPage,
     SignupView,
 )
-from sso.healthcheck.views import HealthCheckAPIView
+from sso.healthcheck.views import HealthCheckAPIView, PingAPIView
 from sso.oauth2.views_user import UserRetrieveAPIView
 from sso.api.views_user import (
     SessionUserAPIView, LastLoginAPIView, PasswordCheckAPIView
@@ -110,6 +110,11 @@ api_urlpatterns = [
         r'^$',
         HealthCheckAPIView.as_view(),
         name='health-check'
+    ),
+    url(
+        r'^ping/$',
+        PingAPIView.as_view(),
+        name='health-check-ping'
     ),
     url(
         r'^session-user/$',
