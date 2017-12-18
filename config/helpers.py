@@ -5,7 +5,11 @@ from urllib.parse import urlparse
 def is_valid_domain(domain):
     # NOTE: tldextract and urlparse both have their shortcomings so
     # using both for what they do good
-    tld_result = tldextract.extract(domain)
+    # add local domain suffix because it is non-standard
+    extract_with_extra_suffix = tldextract.TLDExtract(
+        extra_suffixes=["great"],
+    )
+    tld_result = extract_with_extra_suffix(domain)
     urlparse_result = urlparse(domain)
 
     is_domain = tld_result.domain and tld_result.suffix
