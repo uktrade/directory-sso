@@ -26,8 +26,11 @@ def get_url_with_redirect(url, redirect_url):
 
 
 def is_valid_redirect(next_param):
-    extracted_domain = tldextract.extract(next_param)
-
+    # add local domain suffix because it is non-standard
+    extract_with_extra_suffix = tldextract.TLDExtract(
+        extra_suffixes=["great"],
+    )
+    extracted_domain = extract_with_extra_suffix(next_param)
     # Allow internal redirects
     is_domain = bool(extracted_domain.domain) and bool(extracted_domain.suffix)
     # NOTE: The extra is_domain check is necessary because otherwise

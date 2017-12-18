@@ -75,19 +75,19 @@ def test_redirect_next_processor_handles_no_next_param_user_authenticated(
     assert context['redirect_field_value'] == settings.DEFAULT_REDIRECT_URL
     assert context['sso_logout_url'] == (
         '/accounts/logout/?'
-        'next=http%3A%2F%2Fbuyer.trade.great.dev%3A8001'
+        'next=http%3A%2F%2Fbuyer.trade.great%3A8001'
     )
     assert context['sso_login_url'] == (
         '/accounts/login/?'
-        'next=http%3A%2F%2Fbuyer.trade.great.dev%3A8001'
+        'next=http%3A%2F%2Fbuyer.trade.great%3A8001'
     )
     assert context['sso_reset_password_url'] == (
         '/accounts/password/reset/?'
-        'next=http%3A%2F%2Fbuyer.trade.great.dev%3A8001'
+        'next=http%3A%2F%2Fbuyer.trade.great%3A8001'
     )
     assert context['sso_register_url'] == (
         '/accounts/signup/?'
-        'next=http%3A%2F%2Fbuyer.trade.great.dev%3A8001'
+        'next=http%3A%2F%2Fbuyer.trade.great%3A8001'
     )
     assert context['sso_is_logged_in'] is True
 
@@ -127,18 +127,18 @@ def test_redirect_next_processor_handles_no_next_param_no_user(
     assert context['redirect_field_value'] == settings.DEFAULT_REDIRECT_URL
     assert context['sso_logout_url'] == (
         '/accounts/logout/?'
-        'next=http%3A%2F%2Fbuyer.trade.great.dev%3A8001'
+        'next=http%3A%2F%2Fbuyer.trade.great%3A8001'
     )
     assert context['sso_login_url'] == (
         '/accounts/login/?'
-        'next=http%3A%2F%2Fbuyer.trade.great.dev%3A8001'
+        'next=http%3A%2F%2Fbuyer.trade.great%3A8001'
     )
     assert context['sso_reset_password_url'] == (
         '/accounts/password/reset/?'
-        'next=http%3A%2F%2Fbuyer.trade.great.dev%3A8001'
+        'next=http%3A%2F%2Fbuyer.trade.great%3A8001'
     )
     assert context['sso_register_url'] == (
         '/accounts/signup/?'
-        'next=http%3A%2F%2Fbuyer.trade.great.dev%3A8001'
+        'next=http%3A%2F%2Fbuyer.trade.great%3A8001'
     )
     assert context['sso_is_logged_in'] is False

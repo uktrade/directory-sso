@@ -876,7 +876,7 @@ def test_confirm_email_login_response_with_sso_display_logged_in_cookie(
 def test_confirm_email_login_response_with_sso_handles_next(
     client, email_confirmation
 ):
-    querystring = '?next=http%3A//buyer.trade.great.dev%3A8001/company-profile'
+    querystring = '?next=http%3A//buyer.trade.great%3A8001/company-profile'
     client.post(
         reverse('account_signup') + querystring,
         data={
@@ -896,7 +896,7 @@ def test_confirm_email_login_response_with_sso_handles_next(
     assert response.status_code == 302
     assert response.get('Location') == (
        "/accounts/login/"
-       "?next=http%3A%2F%2Fbuyer.trade.great.dev%3A8001%2Fcompany-profile"
+       "?next=http%3A%2F%2Fbuyer.trade.great%3A8001%2Fcompany-profile"
     )
 
 
