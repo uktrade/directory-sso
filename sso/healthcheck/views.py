@@ -18,5 +18,5 @@ class PingAPIView(APIView):
 
 
 class DatabaseAPIView(BaseHealthCheckAPIView):
-	def create_service_checker(self):
-		return DatabaseBackend()
+    def create_service_checker(self):
+        return DatabaseBackend()

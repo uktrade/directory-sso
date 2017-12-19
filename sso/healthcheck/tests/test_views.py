@@ -6,7 +6,7 @@ from django.core.urlresolvers import reverse
 
 
 def test_health_check_no_token(client):
-    response = client.get(reverse('health-check'))
+    response = client.get(reverse('health-check-database'))
 
     assert response.status_code == status.HTTP_403_FORBIDDEN
 
@@ -14,7 +14,7 @@ def test_health_check_no_token(client):
 @pytest.mark.django_db
 def test_health_check_valid_token(client):
     response = client.get(
-        reverse('health-check'),
+        reverse('health-check-database'),
         {'token': settings.HEALTH_CHECK_TOKEN}
     )
 
