@@ -1,23 +1,11 @@
-from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from config.signature import SignatureCheckPermission
 
+from directory_healthcheck.views import BaseHealthCheckAPIView
 
-class HealthCheckAPIView(APIView):
-    permission_classes = []
-    http_method_names = ("get", )
-
-    def get(self, request, *args, **kwargs):
-
-        return Response(
-            data={
-                "status_code": status.HTTP_200_OK,
-                "detail": "Hello world"
-            },
-            status=status.HTTP_200_OK,
-        )
+from health_check.db.backends import DatabaseBackend
 
 
 class PingAPIView(APIView):
@@ -26,4 +14,9 @@ class PingAPIView(APIView):
     http_method_names = ("get", )
 
     def get(self, request, *args, **kwargs):
-        return Response(status=status.HTTP_200_OK)
+        return Response(status=200)
+
+
+class DatabaseAPIView(BaseHealthCheckAPIView):
+    def create_service_checker(self):
+        return DatabaseBackend()

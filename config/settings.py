@@ -39,6 +39,9 @@ INSTALLED_APPS = [
     'sso.user.apps.UserConfig',
     'directory_constants',
     'directory_header_footer',
+    'directory_healthcheck',
+    'health_check',
+    'health_check.db',
 ]
 
 SITE_ID = 1
@@ -460,3 +463,6 @@ SSO_SUSPICIOUS_ACTIVITY_NOTIFICATION_EMAIL = os.getenv(
     'SSO_SUSPICIOUS_ACTIVITY_NOTIFICATION_EMAIL',
     ''
 )
+
+# Health check
+HEALTH_CHECK_TOKEN = os.environ['HEALTH_CHECK_TOKEN']
