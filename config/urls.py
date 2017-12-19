@@ -13,7 +13,9 @@ from sso.user.views import (
     SSOLandingPage,
     SignupView,
 )
-from sso.healthcheck.views import HealthCheckAPIView
+from sso.healthcheck.views import (
+    DatabaseAPIView, PingAPIView
+)
 from sso.oauth2.views_user import UserRetrieveAPIView
 from sso.api.views_user import (
     SessionUserAPIView, LastLoginAPIView, PasswordCheckAPIView
@@ -107,9 +109,14 @@ oauth2_provider_patterns = [
 
 api_urlpatterns = [
     url(
-        r'^$',
-        HealthCheckAPIView.as_view(),
-        name='health-check'
+        r'^healthcheck/database/$',
+        DatabaseAPIView.as_view(),
+        name='health-check-database'
+    ),
+    url(
+        r'^ping/$',
+        PingAPIView.as_view(),
+        name='health-check-ping'
     ),
     url(
         r'^session-user/$',

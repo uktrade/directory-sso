@@ -1,19 +1,22 @@
-from health_check.views import MainView
+from rest_framework.response import Response
+from rest_framework.views import APIView
 
-from django.conf import settings
-from django.core.exceptions import PermissionDenied
-from django.utils.crypto import constant_time_compare
+from config.signature import SignatureCheckPermission
+
+from directory_healthcheck.views import BaseHealthCheckAPIView
+
+from health_check.db.backends import DatabaseBackend
 
 
-class HealthCheckAPIView(MainView):
+class PingAPIView(APIView):
 
-    def has_permission(self):
-        return constant_time_compare(
-            self.request.GET.get('token'),
-            settings.HEALTH_CHECK_TOKEN
-        )
+    permission_classes = (SignatureCheckPermission, )
+    http_method_names = ("get", )
 
-    def get(self, *args, **kwargs):
-        if not self.has_permission():
-            raise PermissionDenied()
-        return super().get(*args, **kwargs)
+    def get(self, request, *args, **kwargs):
+        return Response(status=200)
+
+
+class DatabaseAPIView(BaseHealthCheckAPIView):
+	def create_service_checker(self):
+		return DatabaseBackend()

@@ -34,13 +34,14 @@ INSTALLED_APPS = [
     'rest_framework',
     'django_filters',
     'corsheaders',
-    'health_check',
-    'health_check.db',
     'sso',
     'sso.oauth2',
     'sso.user.apps.UserConfig',
     'directory_constants',
     'directory_header_footer',
+    'directory_healthcheck',
+    'health_check',
+    'health_check.db',
 ]
 
 SITE_ID = 1
