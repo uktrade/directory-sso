@@ -114,7 +114,7 @@ api_urlpatterns = [
         name='health-check-database'
     ),
     url(
-        r'^ping/$',
+        r'^healthcheck/ping/$',
         PingAPIView.as_view(),
         name='health-check-ping'
     ),
