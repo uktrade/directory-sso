@@ -2,6 +2,8 @@ import os
 
 import dj_database_url
 
+from django.urls import reverse_lazy
+
 from .helpers import is_valid_domain
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
@@ -375,9 +377,9 @@ for domain in ALLOWED_REDIRECT_DOMAINS:
 # Signature check
 SIGNATURE_SECRET = os.environ['SIGNATURE_SECRET']
 
-URLS_EXCLUDED_FROM_SIGNATURE_CHECK = (
-    '/api/v1/',
-)
+URLS_EXCLUDED_FROM_SIGNATURE_CHECK = [
+    reverse_lazy('health-check-database')
+]
 
 # Use proxy host name when generating links (e.g. in emails)
 SECURE_SSL_REDIRECT = os.getenv('SECURE_SSL_REDIRECT', 'true') == 'true'
