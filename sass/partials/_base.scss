@@ -52,16 +52,10 @@ body {
   body {
     padding: 0
   }
+
   body .container {
     max-width: 960px;
     padding: 0 20px;
-    width: 100%
-  }
-}
-
-@media (min-width: 979px) {
-  body .container {
-    max-width: 960px;
     width: 100%
   }
 }
