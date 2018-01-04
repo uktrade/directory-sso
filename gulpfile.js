@@ -14,7 +14,7 @@ gulp.task('sass', function () {
     .pipe(sass({
       outputStyle: 'expanded'
     }).on('error', sass.logError))
-    .pipe(sourcemaps.write('./sourcemaps'))
+    .pipe(sourcemaps.write('./sourcemaps', {includeContent: false}))
     .pipe(gulp.dest(OUTPUT_CSS));
 });
 
