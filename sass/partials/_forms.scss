@@ -1,5 +1,6 @@
-@import url(https://fonts.googleapis.com/css?family=Roboto:400,700);
-@import url(https://fonts.googleapis.com/css?family=Overpass:400,800);
+
+// FORMS
+
 form > li {
   list-style: none;
 }
@@ -60,7 +61,7 @@ input[type="color"]:focus,
 .uneditable-input:focus {
   box-shadow: none;
   outline: 3px solid #ffbf47;
-  -webkit-box-shadow: none;
+  -webkit-box-shadow: none
 }
 
 input[type="submit"], button {
@@ -82,7 +83,7 @@ input[type="submit"], button {
 label, input, button, select, textarea {
   font-size: 18px;
   font-weight: 400;
-  line-height: 1.4;
+  line-height: 1.4
 }
 
 .checkbox {
@@ -119,7 +120,7 @@ label, input, button, select, textarea {
   z-index: -1;
 }
 
-.checkbox input:focus + label:before {
+.checkbox input:focus + label:before  {
   outline: 3px solid #ffbf47;
 }
 
@@ -137,34 +138,34 @@ label, input, button, select, textarea {
 
 .data-form .form-control {
   width: 100%;
-  max-width: 500px;
+  max-width: 500px
 }
 
 .data-form .radio-group {
-  overflow: hidden;
+  overflow: hidden
 }
 
 .data-form .save-button {
   background: #00549F;
-  margin: 30px 0;
+  margin: 30px 0
 }
 
 .form-group .subfield input {
-  width: 20%;
+  width: 20%
 }
 
 .form-group .subfield .suffix {
-  font-weight: bold;
+  font-weight: bold
 }
 
 .form-group.postcode input {
   width: 8em;
-  max-width: 100%;
+  max-width: 100%
 }
 
 .form-group.contact-number input {
   width: 11em;
-  max-width: 100%;
+  max-width: 100%
 }
 
 .form-field.checkbox {
@@ -172,7 +173,7 @@ label, input, button, select, textarea {
 }
 
 .input-field-container {
-  margin-bottom: 40px;
+  margin-bottom: 40px
 }
 
 .input-field-container label {
@@ -193,7 +194,7 @@ label, input, button, select, textarea {
   background-color: #fafafa;
   border: 3px solid #6f777b;
   margin-bottom: 10px;
-  font-family: 'Roboto', sans-serif;
+  font-family: 'Roboto', sans-serif
 }
 
 .input-field-container.has-error ul.errorlist {
@@ -214,19 +215,19 @@ label, input, button, select, textarea {
 
 .input-field-container select {
   height: 50px;
-  width: 100%;
+  width: 100%
 }
 
 .input-field-container textarea {
-  min-height: 200px;
+  min-height: 200px
 }
 
 .input-field-container input[type='file'] {
-  border: 0;
+  border: 0
 }
 
 .input-field-container li {
-  margin-bottom: 30px;
+  margin-bottom: 30px
 }
 
 .input-field-container.has-error {
@@ -245,98 +246,9 @@ label, input, button, select, textarea {
 
 .form-wrapper-btn-container {
   line-height: 3em;
-  clear: both;
+  clear: both
 }
 
 .sso-form-classification-container li {
-  margin-bottom: 0;
+  margin-bottom: 0
 }
-
-#profile-register-intro ul {
-  list-style-type: initial;
-  margin-left: 20px;
-  margin-bottom: 20px;
-  margin-top: 20px;
-}
-
-#profile-register-intro li {
-  margin-bottom: 0;
-}
-
-#profile-register-intro h1 {
-  margin-bottom: 20px;
-}
-
-#profile-register-intro {
-  font-size: 16px;
-  color: #333333;
-}
-
-html {
-  -webkit-box-sizing: border-box;
-  -moz-box-sizing: border-box;
-  box-sizing: border-box;
-}
-
-body {
-  background-color: #fafafa;
-}
-
-body h1 {
-  font-size: 48px;
-  font-weight: 400;
-  line-height: 50px;
-}
-
-body h2 {
-  font-size: 26px;
-}
-
-body #content {
-  padding-bottom: 0;
-}
-
-body #content .container form {
-  margin-bottom: 0;
-}
-
-.sso-content {
-  margin-top: 40px;
-  margin-bottom: 40px;
-}
-
-.sso-content > .span6 {
-  margin: 0;
-}
-
-#skiplink-container a.skiplink {
-  background: #007EA3;
-  color: #ffffff;
-}
-
-@media (max-width: 979px) {
-  html {
-    padding: 0;
-  }
-  .container {
-    max-width: 960px;
-    width: 100%;
-  }
-  body {
-    padding: 0;
-  }
-  body .container {
-    max-width: 960px;
-    padding: 0 20px;
-    width: 100%;
-  }
-}
-
-@media (min-width: 979px) {
-  body .container {
-    max-width: 960px;
-    width: 100%;
-  }
-}
-
-/*# sourceMappingURL=sourcemaps/main.css.map */
