@@ -9,12 +9,12 @@
 
 **Service for authenticating users for services that serve the Exporting is Great campaign for the Department for International Trade (DIT).**
 
-### See also: 
+### See also:
 | [directory-api](https://github.com/uktrade/directory-api) | [directory-ui-buyer](https://github.com/uktrade/directory-ui-buyer) | [directory-ui-supplier](https://github.com/uktrade/directory-ui-supplier) | [directory-ui-export-readiness](https://github.com/uktrade/directory-ui-export-readiness) |
 | --- | --- | --- | --- |
 | **[directory-sso](https://github.com/uktrade/directory-sso)** | **[directory-sso-proxy](https://github.com/uktrade/directory-sso-proxy)** | **[directory-sso-profile](https://github.com/uktrade/directory-sso-profile)** |  |
 
-For more information on installation please check the [Developers Onboarding Checklist](https://uktrade.atlassian.net/wiki/spaces/ED/pages/32243946/Developers+onboarding+checklist) 
+For more information on installation please check the [Developers Onboarding Checklist](https://uktrade.atlassian.net/wiki/spaces/ED/pages/32243946/Developers+onboarding+checklist)
 
 ## Requirements
 [Docker >= 1.10](https://docs.docker.com/engine/installation/)
@@ -102,6 +102,16 @@ make dumpdata
 
 Then check the contents of `fixtures/development.json`.
 
+## CSS development
+
+If you're doing front-end development work you will need to be able to compile the SASS to CSS. For this you need:
+
+	$ npm install
+	$ gulp
+
+We add compiled CSS files to version control. This will sometimes result in conflicts if multiple developers are working on the same SASS files. However, by adding the compiled CSS to version control we avoid having to install node, npm, node-sass, etc to non-development machines.
+
+You should not edit CSS files directly, instead edit their SCSS counterparts.
 
 [code-climate-image]: https://codeclimate.com/github/uktrade/directory-sso/badges/issue_count.svg
 [code-climate]: https://codeclimate.com/github/uktrade/directory-sso

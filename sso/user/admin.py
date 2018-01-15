@@ -6,8 +6,23 @@ from django.contrib import admin
 from django.http import HttpResponse
 
 from sso.user.models import User
-
 from sso.user.utils import api_client
+
+
+def generate_csv(model, queryset, filename, excluded_fields):
+    response = HttpResponse(content_type='text/csv')
+    response['Content-Disposition'] = (
+        'attachment; filename="{filename}"'.format(filename=filename)
+    )
+    fieldnames = sorted(
+        [field.name for field in model._meta.get_fields()
+         if field.name not in excluded_fields]
+    )
+    writer = csv.DictWriter(response, fieldnames=fieldnames)
+    writer.writeheader()
+    for obj in queryset.all().values(*fieldnames):
+        writer.writerow(obj)
+    return response
 
 
 @admin.register(User)
@@ -40,22 +55,17 @@ class UserAdmin(admin.ModelAdmin):
         """
         Generates CSV report of selected users.
         """
-        response = HttpResponse(content_type='text/csv')
-        response['Content-Disposition'] = (
-            'attachment; filename="{prefix}_{timestamp}.csv"'.format(
-                prefix=filename_prefix,
-                timestamp=datetime.datetime.now().strftime("%Y%m%d%H%M%S"),
-            )
+
+        filename = '{prefix}_{timestamp}.csv"'.format(
+            prefix=filename_prefix,
+            timestamp=datetime.datetime.now().strftime("%Y%m%d%H%M%S"),
         )
-
-        field_names = self.get_user_database_field_names()
-
-        writer = csv.DictWriter(response, fieldnames=field_names)
-        writer.writeheader()
-        for user in queryset.all().values(*field_names):
-            writer.writerow(user)
-
-        return response
+        return generate_csv(
+            model=self.model,
+            queryset=queryset,
+            filename=filename,
+            excluded_fields=self.csv_excluded_fields
+        )
 
     def download_csv(self, request, queryset):
         """
