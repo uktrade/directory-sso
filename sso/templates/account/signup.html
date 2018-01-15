@@ -2,16 +2,17 @@
 {% load external_url from constants_tags %}
 {% load i18n %}
 
-{% block head_title %}{% trans "Register" %}{% endblock %}
+{% block head_title %}{% trans "Register - great.gov.uk" %}{% endblock %}
 
 {% block content %}
 <div id="profile-register-intro">
     <h1>{% trans "Register" %}</h1>
 
-    <p>Create a great.gov.uk account and you can:</p>
+    <p>Create a great.gov.uk account to:</p>
     <ul>
-        <li>gain access to worldwide exporting opportunities</li>
-        <li>promote your business to international buyers</li>
+        <li>save your progress through our export guidance</li>
+        <li>create a profile to showcase your business to overseas buyers</li>
+        <li>apply for opportunities to sell your product or service overseas</li>
     </ul>
 </div>
 <form class="signup" id="signup_form" method="post" action="{% url 'account_signup' %}">
