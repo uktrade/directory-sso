@@ -2,13 +2,13 @@
 {% load external_url from constants_tags %}
 {% load i18n %}
 
-{% block head_title %}{% trans "Verify your email address" %}{% endblock %}
+{% block head_title %}{% trans "Verify your email address - great.gov.uk" %}{% endblock %}
 
 {% block content %}
     <h1>{% trans "Verify your email address" %}</h1>
 
-    <p>{% blocktrans %}We have sent you a confirmation email. Please follow the link in the email to verify your email address.{% endblocktrans %}</p>
+    <p>{% blocktrans %}We've sent you a confirmation email. Click on the link to verify your email address.{% endblocktrans %}</p>
 
-    <p>Please <a href="{{ feedback_sso }}" target="_self">contact us</a> if you do not receive an email within 10 minutes.</p>
+    <p><a href="{{ feedback_sso }}" target="_self">Contact us</a> if you haven’t received the email within 10 minutes.</p>
 
 {% endblock %}

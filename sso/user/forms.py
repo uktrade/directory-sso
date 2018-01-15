@@ -104,6 +104,8 @@ class ResetPasswordForm(IndentedInvalidFieldsMixin, forms.ResetPasswordForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.fields['email'].widget.attrs['autocomplete'] = 'new-password'
+        self.fields['email'].widget.attrs['placeholder'] = 'Email address'
+        self.fields['email'].label = 'Email:'
 
     def clean_email(self):
         """Overrides allauth's method for security reasons.

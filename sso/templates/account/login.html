@@ -3,7 +3,7 @@
 {% load i18n %}
 {% load account socialaccount %}
 
-{% block head_title %}{% trans "Sign in" %}{% endblock %}
+{% block head_title %}{% trans "Sign in - great.gov.uk" %}{% endblock %}
 
 {% block content %}
 
@@ -12,9 +12,9 @@
 {% get_providers as socialaccount_providers %}
 
 {% if socialaccount_providers %}
-<p>Please login with one
-of your existing third party accounts. Or, <a href="{{ sso_register_url }}">Register</a>
-for a {{ site.name }} account and login below:</p>
+<p>Login with one
+of your existing third party accounts or <a href="{{ sso_register_url }}">register</a>
+for a {{ site.name }} account.</p>
 
 <div class="socialaccount_ballot">
 
@@ -29,8 +29,7 @@ for a {{ site.name }} account and login below:</p>
 {% include "socialaccount/snippets/login_extra.html" %}
 
 {% else %}
-<p>If you have not created an account yet, then please
-<a href="{{ sso_register_url }}">register</a> first.</p>
+<p><a href="{{ sso_register_url }}">Register</a> if you don't have an account.</p>
 {% endif %}
 
 <form class="login" method="POST" action="{% url 'account_login' %}">
