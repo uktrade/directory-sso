@@ -22,3 +22,4 @@ django-health-check==3.0.0
 -e git+https://github.com/uktrade/directory-api-client-external.git@v4.0.0#egg=directory_api_external
 -e git+https://github.com/uktrade/directory-validators.git@v4.4.1#egg=directory_validators
 -e git+https://github.com/uktrade/directory-healthcheck.git@v0.3.0#egg=directory_healthcheck
+-e git+https://github.com/uktrade/directory-components.git@v0.3.1#egg=directory_components

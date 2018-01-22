@@ -14,7 +14,7 @@ BASE_DIR = os.path.dirname(PROJECT_ROOT)
 # See https://docs.djangoproject.com/en/1.9/howto/deployment/checklist/
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True if (os.getenv('DEBUG') == 'true') else False
+DEBUG = os.getenv('DEBUG') == 'true'
 
 # As app is running behind a host-based router supplied by Heroku or other
 # PaaS, we can open ALLOWED_HOSTS
@@ -36,6 +36,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'django_filters',
     'corsheaders',
+    'core',
     'sso',
     'sso.oauth2',
     'sso.user.apps.UserConfig',
@@ -44,6 +45,7 @@ INSTALLED_APPS = [
     'directory_healthcheck',
     'health_check',
     'health_check.db',
+    'directory_components',
 ]
 
 SITE_ID = 1
@@ -79,8 +81,8 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'directory_header_footer.context_processors.urls_processor',
+                'directory_components.context_processors.analytics',
                 'sso.user.context_processors.redirect_next_processor',
-                'sso.context_processors.analytics',
                 'sso.context_processors.feature_flags',
                 ('directory_header_footer.context_processors.'
                  'header_footer_context_processor'),
@@ -389,6 +391,8 @@ SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
 # Google tag manager
 UTM_COOKIE_DOMAIN = os.environ['UTM_COOKIE_DOMAIN']
+GOOGLE_TAG_MANAGER_ID = os.environ['GOOGLE_TAG_MANAGER_ID']
+GOOGLE_TAG_MANAGER_ENV = os.getenv('GOOGLE_TAG_MANAGER_ENV', '')
 
 # sso profile
 SSO_PROFILE_URL = os.environ['SSO_PROFILE_URL']

@@ -272,6 +272,31 @@ label, input, button, select, textarea {
   color: #333333;
 }
 
+.sso-error-page-container {
+  color: #4a4a4a;
+}
+
+.sso-error-page-container .sso-error-page-title {
+  margin-top: 40px;
+  margin-bottom: 40px;
+}
+
+.sso-error-page-container ul.sso-error-page-synopsis {
+  margin: 0;
+}
+
+.sso-error-page-container ul.sso-error-page-synopsis li {
+  margin-bottom: 10px;
+}
+
+.sso-error-page-container .sso-error-page-status {
+  padding-bottom: 40px;
+}
+
+.sso-error-page-container hr {
+  border-bottom: 1px solid #4f0b7b;
+}
+
 html {
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
@@ -328,13 +353,6 @@ body #content .container form {
   body .container {
     max-width: 960px;
     padding: 0 20px;
-    width: 100%;
-  }
-}
-
-@media (min-width: 979px) {
-  body .container {
-    max-width: 960px;
     width: 100%;
   }
 }

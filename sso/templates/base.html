@@ -1,79 +1,22 @@
-{% load staticfiles %}
-{% load external_url from constants_tags %}
-<!DOCTYPE html>
-<!--[if lt IE 9]><html class="lte-ie8" lang="en"><![endif]-->
-<!--[if gt IE 8]><!--><html lang="en-us"><!--<![endif]-->
-<!--[if gt IE 8]><!--> <html lang="en" class="ie8"> <!--<![endif]-->
-    <head>
-        {% include 'google_tag_manager_head.html' %}
-        <meta id="utmCookieDomain" value="{{ analytics.UTM_COOKIE_DOMAIN }}" />
-        <meta charset="utf-8" />
-        <title>{% block head_title %}{% endblock %}</title>
-        {% block extra_head %}{% endblock %}
+{% extends 'directory_components/base.html' %}
 
-        <link href='{% static 'images/favicon-192x192.png' %}' rel='shortcut icon' type='image/png'>
-        <!--[if IE]> <link rel="icon" href="{% static 'images/favicon.ico' %}" type="image/x-icon" /> <![endif]-->
-
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <meta property="og:image" content="{% static 'govuk-0.18.0/assets/images/opengraph-image.png' %}">
-
-        {% if features.FEATURE_NEW_SHARED_HEADER_ENABLED %}
-            <link href="{% static 'Dit-Pattern-Styling/public/css/main.css' %}" media="all" rel="stylesheet" />
-            <link href="{% static 'Dit-Pattern-Styling/public/css/compatibility.css' %}" media="all" rel="stylesheet" />
-            <script src="{% static 'Dit-Pattern-Styling/public/js/third-party.js' %}"></script>
-            <script src="{% static 'Dit-Pattern-Styling/public/js/script.js' %}"></script>
-        {% else %}
-            <link href="{% static 'Dit-Pattern-Styling/public/css/main_old.css' %}" media="all" rel="stylesheet" />
-        {% endif %}
-
-        <link href="{% static 'vendor/bootstrap/css/bootstrap-grid-only.css' %}" media="all" rel="stylesheet" />
-        <link href="{% static 'vendor/bootstrap/css/bootstrap-responsive.css' %}" media="all" rel="stylesheet" />
-        <link href="{% static 'main.css' %}" media="all" rel="stylesheet" />
-    </head>
-
-    <body>
-        {% include 'google_tag_manager_body.html' %}
-        <script>document.body.className = ((document.body.className) ? document.body.className + ' js-enabled' : 'js-enabled');</script>
-        {% if features.FEATURE_NEW_SHARED_HEADER_ENABLED %}
-            {% include 'directory_header_footer/header.html' %}
-        {% else %}
-            {% include 'directory_header_footer/header_old.html' %}
-        {% endif %}
-
-        <div id="content" class="sso-content outer-container">
-          <div class="span6">
+{% block body_content_container %}
+    <main id="content" class="{% block css_layout_class %}sso-content outer-container{% endblock css_layout_class %}" role="main">
+        <div class="span6">
             {% block body %}
                 {% if messages %}
                     <div>
-                      <strong>Messages:</strong>
-                      <ul>
-                    {% for message in messages %}
-                    <li>{{message}}</li>
-                    {% endfor %}
-                      </ul>
+                        <strong>Messages:</strong>
+                        <ul>
+                            {% for message in messages %}<li>{{message}}</li>{% endfor %}
+                        </ul>
                     </div>
-                    {% endif %}
-                    <div class="input-field-container">
-                      {% block content %}{% endblock %}
-                    </div>
-                    {% endblock %}
-                    {% block extra_body %}
-              </div>
+                {% endif %}
+                <div class="input-field-container">
+                  {% block content %}{% endblock %}
+                </div>
             {% endblock %}
+            {% block extra_body %}{% endblock %}
         </div>
-
-        {% if features.FEATURE_NEW_SHARED_HEADER_ENABLED %}
-            {% include 'directory_header_footer/footer.html' %}
-        {% else %}
-            {% include 'directory_header_footer/footer_old.html' %}
-        {% endif %}
-
-        {% if not features.FEATURE_NEW_SHARED_HEADER_ENABLED %}
-
-            <script src="{% static 'Dit-Pattern-Styling/public/js/third-party.js' %}"></script>
-            <script type="text/javascript" src="{% static 'Dit-Pattern-Styling/public/js/navigation.js' %}"></script>
-        {% endif %}
-        <script type="text/javascript" src="{% static 'javascripts/index.js' %}"></script>
-        <script type="text/javascript">GOVUK.page.init();</script>
-    </body>
-</html>
+    </main>
+{% endblock %}
