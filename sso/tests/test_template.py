@@ -49,19 +49,6 @@ def test_confirmation_email():
     assert 'Verify your email address' in html
 
 
-def test_google_tag_manager():
-    expected_head = render_to_string('google_tag_manager_head.html')
-    expected_body = render_to_string('google_tag_manager_body.html')
-
-    html = render_to_string('base.html')
-
-    assert expected_head in html
-    assert expected_body in html
-    # sanity check
-    assert 'www.googletagmanager.com' in expected_head
-    assert 'www.googletagmanager.com' in expected_body
-
-
 def test_logged_in_header():
     context = {'sso_is_logged_in': True}
     html = render_to_string('base.html', context)
@@ -74,38 +61,3 @@ def test_logged_out_hedaer():
     html = render_to_string('base.html', context)
 
     assert '>Sign in<' in html
-
-
-def test_utm_cookie_domain():
-    context = {
-        'analytics': {
-            'UTM_COOKIE_DOMAIN': '.thing.com',
-        }
-    }
-    html = render_to_string('base.html', context)
-
-    assert '<meta id="utmCookieDomain" value=".thing.com" />' in html
-
-
-def test_new_header_footer_enabled():
-    context = {
-        'features': {
-            'FEATURE_NEW_SHARED_HEADER_ENABLED': True,
-        }
-    }
-    html = render_to_string('base.html', context)
-
-    assert render_to_string('directory_header_footer/header.html') in html
-    assert render_to_string('directory_header_footer/footer.html') in html
-
-
-def test_new_header_footer_disabled():
-    context = {
-        'features': {
-            'FEATURE_NEW_SHARED_HEADER_ENABLED': False,
-        }
-    }
-    html = render_to_string('base.html', context)
-
-    assert render_to_string('directory_header_footer/header_old.html') in html
-    assert render_to_string('directory_header_footer/footer_old.html') in html
