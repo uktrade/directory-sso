@@ -4,6 +4,7 @@ from django.contrib import admin
 import oauth2_provider.views
 import allauth.account.views
 
+from config import settings
 from sso.user.views import (
     ConfirmEmailView,
     EmailVerificationSentView,
@@ -18,9 +19,9 @@ from sso.healthcheck.views import (
 )
 from sso.oauth2.views_user import UserRetrieveAPIView
 from sso.api.views_user import (
-    SessionUserAPIView, LastLoginAPIView, PasswordCheckAPIView,
-    UserByEmailAPIView,
+    SessionUserAPIView, LastLoginAPIView, PasswordCheckAPIView
 )
+from testapi.views import UserByEmailAPIView
 
 admin.autodiscover()
 
@@ -134,11 +135,6 @@ api_urlpatterns = [
         PasswordCheckAPIView.as_view(),
         name='password-check'
     ),
-    url(
-        r'^user-by-email/(?P<email>.*)/$',
-        UserByEmailAPIView.as_view(),
-        name='user_by_email'
-    ),
 ]
 
 
@@ -164,3 +160,11 @@ urlpatterns = [
         include(api_urlpatterns)
     ),
 ]
+
+if settings.ENABLE_TEST_API:
+    api_urlpatterns += [
+        url(
+            r'^testapi/',
+            include('testapi.urls', namespace='testapi')
+        )
+    ]

@@ -84,14 +84,3 @@ class PasswordCheckAPIView(GetUserBySessionKeyMixin, APIView):
         else:
             status_code = status.HTTP_400_BAD_REQUEST
         return Response(status=status_code)
-
-
-class UserByEmailAPIView(RetrieveAPIView):
-    permission_classes = [SignatureCheckPermission]
-    authentication_classes = []
-    serializer_class = []
-    lookup_field = 'email'
-
-    def get_user(self, email):
-        user = get_object_or_404(models.User, email=email)
-        return user
