@@ -3,6 +3,8 @@ from rest_framework.response import Response
 from rest_framework.generics import (
     RetrieveAPIView, get_object_or_404
 )
+
+from config import settings
 from config.signature import SignatureCheckPermission
 from sso.user import models
 
@@ -11,6 +13,11 @@ class UserByEmailAPIView(RetrieveAPIView):
     permission_classes = [SignatureCheckPermission]
     queryset = models.User.objects.all()
     lookup_field = 'email'
+
+    def dispatch(self, *args, **kwargs):
+        if not settings.ENABLE_TEST_API:
+            raise Http404()
+        return super().dispatch(*args, **kwargs)
 
     def get(self, request, email, **kwargs):
         user = get_object_or_404(models.User, email=email)
