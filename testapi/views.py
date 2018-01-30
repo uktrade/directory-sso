@@ -7,6 +7,7 @@ from sso.user import models
 
 class UserByEmailAPIView(RetrieveAPIView):
     permission_classes = [SignatureCheckPermission]
+    queryset = models.User.objects.all()
     authentication_classes = []
     serializer_class = []
     lookup_field = 'email'
