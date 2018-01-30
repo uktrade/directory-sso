@@ -479,4 +479,4 @@ SSO_SUSPICIOUS_ACTIVITY_NOTIFICATION_EMAIL = os.getenv(
 HEALTH_CHECK_TOKEN = os.environ['HEALTH_CHECK_TOKEN']
 
 # testing api
-ENABLE_TEST_API = os.getenv("ENABLE_TEST_API", False)
+ENABLE_TEST_API = os.getenv("ENABLE_TEST_API", 'false') == 'true'
