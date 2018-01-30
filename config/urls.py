@@ -165,6 +165,6 @@ if settings.ENABLE_TEST_API:
     urlpatterns += [
         url(
             r'^testapi/',
-            include('testapi.urls', namespace='testapi')
+            include('testapi.urls', namespace='testapi', app_name='testapi')
         )
     ]
