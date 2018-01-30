@@ -1,3 +1,5 @@
+from django.http import Http404
+from rest_framework.response import Response
 from rest_framework.generics import (
     RetrieveAPIView, get_object_or_404
 )
@@ -13,6 +15,12 @@ class UserByEmailAPIView(RetrieveAPIView):
     lookup_field = 'email'
 
     def get(self, request, email, **kwargs):
-        email = self.request.query_params.get('email')
         user = get_object_or_404(models.User, email=email)
-        return user
+        if user:
+            response_data = {
+                "sso_id": user.id,
+                "is_verified": user.is_active
+            }
+            return Response(response_data)
+        else:
+            raise Http404()
