@@ -164,7 +164,8 @@ urlpatterns = [
 if settings.ENABLE_TEST_API:
     urlpatterns += [
         url(
-            r'^testapi/',
-            include('testapi.urls', namespace='testapi', app_name='testapi')
+            r'^testapi/user-by-email/(?P<email>.*)/$',
+            UserByEmailAPIView.as_view(),
+            name='user_by_email'
         )
     ]
