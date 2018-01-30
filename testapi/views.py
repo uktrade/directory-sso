@@ -12,6 +12,7 @@ class UserByEmailAPIView(RetrieveAPIView):
     serializer_class = []
     lookup_field = 'email'
 
-    def get_user(self, email):
+    def get(self, request, email, **kwargs):
+        email = self.request.query_params.get('email')
         user = get_object_or_404(models.User, email=email)
         return user
