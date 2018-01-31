@@ -70,7 +70,7 @@ DOCKER_SET_DEBUG_ENV_VARS := \
 	export SSO_FEATURE_NEW_SHARED_HEADER_ENABLED=true; \
 	export SSO_SECURE_SSL_REDIRECT=false; \
 	export SSO_HEALTH_CHECK_TOKEN=debug; \
-	export SSO_ENABLE_TEST_API=true
+	export SSO_TEST_API_ENABLE=true; \
 
 
 
@@ -145,7 +145,7 @@ DEBUG_SET_ENV_VARS := \
 	export FEATURE_NEW_SHARED_HEADER_ENABLED=true; \
 	export SECURE_SSL_REDIRECT=false; \
 	export HEALTH_CHECK_TOKEN=debug; \
-	export ENABLE_TEST_API=true
+	export TEST_API_ENABLE=true; \
 
 
 debug_webserver:
