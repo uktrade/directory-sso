@@ -5,17 +5,18 @@ from rest_framework.generics import (
 )
 
 from config import settings
-from config.signature import SignatureCheckPermission
 from sso.user import models
+from testapi.permissions import IsAuthenticatedTestAPI
 
 
 class UserByEmailAPIView(RetrieveAPIView):
-    permission_classes = [SignatureCheckPermission]
+    permission_classes = [IsAuthenticatedTestAPI]
     queryset = models.User.objects.all()
     lookup_field = 'email'
+    http_method_names = ("get", )
 
     def dispatch(self, *args, **kwargs):
-        if not settings.ENABLE_TEST_API:
+        if not settings.TEST_API_ENABLE:
             raise Http404()
         return super().dispatch(*args, **kwargs)
 
