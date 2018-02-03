@@ -6,15 +6,16 @@
 
 {% block content %}
 <div id="profile-register-intro">
-    <h1>{% trans "Register" %}</h1>
+    <h1 class="heading-xlarge">{% trans "Register" %}</h1>
 
     <p>Create a great.gov.uk account to:</p>
-    <ul>
+    <ul class="list list-bullet ">
         <li>save your progress through our export guidance</li>
         <li>create a profile to showcase your business to overseas buyers</li>
         <li>apply for opportunities to sell your product or service overseas</li>
     </ul>
 </div>
+<br>
 <form class="signup" id="signup_form" method="post" action="{% url 'account_signup' %}">
     {% csrf_token %}
     {% for hidden in form.hidden_fields %}
@@ -33,7 +34,7 @@
     {% if redirect_field_value %}
         <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
     {% endif %}
-  <button type="submit">{% trans "Register" %} &raquo;</button>
+  <button class="button" type="submit">{% trans "Register" %}</button>
 </form>
 
 {% endblock %}

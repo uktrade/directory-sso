@@ -1,13 +1,13 @@
 {% extends 'directory_components/base.html' %}
 
 {% block body_content_container %}
-    <main id="content" class="{% block css_layout_class %}sso-content outer-container{% endblock css_layout_class %}" role="main">
-        <div class="span6">
+    <main id="content" class="{% block css_layout_class %}sso-content grid-row{% endblock css_layout_class %}" role="main">
+        <div class="column-one-half">
             {% block body %}
                 {% if messages %}
                     <div>
                         <strong>Messages:</strong>
-                        <ul>
+                        <ul class="list list-bullet">
                             {% for message in messages %}<li>{{message}}</li>{% endfor %}
                         </ul>
                     </div>
