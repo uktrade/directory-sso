@@ -101,3 +101,4 @@ Temporary Items
 
 # Generated files
 staticfiles/
+node_modules

@@ -7,7 +7,7 @@
 
 {% block content %}
 
-<h1>{% trans "Sign in" %}</h1>
+<h1 class="heading-xlarge">{% trans "Sign in" %}</h1>
 
 {% get_providers as socialaccount_providers %}
 
@@ -18,7 +18,7 @@ for a {{ site.name }} account.</p>
 
 <div class="socialaccount_ballot">
 
-  <ul class="socialaccount_providers">
+  <ul class="list list-bullet socialaccount_providers">
     {% include "socialaccount/snippets/provider_list.html" with process="login" %}
   </ul>
 
@@ -29,7 +29,8 @@ for a {{ site.name }} account.</p>
 {% include "socialaccount/snippets/login_extra.html" %}
 
 {% else %}
-<p><a href="{{ sso_register_url }}">Register</a> if you don't have an account.</p>
+<p><a class="link" href="{{ sso_register_url }}">Register</a> if you don't have an account.</p>
+<br>
 {% endif %}
 
 <form class="login" method="POST" action="{% url 'account_login' %}">
@@ -38,8 +39,10 @@ for a {{ site.name }} account.</p>
   {% if redirect_field_value %}
     <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
   {% endif %}
-  <button class="primaryAction button" type="submit">{% trans "Sign in" %}</button>
-  <a class="button secondaryAction" href="{{ sso_reset_password_url }}">{% trans "Reset your password" %}</a>
+  <br>
+  <br>
+  <button class="button" type="submit">{% trans "Sign in" %}</button>
+  <a class="link secondaryAction" href="{{ sso_reset_password_url }}">{% trans "Reset your password" %}</a>
 </form>
 
 {% endblock %}

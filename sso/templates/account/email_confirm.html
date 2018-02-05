@@ -6,17 +6,17 @@
 {% block head_title %}{% trans "Confirm email address - great.gov.uk" %}{% endblock %}
 
 {% block content %}
-<h1>{% trans "Confirm email address" %}</h1>
+<h1 class="heading-xlarge">{% trans "Confirm email address" %}</h1>
 
 {% if confirmation %}
 
 {% user_display confirmation.email_address.user as user_display %}
 
-<p>{% blocktrans with confirmation.email_address.email as email %}Confirm that <a href="mailto:{{ email }}">{{ email }}</a> is an email address for user {{ user_display }}.{% endblocktrans %}</p>
+<p>{% blocktrans with confirmation.email_address.email as email %}Confirm that <a class="link" href="mailto:{{ email }}">{{ email }}</a> is an email address for user {{ user_display }}.{% endblocktrans %}</p>
 
 <form method="post" action="{{ form_url }}">
 {% csrf_token %}
-    <button type="submit">{% trans 'Confirm' %}</button>
+    <button class="button" type="submit">{% trans 'Confirm' %}</button>
 </form>
 
 {% else %}

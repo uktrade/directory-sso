@@ -2,8 +2,8 @@
 {% load external_url from constants_tags %}
 {% block body %}
 <div class="sso-error-page-container container">
-    <h1 class="sso-error-page-title">Something went wrong</h1>
-    <ul class="sso-error-page-synopsis">
+    <h1 class="sso-error-page-title heading-xlarge">Something went wrong</h1>
+    <ul class="list list-bullet sso-error-page-synopsis">
         <li>If this problem persists, please <a class="link" href="{% external_url 'feedback_sso' %}" title="report a broken link">report the problem</a>.</li>
         <li>Return to the <a class="link" href="{% url 'account_login' %}" title="return login">login page</a>.</li>
     </ul>
