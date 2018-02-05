@@ -161,11 +161,10 @@ urlpatterns = [
     ),
 ]
 
-if settings.TEST_API_ENABLE:
-    urlpatterns += [
-        url(
-            r'^testapi/user-by-email/(?P<email>.*)/$',
-            UserByEmailAPIView.as_view(),
-            name='user_by_email'
-        )
-    ]
+urlpatterns += [
+    url(
+        r'^testapi/user-by-email/(?P<email>.*)/$',
+        UserByEmailAPIView.as_view(),
+        name='user_by_email'
+    )
+]

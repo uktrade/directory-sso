@@ -22,11 +22,8 @@ class UserByEmailAPIView(RetrieveAPIView):
 
     def get(self, request, email, **kwargs):
         user = get_object_or_404(models.User, email=email)
-        if user:
-            response_data = {
-                "sso_id": user.id,
-                "is_verified": user.is_active
-            }
-            return Response(response_data)
-        else:
-            raise Http404()
+        response_data = {
+            "sso_id": user.id,
+            "is_verified": user.is_active
+        }
+        return Response(response_data)
