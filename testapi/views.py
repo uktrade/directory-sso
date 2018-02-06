@@ -3,12 +3,13 @@ from django.http import Http404
 from rest_framework.generics import RetrieveAPIView, get_object_or_404
 from rest_framework.response import Response
 
+from config.signature import SignatureCheckPermission
 from sso.user import models
-from testapi.permissions import IsAuthenticatedTestAPI
 
 
 class UserByEmailAPIView(RetrieveAPIView):
-    permission_classes = [IsAuthenticatedTestAPI]
+    permission_classes = [SignatureCheckPermission]
+    authentication_classes = []
     queryset = models.User.objects.all()
     lookup_field = 'email'
     http_method_names = ("get", )
