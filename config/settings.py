@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'sso',
     'sso.oauth2',
     'sso.user.apps.UserConfig',
+    'sso.testapi',
     'directory_constants',
     'directory_header_footer',
     'directory_healthcheck',

@@ -20,7 +20,7 @@ from sso.oauth2.views_user import UserRetrieveAPIView
 from sso.api.views_user import (
     SessionUserAPIView, LastLoginAPIView, PasswordCheckAPIView
 )
-from testapi.views import UserByEmailAPIView
+from sso.testapi.views import UserByEmailAPIView
 
 admin.autodiscover()
 
