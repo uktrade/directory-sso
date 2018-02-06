@@ -1,8 +1,9 @@
 import pytest
 from django.conf import settings
+from rest_framework.test import APIClient
 from unittest.mock import patch
 
-from sso.user import models
+from sso.user.models import User
 
 
 @pytest.fixture(autouse=True)
@@ -20,8 +21,13 @@ def test_api_auth_token():
 
 
 @pytest.fixture
+def api_client():
+    return APIClient()
+
+
+@pytest.fixture
 def active_user():
-    return models.User.objects.create_user(
+    return User.objects.create_user(
         email="dev@example.com",
         password="password",
         is_active=True,
@@ -31,7 +37,7 @@ def active_user():
 
 @pytest.fixture
 def inactive_user():
-    return models.User.objects.create_user(
+    return User.objects.create_user(
         email="inactive@user.com",
         password="password",
         is_active=False,
