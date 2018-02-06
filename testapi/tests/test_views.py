@@ -15,7 +15,7 @@ def test_get_user_by_email_with_enabled_test_api(client, active_user):
 def test_should_get_sso_id_and_is_verified_flag_for_active_user(
         client, active_user):
     response = client.get(
-        reverse("user_by_email", kwargs={"email": active_user.email}) )
+        reverse("user_by_email", kwargs={"email": active_user.email}))
     assert response.data == {"is_verified": True, "sso_id": 1}
 
 
