@@ -1,5 +1,4 @@
 import pytest
-from django.conf import settings
 from unittest.mock import patch
 from allauth.account.models import EmailAddress
 
@@ -13,11 +12,6 @@ def mock_signature_checker():
     patcher.start()
     yield
     patcher.stop()
-
-
-@pytest.fixture
-def test_api_auth_token():
-    return settings.TEST_API_AUTH_TOKEN
 
 
 @pytest.fixture
