@@ -4,7 +4,6 @@ from django.contrib import admin
 import oauth2_provider.views
 import allauth.account.views
 
-from config import settings
 from sso.user.views import (
     ConfirmEmailView,
     EmailVerificationSentView,
