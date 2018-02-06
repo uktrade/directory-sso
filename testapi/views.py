@@ -1,5 +1,5 @@
 from django.conf import settings
-from django.http import Http404
+from django.http import HttpResponseNotFound
 from rest_framework.generics import RetrieveAPIView, get_object_or_404
 from rest_framework.response import Response
 
@@ -16,7 +16,7 @@ class UserByEmailAPIView(RetrieveAPIView):
 
     def dispatch(self, *args, **kwargs):
         if not settings.TEST_API_ENABLE:
-            raise Http404()
+            return HttpResponseNotFound()
         return super().dispatch(*args, **kwargs)
 
     def get(self, request, email, **kwargs):
