@@ -4,8 +4,8 @@ from rest_framework import status
 
 
 @pytest.mark.django_db
-def test_get_user_by_email_with_enabled_test_api(api_client, active_user):
-    response = api_client.get(
+def test_get_user_by_email_with_enabled_test_api(client, active_user):
+    response = client.get(
         reverse("user_by_email", kwargs={"email": active_user.email})
     )
     assert response.status_code == status.HTTP_200_OK
@@ -16,7 +16,7 @@ def test_should_get_sso_id_and_is_verified_flag_for_active_user(
         client, active_user):
     response = client.get(
         reverse("user_by_email", kwargs={"email": active_user.email}))
-    assert response.data == {"is_verified": True, "sso_id": 1}
+    assert response.data == {"is_verified": True, "sso_id": 11}
 
 
 @pytest.mark.django_db
@@ -25,7 +25,7 @@ def test_should_get_sso_id_and_is_verified_flag_for_inactive_user(
     response = client.get(
         reverse("user_by_email", kwargs={"email": inactive_user.email})
     )
-    assert response.data == {"is_verified": False, "sso_id": 2}
+    assert response.data == {"is_verified": False, "sso_id": 22}
 
 
 @pytest.mark.django_db
