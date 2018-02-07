@@ -158,12 +158,9 @@ urlpatterns = [
         r'^api/v1/',
         include(api_urlpatterns)
     ),
-]
-
-urlpatterns += [
     url(
         r'^testapi/user-by-email/(?P<email>.*)/$',
         UserByEmailAPIView.as_view(),
         name='user_by_email'
-    )
+    ),
 ]
