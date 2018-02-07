@@ -7,7 +7,7 @@ from sso.user.models import User
 
 @pytest.fixture(autouse=True)
 def mock_signature_checker():
-    mock_path = "sigauth.utils.RequestSignatureChecker.test_signature"
+    mock_path = 'sigauth.utils.RequestSignatureChecker.test_signature'
     patcher = patch(mock_path, return_value=True)
     patcher.start()
     yield
@@ -17,8 +17,8 @@ def mock_signature_checker():
 @pytest.fixture
 def active_user():
     user = User.objects.create_user(
-        email="dev@example.com",
-        password="password",
+        email='dev@example.com',
+        password='password',
         is_active=True,
         id=11
     )
@@ -36,8 +36,8 @@ def active_user():
 @pytest.fixture
 def inactive_user():
     user = User.objects.create_user(
-        email="inactive@user.com",
-        password="password",
+        email='inactive@user.com',
+        password='password',
         is_active=False,
         id=22
     )

@@ -12,7 +12,7 @@ class UserByEmailAPIView(RetrieveAPIView):
     authentication_classes = []
     queryset = models.User.objects.all()
     lookup_field = 'email'
-    http_method_names = ("get", )
+    http_method_names = ('get', )
 
     def dispatch(self, *args, **kwargs):
         if not settings.TEST_API_ENABLE:
@@ -22,7 +22,7 @@ class UserByEmailAPIView(RetrieveAPIView):
     def get(self, request, email, **kwargs):
         user = get_object_or_404(models.User, email=email)
         response_data = {
-            "sso_id": user.id,
-            "is_verified": user.is_active
+            'sso_id': user.id,
+            'is_verified': user.is_active
         }
         return Response(response_data)
