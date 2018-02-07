@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'sso',
     'sso.oauth2',
     'sso.user.apps.UserConfig',
+    'sso.testapi',
     'directory_constants',
     'directory_header_footer',
     'directory_healthcheck',
@@ -477,3 +478,7 @@ SSO_SUSPICIOUS_ACTIVITY_NOTIFICATION_EMAIL = os.getenv(
 
 # Health check
 HEALTH_CHECK_TOKEN = os.environ['HEALTH_CHECK_TOKEN']
+
+# testing api
+FEATURE_TEST_API_ENABLE = os.getenv(
+    "FEATURE_TEST_API_ENABLE", 'false') == 'true'

@@ -20,6 +20,7 @@ from sso.oauth2.views_user import UserRetrieveAPIView
 from sso.api.views_user import (
     SessionUserAPIView, LastLoginAPIView, PasswordCheckAPIView
 )
+from sso.testapi.views import UserByEmailAPIView
 
 admin.autodiscover()
 
@@ -156,5 +157,10 @@ urlpatterns = [
     url(
         r'^api/v1/',
         include(api_urlpatterns)
+    ),
+    url(
+        r'^testapi/user-by-email/(?P<email>.*)/$',
+        UserByEmailAPIView.as_view(),
+        name='user_by_email'
     ),
 ]
