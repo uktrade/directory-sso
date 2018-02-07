@@ -15,7 +15,7 @@ class UserByEmailAPIView(RetrieveAPIView):
     http_method_names = ('get', )
 
     def dispatch(self, *args, **kwargs):
-        if not settings.TEST_API_ENABLE:
+        if not settings.FEATURE_TEST_API_ENABLE:
             return HttpResponseNotFound()
         return super().dispatch(*args, **kwargs)
 

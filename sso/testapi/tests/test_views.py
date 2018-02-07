@@ -55,7 +55,7 @@ def test_should_get_404_when_email_is_none(client):
 @pytest.mark.django_db
 def test_get_user_by_email_with_disabled_test_api(
         client, settings, active_user):
-    settings.TEST_API_ENABLE = False
+    settings.FEATURE_TEST_API_ENABLE = False
     response = client.get(
         reverse('user_by_email', kwargs={'email': active_user.email})
     )
