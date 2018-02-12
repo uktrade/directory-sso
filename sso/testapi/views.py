@@ -1,5 +1,5 @@
 from django.conf import settings
-from django.http import HttpResponseNotFound, Http404
+from django.http import HttpResponseNotFound
 from rest_framework.generics import (
     get_object_or_404,
     DestroyAPIView,
@@ -23,8 +23,11 @@ class UserByEmailAPIView(RetrieveAPIView, DestroyAPIView):
             return HttpResponseNotFound()
         return super().dispatch(*args, **kwargs)
 
+    def get_object(self, email):
+        return get_object_or_404(models.User, email=email)
+
     def get(self, request, email, **kwargs):
-        user = get_object_or_404(models.User, email=email)
+        user = self.get_object(email=email)
         response_data = {
             'sso_id': user.id,
             'is_verified': user.is_active
@@ -32,9 +35,5 @@ class UserByEmailAPIView(RetrieveAPIView, DestroyAPIView):
         return Response(response_data)
 
     def delete(self, request, email, **kwargs):
-        try:
-            user = get_object_or_404(models.User, email=email)
-            user.delete()
-        except Http404:
-            raise
+        self.get_object(email=email).delete()
         return Response(status=204)
