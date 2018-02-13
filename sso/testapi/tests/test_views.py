@@ -1,3 +1,4 @@
+import json
 import pytest
 from django.core.urlresolvers import reverse
 from rest_framework import status
@@ -100,5 +101,72 @@ def test_delete_user_by_email_with_disabled_test_api(
     settings.FEATURE_TEST_API_ENABLE = False
     response = client.delete(
         reverse('user_by_email', kwargs={'email': active_user.email})
+    )
+    assert response.status_code == status.HTTP_404_NOT_FOUND
+
+
+@pytest.mark.parametrize("data", [
+    {'is_verified': True},
+    {'is_verified': False},
+])
+@pytest.mark.django_db
+def test_patch_user_by_email_with_enabled_test_api(client, active_user, data):
+    response = client.patch(
+        reverse('user_by_email', kwargs={'email': active_user.email}),
+        data=json.dumps(data), content_type='application/json'
+    )
+    assert response.status_code == status.HTTP_204_NO_CONTENT
+
+
+@pytest.mark.parametrize("data", [
+    {'is_verified': True},
+    {'is_verified': False},
+])
+@pytest.mark.django_db
+def test_patch_non_existing_user_should_get_404(client, data):
+    response = client.patch(
+        reverse('user_by_email', kwargs={'email': 'non_existing@user.com'}),
+        data=data
+    )
+    assert response.status_code == status.HTTP_404_NOT_FOUND
+
+
+@pytest.mark.parametrize("data", [
+    {'is_verified': True},
+    {'is_verified': False},
+])
+@pytest.mark.django_db
+def test_patch_user_should_get_404_when_email_is_not_present(client, data):
+    response = client.patch(
+        reverse('user_by_email', kwargs={'email': ''}),
+        data=data
+    )
+    assert response.status_code == status.HTTP_404_NOT_FOUND
+
+
+@pytest.mark.parametrize("data", [
+    {'is_verified': True},
+    {'is_verified': False},
+])
+@pytest.mark.django_db
+def test_patch_user_should_get_404_when_email_is_none(client, data):
+    response = client.patch(
+        reverse('user_by_email', kwargs={'email': None}),
+        data=data
+    )
+    assert response.status_code == status.HTTP_404_NOT_FOUND
+
+
+@pytest.mark.parametrize("data", [
+    {'is_verified': True},
+    {'is_verified': False},
+])
+@pytest.mark.django_db
+def test_patch_user_by_email_with_disabled_test_api(
+        client, settings, active_user, data):
+    settings.FEATURE_TEST_API_ENABLE = False
+    response = client.patch(
+        reverse('user_by_email', kwargs={'email': active_user.email}),
+        data=data
     )
     assert response.status_code == status.HTTP_404_NOT_FOUND
