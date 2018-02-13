@@ -23,17 +23,19 @@ class UserByEmailAPIView(RetrieveAPIView, DestroyAPIView):
             return HttpResponseNotFound()
         return super().dispatch(*args, **kwargs)
 
-    def get_object(self, email):
+    def get_user(self, email):
         return get_object_or_404(models.User, email=email)
 
-    def get(self, request, email, **kwargs):
-        user = self.get_object(email=email)
+    def get(self, request, **kwargs):
+        email = kwargs['email']
+        user = self.get_user(email)
         response_data = {
             'sso_id': user.id,
             'is_verified': user.is_active
         }
         return Response(response_data)
 
-    def delete(self, request, email, **kwargs):
-        self.get_object(email=email).delete()
+    def delete(self, request, **kwargs):
+        email = kwargs['email']
+        self.get_user(email).delete()
         return Response(status=204)
