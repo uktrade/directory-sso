@@ -60,3 +60,45 @@ def test_get_user_by_email_with_disabled_test_api(
         reverse('user_by_email', kwargs={'email': active_user.email})
     )
     assert response.status_code == status.HTTP_404_NOT_FOUND
+
+
+@pytest.mark.django_db
+def test_delete_user_by_email_with_enabled_test_api(client, active_user):
+    response = client.delete(
+        reverse('user_by_email', kwargs={'email': active_user.email})
+    )
+    assert response.status_code == status.HTTP_204_NO_CONTENT
+
+
+@pytest.mark.django_db
+def test_delete_non_existing_user_should_get_404(client):
+    response = client.delete(
+        reverse('user_by_email', kwargs={'email': 'non_existing@user.com'})
+    )
+    assert response.status_code == status.HTTP_404_NOT_FOUND
+
+
+@pytest.mark.django_db
+def test_delete_user_should_get_404_when_email_is_not_present(client):
+    response = client.delete(
+        reverse('user_by_email', kwargs={'email': ''})
+    )
+    assert response.status_code == status.HTTP_404_NOT_FOUND
+
+
+@pytest.mark.django_db
+def test_delete_user_should_get_404_when_email_is_none(client):
+    response = client.delete(
+        reverse('user_by_email', kwargs={'email': None})
+    )
+    assert response.status_code == status.HTTP_404_NOT_FOUND
+
+
+@pytest.mark.django_db
+def test_delete_user_by_email_with_disabled_test_api(
+        client, settings, active_user):
+    settings.FEATURE_TEST_API_ENABLE = False
+    response = client.delete(
+        reverse('user_by_email', kwargs={'email': active_user.email})
+    )
+    assert response.status_code == status.HTTP_404_NOT_FOUND
