@@ -56,7 +56,7 @@ def test_should_get_404_when_email_is_none(client):
 @pytest.mark.django_db
 def test_get_user_by_email_with_disabled_test_api(
         client, settings, active_user):
-    settings.FEATURE_TEST_API_ENABLE = False
+    settings.FEATURE_TEST_API_ENABLED = False
     response = client.get(
         reverse('user_by_email', kwargs={'email': active_user.email})
     )
@@ -98,7 +98,7 @@ def test_delete_user_should_get_404_when_email_is_none(client):
 @pytest.mark.django_db
 def test_delete_user_by_email_with_disabled_test_api(
         client, settings, active_user):
-    settings.FEATURE_TEST_API_ENABLE = False
+    settings.FEATURE_TEST_API_ENABLED = False
     response = client.delete(
         reverse('user_by_email', kwargs={'email': active_user.email})
     )
@@ -164,7 +164,7 @@ def test_patch_user_should_get_404_when_email_is_none(client, data):
 @pytest.mark.django_db
 def test_patch_user_by_email_with_disabled_test_api(
         client, settings, active_user, data):
-    settings.FEATURE_TEST_API_ENABLE = False
+    settings.FEATURE_TEST_API_ENABLED = False
     response = client.patch(
         reverse('user_by_email', kwargs={'email': active_user.email}),
         data=data
