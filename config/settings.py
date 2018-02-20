@@ -165,11 +165,11 @@ for static_dir in STATICFILES_DIRS:
 
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.environ["SECRET_KEY"]
+SECRET_KEY = os.environ['SECRET_KEY']
 
 # Sentry
 RAVEN_CONFIG = {
-    "dsn": os.getenv("SENTRY_DSN"),
+    'dsn': os.getenv('SENTRY_DSN'),
 }
 
 
@@ -329,10 +329,10 @@ ACCOUNT_CONFIRM_EMAIL_ON_GET = False
 ACCOUNT_EMAIL_CONFIRMATION_EXPIRE_DAYS = 3
 ACCOUNT_EMAIL_VERIFICATION = 'mandatory'
 ACCOUNT_EMAIL_SUBJECT_PREFIX = os.getenv(
-    "ACCOUNT_EMAIL_SUBJECT_PREFIX", 'Your great.gov.uk account: '
+    'ACCOUNT_EMAIL_SUBJECT_PREFIX', 'Your great.gov.uk account: '
 )
 ACCOUNT_DEFAULT_HTTP_PROTOCOL = os.getenv(
-    "ACCOUNT_DEFAULT_HTTP_PROTOCOL", 'https'
+    'ACCOUNT_DEFAULT_HTTP_PROTOCOL', 'https'
 )
 ACCOUNT_LOGIN_ATTEMPTS_LIMIT = 5
 ACCOUNT_LOGIN_ATTEMPTS_TIMEOUT = 300  # seconds
@@ -348,12 +348,12 @@ EMAIL_BACKED_CLASSES = {
 }
 EMAIL_BACKED_CLASS_NAME = os.getenv('EMAIL_BACKEND_CLASS_NAME', 'default')
 EMAIL_BACKEND = EMAIL_BACKED_CLASSES[EMAIL_BACKED_CLASS_NAME]
-EMAIL_HOST = os.environ["EMAIL_HOST"]
-EMAIL_PORT = os.environ["EMAIL_PORT"]
-EMAIL_HOST_USER = os.environ["EMAIL_HOST_USER"]
-EMAIL_HOST_PASSWORD = os.environ["EMAIL_HOST_PASSWORD"]
+EMAIL_HOST = os.environ['EMAIL_HOST']
+EMAIL_PORT = os.environ['EMAIL_PORT']
+EMAIL_HOST_USER = os.environ['EMAIL_HOST_USER']
+EMAIL_HOST_PASSWORD = os.environ['EMAIL_HOST_PASSWORD']
 EMAIL_USE_TLS = True
-DEFAULT_FROM_EMAIL = os.environ["DEFAULT_FROM_EMAIL"]
+DEFAULT_FROM_EMAIL = os.environ['DEFAULT_FROM_EMAIL']
 
 ACCOUNT_FORMS = {
     'signup': 'sso.user.forms.SignupForm',
@@ -480,5 +480,5 @@ SSO_SUSPICIOUS_ACTIVITY_NOTIFICATION_EMAIL = os.getenv(
 HEALTH_CHECK_TOKEN = os.environ['HEALTH_CHECK_TOKEN']
 
 # testing api
-FEATURE_TEST_API_ENABLE = os.getenv(
-    "FEATURE_TEST_API_ENABLE", 'false') == 'true'
+FEATURE_TEST_API_ENABLED = os.getenv(
+    'FEATURE_TEST_API_ENABLED', 'false') == 'true'

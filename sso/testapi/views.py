@@ -20,7 +20,7 @@ class UserByEmailAPIView(RetrieveAPIView, DestroyAPIView, UpdateAPIView):
     http_method_names = ('get', 'delete', 'patch')
 
     def dispatch(self, *args, **kwargs):
-        if not settings.FEATURE_TEST_API_ENABLE:
+        if not settings.FEATURE_TEST_API_ENABLED:
             return HttpResponseNotFound()
         return super().dispatch(*args, **kwargs)
 
