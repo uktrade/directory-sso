@@ -105,7 +105,7 @@ def test_delete_user_by_email_with_disabled_test_api(
     assert response.status_code == status.HTTP_404_NOT_FOUND
 
 
-@pytest.mark.parametrize("data", [
+@pytest.mark.parametrize('data', [
     {'is_verified': True},
     {'is_verified': False},
 ])
@@ -118,7 +118,7 @@ def test_patch_user_by_email_with_enabled_test_api(client, active_user, data):
     assert response.status_code == status.HTTP_204_NO_CONTENT
 
 
-@pytest.mark.parametrize("data", [
+@pytest.mark.parametrize('data', [
     {'is_verified': True},
     {'is_verified': False},
 ])
@@ -131,7 +131,7 @@ def test_patch_non_existing_user_should_get_404(client, data):
     assert response.status_code == status.HTTP_404_NOT_FOUND
 
 
-@pytest.mark.parametrize("data", [
+@pytest.mark.parametrize('data', [
     {'is_verified': True},
     {'is_verified': False},
 ])
@@ -144,7 +144,7 @@ def test_patch_user_should_get_404_when_email_is_not_present(client, data):
     assert response.status_code == status.HTTP_404_NOT_FOUND
 
 
-@pytest.mark.parametrize("data", [
+@pytest.mark.parametrize('data', [
     {'is_verified': True},
     {'is_verified': False},
 ])
@@ -157,7 +157,7 @@ def test_patch_user_should_get_404_when_email_is_none(client, data):
     assert response.status_code == status.HTTP_404_NOT_FOUND
 
 
-@pytest.mark.parametrize("data", [
+@pytest.mark.parametrize('data', [
     {'is_verified': True},
     {'is_verified': False},
 ])
