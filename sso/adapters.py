@@ -9,8 +9,9 @@ from notifications_python_client import NotificationsAPIClient
 
 from sso.user.utils import get_url_with_redirect, is_valid_redirect
 
-EMAIL_CONFIRMATION_TEMPLATE_ID = '0c76b730-ac37-4b08-a8ba-7b34e4492853'
-PASSWORD_RESET_TEMPLATE_ID = '9ef82687-4bc0-4278-b15c-a49bc9325b28',
+EMAIL_CONFIRMATION_TEMPLATE_ID = \
+    settings.GOV_NOTIFY_SIGNUP_CONFIRMATION_TEMPLATE_ID
+PASSWORD_RESET_TEMPLATE_ID = settings.GOV_NOTIFY_PASSWORD_RESET_TEMPLATE_ID
 
 EMAIL_TEMPLATES = {
     'account/email/email_confirmation_signup': EMAIL_CONFIRMATION_TEMPLATE_ID,
