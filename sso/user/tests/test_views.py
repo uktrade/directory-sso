@@ -1,3 +1,4 @@
+from unittest import mock
 from unittest.mock import patch
 import urllib.parse
 import http
@@ -11,6 +12,8 @@ from allauth.account.models import EmailAddress, EmailConfirmationHMAC
 from allauth.exceptions import ImmediateHttpResponse
 import pytest
 
+from sso.adapters import EMAIL_CONFIRMATION_TEMPLATE_ID, \
+    PASSWORD_RESET_TEMPLATE_ID
 from sso.user import models, views
 
 
@@ -268,9 +271,10 @@ def test_confirm_email_invalid_key(
     assert "confirmation link expired or is invalid" in str(response.content)
 
 
+@patch('sso.adapters.NotificationsAPIClient')
 @pytest.mark.django_db
 def test_confirm_email_redirect_next_param_if_next_param_valid(
-    settings, client, email_confirmation
+    mocked_notification_client, settings, client, email_confirmation
 ):
     settings.DEFAULT_REDIRECT_URL = 'http://other.com'
     settings.ALLOWED_REDIRECT_DOMAINS = ['example.com', 'other.com']
@@ -289,19 +293,19 @@ def test_confirm_email_redirect_next_param_if_next_param_valid(
             'password2': '*' * 10,
         }
     )
-    message = mail.outbox[0]
-    txt = message.body
-    html = message.alternatives[0][0]
 
-    # Extract URL for `password_reset_from_key` view and access it
-    url = txt[txt.find('/accounts/confirm-email/'):].split()[0]
+    assert mocked_notification_client().send_email_notification.called is True
+    call = mocked_notification_client().send_email_notification.call_args
+    assert call == mock.call(
+        email_address='jim@example.com',
+        personalisation={'confirmation_link': mock.ANY},
+        template_id=EMAIL_CONFIRMATION_TEMPLATE_ID
+    )
 
+    url = call[1]['personalisation']['confirmation_link']
     response = client.post(url)
 
-    assert url in txt
-    assert url in html
     assert response.status_code == http.client.FOUND
-
     next_url = response.get('Location')
 
     assert next_url == (
@@ -312,9 +316,10 @@ def test_confirm_email_redirect_next_param_if_next_param_valid(
     assert response.get('Location') == expected
 
 
+@patch('sso.adapters.NotificationsAPIClient')
 @pytest.mark.django_db
 def test_confirm_email_redirect_next_param_if_next_param_invalid(
-    settings, client, email_confirmation
+    mocked_notification_client, settings, client, email_confirmation
 ):
     settings.DEFAULT_REDIRECT_URL = 'http://other.com'
     settings.ALLOWED_REDIRECT_DOMAINS = ['other.com']
@@ -335,17 +340,19 @@ def test_confirm_email_redirect_next_param_if_next_param_invalid(
             'password2': '*' * 10,
         }
     )
-    message = mail.outbox[0]
-    txt = message.body
-    html = message.alternatives[0][0]
 
-    # Extract URL for `password_reset_from_key` view and access it
-    url = txt[txt.find('/accounts/confirm-email/'):].split()[0]
+    assert mocked_notification_client().send_email_notification.called is True
+    call = mocked_notification_client().send_email_notification.call_args
+    assert call == mock.call(
+        email_address='jim@example.com',
+        personalisation={'confirmation_link': mock.ANY},
+        template_id=EMAIL_CONFIRMATION_TEMPLATE_ID
+    )
+
+    url = call[1]['personalisation']['confirmation_link']
 
     response = client.post(url)
 
-    assert url in txt
-    assert url in html
     assert response.status_code == http.client.FOUND
 
     next_url = response.get('Location')
@@ -358,9 +365,10 @@ def test_confirm_email_redirect_next_param_if_next_param_invalid(
     assert response.get('Location') == settings.DEFAULT_REDIRECT_URL
 
 
+@patch('sso.adapters.NotificationsAPIClient')
 @pytest.mark.django_db
 def test_confirm_email_redirect_next_param_if_next_param_internal(
-    settings, client, email_confirmation
+    mocked_notification_client, settings, client, email_confirmation
 ):
     settings.DEFAULT_REDIRECT_URL = 'http://other.com'
     settings.ALLOWED_REDIRECT_DOMAINS = ['example.com', 'other.com']
@@ -381,17 +389,17 @@ def test_confirm_email_redirect_next_param_if_next_param_internal(
             'password2': '*' * 10,
         }
     )
-    message = mail.outbox[0]
-    txt = message.body
-    html = message.alternatives[0][0]
+    assert mocked_notification_client().send_email_notification.called is True
+    call = mocked_notification_client().send_email_notification.call_args
+    assert call == mock.call(
+        email_address='jim@example.com',
+        personalisation={'confirmation_link': mock.ANY},
+        template_id=EMAIL_CONFIRMATION_TEMPLATE_ID
+    )
 
-    # Extract URL for `password_reset_from_key` view and access it
-    url = txt[txt.find('/accounts/confirm-email/'):].split()[0]
-
+    url = call[1]['personalisation']['confirmation_link']
     response = client.post(url)
 
-    assert url in txt
-    assert url in html
     assert response.status_code == http.client.FOUND
 
     next_url = response.get('Location')
@@ -402,9 +410,10 @@ def test_confirm_email_redirect_next_param_if_next_param_internal(
     assert response.get('Location') == expected
 
 
+@patch('sso.adapters.NotificationsAPIClient')
 @pytest.mark.django_db
 def test_confirm_email_redirect_default_param_if_no_next_param(
-    settings, client, email_confirmation
+    mocked_notification_client, settings, client, email_confirmation
 ):
 
     settings.ALLOWED_REDIRECT_DOMAINS = ['example.com', 'other.com']
@@ -418,23 +427,25 @@ def test_confirm_email_redirect_default_param_if_no_next_param(
             'password2': '*' * 10,
         }
     )
-    message = mail.outbox[0]
-    txt = message.body
-    html = message.alternatives[0][0]
-    # Extract URL for `password_reset_from_key` view and access it
-    url = txt[txt.find('/accounts/confirm-email/'):].split()[0]
+    assert mocked_notification_client().send_email_notification.called is True
+    call = mocked_notification_client().send_email_notification.call_args
+    assert call == mock.call(
+        email_address='jim@example.com',
+        personalisation={'confirmation_link': mock.ANY},
+        template_id=EMAIL_CONFIRMATION_TEMPLATE_ID
+    )
 
+    url = call[1]['personalisation']['confirmation_link']
     response = client.post(url)
 
-    assert url in txt
-    assert url in html
     assert response.status_code == http.client.FOUND
     assert response.get('Location') == settings.DEFAULT_REDIRECT_URL
 
 
+@patch('sso.adapters.NotificationsAPIClient')
 @pytest.mark.django_db
 def test_password_reset_redirect_default_param_if_no_next_param(
-    settings, client, user
+    mocked_notification_client, settings, client, user
 ):
 
     settings.ALLOWED_REDIRECT_DOMAINS = ['example.com', 'other.com']
@@ -444,11 +455,14 @@ def test_password_reset_redirect_default_param_if_no_next_param(
         reverse('account_reset_password'),
         data={'email': user.email}
     )
-    message = mail.outbox[0]
-    txt = message.body
-    html = message.alternatives[0][0]
-    # Extract URL for `password_reset_from_key` view and access it
-    url = txt[txt.find('/accounts/password/reset/'):].split()[0]
+    assert mocked_notification_client().send_email_notification.called is True
+    call = mocked_notification_client().send_email_notification.call_args
+    assert call == mock.call(
+        email_address='test@example.com',
+        personalisation={'password_reset': mock.ANY},
+        template_id=PASSWORD_RESET_TEMPLATE_ID
+    )
+    url = call[1]['personalisation']['password_reset']
 
     # Reset the password
     preflight_response = client.post(url)
@@ -457,15 +471,14 @@ def test_password_reset_redirect_default_param_if_no_next_param(
         {'password1': new_password, 'password2': new_password}
     )
 
-    assert url in txt
-    assert url in html
     assert response.status_code == http.client.FOUND
     assert response.get('Location') == settings.DEFAULT_REDIRECT_URL
 
 
+@patch('sso.adapters.NotificationsAPIClient')
 @pytest.mark.django_db
 def test_password_reset_redirect_next_param_if_next_param_valid(
-    settings, client, user
+    mocked_notification_client, settings, client, user
 ):
     settings.DEFAULT_REDIRECT_URL = 'http://other.com'
     settings.ALLOWED_REDIRECT_DOMAINS = ['example.com', 'other.com']
@@ -478,11 +491,14 @@ def test_password_reset_redirect_next_param_if_next_param_valid(
         '{url}?next={next}'.format(url=password_reset_url, next=expected),
         data={'email': user.email}
     )
-    message = mail.outbox[0]
-    txt = message.body
-    html = message.alternatives[0][0]
-    # Extract URL for `password_reset_from_key` view and access it
-    url = txt[txt.find('/accounts/password/reset/'):].split()[0]
+    assert mocked_notification_client().send_email_notification.called is True
+    call = mocked_notification_client().send_email_notification.call_args
+    assert call == mock.call(
+        email_address='test@example.com',
+        personalisation={'password_reset': mock.ANY},
+        template_id=PASSWORD_RESET_TEMPLATE_ID
+    )
+    url = call[1]['personalisation']['password_reset']
 
     # Reset the password
     data = {
@@ -496,15 +512,14 @@ def test_password_reset_redirect_next_param_if_next_param_valid(
         data,
     )
 
-    assert url in txt
-    assert url in html
     assert response.status_code == http.client.FOUND
     assert response.get('Location') == expected
 
 
+@patch('sso.adapters.NotificationsAPIClient')
 @pytest.mark.django_db
 def test_password_reset_redirect_next_param_if_next_param_invalid(
-    settings, client, user
+    mocked_notification_client, settings, client, user
 ):
     settings.DEFAULT_REDIRECT_URL = 'http://other.com'
     settings.ALLOWED_REDIRECT_DOMAINS = ['other.com']
@@ -517,11 +532,14 @@ def test_password_reset_redirect_next_param_if_next_param_invalid(
         '{url}?next={next}'.format(url=password_reset_url, next=next_param),
         data={'email': user.email}
     )
-    message = mail.outbox[0]
-    txt = message.body
-    html = message.alternatives[0][0]
-    # Extract URL for `password_reset_from_key` view and access it
-    url = txt[txt.find('/accounts/password/reset/'):].split()[0]
+    assert mocked_notification_client().send_email_notification.called is True
+    call = mocked_notification_client().send_email_notification.call_args
+    assert call == mock.call(
+        email_address='test@example.com',
+        personalisation={'password_reset': mock.ANY},
+        template_id=PASSWORD_RESET_TEMPLATE_ID
+    )
+    url = call[1]['personalisation']['password_reset']
 
     # Reset the password
     preflight_response = client.post(url)
@@ -530,15 +548,14 @@ def test_password_reset_redirect_next_param_if_next_param_invalid(
         {'password1': new_password, 'password2': new_password}
     )
 
-    assert url in txt
-    assert url in html
     assert response.status_code == http.client.FOUND
     assert response.get('Location') == settings.DEFAULT_REDIRECT_URL
 
 
+@patch('sso.adapters.NotificationsAPIClient')
 @pytest.mark.django_db
 def test_password_reset_redirect_next_param_if_next_param_internal(
-    settings, client, user
+    mocked_notification_client, settings, client, user
 ):
     settings.DEFAULT_REDIRECT_URL = 'http://other.com'
     settings.ALLOWED_REDIRECT_DOMAINS = ['example.com', 'other.com']
@@ -551,11 +568,15 @@ def test_password_reset_redirect_next_param_if_next_param_internal(
         '{url}?next={next}'.format(url=password_reset_url, next=expected),
         data={'email': user.email, 'next': expected}
     )
-    message = mail.outbox[0]
-    txt = message.body
-    html = message.alternatives[0][0]
-    # Extract URL for `password_reset_from_key` view and access it
-    url = txt[txt.find('/accounts/password/reset/'):].split()[0]
+
+    assert mocked_notification_client().send_email_notification.called is True
+    call = mocked_notification_client().send_email_notification.call_args
+    assert call == mock.call(
+        email_address='test@example.com',
+        personalisation={'password_reset': mock.ANY},
+        template_id=PASSWORD_RESET_TEMPLATE_ID
+    )
+    url = call[1]['personalisation']['password_reset']
 
     # Reset the password
     preflight_response = client.post(url)
@@ -564,15 +585,14 @@ def test_password_reset_redirect_next_param_if_next_param_internal(
         {'password1': new_password, 'password2': new_password}
     )
 
-    assert url in txt
-    assert url in html
     assert response.status_code == http.client.FOUND
     assert response.get('Location') == expected
 
 
+@patch('sso.adapters.NotificationsAPIClient')
 @pytest.mark.django_db
 def test_password_reset_doesnt_allow_email_enumeration(
-    settings, client, user
+    mocked_notification_client, settings, client, user
 ):
     redirect_to = 'http://other.com'
     settings.ALLOWED_REDIRECT_DOMAINS = ['other.com']
@@ -587,7 +607,7 @@ def test_password_reset_doesnt_allow_email_enumeration(
     response = client.post(account_reset_password_url, data=data)
 
     # don't send an email cause no account exists
-    assert len(mail.outbox) == 0
+    assert mocked_notification_client().send_email_notification.called is False
     # but redirect anyway so attackers dont find out if it exists
     assert response.status_code == http.client.FOUND
     assert response.get('Location') == reverse('account_reset_password_done')
@@ -649,9 +669,10 @@ def test_signup_email_raises_exception(mock_save, client):
         )
 
 
+@patch('sso.adapters.NotificationsAPIClient')
 @pytest.mark.django_db
 def test_confirm_email_redirect_next_param_oath2(
-    settings, client, email_confirmation
+    mocked_notification_client, settings, client, email_confirmation
 ):
     settings.DEFAULT_REDIRECT_URL = 'http://other.com'
     settings.ALLOWED_REDIRECT_DOMAINS = ['example.com', 'other.com']
@@ -675,14 +696,17 @@ def test_confirm_email_redirect_next_param_oath2(
             'password2': '*' * 10,
         }
     )
-    message = mail.outbox[0]
-    txt = message.body
-    html = message.alternatives[0][0]
-    # Extract URL for `password_reset_from_key` view and access it
-    url = txt[txt.find('/accounts/confirm-email/'):].split()[0]
+
+    assert mocked_notification_client().send_email_notification.called is True
+    call = mocked_notification_client().send_email_notification.call_args
+    assert call == mock.call(
+        email_address='jim@example.com',
+        personalisation={'confirmation_link': mock.ANY},
+        template_id=EMAIL_CONFIRMATION_TEMPLATE_ID
+    )
+    url = call[1]['personalisation']['confirmation_link']
     response = client.post(url)
-    assert url in txt
-    assert url in html
+
     assert response.status_code == http.client.FOUND
 
     next_url = response.get('Location')
@@ -704,9 +728,10 @@ def test_confirm_email_redirect_next_param_oath2(
     )
 
 
+@patch('sso.adapters.NotificationsAPIClient')
 @pytest.mark.django_db
 def test_confirm_email_redirect_next_param(
-    settings, client, email_confirmation
+    mocked_notification_client, settings, client, email_confirmation
 ):
     settings.DEFAULT_REDIRECT_URL = 'http://other.com'
     settings.ALLOWED_REDIRECT_DOMAINS = ['example.com', 'other.com']
@@ -724,14 +749,15 @@ def test_confirm_email_redirect_next_param(
             'password2': '*' * 10,
         }
     )
-    message = mail.outbox[0]
-    txt = message.body
-    html = message.alternatives[0][0]
-    # Extract URL for `password_reset_from_key` view and access it
-    url = txt[txt.find('/accounts/confirm-email/'):].split()[0]
+    assert mocked_notification_client().send_email_notification.called is True
+    call = mocked_notification_client().send_email_notification.call_args
+    assert call == mock.call(
+        email_address='jim@example.com',
+        personalisation={'confirmation_link': mock.ANY},
+        template_id=EMAIL_CONFIRMATION_TEMPLATE_ID
+    )
+    url = call[1]['personalisation']['confirmation_link']
     response = client.post(url)
-    assert url in txt
-    assert url in html
     assert response.status_code == http.client.FOUND
     next_url = response.get('Location')
 
@@ -800,6 +826,7 @@ def test_login_page_password_reset_has_next(
     assert expected_password_reset_url in response.rendered_content
 
 
+@patch('sso.adapters.NotificationsAPIClient', mock.Mock())
 @pytest.mark.django_db
 def test_signup_saves_utm(
     settings, client, email_confirmation
@@ -848,9 +875,10 @@ def test_logout_response_with_sso_display_logged_in_cookie(
     assert response.cookies['sso_display_logged_in'].value == 'false'
 
 
+@patch('sso.adapters.NotificationsAPIClient')
 @pytest.mark.django_db
 def test_confirm_email_login_response_with_sso_display_logged_in_cookie(
-    client, email_confirmation
+    mocked_notification_client, client, email_confirmation
 ):
 
     client.post(
@@ -864,17 +892,23 @@ def test_confirm_email_login_response_with_sso_display_logged_in_cookie(
         }
     )
 
-    message = mail.outbox[0]
-    body = message.body
-    url = body[body.find('/accounts/confirm-email/'):].split()[0]
+    assert mocked_notification_client().send_email_notification.called is True
+    call = mocked_notification_client().send_email_notification.call_args
+    assert call == mock.call(
+        email_address='jim@example.com',
+        personalisation={'confirmation_link': mock.ANY},
+        template_id=EMAIL_CONFIRMATION_TEMPLATE_ID
+    )
+    url = call[1]['personalisation']['confirmation_link']
     response = client.post(url)
 
     assert response.cookies['sso_display_logged_in'].value == 'true'
 
 
+@patch('sso.adapters.NotificationsAPIClient')
 @pytest.mark.django_db
 def test_confirm_email_login_response_with_sso_handles_next(
-    client, email_confirmation
+    mocked_notification_client, client, email_confirmation
 ):
     querystring = '?next=http%3A//buyer.trade.great%3A8001/company-profile'
     client.post(
@@ -888,9 +922,14 @@ def test_confirm_email_login_response_with_sso_handles_next(
         }
     )
 
-    message = mail.outbox[0]
-    body = message.body
-    url = body[body.find('/accounts/confirm-email/'):].split()[0]
+    assert mocked_notification_client().send_email_notification.called is True
+    call = mocked_notification_client().send_email_notification.call_args
+    assert call == mock.call(
+        email_address='jim@example.com',
+        personalisation={'confirmation_link': mock.ANY},
+        template_id=EMAIL_CONFIRMATION_TEMPLATE_ID
+    )
+    url = call[1]['personalisation']['confirmation_link']
     response = client.post(url)
 
     assert response.status_code == 302

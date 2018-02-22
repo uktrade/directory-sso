@@ -482,3 +482,5 @@ HEALTH_CHECK_TOKEN = os.environ['HEALTH_CHECK_TOKEN']
 # testing api
 FEATURE_TEST_API_ENABLED = os.getenv(
     'FEATURE_TEST_API_ENABLED', 'false') == 'true'
+
+GOV_NOTIFY_API_KEY = os.environ['GOV_NOTIFY_API_KEY']

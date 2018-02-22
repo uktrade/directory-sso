@@ -90,6 +90,8 @@ def test_next_validation_doesnt_accept_urls_starting_with_slash(settings):
 
 
 @patch('allauth.account.adapter.DefaultAccountAdapter.'
+       'send_mail', Mock())
+@patch('allauth.account.adapter.DefaultAccountAdapter.'
        'get_email_confirmation_url', Mock(return_value='default_url'))
 def test_account_adapter_returns_default_url_if_no_next_param(
         rf, settings):
@@ -103,6 +105,8 @@ def test_account_adapter_returns_default_url_if_no_next_param(
 
 
 @patch('allauth.account.adapter.DefaultAccountAdapter.'
+       'send_mail', Mock())
+@patch('allauth.account.adapter.DefaultAccountAdapter.'
        'get_email_confirmation_url', Mock(return_value='default_url'))
 def test_account_adapter_returns_default_url_if_next_param_invalid(
         rf, settings):
@@ -115,6 +119,8 @@ def test_account_adapter_returns_default_url_if_next_param_invalid(
     assert url == 'default_url'
 
 
+@patch('allauth.account.adapter.DefaultAccountAdapter.'
+       'send_mail', Mock())
 @patch('allauth.account.adapter.DefaultAccountAdapter.'
        'get_email_confirmation_url', Mock(return_value='default_url'))
 def test_account_adapter_returns_modified_url_if_next_param_valid(
@@ -131,6 +137,8 @@ def test_account_adapter_returns_modified_url_if_next_param_valid(
     )
 
 
+@patch('allauth.account.adapter.DefaultAccountAdapter.'
+       'send_mail', Mock())
 @patch('allauth.account.adapter.DefaultAccountAdapter.'
        'get_email_confirmation_url', Mock(return_value='default_url'))
 def test_account_adapter_returns_modified_url_if_next_param_internal(

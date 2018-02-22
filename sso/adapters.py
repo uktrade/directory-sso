@@ -5,8 +5,19 @@ from django.core.urlresolvers import reverse
 
 from allauth.account.adapter import DefaultAccountAdapter
 from allauth.account.utils import get_request_param
+from notifications_python_client import NotificationsAPIClient
 
 from sso.user.utils import get_url_with_redirect, is_valid_redirect
+
+EMAIL_CONFIRMATION_TEMPLATE_ID = '0c76b730-ac37-4b08-a8ba-7b34e4492853'
+PASSWORD_RESET_TEMPLATE_ID = '9ef82687-4bc0-4278-b15c-a49bc9325b28',
+
+EMAIL_TEMPLATES = {
+    'account/email/email_confirmation_signup': EMAIL_CONFIRMATION_TEMPLATE_ID,
+    'account/email/email_confirmation': EMAIL_CONFIRMATION_TEMPLATE_ID,
+
+    'account/email/password_reset_key': PASSWORD_RESET_TEMPLATE_ID
+}
 
 
 class AccountAdapter(DefaultAccountAdapter):
@@ -66,3 +77,34 @@ class AccountAdapter(DefaultAccountAdapter):
             user.save()
 
         return user
+
+    @staticmethod
+    def build_password_reset_url(context):
+        """Add next param if valid redirect."""
+        reset_url = context['password_reset_url']
+        next_url = context['request'].POST.get('next', '')
+        if next_url and is_valid_redirect(next_url):
+            reset_url += '?next={next_url}'.format(next_url=next_url)
+        return reset_url
+
+    def send_mail(self, template_prefix, email, context):
+        notifications_client = NotificationsAPIClient(
+            settings.GOV_NOTIFY_API_KEY
+        )
+        template_id = EMAIL_TEMPLATES[template_prefix]
+
+        #  build personalisation dict from context
+        if template_id == PASSWORD_RESET_TEMPLATE_ID:
+            personalisation = {
+                'password_reset': self.build_password_reset_url(context)
+            }
+        else:
+            personalisation = {
+                'confirmation_link': context['activate_url']
+            }
+
+        notifications_client.send_email_notification(
+            email_address=email,
+            template_id=template_id,
+            personalisation=personalisation,
+        )
