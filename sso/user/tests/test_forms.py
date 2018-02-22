@@ -1,11 +1,14 @@
+from unittest import mock
+from unittest.mock import patch
+
 import pytest
 
 from django.forms.fields import Field
-from django.core import mail
 from django.core.validators import EmailValidator
 
 from allauth.account.models import EmailAddress
 
+from sso.adapters import PASSWORD_RESET_TEMPLATE_ID
 from sso.user import forms
 from sso.user.models import User
 from sso.user.widgets import CheckboxWithInlineLabel
@@ -57,8 +60,11 @@ def test_change_password_form_customization():
     assert form.fields['password2'].label == 'Confirm password:'
 
 
+@patch('sso.adapters.NotificationsAPIClient')
 @pytest.mark.django_db
-def test_password_reset_form_accepts_nonexisting_email_without_sending(rf):
+def test_password_reset_form_accepts_nonexisting_email_without_sending(
+        mocked_notification_client, rf
+):
     form = forms.ResetPasswordForm(
         data={'email': 'nonexistingemail@example.com'}
     )
@@ -66,12 +72,13 @@ def test_password_reset_form_accepts_nonexisting_email_without_sending(rf):
 
     assert form.is_valid() is True
     form.save(request)
-    assert len(mail.outbox) == 0
+    assert mocked_notification_client().send_email_notification.called is False
 
 
+@patch('sso.adapters.NotificationsAPIClient')
 @pytest.mark.django_db
 def test_password_reset_form_accepts_existing_email_and_sends(
-    rf, verified_user
+    mocked_notification_client, rf, verified_user
 ):
     form = forms.ResetPasswordForm(
         data={'email': verified_user.email}
@@ -80,7 +87,13 @@ def test_password_reset_form_accepts_existing_email_and_sends(
 
     assert form.is_valid() is True
     form.save(request)
-    assert len(mail.outbox) == 1
+    assert mocked_notification_client().send_email_notification.called is True
+    call = mocked_notification_client().send_email_notification.call_args
+    assert call == mock.call(
+        email_address='verified@example.com',
+        personalisation={'password_reset': mock.ANY},
+        template_id=PASSWORD_RESET_TEMPLATE_ID
+    )
 
 
 def test_password_reset_form_invalid_email():
