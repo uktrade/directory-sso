@@ -4,13 +4,8 @@
 
 {% block extra_head %}{% endblock %}
 
-{% block head_js %}
-    <script src="{% static 'Dit-Pattern-Styling/public/js/third-party.js' %}"></script>
-    <script src="{% static 'Dit-Pattern-Styling/public/js/script.js' %}"></script>
-{% endblock %}
-
 {% block head_css %}
-    <link href="{% static 'Dit-Pattern-Styling/public/css/main.css' %}" media="all" rel="stylesheet" />
+	{{ block.super }}
     <link href="{% static 'main.css' %}" media="all" rel="stylesheet" />
 {% endblock %}
 

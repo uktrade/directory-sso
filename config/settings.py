@@ -42,7 +42,6 @@ INSTALLED_APPS = [
     'sso.user.apps.UserConfig',
     'sso.testapi',
     'directory_constants',
-    'directory_header_footer',
     'directory_healthcheck',
     'health_check',
     'health_check.db',
@@ -82,12 +81,12 @@ TEMPLATES = [
                 'django.template.context_processors.debug',
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
-                'directory_header_footer.context_processors.urls_processor',
-                'directory_components.context_processors.analytics',
                 'sso.user.context_processors.redirect_next_processor',
                 'sso.context_processors.feature_flags',
-                ('directory_header_footer.context_processors.'
-                 'header_footer_context_processor'),
+                'directory_components.context_processors.urls_processor',
+                ('directory_components.context_processors.'
+                 'header_footer_processor'),
+                'directory_components.context_processors.analytics',
             ],
             'loaders': [
                 'django.template.loaders.filesystem.Loader',
