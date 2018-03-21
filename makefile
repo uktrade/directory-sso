@@ -71,8 +71,11 @@ DOCKER_SET_DEBUG_ENV_VARS := \
 	export SSO_SECURE_SSL_REDIRECT=false; \
 	export SSO_HEALTH_CHECK_TOKEN=debug; \
 	export SSO_FEATURE_TEST_API_ENABLED=true; \
-	export SSO_GOV_NOTIFY_API_KEY=debug
-
+	export SSO_GOV_NOTIFY_API_KEY=debug; \
+	export SSO_HEADER_FOOTER_URLS_GREAT_HOME=http://exred.trade.great:8007/; \
+	export SSO_HEADER_FOOTER_URLS_FAB=http://buyer.trade.great:8001; \
+	export SSO_HEADER_FOOTER_URLS_SOO=http://soo.trade.great:8008; \
+	export SSO_HEADER_FOOTER_URLS_CONTACT_US=http://contact.trade.great:8009/directory/
 
 
 docker_test_env_files:
@@ -147,7 +150,11 @@ DEBUG_SET_ENV_VARS := \
 	export SECURE_SSL_REDIRECT=false; \
 	export HEALTH_CHECK_TOKEN=debug; \
 	export FEATURE_TEST_API_ENABLED=true; \
-	export GOV_NOTIFY_API_KEY=debug
+	export GOV_NOTIFY_API_KEY=debug; \
+	export HEADER_FOOTER_URLS_GREAT_HOME=http://exred.trade.great:8007/; \
+	export HEADER_FOOTER_URLS_FAB=http://buyer.trade.great:8001; \
+	export HEADER_FOOTER_URLS_SOO=http://soo.trade.great:8008; \
+	export HEADER_FOOTER_URLS_CONTACT_US=http://contact.trade.great:8009/directory/
 
 
 debug_webserver:
