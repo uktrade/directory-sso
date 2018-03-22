@@ -1,26 +1,15 @@
 from django.conf.urls import url, include
 from django.contrib import admin
 
-import oauth2_provider.views
 import allauth.account.views
+import oauth2_provider.views
 
-from sso.user.views import (
-    ConfirmEmailView,
-    EmailVerificationSentView,
-    LoginView,
-    LogoutView,
-    PasswordResetFromKeyView,
-    SSOLandingPage,
-    SignupView,
-)
-from sso.healthcheck.views import (
-    DatabaseAPIView, PingAPIView
-)
-from sso.oauth2.views_user import UserRetrieveAPIView
-from sso.api.views_user import (
-    SessionUserAPIView, LastLoginAPIView, PasswordCheckAPIView
-)
-from sso.testapi.views import UserByEmailAPIView
+import sso.api.views_user
+import sso.healthcheck.views
+import sso.oauth2.views_user
+import sso.testapi.views
+import sso.user.views
+
 
 admin.autodiscover()
 
@@ -28,17 +17,17 @@ admin.autodiscover()
 allauth_urlpatterns = [
     url(
         r"^signup/$",
-        SignupView.as_view(),
+        sso.user.views.SignupView.as_view(),
         name="account_signup"
     ),
     url(
         r"^login/$",
-        LoginView.as_view(),
+        sso.user.views.LoginView.as_view(),
         name="account_login"
     ),
     url(
         r"^logout/$",
-        LogoutView.as_view(),
+        sso.user.views.LogoutView.as_view(),
         name="account_logout"
     ),
     url(
@@ -48,12 +37,12 @@ allauth_urlpatterns = [
     ),
     url(
         r"^confirm-email/$",
-        EmailVerificationSentView.as_view(),
+        allauth.account.views.EmailVerificationSentView.as_view(),
         name="account_email_verification_sent"
     ),
     url(
         r"^confirm-email/(?P<key>[-:\w]+)/$",
-        ConfirmEmailView.as_view(),
+        sso.user.views.ConfirmEmailView.as_view(),
         name="account_confirm_email"
     ),
 
@@ -79,7 +68,7 @@ allauth_urlpatterns = [
     ),
     url(
         r"^password/reset/key/(?P<uidb36>[0-9A-Za-z]+)-(?P<key>.+)/$",
-        PasswordResetFromKeyView.as_view(),
+        sso.user.views.PasswordResetFromKeyView.as_view(),
         name="account_reset_password_from_key"
     ),
 ]
@@ -88,7 +77,7 @@ allauth_urlpatterns = [
 oauth2_provider_patterns = [
     url(
         r'^user-profile/v1/$',
-        UserRetrieveAPIView.as_view(),
+        sso.oauth2.views_user.UserRetrieveAPIView.as_view(),
         name='user-profile'
     ),
     url(
@@ -111,27 +100,27 @@ oauth2_provider_patterns = [
 api_urlpatterns = [
     url(
         r'^healthcheck/database/$',
-        DatabaseAPIView.as_view(),
+        sso.healthcheck.views.DatabaseAPIView.as_view(),
         name='health-check-database'
     ),
     url(
         r'^healthcheck/ping/$',
-        PingAPIView.as_view(),
+        sso.healthcheck.views.PingAPIView.as_view(),
         name='health-check-ping'
     ),
     url(
         r'^session-user/$',
-        SessionUserAPIView.as_view(),
+        sso.api.views_user.SessionUserAPIView.as_view(),
         name='session-user'
     ),
     url(
         r'^last-login/$',
-        LastLoginAPIView.as_view(),
+        sso.api.views_user.LastLoginAPIView.as_view(),
         name='last-login'
     ),
     url(
         r'^password-check/$',
-        PasswordCheckAPIView.as_view(),
+        sso.api.views_user.PasswordCheckAPIView.as_view(),
         name='password-check'
     ),
 ]
@@ -140,7 +129,7 @@ api_urlpatterns = [
 urlpatterns = [
     url(
         r"^$",
-        SSOLandingPage.as_view(),
+        sso.user.views.SSOLandingPage.as_view(),
         name="sso_root"),
     url(
         r'^admin/',
@@ -160,7 +149,7 @@ urlpatterns = [
     ),
     url(
         r'^testapi/user-by-email/(?P<email>.*)/$',
-        UserByEmailAPIView.as_view(),
+        sso.testapi.views.UserByEmailAPIView.as_view(),
         name='user_by_email'
     ),
 ]
