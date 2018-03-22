@@ -940,7 +940,7 @@ def test_confirm_email_login_response_with_sso_handles_next(
 
 
 def test_email_verification_sent_view_feedback_url(client, settings):
-    settings.INFO_CONTACT_US_DIRECTORY = 'http://test.com'
+    settings.HEADER_FOOTER_URLS_CONTACT_US = 'http://test.com'
     url = reverse('account_email_verification_sent')
     response = client.get(url)
 
