@@ -29,6 +29,11 @@ class RedirectToNextMixin:
 
 class SignupView(RedirectToNextMixin, allauth_views.SignupView):
 
+    def dispatch(self, request, *args, **kwargs):
+        if settings.FEATURE_DISABLE_REGISTRATION:
+            return redirect('https://sorry.great.gov.uk/')
+        return super().dispatch(request, *args, **kwargs)
+
     @staticmethod
     def is_email_not_unique_error(integrity_error):
         email_not_unique_message = (
@@ -86,6 +91,8 @@ class PasswordResetFromKeyView(
     RedirectToNextMixin, allauth_views.PasswordResetFromKeyView
 ):
     def dispatch(self, request, uidb36, key, **kwargs):
+        if settings.FEATURE_DISABLE_REGISTRATION:
+            return redirect('https://sorry.great.gov.uk/')
         response = super().dispatch(request, uidb36, key, **kwargs)
         if key != allauth_views.INTERNAL_RESET_URL_KEY:
             if response.status_code == 302:
@@ -95,6 +102,20 @@ class PasswordResetFromKeyView(
                 )
                 return redirect(urllib.parse.unquote(redirect_url))
         return response
+
+
+class PasswordResetView(allauth_views.PasswordResetView):
+    def dispatch(self, request, *args, **kwargs):
+        if settings.FEATURE_DISABLE_REGISTRATION:
+            return redirect('https://sorry.great.gov.uk/')
+        return super().dispatch(request, *args, **kwargs)
+
+
+class PasswordChangeView(allauth_views.PasswordChangeView):
+    def dispatch(self, request, *args, **kwargs):
+        if settings.FEATURE_DISABLE_REGISTRATION:
+            return redirect('https://sorry.great.gov.uk/')
+        return super().dispatch(request, *args, **kwargs)
 
 
 class SSOLandingPage(RedirectView):
