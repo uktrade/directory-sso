@@ -954,11 +954,10 @@ def test_email_verification_sent_view_feedback_url(client, settings):
         'account_reset_password_from_key',
         kwargs={'uidb36': '123', 'key': 'foo'}
     )
-],
-ids=(
-    'signup',
-    'reset password',
-    'reset password from key'
+], ids=(
+        'signup',
+        'reset password',
+        'reset password from key'
 )
                          )
 def test_disabled_registration_views(url, client, settings):
