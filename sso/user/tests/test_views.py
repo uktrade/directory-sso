@@ -5,8 +5,8 @@ import http
 from http.cookies import SimpleCookie
 
 from django.core import mail
-from django.core.urlresolvers import reverse
 from django.http import HttpResponse
+from django.urls import reverse, reverse_lazy
 
 from allauth.account.models import EmailAddress, EmailConfirmationHMAC
 from allauth.exceptions import ImmediateHttpResponse
@@ -945,3 +945,32 @@ def test_email_verification_sent_view_feedback_url(client, settings):
     response = client.get(url)
 
     assert 'http://test.com' in response.rendered_content
+
+
+@pytest.mark.parametrize('url', [
+    reverse_lazy('account_signup'),
+    reverse_lazy('account_reset_password'),
+    reverse_lazy(
+        'account_reset_password_from_key',
+        kwargs={'uidb36': '123', 'key': 'foo'}
+    )
+],
+ids=(
+    'signup',
+    'reset password',
+    'reset password from key'
+)
+                         )
+def test_disabled_registration_views(url, client, settings):
+    settings.FEATURE_DISABLE_REGISTRATION = True
+    response = client.get(url)
+    assert response.status_code == 302
+    assert response.url == 'https://sorry.great.gov.uk/'
+
+
+@pytest.mark.django_db
+def test_disabled_registration_change_password_view(authed_client, settings):
+    settings.FEATURE_DISABLE_REGISTRATION = True
+    response = authed_client.get(reverse('account_change_password'))
+    assert response.status_code == 302
+    assert response.url == 'https://sorry.great.gov.uk/'
