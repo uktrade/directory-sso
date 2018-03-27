@@ -477,3 +477,6 @@ FEATURE_DISABLE_REGISTRATION = os.getenv(
 RESTRICT_ADMIN = os.getenv('RESTRICT_ADMIN', 'false') == 'true'
 ALLOWED_ADMIN_IPS = os.getenv('ALLOWED_ADMIN_IPS', [])
 ALLOWED_ADMIN_IP_RANGES = os.getenv('ALLOWED_ADMIN_IP_RANGES', [])
+
+
+FEATURE_SKIP_MIGRATE = os.getenv('FEATURE_SKIP_MIGRATE', 'false') == 'true'
