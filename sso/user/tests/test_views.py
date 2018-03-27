@@ -953,11 +953,16 @@ def test_email_verification_sent_view_feedback_url(client, settings):
     reverse_lazy(
         'account_reset_password_from_key',
         kwargs={'uidb36': '123', 'key': 'foo'}
+    ),
+    reverse_lazy(
+        'account_confirm_email',
+        kwargs={'key': 'foo'}
     )
 ], ids=(
         'signup',
         'reset password',
-        'reset password from key'
+        'reset password from key',
+        'email confirmation'
 )
                          )
 def test_disabled_registration_views(url, client, settings):
