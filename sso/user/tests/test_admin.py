@@ -6,6 +6,7 @@ import pytest
 
 from django.test import Client
 from django.core.urlresolvers import reverse
+from rest_framework import status
 
 from sso.user.models import User
 from sso.oauth2.tests.factories import AccessTokenFactory, ApplicationFactory
@@ -226,3 +227,14 @@ def test_download_csv_exops_not_fab_distinct(
     rows = str(response.content, 'utf-8').strip().split('\r\n')
     # then the user is listed only once, not once per token created
     assert len(rows) == 2  # header and single row
+
+
+def test_admin_view_restricted(settings, client):
+
+    settings.RESTRICT_ADMIN = True
+    response = client.get(
+        reverse('admin:login'),
+        **{'HTTP_X_FORWARDED_FOR': '74.125.224.72'}
+    )
+
+    assert response.status_code == status.HTTP_404_NOT_FOUND

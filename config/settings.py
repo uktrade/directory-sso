@@ -467,8 +467,12 @@ GOV_NOTIFY_PASSWORD_RESET_TEMPLATE_ID = os.getenv(
     '9ef82687-4bc0-4278-b15c-a49bc9325b28'
 )
 
-
 FEATURE_DISABLE_REGISTRATION = os.getenv(
     'FEATURE_DISABLE_REGISTRATION',
     'false'
 ) == 'true'
+
+# Admin restrictor
+RESTRICT_ADMIN = os.getenv('RESTRICT_ADMIN', 'false') == 'true'
+ALLOWED_ADMIN_IPS = os.getenv('ALLOWED_ADMIN_IPS', [])
+ALLOWED_ADMIN_IP_RANGES = os.getenv('ALLOWED_ADMIN_IP_RANGES', [])
