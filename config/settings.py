@@ -61,6 +61,7 @@ MIDDLEWARE_CLASSES = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'corsheaders.middleware.CorsMiddleware',
+    'admin_ip_restrictor.middleware.AdminIPRestrictorMiddleware'
 ]
 
 CORS_ORIGIN_ALLOW_ALL = True if (
