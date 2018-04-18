@@ -22,6 +22,6 @@ sigauth==2.1.2
 directory-api-external==4.2.1
 directory-validators==4.5.1
 directory-healthcheck==0.4.2
-directory-components==1.4.0
+directory-components==1.8.2
 export-elements==0.10.2
 django-admin-ip-restrictor==0.1.0
