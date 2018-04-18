@@ -3,6 +3,7 @@ from django.contrib import admin
 
 import allauth.account.views
 import oauth2_provider.views
+from django.contrib.auth.decorators import login_required
 
 import sso.api.views_user
 import sso.healthcheck.views
@@ -53,12 +54,12 @@ allauth_urlpatterns = [
     ),
     url(
         r"^password/reset/$",
-        allauth.account.views.password_reset,
+        sso.user.views.PasswordResetView.as_view(),
         name="account_reset_password"
     ),
     url(
         r"^password/change/$",
-        allauth.account.views.password_change,
+        login_required(sso.user.views.PasswordChangeView.as_view()),
         name="account_change_password"
     ),
     url(

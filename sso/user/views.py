@@ -27,7 +27,17 @@ class RedirectToNextMixin:
     get_success_url = get_redirect_url
 
 
-class SignupView(RedirectToNextMixin, allauth_views.SignupView):
+class DisableRegistrationMixin:
+
+    def dispatch(self, request, *args, **kwargs):
+        if settings.FEATURE_DISABLE_REGISTRATION:
+            return redirect('https://sorry.great.gov.uk/')
+        return super().dispatch(request, *args, **kwargs)
+
+
+class SignupView(DisableRegistrationMixin,
+                 RedirectToNextMixin,
+                 allauth_views.SignupView):
 
     @staticmethod
     def is_email_not_unique_error(integrity_error):
@@ -70,7 +80,8 @@ class LogoutView(RedirectToNextMixin, allauth_views.LogoutView):
     pass
 
 
-class ConfirmEmailView(RedirectToNextMixin, allauth_views.ConfirmEmailView):
+class ConfirmEmailView(DisableRegistrationMixin, RedirectToNextMixin,
+                       allauth_views.ConfirmEmailView):
 
     def get_context_data(self, **kwargs):
         if self.object:
@@ -82,10 +93,11 @@ class ConfirmEmailView(RedirectToNextMixin, allauth_views.ConfirmEmailView):
         return super().get_context_data(**kwargs)
 
 
-class PasswordResetFromKeyView(
-    RedirectToNextMixin, allauth_views.PasswordResetFromKeyView
-):
+class PasswordResetFromKeyView(RedirectToNextMixin,
+                               allauth_views.PasswordResetFromKeyView):
     def dispatch(self, request, uidb36, key, **kwargs):
+        if settings.FEATURE_DISABLE_REGISTRATION:
+            return redirect('https://sorry.great.gov.uk/')
         response = super().dispatch(request, uidb36, key, **kwargs)
         if key != allauth_views.INTERNAL_RESET_URL_KEY:
             if response.status_code == 302:
@@ -95,6 +107,16 @@ class PasswordResetFromKeyView(
                 )
                 return redirect(urllib.parse.unquote(redirect_url))
         return response
+
+
+class PasswordResetView(DisableRegistrationMixin,
+                        allauth_views.PasswordResetView):
+    pass
+
+
+class PasswordChangeView(DisableRegistrationMixin,
+                         allauth_views.PasswordChangeView):
+    pass
 
 
 class SSOLandingPage(RedirectView):

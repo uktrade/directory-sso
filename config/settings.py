@@ -61,6 +61,7 @@ MIDDLEWARE_CLASSES = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'corsheaders.middleware.CorsMiddleware',
+    'admin_ip_restrictor.middleware.AdminIPRestrictorMiddleware'
 ]
 
 CORS_ORIGIN_ALLOW_ALL = True if (
@@ -466,3 +467,16 @@ GOV_NOTIFY_PASSWORD_RESET_TEMPLATE_ID = os.getenv(
     'GOV_NOTIFY_PASSWORD_RESET_TEMPLATE_ID',
     '9ef82687-4bc0-4278-b15c-a49bc9325b28'
 )
+
+FEATURE_DISABLE_REGISTRATION = os.getenv(
+    'FEATURE_DISABLE_REGISTRATION',
+    'false'
+) == 'true'
+
+# Admin restrictor
+RESTRICT_ADMIN = os.getenv('RESTRICT_ADMIN', 'false') == 'true'
+ALLOWED_ADMIN_IPS = os.getenv('ALLOWED_ADMIN_IPS', [])
+ALLOWED_ADMIN_IP_RANGES = os.getenv('ALLOWED_ADMIN_IP_RANGES', [])
+
+
+FEATURE_SKIP_MIGRATE = os.getenv('FEATURE_SKIP_MIGRATE', 'false') == 'true'
