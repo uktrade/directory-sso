@@ -200,11 +200,19 @@ heroku_deploy_dev:
 	docker push registry.heroku.com/directory-sso-dev/web
 
 compile_requirements:
-	python3 -m piptools compile requirements.in
+	pip-compile requirements.in
+
+upgrade_requirements:
+	pip-compile --upgrade requirements.in
 
 compile_test_requirements:
-	python3 -m piptools compile requirements_test.in
+	pip-compile compile requirements_test.in
+
+upgrade_test_requirements:
+	pip-compile --upgrade requirements_test.in
 
 compile_all_requirements: compile_requirements compile_test_requirements
+
+upgrade_all_requirements: upgrade_requirements upgrade_test_requirements
 
 .PHONY: build clean test_requirements docker_test docker_run docker_debug docker_webserver_bash docker_psql docker_test debug_webserver debug_db debug_test debug migrations heroku_deploy_dev
