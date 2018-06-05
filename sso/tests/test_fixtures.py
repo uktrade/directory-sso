@@ -11,7 +11,7 @@ from sso.user.models import User
 def test_load_test_fixture():
     try:
         call_command('loaddata', 'test_fixtures/load_tests.json')
-    except:
+    except:  # noqa: E722
         raise AssertionError("Load test fixtures are broken")
     assert User.objects.all().count() == 25
     assert EmailAddress.objects.all().count() == 25
