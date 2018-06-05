@@ -1,5 +1,5 @@
 dj-database-url==0.4.1
-django==1.11.5
+django==1.11.13
 django-allauth==0.33.0
 djangorestframework==3.4.7
 django-oauth-toolkit==1.0.0
@@ -11,7 +11,7 @@ whitenoise==3.3.0
 gunicorn==19.5.0
 psycopg2==2.6.1
 raven==5.19.0
-boto3==1.4.0
+boto3
 tldextract==2.0.2
 django-redis==4.8.0
 redis==2.10.5
