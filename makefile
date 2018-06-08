@@ -196,8 +196,10 @@ integration_tests:
 	make docker_integration_tests
 
 heroku_deploy_dev:
-	docker build -t registry.heroku.com/directory-sso-dev/web .
-	docker push registry.heroku.com/directory-sso-dev/web
+	./docker/install_heroku_cli.sh
+	docker login --username=$$HEROKU_EMAIL --password=$$HEROKU_TOKEN registry.heroku.com
+	~/bin/heroku-cli/bin/heroku container:push web --app directory-sso-dev
+	~/bin/heroku-cli/bin/heroku container:release web --app directory-sso-dev
 
 compile_requirements:
 	pip-compile requirements.in
