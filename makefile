@@ -75,7 +75,8 @@ DOCKER_SET_DEBUG_ENV_VARS := \
 	export SSO_HEADER_FOOTER_URLS_GREAT_HOME=http://exred.trade.great:8007/; \
 	export SSO_HEADER_FOOTER_URLS_FAB=http://buyer.trade.great:8001; \
 	export SSO_HEADER_FOOTER_URLS_SOO=http://soo.trade.great:8008; \
-	export SSO_HEADER_FOOTER_URLS_CONTACT_US=http://contact.trade.great:8009/directory/
+	export SSO_HEADER_FOOTER_URLS_CONTACT_US=http://contact.trade.great:8009/directory/; \
+	export SSO_SSO_BASE_URL=http://sso.trade.great:8003
 
 
 docker_test_env_files:
@@ -154,7 +155,8 @@ DEBUG_SET_ENV_VARS := \
 	export HEADER_FOOTER_URLS_GREAT_HOME=http://exred.trade.great:8007/; \
 	export HEADER_FOOTER_URLS_FAB=http://buyer.trade.great:8001; \
 	export HEADER_FOOTER_URLS_SOO=http://soo.trade.great:8008; \
-	export HEADER_FOOTER_URLS_CONTACT_US=http://contact.trade.great:8009/directory/
+	export HEADER_FOOTER_URLS_CONTACT_US=http://contact.trade.great:8009/directory/; \
+	export SSO_BASE_URL=http://sso.trade.great:8003
 
 
 debug_webserver:
@@ -174,6 +176,9 @@ debug_db:
 
 debug_test:
 	$(DEBUG_SET_ENV_VARS) && $(COLLECT_STATIC) && $(PYTEST)
+
+debug_test_last_failed:
+	make debug_test pytest_args='-v --last-failed'
 
 debug_manage:
 	$(DEBUG_SET_ENV_VARS) && ./manage.py $(cmd)
