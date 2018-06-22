@@ -4,7 +4,6 @@ import urllib.parse
 import http
 from http.cookies import SimpleCookie
 
-from django.core import mail
 from django.http import HttpResponse
 from django.urls import reverse, reverse_lazy
 
@@ -613,8 +612,11 @@ def test_password_reset_doesnt_allow_email_enumeration(
     assert response.get('Location') == reverse('account_reset_password_done')
 
 
+@patch('sso.user.forms.SignupForm.notify_already_registered')
 @pytest.mark.django_db(transaction=True)
-def test_signup_email_enumeration_not_possible(client, verified_user):
+def test_signup_email_enumeration_not_possible_and_notification_sent(
+    mocked_notify, client, verified_user
+):
     response = client.post(
         reverse('account_signup'),
         data={
@@ -631,7 +633,7 @@ def test_signup_email_enumeration_not_possible(client, verified_user):
     assert response.get('Location') == reverse(
         'account_email_verification_sent'
     )
-    assert len(mail.outbox) == 0
+    mocked_notify.assert_called_once_with(email='verified@example.com')
 
 
 @pytest.mark.django_db(transaction=True)

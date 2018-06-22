@@ -1,10 +1,15 @@
+from django.conf import settings
+from django.core.urlresolvers import reverse
 from django.forms import BooleanField
 from django.utils.safestring import mark_safe
 
 from allauth.account import forms
 from allauth.account.adapter import get_adapter
+from allauth.account.models import EmailAddress
 from allauth.account.utils import filter_users_by_email
 from allauth.utils import set_form_field_order
+
+from notifications_python_client import NotificationsAPIClient
 
 from directory_constants.constants import urls
 
@@ -61,6 +66,39 @@ class SignupForm(IndentedInvalidFieldsMixin, forms.SignupForm):
         self.fields['password2'].label = 'Confirm password:'
         self.fields['email2'].label = 'Confirm email:'
         set_form_field_order(self, self.field_order)
+
+    @staticmethod
+    def notify_already_registered(email):
+        """
+        To prevent account enumeration in the signup form we do not inform the
+        user if the email is already registered (security requirement), instead
+        we send a notification with a link to password reset.
+        """
+        notifications_client = NotificationsAPIClient(
+            settings.GOV_NOTIFY_API_KEY
+        )
+
+        notifications_client.send_email_notification(
+            email_address=email,
+            template_id=settings.GOV_NOTIFY_ALREADY_REGISTERED_TEMPLATE_ID,
+            personalisation={
+                'login_url': (
+                    settings.SSO_BASE_URL +
+                    reverse('account_login')
+                ),
+                'password_reset_url': (
+                    settings.SSO_BASE_URL +
+                    reverse('account_reset_password')
+                ),
+                'contact_us_url': settings.HEADER_FOOTER_URLS_CONTACT_US
+            }
+        )
+
+    def clean_email(self):
+        value = super().clean_email()
+        if EmailAddress.objects.filter(email__iexact=value).exists():
+            self.notify_already_registered(email=value)
+        return value
 
 
 class LoginForm(IndentedInvalidFieldsMixin, forms.LoginForm):

@@ -186,3 +186,19 @@ def test_password_reset_autocomplete():
     # http://stackoverflow.com/a/30976223/904887
     form = forms.ResetPasswordForm()
     assert form.fields['email'].widget.attrs['autocomplete'] == 'new-password'
+
+
+@patch('sso.user.forms.NotificationsAPIClient')
+def test_notify_already_registered(mocked_notifications):
+    forms.SignupForm.notify_already_registered('test@example.com')
+    mocked_notifications().send_email_notification.assert_called_once_with(
+        email_address='test@example.com',
+        personalisation={
+            'login_url': 'http://sso.trade.great:8003/accounts/login/',
+            'password_reset_url': (
+                'http://sso.trade.great:8003/accounts/password/reset/'
+            ),
+            'contact_us_url': 'http://contact.trade.great:8009/directory/'
+        },
+        template_id='5c8cc5aa-a4f5-48ae-89e6-df5572c317ec'
+    )

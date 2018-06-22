@@ -89,9 +89,6 @@ class AccountAdapter(DefaultAccountAdapter):
         return reset_url
 
     def send_mail(self, template_prefix, email, context):
-        notifications_client = NotificationsAPIClient(
-            settings.GOV_NOTIFY_API_KEY
-        )
         template_id = EMAIL_TEMPLATES[template_prefix]
 
         #  build personalisation dict from context
@@ -104,6 +101,9 @@ class AccountAdapter(DefaultAccountAdapter):
                 'confirmation_link': context['activate_url']
             }
 
+        notifications_client = NotificationsAPIClient(
+            settings.GOV_NOTIFY_API_KEY
+        )
         notifications_client.send_email_notification(
             email_address=email,
             template_id=template_id,
