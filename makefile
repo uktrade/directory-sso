@@ -7,8 +7,8 @@ clean:
 test_requirements:
 	pip install -r requirements_test.txt
 
-FLAKE8 := flake8 . --exclude=migrations,.venv
-PYTEST := pytest . --cov=. --cov-config=.coveragerc $(pytest_args) --capture=no
+FLAKE8 := flake8 . --exclude=migrations,.venv,node_modules
+PYTEST := pytest . -v --ignore=node_modules --cov=. --cov-config=.coveragerc --capture=no $(pytest_args)
 COLLECT_STATIC := python manage.py collectstatic --noinput
 CODECOV := \
 	if [ "$$CODECOV_REPO_TOKEN" != "" ]; then \
