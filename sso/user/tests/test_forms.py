@@ -11,7 +11,7 @@ from allauth.account.models import EmailAddress
 from sso.adapters import PASSWORD_RESET_TEMPLATE_ID
 from sso.user import forms
 from sso.user.models import User
-from sso.user.widgets import CheckboxWithInlineLabel
+from directory_components.widgets import CheckboxWithInlineLabel
 
 
 REQUIRED_MESSAGE = Field.default_error_messages['required']
