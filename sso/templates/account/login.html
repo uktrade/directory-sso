@@ -30,7 +30,6 @@ for a {{ site.name }} account.</p>
 
 {% else %}
 <p><a class="link" href="{{ sso_register_url }}">Register</a> if you don't have an account.</p>
-<br>
 {% endif %}
 
 <form class="login" method="POST" action="{% url 'account_login' %}">
@@ -39,8 +38,6 @@ for a {{ site.name }} account.</p>
   {% if redirect_field_value %}
     <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
   {% endif %}
-  <br>
-  <br>
   <button class="button" type="submit">{% trans "Sign in" %}</button>
   <a class="link secondaryAction" href="{{ sso_reset_password_url }}">{% trans "Reset your password" %}</a>
 </form>

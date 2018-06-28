@@ -1,7 +1,8 @@
-@import 'partials/base.scss';
+@import 'partials/reset';
+@import 'partials/base';
 
 #content {
-    
+
     section {
         clear: both;
         overflow: hidden;

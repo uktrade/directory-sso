@@ -1,10 +1,14 @@
-@import 'staticfiles/export_elements/stylesheets/govuk-elements-styles';
-@import 'reset';
 
 html {
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
   box-sizing: border-box
+}
+
+// govuk-elements-styles adds a list-style to lists in the footer
+// fix here until this is updated in export-elements
+#footer ul {
+  list-style: none;
 }
 
 body {
@@ -21,7 +25,9 @@ body {
   }
 
   #content {
-    padding-bottom: 0
+    padding-bottom: 0;
+    margin: 0 auto;
+    max-width: 1200px;
   }
 
   #content .container form {
@@ -36,10 +42,6 @@ body {
 
 .sso-content > .span6 {
   margin: 0;
-}
-
-#content {
-  max-width: 1200px;
 }
 
 #skiplink-container a.skiplink, {

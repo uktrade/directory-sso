@@ -13,7 +13,7 @@ from notifications_python_client import NotificationsAPIClient
 
 from directory_constants.constants import urls
 
-from sso.user.widgets import CheckboxWithInlineLabel
+from directory_components import widgets
 
 
 class IndentedInvalidFieldsMixin:
@@ -32,7 +32,7 @@ class SignupForm(IndentedInvalidFieldsMixin, forms.SignupForm):
     )
     terms_agreed = BooleanField(
         label='',
-        widget=CheckboxWithInlineLabel(
+        widget=widgets.CheckboxWithInlineLabel(
             label=mark_safe(
                 'Tick this box to accept the '
                 '<a href="{url}" target="_blank">terms and '
@@ -106,7 +106,7 @@ class LoginForm(IndentedInvalidFieldsMixin, forms.LoginForm):
     remember = BooleanField(
         label='',
         required=False,
-        widget=CheckboxWithInlineLabel(
+        widget=widgets.CheckboxWithInlineLabel(
             label='Remember me'
         )
     )
