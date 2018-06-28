@@ -15,7 +15,7 @@
         <li>express your interest and apply for export opportunities</li>
     </ul>
 </div>
-<br>
+
 <form class="signup" id="signup_form" method="post" action="{% url 'account_signup' %}">
     {% csrf_token %}
     {% for hidden in form.hidden_fields %}

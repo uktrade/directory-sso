@@ -1,5 +1,7 @@
 // FORMS
 
+@import 'staticfiles/export_elements/stylesheets/govuk-elements-styles';
+
 button.button {
   font-size: 19px;
   font-weight: 400;
@@ -12,6 +14,10 @@ button.button {
 .secondaryAction {
   padding: 14px 30px;
   display: inline-block;
+}
+
+form {
+  @extend .form-group;
 }
 
 form > li {
@@ -77,22 +83,6 @@ input[type="color"]:focus,
   -webkit-box-shadow: none
 }
 
-input[type="submit"], button {
-  width: auto;
-  background-color: #00549F;
-  padding: .5em;
-  border: none;
-  border-radius: 0;
-  line-height: 1.25;
-  text-decoration: none;
-  -webkit-font-smoothing: antialiased;
-  cursor: pointer;
-  color: #fff;
-  box-sizing: border-box;
-  font-size: 19px;
-  font-family: 'Roboto', sans-serif;
-}
-
 label, input, button, select, textarea {
   font-size: 18px;
   font-weight: 400;
@@ -119,22 +109,12 @@ label, input, button, select, textarea {
   }
 }
 
-.checkbox input:checked + label:after {
-  content: "";
-  border-color: #4a4a4a;
-  border-style: solid;
-  border-width: 0 0 5px 5px;
-  height: 10px;
-  left: 7px;
-  position: absolute;
-  -moz-transform: rotate(-45deg);
-  -o-transform: rotate(-45deg);
-  -webkit-transform: rotate(-45deg);
-  -ms-transform: rotate(-45deg);
-  transform: rotate(-45deg);
-  top: 7px;
-  width: 21px;
-  z-index: -1;
+.checkbox {
+  @extend .checkbox;
+}
+
+.multiple-choice [type=checkbox] + label::before {
+  background-color: white;
 }
 
 .checkbox input:focus + label:before  {
@@ -203,17 +183,16 @@ label, input, button, select, textarea {
 .input-field-container input,
 .input-field-container select,
 .input-field-container textarea {
-  border-radius: 0;
-  font-size: 18px;
-  height: 50px;
-  width: 100%;
-  color: #4a4a4a;
-  background-color: #fafafa;
-  border: 3px solid #6f777b;
-  margin-bottom: 10px;
-  font-family: 'Roboto', sans-serif
+  @extend .form-control;
 }
 
+.input-field-container p {
+  @extend .form-group;
+
+  input {
+    width: 100%;
+  }
+}
 .input-field-container.has-error ul.errorlist {
   margin: 0 0 10px;
   padding: 0;
