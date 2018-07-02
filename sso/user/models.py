@@ -7,6 +7,10 @@ from django.contrib.auth.models import (
 from django.contrib.postgres.fields import JSONField
 from django.utils import timezone
 from django.utils.translation import ugettext_lazy as _
+from django.urls import reverse
+
+from allauth.account.forms import default_token_generator, user_pk_to_url_str
+from allauth.account.models import EmailConfirmation
 
 from sso.api.model_utils import TimeStampedModel
 
@@ -126,3 +130,22 @@ class User(AbstractBaseUser, PermissionsMixin, TimeStampedModel):
                     settings.SSO_SUSPICIOUS_ACTIVITY_NOTIFICATION_EMAIL
                 ]
             )
+
+    def get_password_reset_link(self):
+        return reverse(
+            "account_reset_password_from_key",
+            kwargs={
+                'uidb36': user_pk_to_url_str(self),
+                'key': default_token_generator.make_token(self)
+            }
+        )
+
+    def get_email_verification_link(self):
+        email_address = self.emailaddress_set.last()
+        email_confirmation = EmailConfirmation.create(email_address)
+        email_confirmation.sent = timezone.now()
+        email_confirmation.save()
+
+        return reverse(
+            "account_confirm_email", args=[email_confirmation.key]
+        )

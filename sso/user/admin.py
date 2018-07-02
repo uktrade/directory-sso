@@ -9,28 +9,17 @@ from sso.user.models import User
 from sso.user.utils import api_client
 
 
-def generate_csv(model, queryset, filename, excluded_fields):
-    response = HttpResponse(content_type='text/csv')
-    response['Content-Disposition'] = (
-        'attachment; filename="{filename}"'.format(filename=filename)
-    )
-    fieldnames = sorted(
-        [field.name for field in model._meta.get_fields()
-         if field.name not in excluded_fields]
-    )
-    writer = csv.DictWriter(response, fieldnames=fieldnames)
-    writer.writeheader()
-    for obj in queryset.all().values(*fieldnames):
-        writer.writerow(obj)
-    return response
-
-
 @admin.register(User)
 class UserAdmin(admin.ModelAdmin):
 
     search_fields = ('email', )
     readonly_fields = ('created', 'modified',)
-    actions = ['download_csv', 'download_csv_exops_not_fab']
+    actions = [
+        'download_csv',
+        'download_csv_exops_not_fab',
+        'download_email_verification_links',
+        'download_password_reset_links'
+    ]
 
     csv_excluded_fields = (
         'password', 'oauth2_provider_refreshtoken',
@@ -56,16 +45,25 @@ class UserAdmin(admin.ModelAdmin):
         Generates CSV report of selected users.
         """
 
-        filename = '{prefix}_{timestamp}.csv"'.format(
-            prefix=filename_prefix,
-            timestamp=datetime.datetime.now().strftime("%Y%m%d%H%M%S"),
+        response = HttpResponse(content_type='text/csv')
+        response['Content-Disposition'] = (
+            'attachment; filename="{prefix}_{timestamp}.csv"'.format(
+                prefix=filename_prefix,
+                timestamp=datetime.datetime.now().strftime("%Y%m%d%H%M%S"),
+            )
         )
-        return generate_csv(
-            model=self.model,
-            queryset=queryset,
-            filename=filename,
-            excluded_fields=self.csv_excluded_fields
+
+        fieldnames = sorted(
+            [field.name for field in self.model._meta.get_fields()
+             if field.name not in self.csv_excluded_fields]
         )
+
+        writer = csv.DictWriter(response, fieldnames=fieldnames)
+        writer.writeheader()
+        for obj in queryset.all().values(*fieldnames):
+            writer.writerow(obj)
+
+        return response
 
     def download_csv(self, request, queryset):
         """
@@ -100,4 +98,56 @@ class UserAdmin(admin.ModelAdmin):
     download_csv_exops_not_fab.short_description = (
         "Download CSV report for selected users that have an ExOpps account "
         "but not a FAB account"
+    )
+
+    @staticmethod
+    def generate_csv_response_for_list_of_dicts(filename_prefix, data, fields):
+        response = HttpResponse(content_type='text/csv')
+        response['Content-Disposition'] = (
+            'attachment; filename="{prefix}_{timestamp}.csv"'.format(
+                prefix=filename_prefix,
+                timestamp=datetime.datetime.now().strftime("%Y%m%d%H%M%S"),
+            )
+        )
+        writer = csv.DictWriter(response, fieldnames=fields)
+        writer.writeheader()
+        for element in data:
+            writer.writerow(element)
+
+        return response
+
+    def download_email_verification_links(self, request, queryset):
+        email_verification_links = [
+            {
+                'email': user.email,
+                'email_verification_link': user.get_email_verification_link()
+            } for user in queryset
+        ]
+
+        return self.generate_csv_response_for_list_of_dicts(
+            filename_prefix='sso_email_verification_links',
+            data=email_verification_links,
+            fields=['email', 'email_verification_link']
+        )
+
+    download_email_verification_links.short_description = (
+        "Download email verification links for selected users"
+    )
+
+    def download_password_reset_links(self, request, queryset):
+        password_reset_links = [
+            {
+                'email': user.email,
+                'password_reset_link': user.get_password_reset_link()
+            } for user in queryset
+        ]
+
+        return self.generate_csv_response_for_list_of_dicts(
+            filename_prefix='sso_password_reset_links',
+            data=password_reset_links,
+            fields=['email', 'password_reset_link']
+        )
+
+    download_password_reset_links.short_description = (
+        "Download password reset links for selected users"
     )
