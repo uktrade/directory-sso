@@ -2,13 +2,15 @@ from collections import OrderedDict
 from unittest import TestCase
 from unittest.mock import patch
 
-import pytest
-
 from django.test import Client
 from django.core.urlresolvers import reverse
+
+import pytest
 from rest_framework import status
+from allauth.account.models import EmailAddress
 
 from sso.user.models import User
+from sso.user.tests.factories import UserFactory
 from sso.oauth2.tests.factories import AccessTokenFactory, ApplicationFactory
 
 
@@ -253,3 +255,42 @@ def test_admin_view_restricted(settings, client):
     )
 
     assert response.status_code == status.HTTP_200_OK
+
+
+@pytest.mark.django_db
+def test_download_password_reset_links(settings, superuser_client):
+    UserFactory.create()
+
+    data = {
+        'action': 'download_password_reset_links',
+        '_selected_action': User.objects.all().values_list(
+            'pk', flat=True
+        )
+    }
+    response = superuser_client.post(
+        reverse('admin:user_user_changelist'),
+        data,
+        follow=True
+    )
+
+    assert '/accounts/password/reset/key/' in str(response.content)
+
+
+@pytest.mark.django_db
+def test_download_email_verification_links(settings, superuser_client):
+    user = UserFactory.create()
+    EmailAddress(user=user, email=user.email).save()
+
+    data = {
+        'action': 'download_email_verification_links',
+        '_selected_action': User.objects.all().values_list(
+            'pk', flat=True
+        )
+    }
+    response = superuser_client.post(
+        reverse('admin:user_user_changelist'),
+        data,
+        follow=True
+    )
+
+    assert '/accounts/confirm-email/' in str(response.content)
