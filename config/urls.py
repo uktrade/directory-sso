@@ -5,6 +5,7 @@ import allauth.account.views
 import oauth2_provider.views
 from django.contrib.auth.decorators import login_required
 
+import sso.api.views_activity_stream
 import sso.api.views_user
 import sso.healthcheck.views
 import sso.oauth2.views_user
@@ -123,6 +124,13 @@ api_urlpatterns = [
         r'^password-check/$',
         sso.api.views_user.PasswordCheckAPIView.as_view(),
         name='password-check'
+    ),
+    url(
+        r'^activity-stream/$',
+        sso.api.views_activity_stream.ActivityStreamViewSet.as_view(
+            {'get': 'list'}
+        ),
+        name='activity-stream'
     ),
 ]
 

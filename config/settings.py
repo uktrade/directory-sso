@@ -486,3 +486,17 @@ ALLOWED_ADMIN_IP_RANGES = os.getenv('ALLOWED_ADMIN_IP_RANGES', [])
 FEATURE_SKIP_MIGRATE = os.getenv('FEATURE_SKIP_MIGRATE', 'false') == 'true'
 
 SSO_BASE_URL = os.getenv('SSO_BASE_URL', 'https://sso.trade.great.gov.uk')
+
+# Activity Stream
+ACTIVITY_STREAM_IP_WHITELIST = os.getenv(
+    'ACTIVITY_STREAM_IP_WHITELIST', default='',
+)
+# Defaults are not used so we don't accidentally expose the endpoint
+# with default credentials
+ACTIVITY_STREAM_ACCESS_KEY_ID = os.environ[
+    'ACTIVITY_STREAM_ACCESS_KEY_ID'
+]
+ACTIVITY_STREAM_SECRET_ACCESS_KEY = os.environ[
+    'ACTIVITY_STREAM_SECRET_ACCESS_KEY'
+]
+ACTIVITY_STREAM_NONCE_EXPIRY_SECONDS = 60
