@@ -16,7 +16,7 @@ coverage==4.5.1           # via codecov, pytest-cov
 defusedxml==0.5.0         # via python3-openid
 directory-api-external==4.2.1
 directory-client-core==0.2.1  # via directory-api-external
-directory-components==2.7.1
+directory-components==2.7.2
 directory-constants==6.5.2
 directory-healthcheck==0.4.2
 directory-validators==4.5.1
