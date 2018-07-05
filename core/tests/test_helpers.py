@@ -1,4 +1,4 @@
-from ..helpers import is_valid_domain
+from core.helpers import is_valid_domain
 
 
 def test_is_valid_domain_returns_true_for_valid_domains():

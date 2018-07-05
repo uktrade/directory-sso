@@ -48,7 +48,7 @@ def test_get_session_user_valid_session_key(api_client):
 
 
 @pytest.mark.django_db
-@patch('config.signature.SignatureCheckPermission.has_permission', Mock)
+@patch('conf.signature.SignatureCheckPermission.has_permission', Mock)
 def test_get_session_user_expired(api_client):
     user, user_session = setup_data()
     user_session.set_expiry(-1)
@@ -74,7 +74,7 @@ def test_get_session_user_valid_session_key_no_user(api_client):
 
 
 @pytest.mark.django_db
-@patch('config.signature.SignatureCheckPermission.has_permission', Mock)
+@patch('conf.signature.SignatureCheckPermission.has_permission', Mock)
 @patch.object(UserCache, 'set', wraps=UserCache.set)
 def test_get_session_user_cached_response(mock_set, settings, api_client):
     settings.FEATURE_CACHE_ENABLED = True
@@ -135,7 +135,7 @@ def test_get_session_user_cached_response_expires(
 
 
 @pytest.mark.django_db
-@patch('config.signature.SignatureCheckPermission.has_permission', Mock)
+@patch('conf.signature.SignatureCheckPermission.has_permission', Mock)
 @patch.object(UserCache, 'set', wraps=UserCache.set)
 def test_get_session_user_cached_response_multiple_users(
     mock_set, settings, api_client
