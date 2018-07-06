@@ -4,7 +4,7 @@ import dj_database_url
 
 from django.urls import reverse_lazy
 
-from .helpers import is_valid_domain
+from core.helpers import is_valid_domain
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
@@ -25,6 +25,7 @@ INSTALLED_APPS = [
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
+    'django.contrib.sitemaps',
     'django.contrib.sites',
     'django.contrib.staticfiles',
     'django.contrib.admin',
@@ -52,16 +53,19 @@ INSTALLED_APPS = [
 SITE_ID = 1
 
 MIDDLEWARE_CLASSES = [
-    'config.middleware.SSODisplayLoggedInCookieMiddleware',
+    'directory_components.middleware.MaintenanceModeMiddleware',
+    'core.middleware.SSODisplayLoggedInCookieMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',
-    'config.signature.SignatureCheckMiddleware',
+    'conf.signature.SignatureCheckMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'corsheaders.middleware.CorsMiddleware',
-    'admin_ip_restrictor.middleware.AdminIPRestrictorMiddleware'
+    'admin_ip_restrictor.middleware.AdminIPRestrictorMiddleware',
+    'directory_components.middleware.NoCacheMiddlware',
+    'directory_components.middleware.RobotsIndexControlHeaderMiddlware',
 ]
 
 CORS_ORIGIN_ALLOW_ALL = True if (
@@ -69,7 +73,7 @@ CORS_ORIGIN_ALLOW_ALL = True if (
 ) else False
 
 
-ROOT_URLCONF = 'config.urls'
+ROOT_URLCONF = 'conf.urls'
 
 TEMPLATES = [
     {
@@ -99,36 +103,13 @@ TEMPLATES = [
 ]
 
 
-WSGI_APPLICATION = 'config.wsgi.application'
+WSGI_APPLICATION = 'conf.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/1.9/ref/settings/#databases
 DATABASES = {
     'default': dj_database_url.config()
 }
-
-# Cache
-FEATURE_CACHE_ENABLED = os.getenv('FEATURE_CACHE_ENABLED', 'false') == 'true'
-
-FEATURE_NEW_SHARED_HEADER_ENABLED = os.getenv(
-    'FEATURE_NEW_SHARED_HEADER_ENABLED'
-) == 'true'
-
-if FEATURE_CACHE_ENABLED:
-    CACHE_BACKENDS = {
-        'redis': 'django_redis.cache.RedisCache',
-        'dummy': 'django.core.cache.backends.dummy.DummyCache',
-        'locmem': 'django.core.cache.backends.locmem.LocMemCache'
-    }
-    CACHES = {
-        'default': {
-            'BACKEND': CACHE_BACKENDS[os.getenv('CACHE_BACKEND', 'redis')],
-            'LOCATION': os.getenv('REDIS_URL')
-        }
-    }
-
-    SESSION_ENGINE = 'django.contrib.sessions.backends.cached_db'
-
 
 # Internationalization
 # https://docs.djangoproject.com/en/1.9/topics/i18n/
@@ -454,10 +435,6 @@ SSO_SUSPICIOUS_ACTIVITY_NOTIFICATION_EMAIL = os.getenv(
 # Health check
 HEALTH_CHECK_TOKEN = os.environ['HEALTH_CHECK_TOKEN']
 
-# testing api
-FEATURE_TEST_API_ENABLED = os.getenv(
-    'FEATURE_TEST_API_ENABLED', 'false') == 'true'
-
 GOV_NOTIFY_API_KEY = os.environ['GOV_NOTIFY_API_KEY']
 GOV_NOTIFY_SIGNUP_CONFIRMATION_TEMPLATE_ID = os.getenv(
     'GOV_NOTIFY_SIGNUP_CONFIRMATION_TEMPLATE_ID',
@@ -472,18 +449,10 @@ GOV_NOTIFY_ALREADY_REGISTERED_TEMPLATE_ID = os.getenv(
     '5c8cc5aa-a4f5-48ae-89e6-df5572c317ec'
     )
 
-FEATURE_DISABLE_REGISTRATION = os.getenv(
-    'FEATURE_DISABLE_REGISTRATION',
-    'false'
-) == 'true'
-
 # Admin restrictor
 RESTRICT_ADMIN = os.getenv('RESTRICT_ADMIN', 'false') == 'true'
 ALLOWED_ADMIN_IPS = os.getenv('ALLOWED_ADMIN_IPS', [])
 ALLOWED_ADMIN_IP_RANGES = os.getenv('ALLOWED_ADMIN_IP_RANGES', [])
-
-
-FEATURE_SKIP_MIGRATE = os.getenv('FEATURE_SKIP_MIGRATE', 'false') == 'true'
 
 SSO_BASE_URL = os.getenv('SSO_BASE_URL', 'https://sso.trade.great.gov.uk')
 
@@ -500,3 +469,37 @@ ACTIVITY_STREAM_SECRET_ACCESS_KEY = os.environ[
     'ACTIVITY_STREAM_SECRET_ACCESS_KEY'
 ]
 ACTIVITY_STREAM_NONCE_EXPIRY_SECONDS = 60
+
+# feature flags
+FEATURE_CACHE_ENABLED = os.getenv('FEATURE_CACHE_ENABLED', 'false') == 'true'
+FEATURE_NEW_SHARED_HEADER_ENABLED = os.getenv(
+    'FEATURE_NEW_SHARED_HEADER_ENABLED'
+) == 'true'
+FEATURE_SKIP_MIGRATE = os.getenv('FEATURE_SKIP_MIGRATE', 'false') == 'true'
+FEATURE_DISABLE_REGISTRATION = os.getenv(
+    'FEATURE_DISABLE_REGISTRATION',
+) == 'true'
+FEATURE_TEST_API_ENABLED = os.getenv('FEATURE_TEST_API_ENABLED') == 'true'
+# used by directory-components
+FEATURE_SEARCH_ENGINE_INDEXING_DISABLED = os.getenv(
+    'FEATURE_SEARCH_ENGINE_INDEXING_DISABLED'
+) == 'true'
+# used by directory-components
+FEATURE_MAINTENANCE_MODE_ENABLED = os.getenv(
+    'FEATURE_MAINTENANCE_MODE_ENABLED'
+) == 'true'
+
+if FEATURE_CACHE_ENABLED:
+    CACHE_BACKENDS = {
+        'redis': 'django_redis.cache.RedisCache',
+        'dummy': 'django.core.cache.backends.dummy.DummyCache',
+        'locmem': 'django.core.cache.backends.locmem.LocMemCache'
+    }
+    CACHES = {
+        'default': {
+            'BACKEND': CACHE_BACKENDS[os.getenv('CACHE_BACKEND', 'redis')],
+            'LOCATION': os.getenv('REDIS_URL')
+        }
+    }
+
+    SESSION_ENGINE = 'django.contrib.sessions.backends.cached_db'

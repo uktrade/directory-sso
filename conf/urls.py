@@ -1,16 +1,23 @@
+import allauth.account.views
+import directory_components.views
+import oauth2_provider.views
+
 from django.conf.urls import url, include
 from django.contrib import admin
-
-import allauth.account.views
-import oauth2_provider.views
 from django.contrib.auth.decorators import login_required
+from django.contrib.sitemaps.views import sitemap
 
+import conf.sitemaps
 import sso.api.views_activity_stream
 import sso.api.views_user
 import sso.healthcheck.views
 import sso.oauth2.views_user
 import sso.testapi.views
 import sso.user.views
+
+sitemaps = {
+    'static': conf.sitemaps.StaticViewSitemap,
+}
 
 
 admin.autodiscover()
@@ -136,6 +143,15 @@ api_urlpatterns = [
 
 
 urlpatterns = [
+    url(
+        r"^sitemap\.xml$", sitemap, {'sitemaps': sitemaps},
+        name='sitemap'
+    ),
+    url(
+        r"^robots\.txt$",
+        directory_components.views.RobotsView.as_view(),
+        name='robots'
+    ),
     url(
         r"^$",
         sso.user.views.SSOLandingPage.as_view(),

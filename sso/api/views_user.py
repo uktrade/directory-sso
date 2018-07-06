@@ -12,7 +12,7 @@ from django.contrib.sessions.models import Session
 from django.core.exceptions import ValidationError
 
 from sso.api import filters
-from config.signature import SignatureCheckPermission
+from conf.signature import SignatureCheckPermission
 from sso.user import models, serializers
 from sso.user.helpers import UserCache
 

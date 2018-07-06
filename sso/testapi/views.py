@@ -8,7 +8,7 @@ from rest_framework.generics import (
 )
 from rest_framework.response import Response
 
-from config.signature import SignatureCheckPermission
+from conf.signature import SignatureCheckPermission
 from sso.user import models
 
 
