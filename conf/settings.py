@@ -490,12 +490,16 @@ CACHE_BACKENDS = {
     'locmem': 'django.core.cache.backends.locmem.LocMemCache'
 }
 
-if FEATURE_FLAGS['USER_CACHE_ON']:
-    CACHES = {
-        'default': {
-            'BACKEND': CACHE_BACKENDS[os.getenv('CACHE_BACKEND', 'redis')],
-            'LOCATION': env.str('REDIS_URL', '')
-        }
-    }
+CACHES = {}
 
+if FEATURE_FLAGS['USER_CACHE_ON']:
+    CACHES['default'] = {
+        'BACKEND': CACHE_BACKENDS[os.getenv('CACHE_BACKEND', 'redis')],
+        'LOCATION': os.getenv('REDIS_URL')
+    }
     SESSION_ENGINE = 'django.contrib.sessions.backends.cached_db'
+else:
+    CACHES['default'] = {
+        'BACKEND': CACHE_BACKENDS['locmem'],
+    }
+    SESSION_ENGINE = 'django.contrib.sessions.backends.db'
