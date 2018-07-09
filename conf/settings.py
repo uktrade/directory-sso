@@ -471,7 +471,7 @@ ACTIVITY_STREAM_NONCE_EXPIRY_SECONDS = 60
 
 # feature flags
 FEATURE_FLAGS = {
-    'CACHE_ON': env.bool('FEATURE_CACHE_ENABLED', False),
+    'USER_CACHE_ON': env.bool('FEATURE_CACHE_ENABLED', False),
     'SKIP_MIGRATE_ON': env.bool('FEATURE_SKIP_MIGRATE', False),
     'DISABLE_REGISTRATION_ON': env.bool('FEATURE_DISABLE_REGISTRATION', False),
     'TEST_API_ON': env.bool('FEATURE_TEST_API_ENABLED', False),
@@ -483,13 +483,14 @@ FEATURE_FLAGS = {
     'MAINTENANCE_MODE_ON': env.bool('FEATURE_MAINTENANCE_MODE_ENABLED', False),
 }
 
+
 CACHE_BACKENDS = {
     'redis': 'django_redis.cache.RedisCache',
     'dummy': 'django.core.cache.backends.dummy.DummyCache',
     'locmem': 'django.core.cache.backends.locmem.LocMemCache'
 }
 
-if FEATURE_FLAGS['CACHE_ON']:
+if FEATURE_FLAGS['USER_CACHE_ON']:
     CACHES = {
         'default': {
             'BACKEND': CACHE_BACKENDS[os.getenv('CACHE_BACKEND', 'redis')],
