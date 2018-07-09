@@ -483,12 +483,13 @@ FEATURE_FLAGS = {
     'MAINTENANCE_MODE_ON': env.bool('FEATURE_MAINTENANCE_MODE_ENABLED', False),
 }
 
+CACHE_BACKENDS = {
+    'redis': 'django_redis.cache.RedisCache',
+    'dummy': 'django.core.cache.backends.dummy.DummyCache',
+    'locmem': 'django.core.cache.backends.locmem.LocMemCache'
+}
+
 if FEATURE_FLAGS['CACHE_ON']:
-    CACHE_BACKENDS = {
-        'redis': 'django_redis.cache.RedisCache',
-        'dummy': 'django.core.cache.backends.dummy.DummyCache',
-        'locmem': 'django.core.cache.backends.locmem.LocMemCache'
-    }
     CACHES = {
         'default': {
             'BACKEND': CACHE_BACKENDS[os.getenv('CACHE_BACKEND', 'redis')],
