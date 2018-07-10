@@ -175,6 +175,7 @@ def test_if_61_seconds_in_past_401_returned(api_client):
         reverse('activity-stream'),
         content_type='',
         HTTP_AUTHORIZATION=auth,
+        HTTP_X_FORWARDED_FOR='1.2.3.4',
     )
 
     assert response.status_code == status.HTTP_401_UNAUTHORIZED
