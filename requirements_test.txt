@@ -16,7 +16,7 @@ coverage==4.5.1           # via codecov, pytest-cov
 defusedxml==0.5.0         # via python3-openid
 directory-api-external==4.2.1
 directory-client-core==0.2.1  # via directory-api-external
-directory-components==2.7.2
+directory-components==2.8.1
 directory-constants==6.5.2
 directory-healthcheck==0.4.2
 directory-validators==4.5.1
@@ -24,6 +24,7 @@ dj-database-url==0.4.1
 django-admin-ip-restrictor==0.1.0
 django-allauth==0.33.0
 django-cors-headers==1.3.1
+django-environ==0.4.5
 django-filter==1.0.4
 django-health-check==3.0.0
 django-ipware==2.1.0      # via django-admin-ip-restrictor

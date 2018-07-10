@@ -4,7 +4,7 @@ from sso.user.helpers import UserCache
 
 
 def delete_user_cache_by_session(sender, instance, *args, **kwargs):
-    if settings.FEATURE_CACHE_ENABLED:
+    if settings.FEATURE_FLAGS['CACHE_ON']:
         return
 
     session_data = instance.get_decoded()
@@ -13,7 +13,7 @@ def delete_user_cache_by_session(sender, instance, *args, **kwargs):
 
 
 def delete_user_cache_by_user(sender, instance, created, *args, **kwargs):
-    if settings.FEATURE_CACHE_ENABLED:
+    if settings.FEATURE_FLAGS['CACHE_ON']:
         return
 
     if not created:
