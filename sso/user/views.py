@@ -30,7 +30,7 @@ class RedirectToNextMixin:
 class DisableRegistrationMixin:
 
     def dispatch(self, request, *args, **kwargs):
-        if settings.FEATURE_DISABLE_REGISTRATION:
+        if settings.FEATURE_FLAGS['DISABLE_REGISTRATION_ON']:
             return redirect('https://sorry.great.gov.uk/')
         return super().dispatch(request, *args, **kwargs)
 
@@ -96,7 +96,7 @@ class ConfirmEmailView(DisableRegistrationMixin, RedirectToNextMixin,
 class PasswordResetFromKeyView(RedirectToNextMixin,
                                allauth_views.PasswordResetFromKeyView):
     def dispatch(self, request, uidb36, key, **kwargs):
-        if settings.FEATURE_DISABLE_REGISTRATION:
+        if settings.FEATURE_FLAGS['DISABLE_REGISTRATION_ON']:
             return redirect('https://sorry.great.gov.uk/')
         response = super().dispatch(request, uidb36, key, **kwargs)
         if key != allauth_views.INTERNAL_RESET_URL_KEY:

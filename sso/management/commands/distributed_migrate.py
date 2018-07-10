@@ -12,6 +12,6 @@ class Command(MigrateCommand):
         """Execute command."""
         # An exclusive lock (shared=False) is necessary - only single instance
         # should execute the migrations
-        if not settings.FEATURE_SKIP_MIGRATE:
+        if not settings.FEATURE_FLAGS['SKIP_MIGRATE_ON']:
             with advisory_lock(lock_id='migrations', shared=False, wait=True):
                 super().handle(*args, **options)

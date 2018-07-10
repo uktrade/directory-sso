@@ -1,10 +1,14 @@
 import os
 
 import dj_database_url
+import environ
 
 from django.urls import reverse_lazy
 
 from core.helpers import is_valid_domain
+
+
+env = environ.Env()
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
@@ -14,7 +18,7 @@ BASE_DIR = os.path.dirname(PROJECT_ROOT)
 # See https://docs.djangoproject.com/en/1.9/howto/deployment/checklist/
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = os.getenv('DEBUG') == 'true'
+DEBUG = env.bool('DEBUG', False)
 
 # As app is running behind a host-based router supplied by Heroku or other
 # PaaS, we can open ALLOWED_HOSTS
@@ -68,10 +72,7 @@ MIDDLEWARE_CLASSES = [
     'directory_components.middleware.RobotsIndexControlHeaderMiddlware',
 ]
 
-CORS_ORIGIN_ALLOW_ALL = True if (
-    os.getenv('CORS_ORIGIN_ALLOW_ALL') == 'true'
-) else False
-
+CORS_ORIGIN_ALLOW_ALL = env.bool('CORS_ORIGIN_ALLOW_ALL', False)
 
 ROOT_URLCONF = 'conf.urls'
 
@@ -87,7 +88,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'sso.user.context_processors.redirect_next_processor',
-                'sso.context_processors.feature_flags',
+                'directory_components.context_processors.feature_flags',
                 'directory_components.context_processors.urls_processor',
                 ('directory_components.context_processors.'
                  'header_footer_processor'),
@@ -132,7 +133,7 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 if not os.path.exists(STATIC_ROOT):
     os.makedirs(STATIC_ROOT)
 
-STATIC_HOST = os.environ.get('STATIC_HOST', '')
+STATIC_HOST = env.str('STATIC_HOST', '')
 STATIC_URL = STATIC_HOST + '/static/'
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
@@ -146,11 +147,11 @@ for static_dir in STATICFILES_DIRS:
 
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.environ['SECRET_KEY']
+SECRET_KEY = env.str('SECRET_KEY')
 
 # Sentry
 RAVEN_CONFIG = {
-    'dsn': os.getenv('SENTRY_DSN'),
+    'dsn': env.str('SENTRY_DSN', ''),
 }
 
 
@@ -289,16 +290,16 @@ OAUTH2_PROVIDER = {
 }
 
 # django-allauth
-REDIRECT_FIELD_NAME = os.getenv(
+REDIRECT_FIELD_NAME = env.str(
     'REDIRECT_FIELD_NAME', 'next'
 )
-DEFAULT_REDIRECT_URL = os.getenv(
+DEFAULT_REDIRECT_URL = env.str(
     'DEFAULT_REDIRECT_URL', 'https://find-a-buyer.export.great.gov.uk/'
 )
-LOGIN_REDIRECT_URL = os.getenv(
+LOGIN_REDIRECT_URL = env.str(
     'LOGIN_REDIRECT_URL', DEFAULT_REDIRECT_URL
 )
-LOGOUT_REDIRECT_URL = os.getenv(
+LOGOUT_REDIRECT_URL = env.str(
     'LOGOUT_REDIRECT_URL', DEFAULT_REDIRECT_URL
 )
 ACCOUNT_AUTHENTICATION_METHOD = 'email'
@@ -309,10 +310,10 @@ ACCOUNT_USERNAME_REQUIRED = False
 ACCOUNT_CONFIRM_EMAIL_ON_GET = False
 ACCOUNT_EMAIL_CONFIRMATION_EXPIRE_DAYS = 3
 ACCOUNT_EMAIL_VERIFICATION = 'mandatory'
-ACCOUNT_EMAIL_SUBJECT_PREFIX = os.getenv(
+ACCOUNT_EMAIL_SUBJECT_PREFIX = env.str(
     'ACCOUNT_EMAIL_SUBJECT_PREFIX', 'Your great.gov.uk account: '
 )
-ACCOUNT_DEFAULT_HTTP_PROTOCOL = os.getenv(
+ACCOUNT_DEFAULT_HTTP_PROTOCOL = env.str(
     'ACCOUNT_DEFAULT_HTTP_PROTOCOL', 'https'
 )
 ACCOUNT_LOGIN_ATTEMPTS_LIMIT = 5
@@ -327,14 +328,14 @@ EMAIL_BACKED_CLASSES = {
     'default': 'django.core.mail.backends.smtp.EmailBackend',
     'console': 'django.core.mail.backends.console.EmailBackend'
 }
-EMAIL_BACKED_CLASS_NAME = os.getenv('EMAIL_BACKEND_CLASS_NAME', 'default')
+EMAIL_BACKED_CLASS_NAME = env.str('EMAIL_BACKEND_CLASS_NAME', 'default')
 EMAIL_BACKEND = EMAIL_BACKED_CLASSES[EMAIL_BACKED_CLASS_NAME]
-EMAIL_HOST = os.environ['EMAIL_HOST']
-EMAIL_PORT = os.environ['EMAIL_PORT']
-EMAIL_HOST_USER = os.environ['EMAIL_HOST_USER']
-EMAIL_HOST_PASSWORD = os.environ['EMAIL_HOST_PASSWORD']
+EMAIL_HOST = env.str('EMAIL_HOST')
+EMAIL_PORT = env.str('EMAIL_PORT')
+EMAIL_HOST_USER = env.str('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = env.str('EMAIL_HOST_PASSWORD')
 EMAIL_USE_TLS = True
-DEFAULT_FROM_EMAIL = os.environ['DEFAULT_FROM_EMAIL']
+DEFAULT_FROM_EMAIL = env.str('DEFAULT_FROM_EMAIL')
 
 ACCOUNT_FORMS = {
     'signup': 'sso.user.forms.SignupForm',
@@ -347,45 +348,45 @@ ACCOUNT_FORMS = {
     'reset_password_from_key': 'sso.user.forms.ResetPasswordKeyForm',
 }
 
-SESSION_COOKIE_DOMAIN = os.environ['SESSION_COOKIE_DOMAIN']
+SESSION_COOKIE_DOMAIN = env.str('SESSION_COOKIE_DOMAIN')
 # env var not same as setting to be more explicit (directory-ui uses same name)
-SESSION_COOKIE_NAME = os.environ['SSO_SESSION_COOKIE']
-SESSION_COOKIE_SECURE = os.getenv('SESSION_COOKIE_SECURE') != 'false'
+SESSION_COOKIE_NAME = env.str('SSO_SESSION_COOKIE')
+SESSION_COOKIE_SECURE = env.bool('SESSION_COOKIE_SECURE', True)
 SESSION_COOKIE_HTTPONLY = True
-CSRF_COOKIE_SECURE = os.getenv('CSRF_COOKIE_SECURE') != 'false'
+CSRF_COOKIE_SECURE = env.bool('CSRF_COOKIE_SECURE', True)
 
 # Set with comma separated values in env
-ALLOWED_REDIRECT_DOMAINS = os.environ['ALLOWED_REDIRECT_DOMAINS'].split(',')
+ALLOWED_REDIRECT_DOMAINS = env.list('ALLOWED_REDIRECT_DOMAINS', default=[])
 for domain in ALLOWED_REDIRECT_DOMAINS:
     assert is_valid_domain(domain) is True
 
 # Signature check
-SIGNATURE_SECRET = os.environ['SIGNATURE_SECRET']
+SIGNATURE_SECRET = env.str('SIGNATURE_SECRET')
 
 URLS_EXCLUDED_FROM_SIGNATURE_CHECK = [
     reverse_lazy('health-check-database')
 ]
 
 # Use proxy host name when generating links (e.g. in emails)
-SECURE_SSL_REDIRECT = os.getenv('SECURE_SSL_REDIRECT', 'true') == 'true'
+SECURE_SSL_REDIRECT = env.bool('SECURE_SSL_REDIRECT', True)
 USE_X_FORWARDED_HOST = True
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
 
 # Google tag manager
-UTM_COOKIE_DOMAIN = os.environ['UTM_COOKIE_DOMAIN']
-GOOGLE_TAG_MANAGER_ID = os.environ['GOOGLE_TAG_MANAGER_ID']
-GOOGLE_TAG_MANAGER_ENV = os.getenv('GOOGLE_TAG_MANAGER_ENV', '')
+UTM_COOKIE_DOMAIN = env.str('UTM_COOKIE_DOMAIN')
+GOOGLE_TAG_MANAGER_ID = env.str('GOOGLE_TAG_MANAGER_ID')
+GOOGLE_TAG_MANAGER_ENV = env.str('GOOGLE_TAG_MANAGER_ENV', '')
 
 # sso profile
-SSO_PROFILE_URL = os.environ['SSO_PROFILE_URL']
+SSO_PROFILE_URL = env.str('SSO_PROFILE_URL')
 
-HEADER_FOOTER_CONTACT_US_URL = os.getenv(
+HEADER_FOOTER_CONTACT_US_URL = env.str(
     'HEADER_FOOTER_CONTACT_US_URL',
     'https://contact-us.export.great.gov.uk/directory',
 )
 
-FEEDBACK_FORM_URL = os.getenv(
+FEEDBACK_FORM_URL = env.str(
     'SSO_FEEDBACK_FORM_URL',
     'https://contact-us.export.great.gov.uk/feedback/directory/'
 )
@@ -397,99 +398,92 @@ DIRECTORY_API_EXTERNAL_CLIENT_CLASSES = {
         'directory_api_external.dummy_client.DummyDirectoryAPIExternalClient'
     ),
 }
-DIRECTORY_API_EXTERNAL_CLIENT_CLASS_NAME = os.getenv(
+DIRECTORY_API_EXTERNAL_CLIENT_CLASS_NAME = env.str(
     'DIRECTORY_API_EXTERNAL_CLIENT_CLASS_NAME', 'default'
 )
 DIRECTORY_API_EXTERNAL_CLIENT_CLASS = DIRECTORY_API_EXTERNAL_CLIENT_CLASSES[
     DIRECTORY_API_EXTERNAL_CLIENT_CLASS_NAME
 ]
-DIRECTORY_API_EXTERNAL_SIGNATURE_SECRET = os.environ[
+DIRECTORY_API_EXTERNAL_SIGNATURE_SECRET = env.str(
     'DIRECTORY_API_EXTERNAL_SIGNATURE_SECRET'
-]
-DIRECTORY_API_EXTERNAL_CLIENT_BASE_URL = os.environ[
+)
+DIRECTORY_API_EXTERNAL_CLIENT_BASE_URL = env.str(
     'DIRECTORY_API_EXTERNAL_CLIENT_BASE_URL'
-]
+)
 
 # Export Opportunities
-EXOPS_APPLICATION_CLIENT_ID = os.environ['EXOPS_APPLICATION_CLIENT_ID']
+EXOPS_APPLICATION_CLIENT_ID = env.str('EXOPS_APPLICATION_CLIENT_ID')
 
 # HEADER AND FOOTER LINKS
-HEADER_FOOTER_URLS_GREAT_HOME = os.getenv("HEADER_FOOTER_URLS_GREAT_HOME")
-HEADER_FOOTER_URLS_FAB = os.getenv("HEADER_FOOTER_URLS_FAB")
-HEADER_FOOTER_URLS_SOO = os.getenv("HEADER_FOOTER_URLS_SOO")
-HEADER_FOOTER_URLS_EVENTS = os.getenv("HEADER_FOOTER_URLS_EVENTS")
-HEADER_FOOTER_URLS_CONTACT_US = os.getenv("HEADER_FOOTER_URLS_CONTACT_US")
-HEADER_FOOTER_URLS_DIT = os.getenv("HEADER_FOOTER_URLS_DIT")
+HEADER_FOOTER_URLS_GREAT_HOME = env.str('HEADER_FOOTER_URLS_GREAT_HOME', '')
+HEADER_FOOTER_URLS_FAB = env.str('HEADER_FOOTER_URLS_FAB', '')
+HEADER_FOOTER_URLS_SOO = env.str('HEADER_FOOTER_URLS_SOO', '')
+HEADER_FOOTER_URLS_EVENTS = env.str('HEADER_FOOTER_URLS_EVENTS', '')
+HEADER_FOOTER_URLS_CONTACT_US = env.str('HEADER_FOOTER_URLS_CONTACT_US', '')
+HEADER_FOOTER_URLS_DIT = env.str('HEADER_FOOTER_URLS_DIT', '')
 
 # the following should be 5, but our auth backend are calling check_password
 # twice, so we use 2*5
-SSO_SUSPICIOUS_LOGIN_MAX_ATTEMPTS = os.getenv(
+SSO_SUSPICIOUS_LOGIN_MAX_ATTEMPTS = env.int(
     'SSO_SUSPICIOUS_LOGIN_MAX_ATTEMPTS',
     10
 )
-SSO_SUSPICIOUS_ACTIVITY_NOTIFICATION_EMAIL = os.getenv(
+SSO_SUSPICIOUS_ACTIVITY_NOTIFICATION_EMAIL = env.str(
     'SSO_SUSPICIOUS_ACTIVITY_NOTIFICATION_EMAIL',
     ''
 )
 
 # Health check
-HEALTH_CHECK_TOKEN = os.environ['HEALTH_CHECK_TOKEN']
+HEALTH_CHECK_TOKEN = env.str('HEALTH_CHECK_TOKEN')
 
-GOV_NOTIFY_API_KEY = os.environ['GOV_NOTIFY_API_KEY']
-GOV_NOTIFY_SIGNUP_CONFIRMATION_TEMPLATE_ID = os.getenv(
+GOV_NOTIFY_API_KEY = env.str('GOV_NOTIFY_API_KEY')
+GOV_NOTIFY_SIGNUP_CONFIRMATION_TEMPLATE_ID = env.str(
     'GOV_NOTIFY_SIGNUP_CONFIRMATION_TEMPLATE_ID',
     '0c76b730-ac37-4b08-a8ba-7b34e4492853',
 )
-GOV_NOTIFY_PASSWORD_RESET_TEMPLATE_ID = os.getenv(
+GOV_NOTIFY_PASSWORD_RESET_TEMPLATE_ID = env.str(
     'GOV_NOTIFY_PASSWORD_RESET_TEMPLATE_ID',
     '9ef82687-4bc0-4278-b15c-a49bc9325b28'
 )
-GOV_NOTIFY_ALREADY_REGISTERED_TEMPLATE_ID = os.getenv(
+GOV_NOTIFY_ALREADY_REGISTERED_TEMPLATE_ID = env.str(
     'GOV_NOTIFY_ALREADY_REGISTERED_TEMPLATE_ID',
     '5c8cc5aa-a4f5-48ae-89e6-df5572c317ec'
     )
 
 # Admin restrictor
-RESTRICT_ADMIN = os.getenv('RESTRICT_ADMIN', 'false') == 'true'
-ALLOWED_ADMIN_IPS = os.getenv('ALLOWED_ADMIN_IPS', [])
-ALLOWED_ADMIN_IP_RANGES = os.getenv('ALLOWED_ADMIN_IP_RANGES', [])
+RESTRICT_ADMIN = env.str('RESTRICT_ADMIN', False)
+ALLOWED_ADMIN_IPS = env.list('ALLOWED_ADMIN_IPS', default=[])
+ALLOWED_ADMIN_IP_RANGES = env.list('ALLOWED_ADMIN_IP_RANGES', default=[])
 
-SSO_BASE_URL = os.getenv('SSO_BASE_URL', 'https://sso.trade.great.gov.uk')
+SSO_BASE_URL = env.str('SSO_BASE_URL', 'https://sso.trade.great.gov.uk')
 
 # Activity Stream
-ACTIVITY_STREAM_IP_WHITELIST = os.getenv(
-    'ACTIVITY_STREAM_IP_WHITELIST', default='',
-)
+ACTIVITY_STREAM_IP_WHITELIST = env.str('ACTIVITY_STREAM_IP_WHITELIST', '')
 # Defaults are not used so we don't accidentally expose the endpoint
 # with default credentials
-ACTIVITY_STREAM_ACCESS_KEY_ID = os.environ[
+ACTIVITY_STREAM_ACCESS_KEY_ID = env.str(
     'ACTIVITY_STREAM_ACCESS_KEY_ID'
-]
-ACTIVITY_STREAM_SECRET_ACCESS_KEY = os.environ[
+)
+ACTIVITY_STREAM_SECRET_ACCESS_KEY = env.str(
     'ACTIVITY_STREAM_SECRET_ACCESS_KEY'
-]
+)
 ACTIVITY_STREAM_NONCE_EXPIRY_SECONDS = 60
 
 # feature flags
-FEATURE_CACHE_ENABLED = os.getenv('FEATURE_CACHE_ENABLED', 'false') == 'true'
-FEATURE_NEW_SHARED_HEADER_ENABLED = os.getenv(
-    'FEATURE_NEW_SHARED_HEADER_ENABLED'
-) == 'true'
-FEATURE_SKIP_MIGRATE = os.getenv('FEATURE_SKIP_MIGRATE', 'false') == 'true'
-FEATURE_DISABLE_REGISTRATION = os.getenv(
-    'FEATURE_DISABLE_REGISTRATION',
-) == 'true'
-FEATURE_TEST_API_ENABLED = os.getenv('FEATURE_TEST_API_ENABLED') == 'true'
-# used by directory-components
-FEATURE_SEARCH_ENGINE_INDEXING_DISABLED = os.getenv(
-    'FEATURE_SEARCH_ENGINE_INDEXING_DISABLED'
-) == 'true'
-# used by directory-components
-FEATURE_MAINTENANCE_MODE_ENABLED = os.getenv(
-    'FEATURE_MAINTENANCE_MODE_ENABLED'
-) == 'true'
+FEATURE_FLAGS = {
+    'CACHE_ON': env.bool('FEATURE_CACHE_ENABLED', False),
+    'SKIP_MIGRATE_ON': env.bool('FEATURE_SKIP_MIGRATE', False),
+    'DISABLE_REGISTRATION_ON': env.bool('FEATURE_DISABLE_REGISTRATION', False),
+    'TEST_API_ON': env.bool('FEATURE_TEST_API_ENABLED', False),
+    # used by directory-components
+    'SEARCH_ENGINE_INDEXING_OFF': env.bool(
+        'FEATURE_SEARCH_ENGINE_INDEXING_DISABLED', False
+    ),
+    # used by directory-components
+    'MAINTENANCE_MODE_ON': env.bool('FEATURE_MAINTENANCE_MODE_ENABLED', False),
+}
 
-if FEATURE_CACHE_ENABLED:
+if FEATURE_FLAGS['CACHE_ON']:
     CACHE_BACKENDS = {
         'redis': 'django_redis.cache.RedisCache',
         'dummy': 'django.core.cache.backends.dummy.DummyCache',
@@ -498,7 +492,7 @@ if FEATURE_CACHE_ENABLED:
     CACHES = {
         'default': {
             'BACKEND': CACHE_BACKENDS[os.getenv('CACHE_BACKEND', 'redis')],
-            'LOCATION': os.getenv('REDIS_URL')
+            'LOCATION': env.str('REDIS_URL', '')
         }
     }
 

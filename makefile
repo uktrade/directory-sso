@@ -67,7 +67,6 @@ DOCKER_SET_DEBUG_ENV_VARS := \
 	export SSO_CACHE_BACKEND=locmem; \
 	export SSO_PYTHONWARNINGS=all; \
 	export SSO_PYTHONDEBUG=true; \
-	export SSO_FEATURE_NEW_SHARED_HEADER_ENABLED=true; \
 	export SSO_SECURE_SSL_REDIRECT=false; \
 	export SSO_HEALTH_CHECK_TOKEN=debug; \
 	export SSO_FEATURE_TEST_API_ENABLED=true; \
@@ -149,7 +148,6 @@ DEBUG_SET_ENV_VARS := \
 	export CACHE_BACKEND=locmem; \
 	export PYTHONWARNINGS=all; \
 	export PYTHONDEBUG=true; \
-	export FEATURE_NEW_SHARED_HEADER_ENABLED=true; \
 	export SECURE_SSL_REDIRECT=false; \
 	export HEALTH_CHECK_TOKEN=debug; \
 	export FEATURE_TEST_API_ENABLED=true; \
@@ -161,7 +159,8 @@ DEBUG_SET_ENV_VARS := \
 	export SSO_BASE_URL=http://sso.trade.great:8003 \
 	export ACTIVITY_STREAM_IP_WHITELIST=1.2.3.4 \
 	export ACTIVITY_STREAM_ACCESS_KEY_ID=some-id \
-	export ACTIVITY_STREAM_SECRET_ACCESS_KEY=some-secret
+	export ACTIVITY_STREAM_SECRET_ACCESS_KEY=some-secret; \
+	export FEATURE_SEARCH_ENGINE_INDEXING_DISABLED=true
 
 debug_webserver:
 	 $(DEBUG_SET_ENV_VARS)&& $(COLLECT_STATIC) && $(DJANGO_WEBSERVER);

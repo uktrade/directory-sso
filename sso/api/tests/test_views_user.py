@@ -77,7 +77,7 @@ def test_get_session_user_valid_session_key_no_user(api_client):
 @patch('conf.signature.SignatureCheckPermission.has_permission', Mock)
 @patch.object(UserCache, 'set', wraps=UserCache.set)
 def test_get_session_user_cached_response(mock_set, settings, api_client):
-    settings.FEATURE_CACHE_ENABLED = True
+    settings.FEATURE_FLAGS = {**settings.FEATURE_FLAGS, 'CACHE_ON': True}
 
     user, user_session = setup_data()
 
@@ -103,7 +103,7 @@ def test_get_session_user_cached_response(mock_set, settings, api_client):
 def test_get_session_user_cached_response_expires(
     mock_set, settings, api_client
 ):
-    settings.FEATURE_CACHE_ENABLED = True
+    settings.FEATURE_FLAGS = {**settings.FEATURE_FLAGS, 'CACHE_ON': True}
 
     user, user_session = setup_data()
 
@@ -140,7 +140,7 @@ def test_get_session_user_cached_response_expires(
 def test_get_session_user_cached_response_multiple_users(
     mock_set, settings, api_client
 ):
-    settings.FEATURE_CACHE_ENABLED = True
+    settings.FEATURE_FLAGS = {**settings.FEATURE_FLAGS, 'CACHE_ON': True}
 
     user_session_groups = [
         setup_data(email='user@one.com'),

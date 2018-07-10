@@ -968,7 +968,9 @@ def test_email_verification_sent_view_feedback_url(client, settings):
 )
                          )
 def test_disabled_registration_views(url, client, settings):
-    settings.FEATURE_DISABLE_REGISTRATION = True
+    settings.FEATURE_FLAGS = {
+        **settings.FEATURE_FLAGS, 'DISABLE_REGISTRATION_ON': True
+    }
     response = client.get(url)
     assert response.status_code == 302
     assert response.url == 'https://sorry.great.gov.uk/'
@@ -976,7 +978,9 @@ def test_disabled_registration_views(url, client, settings):
 
 @pytest.mark.django_db
 def test_disabled_registration_change_password_view(authed_client, settings):
-    settings.FEATURE_DISABLE_REGISTRATION = True
+    settings.FEATURE_FLAGS = {
+        **settings.FEATURE_FLAGS, 'DISABLE_REGISTRATION_ON': True
+    }
     response = authed_client.get(reverse('account_change_password'))
     assert response.status_code == 302
     assert response.url == 'https://sorry.great.gov.uk/'
