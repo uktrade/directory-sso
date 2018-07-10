@@ -463,8 +463,7 @@ def test_password_reset_redirect_default_param_if_no_next_param(
     )
     url = call[1]['personalisation']['password_reset']
 
-    # Reset the password
-    preflight_response = client.post(url)
+    preflight_response = client.get(url)
     response = client.post(
         preflight_response.get('Location'),
         {'password1': new_password, 'password2': new_password}
@@ -472,6 +471,44 @@ def test_password_reset_redirect_default_param_if_no_next_param(
 
     assert response.status_code == http.client.FOUND
     assert response.get('Location') == settings.DEFAULT_REDIRECT_URL
+
+
+@pytest.mark.django_db
+def test_password_reset_invalid_key(client, user):
+    response = client.get('/accounts/password/reset/key/gc-asdf/')
+
+    assert "Bad Token" in str(response.content)
+
+
+@patch('sso.adapters.NotificationsAPIClient')
+@pytest.mark.django_db
+def test_password_reset_no_internal_session(
+    mocked_notification_client, client, user
+):
+    client.post(
+        reverse('account_reset_password'),
+        data={'email': user.email}
+    )
+    assert mocked_notification_client().send_email_notification.called is True
+    call = mocked_notification_client().send_email_notification.call_args
+    assert call == mock.call(
+        email_address='test@example.com',
+        personalisation={'password_reset': mock.ANY},
+        template_id=PASSWORD_RESET_TEMPLATE_ID
+    )
+    url = call[1]['personalisation']['password_reset']
+
+    preflight_response = client.get(url)
+    # going incognito
+    client.session.flush()
+
+    new_password = 'new'
+    response = client.post(
+        preflight_response.get('Location'),
+        {'password1': new_password, 'password2': new_password}
+    )
+
+    assert "Bad Token" in str(response.content)
 
 
 @patch('sso.adapters.NotificationsAPIClient')
