@@ -1,3 +1,4 @@
+import json
 import os
 
 import dj_database_url
@@ -52,6 +53,7 @@ INSTALLED_APPS = [
     'health_check.db',
     'directory_components',
     'export_elements',
+    'rediscluster',
 ]
 
 SITE_ID = 1
@@ -472,6 +474,9 @@ ACTIVITY_STREAM_NONCE_EXPIRY_SECONDS = 60
 # feature flags
 FEATURE_FLAGS = {
     'USER_CACHE_ON': env.bool('FEATURE_CACHE_ENABLED', False),
+    'ACTIVITY_STREAM_NONCE_CACHE_ON': env.bool(
+        'FEATURE_ACTIVITY_STREAM_NONCE_CACHE_ENABLED', False
+    ),
     'SKIP_MIGRATE_ON': env.bool('FEATURE_SKIP_MIGRATE', False),
     'DISABLE_REGISTRATION_ON': env.bool('FEATURE_DISABLE_REGISTRATION', False),
     'TEST_API_ON': env.bool('FEATURE_TEST_API_ENABLED', False),
@@ -482,7 +487,6 @@ FEATURE_FLAGS = {
     # used by directory-components
     'MAINTENANCE_MODE_ON': env.bool('FEATURE_MAINTENANCE_MODE_ENABLED', False),
 }
-
 
 CACHE_BACKENDS = {
     'redis': 'django_redis.cache.RedisCache',
@@ -503,3 +507,24 @@ else:
         'BACKEND': CACHE_BACKENDS['locmem'],
     }
     SESSION_ENGINE = 'django.contrib.sessions.backends.db'
+
+if FEATURE_FLAGS['ACTIVITY_STREAM_NONCE_CACHE_ON']:
+    vcap_services = json.loads(os.environ['VCAP_SERVICES'])
+    redis_uri = vcap_services['redis'][0]['credentials']['uri']
+    CACHES['activity_stream_nonce'] = {
+        'BACKEND': 'django_redis.cache.RedisCache',
+        'LOCATION': redis_uri,
+        'OPTIONS': {
+            'REDIS_CLIENT_CLASS': 'rediscluster.StrictRedisCluster',
+            'REDIS_CLIENT_KWARGS': {
+                'decode_responses': True,
+            },
+            'CONNECTION_POOL_CLASS':
+                'rediscluster.connection.ClusterConnectionPool',
+            'CONNECTION_POOL_KWARGS': {
+                # AWS ElasticCache disables CONFIG commands
+                'skip_full_coverage_check': True,
+            },
+        },
+        'KEY_PREFIX': 'directory-sso-activity-stream-nonce',
+    }

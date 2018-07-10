@@ -16,6 +16,7 @@ boto3
 tldextract==2.0.2
 django-redis==4.8.0
 redis==2.10.5
+redis-py-cluster==1.3.4
 django-health-check==3.0.0
 notifications-python-client
 directory-constants==6.5.2

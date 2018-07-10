@@ -78,7 +78,9 @@ DOCKER_SET_DEBUG_ENV_VARS := \
 	export SSO_SSO_BASE_URL=http://sso.trade.great:8003 \
 	export SSO_ACTIVITY_STREAM_IP_WHITELIST=1.2.3.4 \
 	export SSO_ACTIVITY_STREAM_ACCESS_KEY_ID=some-id \
-	export SSO_ACTIVITY_STREAM_SECRET_ACCESS_KEY=some-secret
+	export SSO_ACTIVITY_STREAM_SECRET_ACCESS_KEY=some-secret \
+	export SSO_FEATURE_ACTIVITY_STREAM_NONCE_CACHE_ENABLED=true \
+	export SSO_VCAP_SERVICES="{\"redis\": [{\"credentials\": {\"uri\": \"http://redis_cluster:7000/\"}}]}"
 
 docker_test_env_files:
 	$(DOCKER_SET_DEBUG_ENV_VARS) && \
@@ -160,7 +162,8 @@ DEBUG_SET_ENV_VARS := \
 	export ACTIVITY_STREAM_IP_WHITELIST=1.2.3.4 \
 	export ACTIVITY_STREAM_ACCESS_KEY_ID=some-id \
 	export ACTIVITY_STREAM_SECRET_ACCESS_KEY=some-secret; \
-	export FEATURE_SEARCH_ENGINE_INDEXING_DISABLED=true
+	export FEATURE_ACTIVITY_STREAM_NONCE_CACHE_ENABLED=true \
+	export VCAP_SERVICES="{\"redis\": [{\"credentials\": {\"uri\": \"http://redis_cluster:7000/\"}}]}"
 
 debug_webserver:
 	 $(DEBUG_SET_ENV_VARS)&& $(COLLECT_STATIC) && $(DJANGO_WEBSERVER);

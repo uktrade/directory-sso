@@ -5,15 +5,20 @@ services:
     image: postgres:9.5.2
     env_file: ./docker/.env-postgres
 
+  redis_cluster:
+    image: grokzen/redis-cluster:3.2.11
+    environment:
+      CLUSTER_ONLY: 'true'
+
   webserver:
     build:
       context: .
       dockerfile: Dockerfile
 
-    depends_on: [postgres]
-    links: [postgres]
+    depends_on: [postgres, redis_cluster]
+    links: [postgres, redis_cluster]
     working_dir: /usr/src/app
-    entrypoint: dockerize -wait tcp://postgres:5432 -timeout 20s
+    entrypoint: dockerize -wait tcp://postgres:5432 -wait tcp://redis_cluster:7000 -timeout 20s
     command: ./docker/cmd-webserver.sh
     ports: ["8003:8003"]
     env_file: ./docker/.env
