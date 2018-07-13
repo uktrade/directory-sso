@@ -53,11 +53,47 @@ def _auth_sender(key_id='some-id', secret_key='some-secret', url=_url,
             {'detail': 'Incorrect authentication credentials.'},
         ),
         (
-            # If the first IP in X-Forwarded-For header isn't in the whitelist
+            # If second-to-last X-Forwarded-For header isn't whitelisted
             dict(
                 content_type='',
                 HTTP_AUTHORIZATION=_auth_sender().request_header,
-                HTTP_X_FORWARDED_FOR='9.9.9.9',
+                HTTP_X_FORWARDED_FOR='9.9.9.9, 123.123.123.123',
+            ),
+            {'detail': 'Incorrect authentication credentials.'},
+        ),
+        (
+            # If the only IP address in X-Forwarded-For is whitelisted
+            dict(
+                content_type='',
+                HTTP_AUTHORIZATION=_auth_sender().request_header,
+                HTTP_X_FORWARDED_FOR='1.2.3.4',
+            ),
+            {'detail': 'Incorrect authentication credentials.'},
+        ),
+        (
+            # If the only IP address in X-Forwarded-For isn't whitelisted
+            dict(
+                content_type='',
+                HTTP_AUTHORIZATION=_auth_sender().request_header,
+                HTTP_X_FORWARDED_FOR='123.123.123.123',
+            ),
+            {'detail': 'Incorrect authentication credentials.'},
+        ),
+        (
+            # If third-to-last IP in X-Forwarded-For header is whitelisted
+            dict(
+                content_type='',
+                HTTP_AUTHORIZATION=_auth_sender().request_header,
+                HTTP_X_FORWARDED_FOR='1.2.3.4, 124.124.124, 123.123.123.123',
+            ),
+            {'detail': 'Incorrect authentication credentials.'},
+        ),
+        (
+            # If last of 3 IPs in X-Forwarded-For header is whitelisted
+            dict(
+                content_type='',
+                HTTP_AUTHORIZATION=_auth_sender().request_header,
+                HTTP_X_FORWARDED_FOR='124.124.124, 123.123.123.123, 1.2.3.4',
             ),
             {'detail': 'Incorrect authentication credentials.'},
         ),
@@ -65,7 +101,7 @@ def _auth_sender(key_id='some-id', secret_key='some-secret', url=_url,
             # If the Authorization header isn't passed
             dict(
                 content_type='',
-                HTTP_X_FORWARDED_FOR='1.2.3.4',
+                HTTP_X_FORWARDED_FOR='1.2.3.4, 123.123.123.123',
             ),
             {'detail': 'Authentication credentials were not provided.'},
         ),
@@ -76,7 +112,7 @@ def _auth_sender(key_id='some-id', secret_key='some-secret', url=_url,
                 HTTP_AUTHORIZATION=_auth_sender(
                     key_id='incorrect',
                 ).request_header,
-                HTTP_X_FORWARDED_FOR='1.2.3.4',
+                HTTP_X_FORWARDED_FOR='1.2.3.4, 123.123.123.123',
             ),
             {'detail': 'Incorrect authentication credentials.'},
         ),
@@ -87,7 +123,7 @@ def _auth_sender(key_id='some-id', secret_key='some-secret', url=_url,
                 HTTP_AUTHORIZATION=_auth_sender(
                     secret_key='incorrect'
                 ).request_header,
-                HTTP_X_FORWARDED_FOR='1.2.3.4',
+                HTTP_X_FORWARDED_FOR='1.2.3.4, 123.123.123.123',
             ),
             {'detail': 'Incorrect authentication credentials.'},
         ),
@@ -98,7 +134,7 @@ def _auth_sender(key_id='some-id', secret_key='some-secret', url=_url,
                 HTTP_AUTHORIZATION=_auth_sender(
                     url=_url_incorrect_domain,
                 ).request_header,
-                HTTP_X_FORWARDED_FOR='1.2.3.4',
+                HTTP_X_FORWARDED_FOR='1.2.3.4, 123.123.123.123',
             ),
             {'detail': 'Incorrect authentication credentials.'},
         ),
@@ -109,7 +145,7 @@ def _auth_sender(key_id='some-id', secret_key='some-secret', url=_url,
                 HTTP_AUTHORIZATION=_auth_sender(
                     url=_url_incorrect_path,
                 ).request_header,
-                HTTP_X_FORWARDED_FOR='1.2.3.4',
+                HTTP_X_FORWARDED_FOR='1.2.3.4, 123.123.123.123',
             ),
             {'detail': 'Incorrect authentication credentials.'},
         ),
@@ -120,7 +156,7 @@ def _auth_sender(key_id='some-id', secret_key='some-secret', url=_url,
                 HTTP_AUTHORIZATION=_auth_sender(
                     method='POST',
                 ).request_header,
-                HTTP_X_FORWARDED_FOR='1.2.3.4',
+                HTTP_X_FORWARDED_FOR='1.2.3.4, 123.123.123.123',
             ),
             {'detail': 'Incorrect authentication credentials.'},
         ),
@@ -132,7 +168,7 @@ def _auth_sender(key_id='some-id', secret_key='some-secret', url=_url,
                 HTTP_AUTHORIZATION=_auth_sender(
                     content_type='incorrect',
                 ).request_header,
-                HTTP_X_FORWARDED_FOR='1.2.3.4',
+                HTTP_X_FORWARDED_FOR='1.2.3.4, 123.123.123.123',
             ),
             {'detail': 'Incorrect authentication credentials.'},
         ),
@@ -143,7 +179,7 @@ def _auth_sender(key_id='some-id', secret_key='some-secret', url=_url,
                 HTTP_AUTHORIZATION=_auth_sender(
                     content='incorrect',
                 ).request_header,
-                HTTP_X_FORWARDED_FOR='1.2.3.4',
+                HTTP_X_FORWARDED_FOR='1.2.3.4, 123.123.123.123',
             ),
             {'detail': 'Incorrect authentication credentials.'},
         ),
@@ -175,11 +211,31 @@ def test_if_61_seconds_in_past_401_returned(api_client):
         reverse('activity-stream'),
         content_type='',
         HTTP_AUTHORIZATION=auth,
+        HTTP_X_FORWARDED_FOR='1.2.3.4, 123.123.123.123',
     )
 
     assert response.status_code == status.HTTP_401_UNAUTHORIZED
     error = {'detail': 'Incorrect authentication credentials.'}
     assert response.json() == error
+
+
+@pytest.mark.django_db
+def test_empty_object_returned_with_authentication_3_ips(api_client):
+    """If the Authorization and X-Forwarded-For headers are correct,
+    with an extra IP address prepended to the X-Forwarded-For then
+    the correct, and authentic, data is returned
+    """
+    sender = _auth_sender()
+    response = api_client.get(
+        _url(),
+        content_type='',
+        HTTP_AUTHORIZATION=sender.request_header,
+        HTTP_X_FORWARDED_FOR='3.3.3.3, 1.2.3.4, 123.123.123.123',
+    )
+
+    assert response.status_code == status.HTTP_200_OK
+    content = {'secret': 'content-for-pen-test'}
+    assert response.json() == content
 
 
 @pytest.mark.django_db
@@ -192,7 +248,7 @@ def test_empty_object_returned_with_authentication(api_client):
         _url(),
         content_type='',
         HTTP_AUTHORIZATION=sender.request_header,
-        HTTP_X_FORWARDED_FOR='1.2.3.4',
+        HTTP_X_FORWARDED_FOR='1.2.3.4, 123.123.123.123',
     )
 
     assert response.status_code == status.HTTP_200_OK
