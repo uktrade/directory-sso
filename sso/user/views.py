@@ -8,6 +8,9 @@ from django.shortcuts import redirect
 from django.views.generic import RedirectView
 
 from allauth.account import views as allauth_views
+from allauth.account.views import (
+    INTERNAL_RESET_URL_KEY, INTERNAL_RESET_SESSION_KEY
+)
 from allauth.account.utils import complete_signup
 import allauth.exceptions
 
@@ -98,14 +101,20 @@ class PasswordResetFromKeyView(RedirectToNextMixin,
     def dispatch(self, request, uidb36, key, **kwargs):
         if settings.FEATURE_FLAGS['DISABLE_REGISTRATION_ON']:
             return redirect('https://sorry.great.gov.uk/')
+
+        internal_session = self.request.session.get(INTERNAL_RESET_SESSION_KEY)
+        # This prevents a 500 in a situation when user opened a valid internal
+        # session key link without the cookie set (e.g. incognito - edge case)
+        if key == INTERNAL_RESET_URL_KEY and not internal_session:
+            return self.render_to_response({'token_fail': True})
+
         response = super().dispatch(request, uidb36, key, **kwargs)
-        if key != allauth_views.INTERNAL_RESET_URL_KEY:
-            if response.status_code == 302:
-                redirect_url = get_url_with_redirect(
-                    url=response.url,
-                    redirect_url=self.get_redirect_url()
-                )
-                return redirect(urllib.parse.unquote(redirect_url))
+
+        if key != INTERNAL_RESET_URL_KEY and response.status_code == 302:
+            return redirect(urllib.parse.unquote(get_url_with_redirect(
+                url=response.url,
+                redirect_url=self.get_redirect_url()
+            )))
         return response
 
 
