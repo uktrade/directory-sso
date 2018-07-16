@@ -16,6 +16,8 @@ logger = logging.getLogger(__name__)
 NO_CREDENTIALS_MESSAGE = 'Authentication credentials were not provided.'
 INCORRECT_CREDENTIALS_MESSAGE = 'Incorrect authentication credentials.'
 
+ADDED_IPS = 2
+
 
 def _lookup_credentials(access_key_id):
     """Raises a HawkFail if the passed ID is not equal to
@@ -76,7 +78,8 @@ class _ActivityStreamAuthentication(BaseAuthentication):
 
         x_forwarded_for = request.META['HTTP_X_FORWARDED_FOR']
         ip_addesses = x_forwarded_for.split(',')
-        if len(ip_addesses) < 2:
+
+        if len(ip_addesses) < ADDED_IPS:
             logger.warning(
                 'Failed authentication: the X-Forwarded-For header does not '
                 'contain enough IP addresses'
@@ -84,7 +87,7 @@ class _ActivityStreamAuthentication(BaseAuthentication):
             raise AuthenticationFailed(INCORRECT_CREDENTIALS_MESSAGE)
 
         # PaaS appends 2 IPs, where the IP connected from is the first
-        remote_address = ip_addesses[-2].strip()
+        remote_address = ip_addesses[-ADDED_IPS].strip()
 
         if remote_address not in settings.ACTIVITY_STREAM_IP_WHITELIST:
             logger.warning(
