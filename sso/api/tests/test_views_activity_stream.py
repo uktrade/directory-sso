@@ -7,6 +7,8 @@ from rest_framework import status
 from rest_framework.reverse import reverse
 from rest_framework.test import APIClient
 
+WHITELISTED_X_FORWARDED_FOR_HEADER = '1.2.3.4, 123.123.123.123'
+
 
 @pytest.fixture
 def api_client():
@@ -101,7 +103,7 @@ def _auth_sender(key_id='some-id', secret_key='some-secret', url=_url,
             # If the Authorization header isn't passed
             dict(
                 content_type='',
-                HTTP_X_FORWARDED_FOR='1.2.3.4, 123.123.123.123',
+                HTTP_X_FORWARDED_FOR=WHITELISTED_X_FORWARDED_FOR_HEADER,
             ),
             {'detail': 'Authentication credentials were not provided.'},
         ),
@@ -112,7 +114,7 @@ def _auth_sender(key_id='some-id', secret_key='some-secret', url=_url,
                 HTTP_AUTHORIZATION=_auth_sender(
                     key_id='incorrect',
                 ).request_header,
-                HTTP_X_FORWARDED_FOR='1.2.3.4, 123.123.123.123',
+                HTTP_X_FORWARDED_FOR=WHITELISTED_X_FORWARDED_FOR_HEADER,
             ),
             {'detail': 'Incorrect authentication credentials.'},
         ),
@@ -123,7 +125,7 @@ def _auth_sender(key_id='some-id', secret_key='some-secret', url=_url,
                 HTTP_AUTHORIZATION=_auth_sender(
                     secret_key='incorrect'
                 ).request_header,
-                HTTP_X_FORWARDED_FOR='1.2.3.4, 123.123.123.123',
+                HTTP_X_FORWARDED_FOR=WHITELISTED_X_FORWARDED_FOR_HEADER,
             ),
             {'detail': 'Incorrect authentication credentials.'},
         ),
@@ -134,7 +136,7 @@ def _auth_sender(key_id='some-id', secret_key='some-secret', url=_url,
                 HTTP_AUTHORIZATION=_auth_sender(
                     url=_url_incorrect_domain,
                 ).request_header,
-                HTTP_X_FORWARDED_FOR='1.2.3.4, 123.123.123.123',
+                HTTP_X_FORWARDED_FOR=WHITELISTED_X_FORWARDED_FOR_HEADER,
             ),
             {'detail': 'Incorrect authentication credentials.'},
         ),
@@ -145,7 +147,7 @@ def _auth_sender(key_id='some-id', secret_key='some-secret', url=_url,
                 HTTP_AUTHORIZATION=_auth_sender(
                     url=_url_incorrect_path,
                 ).request_header,
-                HTTP_X_FORWARDED_FOR='1.2.3.4, 123.123.123.123',
+                HTTP_X_FORWARDED_FOR=WHITELISTED_X_FORWARDED_FOR_HEADER,
             ),
             {'detail': 'Incorrect authentication credentials.'},
         ),
@@ -156,7 +158,7 @@ def _auth_sender(key_id='some-id', secret_key='some-secret', url=_url,
                 HTTP_AUTHORIZATION=_auth_sender(
                     method='POST',
                 ).request_header,
-                HTTP_X_FORWARDED_FOR='1.2.3.4, 123.123.123.123',
+                HTTP_X_FORWARDED_FOR=WHITELISTED_X_FORWARDED_FOR_HEADER,
             ),
             {'detail': 'Incorrect authentication credentials.'},
         ),
@@ -168,7 +170,7 @@ def _auth_sender(key_id='some-id', secret_key='some-secret', url=_url,
                 HTTP_AUTHORIZATION=_auth_sender(
                     content_type='incorrect',
                 ).request_header,
-                HTTP_X_FORWARDED_FOR='1.2.3.4, 123.123.123.123',
+                HTTP_X_FORWARDED_FOR=WHITELISTED_X_FORWARDED_FOR_HEADER,
             ),
             {'detail': 'Incorrect authentication credentials.'},
         ),
@@ -179,7 +181,7 @@ def _auth_sender(key_id='some-id', secret_key='some-secret', url=_url,
                 HTTP_AUTHORIZATION=_auth_sender(
                     content='incorrect',
                 ).request_header,
-                HTTP_X_FORWARDED_FOR='1.2.3.4, 123.123.123.123',
+                HTTP_X_FORWARDED_FOR=WHITELISTED_X_FORWARDED_FOR_HEADER,
             ),
             {'detail': 'Incorrect authentication credentials.'},
         ),
@@ -211,7 +213,7 @@ def test_if_61_seconds_in_past_401_returned(api_client):
         reverse('activity-stream'),
         content_type='',
         HTTP_AUTHORIZATION=auth,
-        HTTP_X_FORWARDED_FOR='1.2.3.4, 123.123.123.123',
+        HTTP_X_FORWARDED_FOR=WHITELISTED_X_FORWARDED_FOR_HEADER,
     )
 
     assert response.status_code == status.HTTP_401_UNAUTHORIZED
@@ -230,7 +232,8 @@ def test_empty_object_returned_with_authentication_3_ips(api_client):
         _url(),
         content_type='',
         HTTP_AUTHORIZATION=sender.request_header,
-        HTTP_X_FORWARDED_FOR='3.3.3.3, 1.2.3.4, 123.123.123.123',
+        HTTP_X_FORWARDED_FOR='3.3.3.3, {}'.format(
+            WHITELISTED_X_FORWARDED_FOR_HEADER),
     )
 
     assert response.status_code == status.HTTP_200_OK
@@ -248,7 +251,7 @@ def test_empty_object_returned_with_authentication(api_client):
         _url(),
         content_type='',
         HTTP_AUTHORIZATION=sender.request_header,
-        HTTP_X_FORWARDED_FOR='1.2.3.4, 123.123.123.123',
+        HTTP_X_FORWARDED_FOR=WHITELISTED_X_FORWARDED_FOR_HEADER,
     )
 
     assert response.status_code == status.HTTP_200_OK
