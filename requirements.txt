@@ -12,7 +12,7 @@ contextlib2==0.5.5        # via raven
 defusedxml==0.5.0         # via python3-openid
 directory-api-external==4.2.1
 directory-client-core==0.2.1  # via directory-api-external
-directory-components==2.8.1
+directory-components==2.11.0
 directory-constants==6.5.2
 directory-healthcheck==0.4.2
 directory-validators==4.5.1
@@ -32,7 +32,7 @@ django_extensions==1.9.0
 djangorestframework==3.4.7
 docopt==0.6.2             # via notifications-python-client
 docutils==0.14            # via botocore
-export-elements==0.10.6
+export-elements==0.14.5   # via directory-components
 future==0.16.0            # via notifications-python-client
 gunicorn==19.5.0
 idna==2.6                 # via requests, tldextract
