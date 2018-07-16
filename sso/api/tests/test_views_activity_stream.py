@@ -7,7 +7,11 @@ from rest_framework import status
 from rest_framework.reverse import reverse
 from rest_framework.test import APIClient
 
-WHITELISTED_X_FORWARDED_FOR_HEADER = '1.2.3.4, 123.123.123.123'
+WHITELISTED_X_FORWARDED_FOR_HEADER = '1.2.3.4, ' + \
+                                     '4.5.5.5, ' + \
+                                     '3.5.5.5, ' + \
+                                     '2.5.5.5, ' + \
+                                     '1.5.5.5'
 
 
 @pytest.fixture
@@ -55,11 +59,15 @@ def _auth_sender(key_id='some-id', secret_key='some-secret', url=_url,
             {'detail': 'Incorrect authentication credentials.'},
         ),
         (
-            # If second-to-last X-Forwarded-For header isn't whitelisted
+            # If fifth-to-last X-Forwarded-For header isn't whitelisted
             dict(
                 content_type='',
                 HTTP_AUTHORIZATION=_auth_sender().request_header,
-                HTTP_X_FORWARDED_FOR='9.9.9.9, 123.123.123.123',
+                HTTP_X_FORWARDED_FOR='6.6.6.6, ' + \
+                                     '7.7.7.7, ' + \
+                                     '8.8.8.8, ' + \
+                                     '9.9.9.9, ' + \
+                                     '123.123.123.123',
             ),
             {'detail': 'Incorrect authentication credentials.'},
         ),
@@ -82,20 +90,29 @@ def _auth_sender(key_id='some-id', secret_key='some-secret', url=_url,
             {'detail': 'Incorrect authentication credentials.'},
         ),
         (
-            # If third-to-last IP in X-Forwarded-For header is whitelisted
+            # If sixth-to-last IP in X-Forwarded-For header is whitelisted
             dict(
                 content_type='',
                 HTTP_AUTHORIZATION=_auth_sender().request_header,
-                HTTP_X_FORWARDED_FOR='1.2.3.4, 124.124.124, 123.123.123.123',
+                HTTP_X_FORWARDED_FOR='1.2.3.4, ' + \
+                                     '2.2.2.2, ' + \
+                                     '7.7.7.7, ' + \
+                                     '8.8.8.8, ' + \
+                                     '9.9.9.9, ' + \
+                                     '123.123.123.123',
             ),
             {'detail': 'Incorrect authentication credentials.'},
         ),
         (
-            # If last of 3 IPs in X-Forwarded-For header is whitelisted
+            # If last of 5 IPs in X-Forwarded-For header is whitelisted
             dict(
                 content_type='',
                 HTTP_AUTHORIZATION=_auth_sender().request_header,
-                HTTP_X_FORWARDED_FOR='124.124.124, 123.123.123.123, 1.2.3.4',
+                HTTP_X_FORWARDED_FOR='6.6.6.6, ' + \
+                                     '7.7.7.7, ' + \
+                                     '8.8.8.8, ' + \
+                                     '9.9.9.9, ' + \
+                                     '1.2.3.4',
             ),
             {'detail': 'Incorrect authentication credentials.'},
         ),

@@ -16,7 +16,14 @@ logger = logging.getLogger(__name__)
 NO_CREDENTIALS_MESSAGE = 'Authentication credentials were not provided.'
 INCORRECT_CREDENTIALS_MESSAGE = 'Incorrect authentication credentials.'
 
-ADDED_IPS = 2
+ADDED_IPS_BY_DIRECTORY_SSO_PROXY_PAAS_ROUTER = 2
+ADDED_IPS_BY_DIRECTORY_SSO_PROXY = 1
+ADDED_IPS_BY_DIRECTORY_SSO_PAAS_ROUTER = 2
+ADDED_IPS = (
+    ADDED_IPS_BY_DIRECTORY_SSO_PROXY_PAAS_ROUTER +
+    ADDED_IPS_BY_DIRECTORY_SSO_PROXY +
+    ADDED_IPS_BY_DIRECTORY_SSO_PAAS_ROUTER
+)
 
 
 def _lookup_credentials(access_key_id):
