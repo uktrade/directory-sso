@@ -1,7 +1,7 @@
 @import url(https://fonts.googleapis.com/css?family=Roboto:400,700);
 @import url(https://fonts.googleapis.com/css?family=Overpass:400,800);
 @import url("https://fonts.googleapis.com/css?family=Roboto:400,700");
-@import url("https://fonts.googleapis.com/css?family=Overpass:400,700");
+@import url("https://fonts.googleapis.com/css?family=Overpass:700");
 html, body, div, span, object, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, cite, dfn, em, img, q, small, strong, sub, sup, b, u, i, dl, dt, dd, ol, ul, li, fieldset, form, label, input, legend, table, caption, th, td, article, aside, figure, figcaption, footer, header, nav, section, textarea, video {
   border: 0;
   box-sizing: border-box;
@@ -314,120 +314,6 @@ legend {
   box-sizing: border-box;
   max-width: 100%;
   display: table;
-}
-
-html,
-body,
-button,
-input,
-table,
-td,
-th {
-  font-family: "Roboto", arial, helvetica, verdana;
-}
-
-html,
-body,
-div,
-h1,
-h2,
-h3,
-h4,
-h5,
-h6,
-article,
-aside,
-footer,
-header,
-hgroup,
-nav,
-section {
-  margin: 0;
-  padding: 0;
-  vertical-align: baseline;
-}
-
-main {
-  display: block;
-}
-
-html {
-  font-size: 62.5%;
-  overflow-y: scroll;
-  -webkit-tap-highlight-color: transparent;
-  -webkit-text-size-adjust: 100%;
-  -ms-text-size-adjust: 100%;
-  -ms-overflow-style: scrollbar;
-  background-color: #ffffff;
-}
-
-body {
-  font-size: 160%;
-  margin: 0;
-  background: #ffffff;
-  color: #0b0c0c;
-  line-height: 1.5;
-  font-weight: 400;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
-
-ol,
-ul,
-nav ol,
-nav ul {
-  list-style: inherit;
-}
-
-fieldset {
-  border: none;
-  padding: 0;
-}
-
-b,
-strong {
-  font-weight: 600;
-}
-
-img {
-  border: 0;
-}
-
-abbr[title] {
-  cursor: help;
-}
-
-a:link {
-  color: #006ccc;
-}
-
-a:visited {
-  color: #4c2c92;
-}
-
-a:hover {
-  color: #2b8cc4;
-}
-
-a:active {
-  color: #2b8cc4;
-}
-
-a {
-  -webkit-tap-highlight-color: rgba(0, 0, 0, 0.3);
-}
-
-a:focus {
-  background-color: #ffbf47;
-  outline: 3px solid #ffbf47;
-}
-
-input:focus,
-textarea:focus,
-select:focus,
-button:focus {
-  outline: 3px solid #ffbf47;
-  outline-offset: 0;
 }
 
 #content {
@@ -1101,36 +987,6 @@ hr {
 
 .heading-medium {
   margin-bottom: 0.625em;
-}
-
-.heading-hero-domestic {
-  font-family: "Roboto", arial, helvetica, verdana;
-  font-weight: 700;
-  text-transform: none;
-  font-size: 32px;
-  line-height: 1.09375;
-  font-family: "Overpass", "Roboto", arial, helvetica, verdana;
-  display: inline-block;
-  color: #ffffff;
-  background: #e41f13;
-  text-transform: uppercase;
-  padding: 10px 15px;
-  margin-top: 0.46875em;
-  margin-bottom: 0.9375em;
-}
-
-@media (min-width: 641px) {
-  .heading-hero-domestic {
-    font-size: 48px;
-    line-height: 1.04167;
-  }
-}
-
-@media (min-width: 641px) {
-  .heading-hero-domestic {
-    margin-top: 0.625em;
-    margin-bottom: 1.25em;
-  }
 }
 
 .button, .button-ghost-blue, .button-ghost-white {
@@ -2135,7 +1991,7 @@ select.form-control,
   padding: 10px;
   /* add arrow */
   background: linear-gradient(45deg, transparent 50%, #000000 50%), linear-gradient(135deg, #000000 50%, transparent 50%), linear-gradient(to right, #ffffff, #ffffff);
-  background-position: calc(100% - 23px) calc(1em + 0px), calc(100% - 13px) calc(1em + 0px);
+  background-position: calc(100% - 23px) calc(1em), calc(100% - 13px) calc(1em);
   background-size: 10px 10px;
   background-repeat: no-repeat;
   border-radius: 0;
@@ -2303,7 +2159,7 @@ select.form-control,
 }
 
 .multiple-choice [type=radio] + label::before {
-  border: 2px solid #999999;
+  border: 2px solid #767676;
 }
 
 .multiple-choice [type=checkbox] + label::after {
@@ -2312,7 +2168,7 @@ select.form-control,
 
 .multiple-choice [type=checkbox] + label::before {
   border-radius: 3px;
-  border: 2px solid #999999;
+  border: 2px solid #767676;
 }
 
 input::-webkit-outer-spin-button,
@@ -2630,7 +2486,7 @@ input[type=number] {
 }
 
 .phase-banner span {
-  color: #999999;
+  color: #767676;
 }
 
 .govuk-box-highlight {
