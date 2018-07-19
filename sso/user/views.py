@@ -14,6 +14,7 @@ from allauth.account.views import (
 from allauth.account.utils import complete_signup
 import allauth.exceptions
 
+import core.mixins
 from sso.user.utils import get_redirect_url, get_url_with_redirect
 
 
@@ -83,8 +84,10 @@ class LogoutView(RedirectToNextMixin, allauth_views.LogoutView):
     pass
 
 
-class ConfirmEmailView(DisableRegistrationMixin, RedirectToNextMixin,
-                       allauth_views.ConfirmEmailView):
+class ConfirmEmailView(
+    DisableRegistrationMixin, RedirectToNextMixin, core.mixins.NoIndexMixin,
+    allauth_views.ConfirmEmailView
+):
 
     def get_context_data(self, **kwargs):
         if self.object:
@@ -96,8 +99,10 @@ class ConfirmEmailView(DisableRegistrationMixin, RedirectToNextMixin,
         return super().get_context_data(**kwargs)
 
 
-class PasswordResetFromKeyView(RedirectToNextMixin,
-                               allauth_views.PasswordResetFromKeyView):
+class PasswordResetFromKeyView(
+    RedirectToNextMixin, core.mixins.NoIndexMixin,
+    allauth_views.PasswordResetFromKeyView
+):
     def dispatch(self, request, uidb36, key, **kwargs):
         if settings.FEATURE_FLAGS['DISABLE_REGISTRATION_ON']:
             return redirect('https://sorry.great.gov.uk/')

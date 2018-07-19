@@ -9,10 +9,13 @@ from rest_framework.generics import (
 from rest_framework.response import Response
 
 from conf.signature import SignatureCheckPermission
+import core.mixins
 from sso.user import models
 
 
-class UserByEmailAPIView(RetrieveAPIView, DestroyAPIView, UpdateAPIView):
+class UserByEmailAPIView(
+    core.mixins.NoIndexMixin, RetrieveAPIView, DestroyAPIView, UpdateAPIView
+):
     permission_classes = [SignatureCheckPermission]
     authentication_classes = []
     queryset = models.User.objects.all()

@@ -1,6 +1,5 @@
 import allauth.account.views
 import directory_components.views
-import oauth2_provider.views
 
 from django.conf.urls import url, include
 from django.contrib import admin
@@ -91,17 +90,17 @@ oauth2_provider_patterns = [
     ),
     url(
         r'^authorize/$',
-        oauth2_provider.views.AuthorizationView.as_view(),
+        sso.oauth2.views_user.AuthorizationView.as_view(),
         name="authorize"
     ),
     url(
         r'^token/$',
-        oauth2_provider.views.TokenView.as_view(),
+        sso.oauth2.views_user.TokenView.as_view(),
         name="token"
     ),
     url(
         r'^revoke_token/$',
-        oauth2_provider.views.RevokeTokenView.as_view(),
+        sso.oauth2.views_user.RevokeTokenView.as_view(),
         name="revoke-token"
     ),
 ]
