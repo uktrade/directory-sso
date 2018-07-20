@@ -3,6 +3,7 @@ import os
 
 import dj_database_url
 import environ
+import rediscluster
 
 from django.urls import reverse_lazy
 
@@ -510,7 +511,21 @@ else:
 
 if FEATURE_FLAGS['ACTIVITY_STREAM_NONCE_CACHE_ON']:
     vcap_services = json.loads(os.environ['VCAP_SERVICES'])
-    redis_uri = vcap_services['redis'][0]['credentials']['uri']
+    redis_credentials = vcap_services['redis'][0]['credentials']
+
+    # rediscluster, by default, breaks if using the combination of
+    # - rediss:// connection uri
+    # - skip_full_coverage_check=True
+    # We work around the issues by forcing the uri to start with redis://
+    # and setting the connection class to use SSL if necessary
+    is_tls_enabled = redis_credentials['uri'].startswith('rediss://')
+    if is_tls_enabled:
+        redis_uri = redis_credentials['uri'].replace('rediss://', 'redis://')
+        redis_connection_class = rediscluster.connection.SSLClusterConnection
+    else:
+        redis_uri = redis_credentials['uri']
+        redis_connection_class = rediscluster.connection.ClusterConnection
+
     CACHES['activity_stream_nonce'] = {
         'BACKEND': 'django_redis.cache.RedisCache',
         'LOCATION': redis_uri,
@@ -524,6 +539,7 @@ if FEATURE_FLAGS['ACTIVITY_STREAM_NONCE_CACHE_ON']:
             'CONNECTION_POOL_KWARGS': {
                 # AWS ElasticCache disables CONFIG commands
                 'skip_full_coverage_check': True,
+                'connection_class': redis_connection_class,
             },
         },
         'KEY_PREFIX': 'directory-sso-activity-stream-nonce',
