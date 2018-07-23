@@ -1,7 +1,9 @@
+import json
 import os
 
 import dj_database_url
 import environ
+import rediscluster
 
 from django.urls import reverse_lazy
 
@@ -52,6 +54,7 @@ INSTALLED_APPS = [
     'health_check.db',
     'directory_components',
     'export_elements',
+    'rediscluster',
 ]
 
 SITE_ID = 1
@@ -471,7 +474,10 @@ ACTIVITY_STREAM_NONCE_EXPIRY_SECONDS = 60
 
 # feature flags
 FEATURE_FLAGS = {
-    'CACHE_ON': env.bool('FEATURE_CACHE_ENABLED', False),
+    'USER_CACHE_ON': env.bool('FEATURE_CACHE_ENABLED', False),
+    'ACTIVITY_STREAM_NONCE_CACHE_ON': env.bool(
+        'FEATURE_ACTIVITY_STREAM_NONCE_CACHE_ENABLED', False
+    ),
     'SKIP_MIGRATE_ON': env.bool('FEATURE_SKIP_MIGRATE', False),
     'DISABLE_REGISTRATION_ON': env.bool('FEATURE_DISABLE_REGISTRATION', False),
     'TEST_API_ON': env.bool('FEATURE_TEST_API_ENABLED', False),
@@ -483,17 +489,58 @@ FEATURE_FLAGS = {
     'MAINTENANCE_MODE_ON': env.bool('FEATURE_MAINTENANCE_MODE_ENABLED', False),
 }
 
-if FEATURE_FLAGS['CACHE_ON']:
-    CACHE_BACKENDS = {
-        'redis': 'django_redis.cache.RedisCache',
-        'dummy': 'django.core.cache.backends.dummy.DummyCache',
-        'locmem': 'django.core.cache.backends.locmem.LocMemCache'
-    }
-    CACHES = {
-        'default': {
-            'BACKEND': CACHE_BACKENDS[os.getenv('CACHE_BACKEND', 'redis')],
-            'LOCATION': env.str('REDIS_URL', '')
-        }
-    }
+CACHE_BACKENDS = {
+    'redis': 'django_redis.cache.RedisCache',
+    'dummy': 'django.core.cache.backends.dummy.DummyCache',
+    'locmem': 'django.core.cache.backends.locmem.LocMemCache'
+}
 
+CACHES = {}
+
+if FEATURE_FLAGS['USER_CACHE_ON']:
+    CACHES['default'] = {
+        'BACKEND': CACHE_BACKENDS[os.getenv('CACHE_BACKEND', 'redis')],
+        'LOCATION': os.getenv('REDIS_URL')
+    }
     SESSION_ENGINE = 'django.contrib.sessions.backends.cached_db'
+else:
+    CACHES['default'] = {
+        'BACKEND': CACHE_BACKENDS['locmem'],
+    }
+    SESSION_ENGINE = 'django.contrib.sessions.backends.db'
+
+if FEATURE_FLAGS['ACTIVITY_STREAM_NONCE_CACHE_ON']:
+    vcap_services = json.loads(os.environ['VCAP_SERVICES'])
+    redis_credentials = vcap_services['redis'][0]['credentials']
+
+    # rediscluster, by default, breaks if using the combination of
+    # - rediss:// connection uri
+    # - skip_full_coverage_check=True
+    # We work around the issues by forcing the uri to start with redis://
+    # and setting the connection class to use SSL if necessary
+    is_tls_enabled = redis_credentials['uri'].startswith('rediss://')
+    if is_tls_enabled:
+        redis_uri = redis_credentials['uri'].replace('rediss://', 'redis://')
+        redis_connection_class = rediscluster.connection.SSLClusterConnection
+    else:
+        redis_uri = redis_credentials['uri']
+        redis_connection_class = rediscluster.connection.ClusterConnection
+
+    CACHES['activity_stream_nonce'] = {
+        'BACKEND': 'django_redis.cache.RedisCache',
+        'LOCATION': redis_uri,
+        'OPTIONS': {
+            'REDIS_CLIENT_CLASS': 'rediscluster.StrictRedisCluster',
+            'REDIS_CLIENT_KWARGS': {
+                'decode_responses': True,
+            },
+            'CONNECTION_POOL_CLASS':
+                'rediscluster.connection.ClusterConnectionPool',
+            'CONNECTION_POOL_KWARGS': {
+                # AWS ElasticCache disables CONFIG commands
+                'skip_full_coverage_check': True,
+                'connection_class': redis_connection_class,
+            },
+        },
+        'KEY_PREFIX': 'directory-sso-activity-stream-nonce',
+    }

@@ -1,6 +1,7 @@
 import logging
 
 from django.conf import settings
+from django.core.cache import caches
 from django.utils.crypto import constant_time_compare
 from django.utils.decorators import decorator_from_middleware
 from mohawk import Receiver
@@ -34,8 +35,32 @@ def _lookup_credentials(access_key_id):
     }
 
 
+def _seen_nonce(access_key_id, nonce, _):
+    """Returns if the passed access_key_id/nonce combination has been
+    used within settings.ACTIVITY_STREAM_NONCE_EXPIRY_SECONDS
+    """
+    cache_key = '{access_key_id}:{nonce}'.format(
+        access_key_id=access_key_id,
+        nonce=nonce,
+    )
+
+    # cache.add only adds key if it isn't present
+    seen_cache_key = not caches['activity_stream_nonce'].add(
+        cache_key, True, timeout=settings.ACTIVITY_STREAM_NONCE_EXPIRY_SECONDS,
+    )
+
+    if seen_cache_key:
+        logger.warning('Already seen nonce {nonce}'.format(
+            nonce=nonce,
+        ))
+
+    return seen_cache_key
+
+
 def _authorise(request):
     """Raises a HawkFail if the passed request cannot be authenticated"""
+    check_nonces = settings.FEATURE_FLAGS['ACTIVITY_STREAM_NONCE_CACHE_ON']
+
     return Receiver(
         _lookup_credentials,
         request.META['HTTP_AUTHORIZATION'],
@@ -43,6 +68,7 @@ def _authorise(request):
         request.method,
         content=request.body,
         content_type=request.content_type,
+        seen_nonce=_seen_nonce if check_nonces else lambda _, __, ___: True,
     )
 
 
