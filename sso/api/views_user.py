@@ -24,7 +24,7 @@ class GetUserBySessionKeyMixin:
 
     def get_session_key_user(self, session_key):
 
-        if settings.FEATURE_FLAGS['CACHE_ON']:
+        if settings.FEATURE_FLAGS['USER_CACHE_ON']:
             user_details = UserCache.get(session_key=session_key)
             if user_details:
                 return models.User(
@@ -36,7 +36,7 @@ class GetUserBySessionKeyMixin:
         user_id = session.get_decoded().get('_auth_user_id')
         user = get_object_or_404(models.User, pk=user_id)
 
-        if settings.FEATURE_FLAGS['CACHE_ON']:
+        if settings.FEATURE_FLAGS['USER_CACHE_ON']:
             UserCache.set(user=user, session=session)
 
         return user

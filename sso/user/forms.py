@@ -1,6 +1,5 @@
 from django.conf import settings
 from django.core.urlresolvers import reverse
-from django.forms import BooleanField
 from django.utils.safestring import mark_safe
 
 from allauth.account import forms
@@ -8,12 +7,9 @@ from allauth.account.adapter import get_adapter
 from allauth.account.models import EmailAddress
 from allauth.account.utils import filter_users_by_email
 from allauth.utils import set_form_field_order
-
-from notifications_python_client import NotificationsAPIClient
-
 from directory_constants.constants import urls
-
-from directory_components import widgets
+from directory_components import fields
+from notifications_python_client import NotificationsAPIClient
 
 
 class IndentedInvalidFieldsMixin:
@@ -30,17 +26,13 @@ class SignupForm(IndentedInvalidFieldsMixin, forms.SignupForm):
         '<li>not contain the word "password"</li>'
         '</ul>'
     )
-    terms_agreed = BooleanField(
-        label='',
-        widget=widgets.CheckboxWithInlineLabel(
-            label=mark_safe(
-                'Tick this box to accept the '
-                '<a href="{url}" target="_blank">terms and '
-                'conditions</a> of the great.gov.uk service.'.format(
-                    url=urls.INFO_TERMS_AND_CONDITIONS)
-            )
+    terms_agreed = fields.BooleanField(
+        label=mark_safe(
+            'Tick this box to accept the '
+            '<a href="{url}" target="_blank">terms and '
+            'conditions</a> of the great.gov.uk service.'.format(
+                url=urls.INFO_TERMS_AND_CONDITIONS)
         )
-
     )
     field_order = [
         'email',
@@ -103,12 +95,9 @@ class SignupForm(IndentedInvalidFieldsMixin, forms.SignupForm):
 
 class LoginForm(IndentedInvalidFieldsMixin, forms.LoginForm):
 
-    remember = BooleanField(
-        label='',
+    remember = fields.BooleanField(
+        label='Remember me',
         required=False,
-        widget=widgets.CheckboxWithInlineLabel(
-            label='Remember me'
-        )
     )
 
     def __init__(self, *args, **kwargs):
