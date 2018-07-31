@@ -3,7 +3,7 @@
 [![code-climate-image]][code-climate]
 [![circle-ci-image]][circle-ci]
 [![codecov-image]][codecov]
-[![gemnasium-image]][gemnasium]
+[![snyk-image]][snyk]
 
 ---
 
@@ -122,5 +122,5 @@ You should not edit CSS files directly, instead edit their SCSS counterparts.
 [codecov-image]: https://codecov.io/gh/uktrade/directory-sso/branch/master/graph/badge.svg
 [codecov]: https://codecov.io/gh/uktrade/directory-sso
 
-[gemnasium-image]: https://gemnasium.com/badges/github.com/uktrade/directory-sso.svg
-[gemnasium]: https://gemnasium.com/github.com/uktrade/directory-sso
+[snyk-image]: https://snyk.io/test/github/uktrade/directory-sso/badge.svg
+[snyk]: https://snyk.io/test/github/uktrade/directory-sso
