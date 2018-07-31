@@ -267,7 +267,7 @@ def test_if_authentication_reused_401_returned(api_client):
         _url(),
         content_type='',
         HTTP_AUTHORIZATION=auth,
-        HTTP_X_FORWARDED_FOR='1.2.3.4, 123.123.123.123',
+        HTTP_X_FORWARDED_FOR=WHITELISTED_X_FORWARDED_FOR_HEADER,
     )
     assert response_1.status_code == status.HTTP_200_OK
 
@@ -275,7 +275,7 @@ def test_if_authentication_reused_401_returned(api_client):
         _url(),
         content_type='',
         HTTP_AUTHORIZATION=auth,
-        HTTP_X_FORWARDED_FOR='1.2.3.4, 123.123.123.123',
+        HTTP_X_FORWARDED_FOR=WHITELISTED_X_FORWARDED_FOR_HEADER,
     )
     assert response_2.status_code == status.HTTP_401_UNAUTHORIZED
     error = {'detail': 'Incorrect authentication credentials.'}
