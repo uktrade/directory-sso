@@ -24,5 +24,6 @@ directory-constants==7.1.0
 directory-api-external==4.2.1
 directory-validators==5.0.1
 directory-healthcheck==0.4.2
-directory-components==2.17.2
+directory_components==2.17.2
+export_elements==0.17.3
 django-admin-ip-restrictor==0.1.0
