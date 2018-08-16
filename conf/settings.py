@@ -96,6 +96,7 @@ TEMPLATES = [
                 ('directory_components.context_processors.'
                  'header_footer_processor'),
                 'directory_components.context_processors.analytics',
+                'directory_components.context_processors.cookie_notice',
             ],
             'loaders': [
                 'django.template.loaders.filesystem.Loader',
@@ -424,6 +425,7 @@ HEADER_FOOTER_URLS_SOO = env.str('HEADER_FOOTER_URLS_SOO', '')
 HEADER_FOOTER_URLS_EVENTS = env.str('HEADER_FOOTER_URLS_EVENTS', '')
 HEADER_FOOTER_URLS_CONTACT_US = env.str('HEADER_FOOTER_URLS_CONTACT_US', '')
 HEADER_FOOTER_URLS_DIT = env.str('HEADER_FOOTER_URLS_DIT', '')
+PRIVACY_COOKIE_DOMAIN = env.str('PRIVACY_COOKIE_DOMAIN')
 
 # the following should be 5, but our auth backend are calling check_password
 # twice, so we use 2*5
