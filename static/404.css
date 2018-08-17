@@ -8,6 +8,10 @@ html {
   list-style: none;
 }
 
+#header-cookie-notice .container {
+  width: auto;
+}
+
 #menu p, #menu .body-text {
   margin: 0;
 }
