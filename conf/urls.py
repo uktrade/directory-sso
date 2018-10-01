@@ -1,5 +1,6 @@
 import allauth.account.views
 import directory_components.views
+import directory_healthcheck.views
 
 from django.conf.urls import url, include
 from django.contrib import admin
@@ -109,12 +110,17 @@ api_urlpatterns = [
     url(
         r'^healthcheck/database/$',
         sso.healthcheck.views.DatabaseAPIView.as_view(),
-        name='health-check-database'
+        name='healthcheck-database'
     ),
     url(
         r'^healthcheck/ping/$',
-        sso.healthcheck.views.PingAPIView.as_view(),
-        name='health-check-ping'
+        directory_healthcheck.views.PingView.as_view(),
+        name='healthcheck-ping'
+    ),
+    url(
+        r'^healthcheck/sentry/$',
+        directory_healthcheck.views.SentryHealthcheckView.as_view(),
+        name='healthcheck-sentry'
     ),
     url(
         r'^session-user/$',

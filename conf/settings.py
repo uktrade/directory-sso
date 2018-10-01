@@ -368,7 +368,10 @@ for domain in ALLOWED_REDIRECT_DOMAINS:
 SIGNATURE_SECRET = env.str('SIGNATURE_SECRET')
 
 URLS_EXCLUDED_FROM_SIGNATURE_CHECK = [
-    reverse_lazy('health-check-database')
+    reverse_lazy('healthcheck-database'),
+    reverse_lazy('healthcheck-ping'),
+    reverse_lazy('healthcheck-sentry'),
+
 ]
 
 # Use proxy host name when generating links (e.g. in emails)
