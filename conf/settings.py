@@ -66,7 +66,7 @@ MIDDLEWARE_CLASSES = [
     'whitenoise.middleware.WhiteNoiseMiddleware',
     'conf.signature.SignatureCheckMiddleware',
     'django.middleware.common.CommonMiddleware',
-    'django.contrib.sessions.middleware.SessionMiddleware',
+    'core.middleware.MultipleSessionCookiesMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'corsheaders.middleware.CorsMiddleware',
@@ -486,6 +486,12 @@ FEATURE_FLAGS = {
     'SKIP_MIGRATE_ON': env.bool('FEATURE_SKIP_MIGRATE', False),
     'DISABLE_REGISTRATION_ON': env.bool('FEATURE_DISABLE_REGISTRATION', False),
     'TEST_API_ON': env.bool('FEATURE_TEST_API_ENABLED', False),
+    'WHITELIST_SUBDOMAIN_SESSION_COOKIES_ON': env.bool(
+        'FEATURE_WHITELIST_SUBDOMAIN_SESSION_COOKIES_ENABLED', False
+    ),
+    'WILDCARD_SUBDOMAIN_SESSION_COOKIE_ON': env.bool(
+        'FEATURE_WILDCARD_SUBDOMAIN_SESSION_COOKIE_ENABLED', True
+    ),
     # used by directory-components
     'SEARCH_ENGINE_INDEXING_OFF': env.bool(
         'FEATURE_SEARCH_ENGINE_INDEXING_DISABLED', False
@@ -549,3 +555,8 @@ if FEATURE_FLAGS['ACTIVITY_STREAM_NONCE_CACHE_ON']:
         },
         'KEY_PREFIX': 'directory-sso-activity-stream-nonce',
     }
+
+
+SESSION_COOKIES_NAME_DOMAIN_MAPPING = env.dict(
+    'SESSION_COOKIES_NAME_DOMAIN_MAPPING', default={}
+)
