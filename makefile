@@ -165,7 +165,8 @@ DEBUG_SET_ENV_VARS := \
 	export ACTIVITY_STREAM_SECRET_ACCESS_KEY=some-secret; \
 	export FEATURE_ACTIVITY_STREAM_NONCE_CACHE_ENABLED=true; \
 	export VCAP_SERVICES="{\"redis\": [{\"credentials\": {\"uri\": \"http://redis_cluster:7000/\"}}]}"; \
-	export PRIVACY_COOKIE_DOMAIN=.trade.great
+	export PRIVACY_COOKIE_DOMAIN=.trade.great; \
+	export SESSION_COOKIES_NAME_DOMAIN_MAPPING="debug_sso_session_cookie=.trade.great"
 
 debug_webserver:
 	 $(DEBUG_SET_ENV_VARS)&& $(COLLECT_STATIC) && $(DJANGO_WEBSERVER);
