@@ -26,4 +26,4 @@ directory-validators==5.0.1
 directory-healthcheck==0.6.0
 directory_components==2.18.0
 export_elements==0.17.3
-django-admin-ip-restrictor==0.1.0
+django-admin-ip-restrictor==1.0.0
