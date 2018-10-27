@@ -1,16 +1,11 @@
-from functools import reduce
 import json
 import os
-import sys
-from urllib.parse import urljoin
 
 import dj_database_url
 import environ
 import rediscluster
 
 from django.urls import reverse_lazy
-from django.urls import get_script_prefix
-from django.utils.functional import LazyObject
 
 from core.helpers import is_valid_domain
 
@@ -142,27 +137,8 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 if not os.path.exists(STATIC_ROOT):
     os.makedirs(STATIC_ROOT)
 
-
-class LazyStaticHost(LazyObject):
-    @property
-    def _wrapped(self):
-        return env.str('STATIC_HOST', '')
-
-
-class LazyStaticURL(LazyObject):
-    @property
-    def _wrapped(self):
-        parts = [STATIC_HOST, get_script_prefix(), 'static/']
-        return reduce(urljoin, parts)
-
-
-STATIC_HOST = LazyStaticHost()
-STATIC_URL = LazyStaticURL()
-
-if 'collectstatic' in sys.argv:
-    STATIC_URL = str(STATIC_URL)
-
-
+STATIC_HOST = env.str('STATIC_HOST', '')
+STATIC_URL = STATIC_HOST + '/static/'
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 # Extra places for collectstatic to find static files.
@@ -204,16 +180,6 @@ if DEBUG:
                 'handlers': ['console'],
                 'level': 'ERROR',
                 'propagate': True,
-            },
-            'environ': {
-                'level': 'WARNING',
-                'handlers': ['console'],
-                'propagate': False,
-            },
-            'mohawk': {
-                'level': 'WARNING',
-                'handlers': ['console'],
-                'propagate': False,
             },
             '': {
                 'handlers': ['console'],
