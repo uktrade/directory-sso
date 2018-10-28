@@ -6,6 +6,7 @@ from django.core.urlresolvers import reverse
 from django.http import HttpResponseRedirect
 from django.shortcuts import redirect
 from django.views.generic import RedirectView
+from django.urls import reverse_lazy
 
 from allauth.account import views as allauth_views
 from allauth.account.views import (
@@ -134,4 +135,4 @@ class PasswordChangeView(DisableRegistrationMixin,
 
 
 class SSOLandingPage(RedirectView):
-    url = settings.DEFAULT_REDIRECT_URL
+    url = reverse_lazy('account_login')
