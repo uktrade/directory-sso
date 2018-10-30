@@ -1,20 +1,9 @@
-from unittest.mock import patch
-
 from django.contrib.auth import get_user_model
 from django.core.management import call_command
 from django.db import connection
 from django.db.migrations.executor import MigrationExecutor
 
 import pytest
-
-
-@pytest.fixture(autouse=True)
-def mock_signature_checker():
-    mock_path = 'sigauth.utils.RequestSignatureChecker.test_signature'
-    patcher = patch(mock_path, return_value=True)
-    patcher.start()
-    yield
-    patcher.stop()
 
 
 @pytest.fixture()
