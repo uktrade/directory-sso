@@ -5,8 +5,6 @@ import dj_database_url
 import environ
 import rediscluster
 
-from django.urls import reverse_lazy
-
 from core.helpers import is_valid_domain
 
 
@@ -366,12 +364,10 @@ for domain in ALLOWED_REDIRECT_DOMAINS:
 
 # Signature check
 SIGNATURE_SECRET = env.str('SIGNATURE_SECRET')
-
-URLS_EXCLUDED_FROM_SIGNATURE_CHECK = [
-    reverse_lazy('healthcheck-database'),
-    reverse_lazy('healthcheck-ping'),
-    reverse_lazy('healthcheck-sentry'),
-
+SIGAUTH_URL_NAMES_WHITELIST = [
+    'healthcheck-database',
+    'healthcheck-ping',
+    'healthcheck-sentry',
 ]
 
 # Use proxy host name when generating links (e.g. in emails)
@@ -399,24 +395,15 @@ FEEDBACK_FORM_URL = env.str(
 )
 
 # directory-external-api
-DIRECTORY_API_EXTERNAL_CLIENT_CLASSES = {
-    'default': 'directory_api_external.client.DirectoryAPIExternalClient',
-    'unit-test': (
-        'directory_api_external.dummy_client.DummyDirectoryAPIExternalClient'
-    ),
-}
-DIRECTORY_API_EXTERNAL_CLIENT_CLASS_NAME = env.str(
-    'DIRECTORY_API_EXTERNAL_CLIENT_CLASS_NAME', 'default'
-)
-DIRECTORY_API_EXTERNAL_CLIENT_CLASS = DIRECTORY_API_EXTERNAL_CLIENT_CLASSES[
-    DIRECTORY_API_EXTERNAL_CLIENT_CLASS_NAME
-]
-DIRECTORY_API_EXTERNAL_SIGNATURE_SECRET = env.str(
-    'DIRECTORY_API_EXTERNAL_SIGNATURE_SECRET'
-)
-DIRECTORY_API_EXTERNAL_CLIENT_BASE_URL = env.str(
+DIRECTORY_API_CLIENT_EXTERNAL_BASE_URL = env.str(
     'DIRECTORY_API_EXTERNAL_CLIENT_BASE_URL'
 )
+DIRECTORY_API_CLIENT_EXTERNAL_API_KEY = env.str(
+    'DIRECTORY_API_EXTERNAL_SIGNATURE_SECRET'
+)
+DIRECTORY_API_CLIENT_EXTERNAL_SENDER_ID = 'directory'
+DIRECTORY_API_CLIENT_EXTERNAL_DEFAULT_TIMEOUT = 5
+
 
 # Export Opportunities
 EXOPS_APPLICATION_CLIENT_ID = env.str('EXOPS_APPLICATION_CLIENT_ID')

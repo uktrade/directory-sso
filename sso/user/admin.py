@@ -6,7 +6,7 @@ from django.contrib import admin
 from django.http import HttpResponse
 
 from sso.user.models import User
-from sso.user.utils import api_client
+from directory_api_external.client import api_client
 
 
 @admin.register(User)
