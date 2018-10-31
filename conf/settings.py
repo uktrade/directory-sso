@@ -1,12 +1,13 @@
 import json
 import os
 
+from django.urls import reverse_lazy
+
 import dj_database_url
 import environ
 import rediscluster
 
 from core.helpers import is_valid_domain
-
 
 env = environ.Env()
 
@@ -263,12 +264,13 @@ AUTH_PASSWORD_VALIDATORS = [
     }
 ]
 
-
 AUTHENTICATION_BACKENDS = (
     'oauth2_provider.backends.OAuth2Backend',
     'django.contrib.auth.backends.ModelBackend',
     'allauth.account.auth_backends.AuthenticationBackend'
 )
+
+LOGIN_URL = reverse_lazy('account_login')
 
 # DRF
 REST_FRAMEWORK = {
