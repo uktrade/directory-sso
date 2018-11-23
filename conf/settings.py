@@ -447,11 +447,6 @@ GOV_NOTIFY_ALREADY_REGISTERED_TEMPLATE_ID = env.str(
     '5c8cc5aa-a4f5-48ae-89e6-df5572c317ec'
     )
 
-# Admin restrictor
-RESTRICT_ADMIN = env.str('RESTRICT_ADMIN', False)
-ALLOWED_ADMIN_IPS = env.list('ALLOWED_ADMIN_IPS', default=[])
-ALLOWED_ADMIN_IP_RANGES = env.list('ALLOWED_ADMIN_IP_RANGES', default=[])
-
 SSO_BASE_URL = env.str('SSO_BASE_URL', 'https://sso.trade.great.gov.uk')
 
 # Activity Stream
@@ -549,3 +544,12 @@ if FEATURE_FLAGS['ACTIVITY_STREAM_NONCE_CACHE_ON']:
 SESSION_COOKIES_NAME_DOMAIN_MAPPING = env.dict(
     'SESSION_COOKIES_NAME_DOMAIN_MAPPING', default={}
 )
+
+
+# ip-restrictor
+RESTRICT_ADMIN = env.bool('IP_RESTRICTOR_RESTRICT_IPS', False)
+ALLOWED_ADMIN_IPS = env.list('IP_RESTRICTOR_ALLOWED_ADMIN_IPS', default=[])
+ALLOWED_ADMIN_IP_RANGES = env.list(
+    'IP_RESTRICTOR_ALLOWED_ADMIN_IP_RANGES', default=[]
+)
+RESTRICTED_APP_NAMES = ['admin', '']

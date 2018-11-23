@@ -146,6 +146,14 @@ api_urlpatterns = [
     ),
 ]
 
+testapi_urls = [
+    url(
+        r'^user-by-email/(?P<email>.*)/$',
+        sso.testapi.views.UserByEmailAPIView.as_view(),
+        name='user_by_email'
+    ),
+]
+
 
 urlpatterns = [
     url(
@@ -175,11 +183,10 @@ urlpatterns = [
     ),
     url(
         r'^api/v1/',
-        include(api_urlpatterns)
+        include(api_urlpatterns, namespace='api', app_name='api')
     ),
     url(
-        r'^testapi/user-by-email/(?P<email>.*)/$',
-        sso.testapi.views.UserByEmailAPIView.as_view(),
-        name='user_by_email'
+        r'^testapi/',
+        include(testapi_urls, namespace='testapi', app_name='testapi')
     ),
 ]

@@ -20,15 +20,15 @@ def api_client():
 
 
 def _url():
-    return 'http://testserver' + reverse('activity-stream')
+    return 'http://testserver' + reverse('api:activity-stream')
 
 
 def _url_incorrect_domain():
-    return 'http://incorrect' + reverse('activity-stream')
+    return 'http://incorrect' + reverse('api:activity-stream')
 
 
 def _url_incorrect_path():
-    return 'http://testserver' + reverse('activity-stream') + 'incorrect/'
+    return 'http://testserver' + reverse('api:activity-stream') + 'incorrect/'
 
 
 def _auth_sender(key_id='some-id', secret_key='some-secret', url=_url,

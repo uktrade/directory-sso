@@ -38,7 +38,7 @@ def test_get_session_user_valid_session_key(api_client):
     user, user_session = setup_data()
 
     response = api_client.get(
-        reverse('session-user'),
+        reverse('api:session-user'),
         data={"session_key": user_session._session_key},
     )
 
@@ -55,7 +55,7 @@ def test_get_session_user_expired(api_client):
     user_session.save()
 
     response = api_client.get(
-        reverse('session-user'),
+        reverse('api:session-user'),
         data={"session_key": user_session._session_key},
     )
 
@@ -67,7 +67,7 @@ def test_get_session_user_valid_session_key_no_user(api_client):
     user, user_session = setup_data()
 
     response = api_client.get(
-        reverse('session-user'), data={"session_key": 'non-existent'},
+        reverse('api:session-user'), data={"session_key": 'non-existent'},
     )
 
     assert response.status_code == status.HTTP_404_NOT_FOUND
@@ -82,11 +82,11 @@ def test_get_session_user_cached_response(mock_set, settings, api_client):
     user, user_session = setup_data()
 
     response_one = api_client.get(
-        reverse('session-user'),
+        reverse('api:session-user'),
         data={"session_key": user_session._session_key},
     )
     response_two = api_client.get(
-        reverse('session-user'),
+        reverse('api:session-user'),
         data={"session_key": user_session._session_key},
     )
 
@@ -108,7 +108,7 @@ def test_get_session_user_cached_response_expires(
     user, user_session = setup_data()
 
     response_one = api_client.get(
-        reverse('session-user'),
+        reverse('api:session-user'),
         data={"session_key": user_session._session_key},
     )
 
@@ -125,7 +125,7 @@ def test_get_session_user_cached_response_expires(
 
     with freeze_time(user_session.get_expiry_date() + timedelta(seconds=1)):
         response_two = api_client.get(
-            reverse('session-user'),
+            reverse('api:session-user'),
             data={"session_key": user_session._session_key},
         )
         assert response_two.status_code == status.HTTP_404_NOT_FOUND
@@ -151,7 +151,7 @@ def test_get_session_user_cached_response_multiple_users(
     # when multiple request for multiple users are made
     for user, session in (user_session_groups * 2):
         response = api_client.get(
-            reverse('session-user'),
+            reverse('api:session-user'),
             data={"session_key": session._session_key},
         )
         # then the expected response is returned
@@ -168,7 +168,7 @@ def test_get_last_login(api_client):
     users = UserFactory.create_batch(5)
     setup_data()  # creates active user that should not be in response
 
-    response = api_client.get(reverse('last-login'))
+    response = api_client.get(reverse('api:last-login'))
 
     assert response.status_code == status.HTTP_200_OK
     assert len(response.json()) == 5
@@ -209,7 +209,7 @@ def test_get_last_login_with_params(api_client):
     setup_data()  # creates active user that should not be in response
 
     response = api_client.get(
-        reverse('last-login'), {'start': '2016-12-25', 'end': '2017-01-01'}
+        reverse('api:last-login'), {'start': '2016-12-25', 'end': '2017-01-01'}
     )
 
     assert response.status_code == status.HTTP_200_OK
@@ -240,7 +240,7 @@ def test_get_last_login_with_invalid_date_params(client):
     setup_data()
 
     response = client.get(
-        reverse('last-login'), {'start': '2016-A-25', 'end': '2017-B-01'}
+        reverse('api:last-login'), {'start': '2016-A-25', 'end': '2017-B-01'}
     )
 
     format_error = (
@@ -262,7 +262,7 @@ def test_check_password_user_valid_data(api_client):
     user, user_session = setup_data()
 
     response = api_client.post(
-        reverse('password-check'),
+        reverse('api:password-check'),
         data={'session_key': user_session._session_key, 'password': 'pass'},
     )
 
@@ -274,7 +274,7 @@ def test_check_password_user_invalid_password(api_client):
     user, user_session = setup_data()
 
     response = api_client.post(
-        reverse('password-check'),
+        reverse('api:password-check'),
         data={'session_key': user_session._session_key, 'password': '!!!'},
     )
 
@@ -288,7 +288,7 @@ def test_check_password_expired(api_client):
     user_session.save()
 
     response = api_client.post(
-        reverse('password-check'),
+        reverse('api:password-check'),
         data={'session_key': user_session._session_key, 'password': 'pass'},
     )
 
@@ -300,7 +300,7 @@ def test_check_password_valid_session_key_no_user(api_client):
     user, user_session = setup_data()
 
     response = api_client.post(
-        reverse('password-check'),
+        reverse('api:password-check'),
         data={'session_key': 'non-existent', 'password': 'pass'},
     )
 
