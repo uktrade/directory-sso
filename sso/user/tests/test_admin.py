@@ -246,7 +246,7 @@ def test_admin_view_restricted_not_found(settings, client):
 
 @pytest.mark.django_db
 def test_admin_view_restricted(settings, client):
-
+    settings.REMOTE_IP_ADDRESS_RETRIEVER = 'ipware'
     settings.RESTRICT_ADMIN = True
     settings.ALLOWED_ADMIN_IPS = ['74.125.224.72']
     response = client.get(

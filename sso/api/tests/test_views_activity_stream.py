@@ -227,7 +227,7 @@ def test_if_61_seconds_in_past_401_returned(api_client):
     with freeze_time(past):
         auth = _auth_sender().request_header
     response = api_client.get(
-        reverse('activity-stream'),
+        reverse('api:activity-stream'),
         content_type='',
         HTTP_AUTHORIZATION=auth,
         HTTP_X_FORWARDED_FOR=WHITELISTED_X_FORWARDED_FOR_HEADER,

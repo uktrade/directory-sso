@@ -3,6 +3,7 @@ import os
 
 from django.urls import reverse_lazy
 
+from directory_components.constants import IP_RETRIEVER_NAME_GOV_UK
 import dj_database_url
 import environ
 import rediscluster
@@ -60,6 +61,7 @@ SITE_ID = 1
 
 MIDDLEWARE_CLASSES = [
     'directory_components.middleware.MaintenanceModeMiddleware',
+    'directory_components.middleware.IPRestrictorMiddleware',
     'core.middleware.SSODisplayLoggedInCookieMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',
@@ -69,7 +71,6 @@ MIDDLEWARE_CLASSES = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'corsheaders.middleware.CorsMiddleware',
-    'admin_ip_restrictor.middleware.AdminIPRestrictorMiddleware',
     'directory_components.middleware.NoCacheMiddlware',
     'directory_components.middleware.RobotsIndexControlHeaderMiddlware',
 ]
@@ -553,3 +554,7 @@ ALLOWED_ADMIN_IP_RANGES = env.list(
     'IP_RESTRICTOR_ALLOWED_ADMIN_IP_RANGES', default=[]
 )
 RESTRICTED_APP_NAMES = ['admin', '']
+REMOTE_IP_ADDRESS_RETRIEVER = env.str(
+    'IP_RESTRICTOR_REMOTE_IP_ADDRESS_RETRIEVER',
+    IP_RETRIEVER_NAME_GOV_UK
+)
