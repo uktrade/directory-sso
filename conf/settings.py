@@ -3,6 +3,7 @@ import os
 
 from django.urls import reverse_lazy
 
+from directory_components.constants import IP_RETRIEVER_NAME_GOV_UK
 import dj_database_url
 import environ
 import rediscluster
@@ -60,6 +61,7 @@ SITE_ID = 1
 
 MIDDLEWARE_CLASSES = [
     'directory_components.middleware.MaintenanceModeMiddleware',
+    'directory_components.middleware.IPRestrictorMiddleware',
     'core.middleware.SSODisplayLoggedInCookieMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',
@@ -69,7 +71,6 @@ MIDDLEWARE_CLASSES = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'corsheaders.middleware.CorsMiddleware',
-    'admin_ip_restrictor.middleware.AdminIPRestrictorMiddleware',
     'directory_components.middleware.NoCacheMiddlware',
     'directory_components.middleware.RobotsIndexControlHeaderMiddlware',
 ]
@@ -447,11 +448,6 @@ GOV_NOTIFY_ALREADY_REGISTERED_TEMPLATE_ID = env.str(
     '5c8cc5aa-a4f5-48ae-89e6-df5572c317ec'
     )
 
-# Admin restrictor
-RESTRICT_ADMIN = env.str('RESTRICT_ADMIN', False)
-ALLOWED_ADMIN_IPS = env.list('ALLOWED_ADMIN_IPS', default=[])
-ALLOWED_ADMIN_IP_RANGES = env.list('ALLOWED_ADMIN_IP_RANGES', default=[])
-
 SSO_BASE_URL = env.str('SSO_BASE_URL', 'https://sso.trade.great.gov.uk')
 
 # Activity Stream
@@ -548,4 +544,17 @@ if FEATURE_FLAGS['ACTIVITY_STREAM_NONCE_CACHE_ON']:
 
 SESSION_COOKIES_NAME_DOMAIN_MAPPING = env.dict(
     'SESSION_COOKIES_NAME_DOMAIN_MAPPING', default={}
+)
+
+
+# ip-restrictor
+RESTRICT_ADMIN = env.bool('IP_RESTRICTOR_RESTRICT_IPS', False)
+ALLOWED_ADMIN_IPS = env.list('IP_RESTRICTOR_ALLOWED_ADMIN_IPS', default=[])
+ALLOWED_ADMIN_IP_RANGES = env.list(
+    'IP_RESTRICTOR_ALLOWED_ADMIN_IP_RANGES', default=[]
+)
+RESTRICTED_APP_NAMES = ['admin', '']
+REMOTE_IP_ADDRESS_RETRIEVER = env.str(
+    'IP_RESTRICTOR_REMOTE_IP_ADDRESS_RETRIEVER',
+    IP_RETRIEVER_NAME_GOV_UK
 )

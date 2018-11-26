@@ -20,15 +20,15 @@ def api_client():
 
 
 def _url():
-    return 'http://testserver' + reverse('activity-stream')
+    return 'http://testserver' + reverse('api:activity-stream')
 
 
 def _url_incorrect_domain():
-    return 'http://incorrect' + reverse('activity-stream')
+    return 'http://incorrect' + reverse('api:activity-stream')
 
 
 def _url_incorrect_path():
-    return 'http://testserver' + reverse('activity-stream') + 'incorrect/'
+    return 'http://testserver' + reverse('api:activity-stream') + 'incorrect/'
 
 
 def _auth_sender(key_id='some-id', secret_key='some-secret', url=_url,
@@ -227,7 +227,7 @@ def test_if_61_seconds_in_past_401_returned(api_client):
     with freeze_time(past):
         auth = _auth_sender().request_header
     response = api_client.get(
-        reverse('activity-stream'),
+        reverse('api:activity-stream'),
         content_type='',
         HTTP_AUTHORIZATION=auth,
         HTTP_X_FORWARDED_FOR=WHITELISTED_X_FORWARDED_FOR_HEADER,

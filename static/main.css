@@ -76,7 +76,7 @@ body #content .container form {
   }
 }
 
-.grid-row:after, #content:after, .notice:after, .panel:after, fieldset:after, .form-section:after,
+.grid-row:after, #content:after, .notice:after, .panel:after, .panel-vertical-wide:after, .panel-vertical-narrow:after, fieldset:after, .form-section:after,
 .form-group:after,
 form:after,
 .input-field-container p:after, .form-group-error:after, .breadcrumbs ol:after {
@@ -106,7 +106,7 @@ form:after,
   margin: 0 -15px;
 }
 
-.grid-row:after, #content:after, .notice:after, .panel:after, fieldset:after, .form-section:after,
+.grid-row:after, #content:after, .notice:after, .panel:after, .panel-vertical-wide:after, .panel-vertical-narrow:after, fieldset:after, .form-section:after,
 .form-group:after,
 form:after,
 .input-field-container p:after, .form-group-error:after, .breadcrumbs ol:after {
@@ -115,7 +115,7 @@ form:after,
   clear: both;
 }
 
-.grid-row:after, #content:after, .notice:after, .panel:after, fieldset:after, .form-section:after,
+.grid-row:after, #content:after, .notice:after, .panel:after, .panel-vertical-wide:after, .panel-vertical-narrow:after, fieldset:after, .form-section:after,
 .form-group:after,
 form:after,
 .input-field-container p:after, .form-group-error:after, .breadcrumbs ol:after {
@@ -124,7 +124,7 @@ form:after,
   clear: both;
 }
 
-.grid-row:after, #content:after, .notice:after, .panel:after, fieldset:after, .form-section:after,
+.grid-row:after, #content:after, .notice:after, .panel:after, .panel-vertical-wide:after, .panel-vertical-narrow:after, fieldset:after, .form-section:after,
 .form-group:after,
 form:after,
 .input-field-container p:after, .form-group-error:after, .breadcrumbs ol:after {
@@ -154,7 +154,7 @@ form:after,
   margin: 0 -15px;
 }
 
-.grid-row:after, #content:after, .notice:after, .panel:after, fieldset:after, .form-section:after,
+.grid-row:after, #content:after, .notice:after, .panel:after, .panel-vertical-wide:after, .panel-vertical-narrow:after, fieldset:after, .form-section:after,
 .form-group:after,
 form:after,
 .input-field-container p:after, .form-group-error:after, .breadcrumbs ol:after {
@@ -163,7 +163,7 @@ form:after,
   clear: both;
 }
 
-.grid-row:after, #content:after, .notice:after, .panel:after, fieldset:after, .form-section:after,
+.grid-row:after, #content:after, .notice:after, .panel:after, .panel-vertical-wide:after, .panel-vertical-narrow:after, fieldset:after, .form-section:after,
 .form-group:after,
 form:after,
 .input-field-container p:after, .form-group-error:after, .breadcrumbs ol:after {
@@ -305,6 +305,7 @@ acronym[title] {
 }
 
 legend {
+  -webkit-box-sizing: border-box;
   box-sizing: border-box;
   max-width: 100%;
   display: table;
@@ -314,6 +315,7 @@ html, body, div, span, object, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, ab
   margin: 0;
   padding: 0;
   border: 0;
+  -webkit-box-sizing: border-box;
   box-sizing: border-box;
   font-size: 100%;
   vertical-align: baseline;
@@ -332,6 +334,7 @@ acronym[title] {
 }
 
 legend {
+  -webkit-box-sizing: border-box;
   box-sizing: border-box;
   max-width: 100%;
   display: table;
@@ -352,7 +355,6 @@ legend {
 .column-one-quarter {
   padding: 0 15px;
   -webkit-box-sizing: border-box;
-  -moz-box-sizing: border-box;
   box-sizing: border-box;
 }
 
@@ -368,7 +370,6 @@ legend {
 .column-one-half {
   padding: 0 15px;
   -webkit-box-sizing: border-box;
-  -moz-box-sizing: border-box;
   box-sizing: border-box;
 }
 
@@ -384,7 +385,6 @@ legend {
 .column-one-third {
   padding: 0 15px;
   -webkit-box-sizing: border-box;
-  -moz-box-sizing: border-box;
   box-sizing: border-box;
 }
 
@@ -399,7 +399,6 @@ legend {
 .column-two-thirds {
   padding: 0 15px;
   -webkit-box-sizing: border-box;
-  -moz-box-sizing: border-box;
   box-sizing: border-box;
 }
 
@@ -413,7 +412,6 @@ legend {
 .column-full {
   padding: 0 15px;
   -webkit-box-sizing: border-box;
-  -moz-box-sizing: border-box;
   box-sizing: border-box;
 }
 
@@ -426,8 +424,33 @@ legend {
 
 #content {
   max-width: none;
-  padding: 30px 0;
+  padding: 0;
   margin: 0;
+}
+
+.grid-row > * {
+  padding: 0 15px;
+}
+
+.card-grid {
+  margin: 0 -15px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-wrap: wrap;
+  flex-wrap: wrap;
+}
+
+.card-grid > * {
+  padding: 0 15px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  width: 100%;
 }
 
 .container {
@@ -448,7 +471,480 @@ legend {
 }
 
 section {
-  padding-bottom: 90px;
+  overflow: auto;
+  padding-bottom: 3em;
+}
+
+.column-full {
+  padding: 0 15px;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  width: 100%;
+}
+
+@media (min-width: 641px) {
+  .column-full {
+    float: left;
+    width: 100%;
+  }
+}
+
+.column-half {
+  padding: 0 15px;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  width: 100%;
+}
+
+@media (min-width: 641px) {
+  .column-half {
+    float: left;
+    width: 50%;
+  }
+}
+
+.column-third {
+  padding: 0 15px;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  width: 100%;
+}
+
+@media (min-width: 641px) {
+  .column-third {
+    float: left;
+    width: 33.33333%;
+  }
+}
+
+.column-two-thirds {
+  padding: 0 15px;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  width: 100%;
+}
+
+@media (min-width: 641px) {
+  .column-two-thirds {
+    float: left;
+    width: 66.66667%;
+  }
+}
+
+.column-quarter {
+  padding: 0 15px;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  width: 100%;
+}
+
+@media (min-width: 641px) {
+  .column-quarter {
+    float: left;
+    width: 25%;
+  }
+}
+
+.column-sixth {
+  padding: 0 15px;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  width: 100%;
+}
+
+@media (min-width: 641px) {
+  .column-sixth {
+    float: left;
+    width: 16.66667%;
+  }
+}
+
+.column-three-quarters {
+  padding: 0 15px;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  width: 100%;
+}
+
+@media (min-width: 641px) {
+  .column-three-quarters {
+    float: left;
+    width: 75%;
+  }
+}
+
+.column-seven-twelfths {
+  padding: 0 15px;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  width: 100%;
+}
+
+@media (min-width: 641px) {
+  .column-seven-twelfths {
+    float: left;
+    width: 58.33333%;
+  }
+}
+
+@media (min-width: 641px) {
+  .column-full-m {
+    padding: 0 15px;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+  }
+}
+
+@media (min-width: 641px) and (min-width: 641px) {
+  .column-full-m {
+    float: left;
+    width: 100%;
+  }
+}
+
+@media (min-width: 641px) {
+  .column-half-m {
+    padding: 0 15px;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+  }
+}
+
+@media (min-width: 641px) and (min-width: 641px) {
+  .column-half-m {
+    float: left;
+    width: 50%;
+  }
+}
+
+@media (min-width: 641px) {
+  .column-third-m {
+    padding: 0 15px;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+  }
+}
+
+@media (min-width: 641px) and (min-width: 641px) {
+  .column-third-m {
+    float: left;
+    width: 33.33333%;
+  }
+}
+
+@media (min-width: 641px) {
+  .column-two-thirds-m {
+    padding: 0 15px;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+  }
+}
+
+@media (min-width: 641px) and (min-width: 641px) {
+  .column-two-thirds-m {
+    float: left;
+    width: 66.66667%;
+  }
+}
+
+@media (min-width: 641px) {
+  .column-quarter-m {
+    padding: 0 15px;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+  }
+}
+
+@media (min-width: 641px) and (min-width: 641px) {
+  .column-quarter-m {
+    float: left;
+    width: 25%;
+  }
+}
+
+@media (min-width: 641px) {
+  .column-sixth-m {
+    padding: 0 15px;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+  }
+}
+
+@media (min-width: 641px) and (min-width: 641px) {
+  .column-sixth-m {
+    float: left;
+    width: 16.66667%;
+  }
+}
+
+@media (min-width: 641px) {
+  .column-seven-twelfths-m {
+    padding: 0 15px;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+  }
+}
+
+@media (min-width: 641px) and (min-width: 641px) {
+  .column-seven-twelfths-m {
+    float: left;
+    width: 58.33333%;
+  }
+}
+
+@media (min-width: 641px) {
+  .column-three-quarters-m {
+    padding: 0 15px;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+  }
+}
+
+@media (min-width: 641px) and (min-width: 641px) {
+  .column-three-quarters-m {
+    float: left;
+    width: 75%;
+  }
+}
+
+@media (min-width: 769px) {
+  .column-full-l {
+    padding: 0 15px;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+  }
+}
+
+@media (min-width: 769px) and (min-width: 641px) {
+  .column-full-l {
+    float: left;
+    width: 100%;
+  }
+}
+
+@media (min-width: 769px) {
+  .column-half-l {
+    padding: 0 15px;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+  }
+}
+
+@media (min-width: 769px) and (min-width: 641px) {
+  .column-half-l {
+    float: left;
+    width: 50%;
+  }
+}
+
+@media (min-width: 769px) {
+  .column-third-l {
+    padding: 0 15px;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+  }
+}
+
+@media (min-width: 769px) and (min-width: 641px) {
+  .column-third-l {
+    float: left;
+    width: 33.33333%;
+  }
+}
+
+@media (min-width: 769px) {
+  .column-two-thirds-l {
+    padding: 0 15px;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+  }
+}
+
+@media (min-width: 769px) and (min-width: 641px) {
+  .column-two-thirds-l {
+    float: left;
+    width: 66.66667%;
+  }
+}
+
+@media (min-width: 769px) {
+  .column-quarter-l {
+    padding: 0 15px;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+  }
+}
+
+@media (min-width: 769px) and (min-width: 641px) {
+  .column-quarter-l {
+    float: left;
+    width: 25%;
+  }
+}
+
+@media (min-width: 769px) {
+  .column-sixth-l {
+    padding: 0 15px;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+  }
+}
+
+@media (min-width: 769px) and (min-width: 641px) {
+  .column-sixth-l {
+    float: left;
+    width: 16.66667%;
+  }
+}
+
+@media (min-width: 769px) {
+  .column-seven-twelfths-l {
+    padding: 0 15px;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+  }
+}
+
+@media (min-width: 769px) and (min-width: 641px) {
+  .column-seven-twelfths-l {
+    float: left;
+    width: 58.33333%;
+  }
+}
+
+@media (min-width: 769px) {
+  .column-three-quarters-l {
+    padding: 0 15px;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+  }
+}
+
+@media (min-width: 769px) and (min-width: 641px) {
+  .column-three-quarters-l {
+    float: left;
+    width: 75%;
+  }
+}
+
+@media (min-width: 961px) {
+  .column-full-xl {
+    padding: 0 15px;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+  }
+}
+
+@media (min-width: 961px) and (min-width: 641px) {
+  .column-full-xl {
+    float: left;
+    width: 100%;
+  }
+}
+
+@media (min-width: 961px) {
+  .column-half-xl {
+    padding: 0 15px;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+  }
+}
+
+@media (min-width: 961px) and (min-width: 641px) {
+  .column-half-xl {
+    float: left;
+    width: 50%;
+  }
+}
+
+@media (min-width: 961px) {
+  .column-third-xl {
+    padding: 0 15px;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+  }
+}
+
+@media (min-width: 961px) and (min-width: 641px) {
+  .column-third-xl {
+    float: left;
+    width: 33.33333%;
+  }
+}
+
+@media (min-width: 961px) {
+  .column-two-thirds-xl {
+    padding: 0 15px;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+  }
+}
+
+@media (min-width: 961px) and (min-width: 641px) {
+  .column-two-thirds-xl {
+    float: left;
+    width: 66.66667%;
+  }
+}
+
+@media (min-width: 961px) {
+  .column-quarter-xl {
+    padding: 0 15px;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+  }
+}
+
+@media (min-width: 961px) and (min-width: 641px) {
+  .column-quarter-xl {
+    float: left;
+    width: 25%;
+  }
+}
+
+@media (min-width: 961px) {
+  .column-sixth-xl {
+    padding: 0 15px;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+  }
+}
+
+@media (min-width: 961px) and (min-width: 641px) {
+  .column-sixth-xl {
+    float: left;
+    width: 16.66667%;
+  }
+}
+
+@media (min-width: 961px) {
+  .column-seven-twelfths-xl {
+    padding: 0 15px;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+  }
+}
+
+@media (min-width: 961px) and (min-width: 641px) {
+  .column-seven-twelfths-xl {
+    float: left;
+    width: 58.33333%;
+  }
+}
+
+@media (min-width: 961px) {
+  .column-three-quarters-xl {
+    padding: 0 15px;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+  }
+}
+
+@media (min-width: 961px) and (min-width: 641px) {
+  .column-three-quarters-xl {
+    float: left;
+    width: 75%;
+  }
 }
 
 main {
@@ -542,7 +1038,7 @@ main {
   }
 }
 
-.font-xsmall {
+.font-xsmall, .subheading {
   font-family: "Roboto", arial, helvetica, verdana;
   font-weight: 400;
   text-transform: none;
@@ -551,7 +1047,7 @@ main {
 }
 
 @media (min-width: 641px) {
-  .font-xsmall {
+  .font-xsmall, .subheading {
     font-size: 16px;
     line-height: 1.25;
   }
@@ -921,7 +1417,6 @@ p,
   -o-tab-size: 4;
   tab-size: 4;
   -webkit-hyphens: none;
-  -moz-hyphens: none;
   -ms-hyphens: none;
   hyphens: none;
   border: 1px solid #006ccc;
@@ -972,6 +1467,10 @@ hr {
   line-height: 1;
 }
 
+body {
+  font-family: 'Roboto', 'Helvetica Neue', helvetica, arial, sans-serif;
+}
+
 .quote {
   font-family: "Roboto", arial, helvetica, verdana;
   font-weight: 400;
@@ -1010,6 +1509,12 @@ hr {
   margin-bottom: 0.625em;
 }
 
+.subheading {
+  color: #999999;
+  line-height: 1.5;
+  margin: 0;
+}
+
 .button, .button-ghost-blue, .button-ghost-white {
   background-color: #006ccc;
   position: relative;
@@ -1017,14 +1522,11 @@ hr {
   display: inline-block;
   padding: .526315em .789473em .263157em;
   border: none;
-  -webkit-border-radius: 0;
-  -moz-border-radius: 0;
   border-radius: 0;
   outline: 1px solid transparent;
   outline-offset: -1px;
   -webkit-appearance: none;
   -webkit-box-shadow: 0 2px 0 #004480;
-  -moz-box-shadow: 0 2px 0 #004480;
   box-shadow: 0 2px 0 #004480;
   font-size: 1em;
   line-height: 1.25;
@@ -1033,7 +1535,6 @@ hr {
   cursor: pointer;
   color: #ffffff;
   -webkit-box-sizing: border-box;
-  -moz-box-sizing: border-box;
   box-sizing: border-box;
   vertical-align: top;
 }
@@ -1049,7 +1550,6 @@ hr {
 .button:active, .button-ghost-blue:active, .button-ghost-white:active {
   top: 2px;
   -webkit-box-shadow: 0 0 0 #006ccc;
-  -moz-box-shadow: 0 0 0 #006ccc;
   box-shadow: 0 0 0 #006ccc;
 }
 
@@ -1067,7 +1567,6 @@ hr {
 .disabled.button:active, .disabled.button-ghost-blue:active, .disabled.button-ghost-white:active, [disabled="disabled"].button:active, [disabled="disabled"].button-ghost-blue:active, [disabled="disabled"].button-ghost-white:active, [disabled].button:active, [disabled].button-ghost-blue:active, [disabled].button-ghost-white:active {
   top: 0;
   -webkit-box-shadow: 0 2px 0 #004480;
-  -moz-box-shadow: 0 2px 0 #004480;
   box-shadow: 0 2px 0 #004480;
 }
 
@@ -1136,7 +1635,7 @@ hr {
   }
 }
 
-@media only screen and (-webkit-min-device-pixel-ratio: 2), only screen and (min--moz-device-pixel-ratio: 2), only screen and (-o-min-device-pixel-ratio: 20 / 10), only screen and (min-device-pixel-ratio: 2), only screen and (min-resolution: 192dpi), only screen and (min-resolution: 2dppx) {
+@media only screen and (-webkit-min-device-pixel-ratio: 2), only screen and (min--moz-device-pixel-ratio: 2), only screen and (min-device-pixel-ratio: 2), only screen and (min-resolution: 192dpi), only screen and (min-resolution: 2dppx) {
   .button-start,
   .button-get-started {
     background-image: url("/static/export_elements/images/icon-pointer-2x.png");
@@ -1144,7 +1643,7 @@ hr {
   }
 }
 
-.grid-row:after, #content:after, .notice:after, .panel:after, fieldset:after, .form-section:after,
+.grid-row:after, #content:after, .notice:after, .panel:after, .panel-vertical-wide:after, .panel-vertical-narrow:after, fieldset:after, .form-section:after,
 .form-group:after,
 form:after,
 .input-field-container p:after, .form-group-error:after, .breadcrumbs ol:after {
@@ -1159,7 +1658,6 @@ form:after,
   font-weight: 700;
   padding: 10px 45px;
   -webkit-box-shadow: none;
-  -moz-box-shadow: none;
   box-shadow: none;
 }
 
@@ -1222,7 +1720,7 @@ form:after,
   background-image: url("/static/export_elements/images/icon-calendar.png");
 }
 
-@media only screen and (-webkit-min-device-pixel-ratio: 2), only screen and (min--moz-device-pixel-ratio: 2), only screen and (-o-min-device-pixel-ratio: 20 / 10), only screen and (min-device-pixel-ratio: 2), only screen and (min-resolution: 192dpi), only screen and (min-resolution: 2dppx) {
+@media only screen and (-webkit-min-device-pixel-ratio: 2), only screen and (min--moz-device-pixel-ratio: 2), only screen and (min-device-pixel-ratio: 2), only screen and (min-resolution: 192dpi), only screen and (min-resolution: 2dppx) {
   .icon-calendar {
     background-image: url("/static/export_elements/images/icon-calendar-2x.png");
     background-size: 100%;
@@ -1235,7 +1733,7 @@ form:after,
   background-image: url("/static/export_elements/images/icon-file-download.png");
 }
 
-@media only screen and (-webkit-min-device-pixel-ratio: 2), only screen and (min--moz-device-pixel-ratio: 2), only screen and (-o-min-device-pixel-ratio: 20 / 10), only screen and (min-device-pixel-ratio: 2), only screen and (min-resolution: 192dpi), only screen and (min-resolution: 2dppx) {
+@media only screen and (-webkit-min-device-pixel-ratio: 2), only screen and (min--moz-device-pixel-ratio: 2), only screen and (min-device-pixel-ratio: 2), only screen and (min-resolution: 192dpi), only screen and (min-resolution: 2dppx) {
   .icon-file-download {
     background-image: url("/static/export_elements/images/icon-file-download-2x.png");
     background-size: 100%;
@@ -1248,7 +1746,7 @@ form:after,
   background-image: url("/static/export_elements/images/icon-important.png");
 }
 
-@media only screen and (-webkit-min-device-pixel-ratio: 2), only screen and (min--moz-device-pixel-ratio: 2), only screen and (-o-min-device-pixel-ratio: 20 / 10), only screen and (min-device-pixel-ratio: 2), only screen and (min-resolution: 192dpi), only screen and (min-resolution: 2dppx) {
+@media only screen and (-webkit-min-device-pixel-ratio: 2), only screen and (min--moz-device-pixel-ratio: 2), only screen and (min-device-pixel-ratio: 2), only screen and (min-resolution: 192dpi), only screen and (min-resolution: 2dppx) {
   .icon-important {
     background-image: url("/static/export_elements/images/icon-important-2x.png");
     background-size: 100%;
@@ -1261,7 +1759,7 @@ form:after,
   background-image: url("/static/export_elements/images/icon-information.png");
 }
 
-@media only screen and (-webkit-min-device-pixel-ratio: 2), only screen and (min--moz-device-pixel-ratio: 2), only screen and (-o-min-device-pixel-ratio: 20 / 10), only screen and (min-device-pixel-ratio: 2), only screen and (min-resolution: 192dpi), only screen and (min-resolution: 2dppx) {
+@media only screen and (-webkit-min-device-pixel-ratio: 2), only screen and (min--moz-device-pixel-ratio: 2), only screen and (min-device-pixel-ratio: 2), only screen and (min-resolution: 192dpi), only screen and (min-resolution: 2dppx) {
   .icon-information {
     background-image: url("/static/export_elements/images/icon-information-2x.png");
     background-size: 100%;
@@ -1274,7 +1772,7 @@ form:after,
   background-image: url("/static/export_elements/images/icon-locator.png");
 }
 
-@media only screen and (-webkit-min-device-pixel-ratio: 2), only screen and (min--moz-device-pixel-ratio: 2), only screen and (-o-min-device-pixel-ratio: 20 / 10), only screen and (min-device-pixel-ratio: 2), only screen and (min-resolution: 192dpi), only screen and (min-resolution: 2dppx) {
+@media only screen and (-webkit-min-device-pixel-ratio: 2), only screen and (min--moz-device-pixel-ratio: 2), only screen and (min-device-pixel-ratio: 2), only screen and (min-resolution: 192dpi), only screen and (min-resolution: 2dppx) {
   .icon-locator {
     background-image: url("/static/export_elements/images/icon-locator-2x.png");
     background-size: 100%;
@@ -1287,7 +1785,7 @@ form:after,
   background-image: url("/static/export_elements/images/icon-pointer.png");
 }
 
-@media only screen and (-webkit-min-device-pixel-ratio: 2), only screen and (min--moz-device-pixel-ratio: 2), only screen and (-o-min-device-pixel-ratio: 20 / 10), only screen and (min-device-pixel-ratio: 2), only screen and (min-resolution: 192dpi), only screen and (min-resolution: 2dppx) {
+@media only screen and (-webkit-min-device-pixel-ratio: 2), only screen and (min--moz-device-pixel-ratio: 2), only screen and (min-device-pixel-ratio: 2), only screen and (min-resolution: 192dpi), only screen and (min-resolution: 2dppx) {
   .icon-pointer {
     background-image: url("/static/export_elements/images/icon-pointer-2x.png");
     background-size: 100%;
@@ -1300,7 +1798,7 @@ form:after,
   background-image: url("/static/export_elements/images/icon-pointer-black.png");
 }
 
-@media only screen and (-webkit-min-device-pixel-ratio: 2), only screen and (min--moz-device-pixel-ratio: 2), only screen and (-o-min-device-pixel-ratio: 20 / 10), only screen and (min-device-pixel-ratio: 2), only screen and (min-resolution: 192dpi), only screen and (min-resolution: 2dppx) {
+@media only screen and (-webkit-min-device-pixel-ratio: 2), only screen and (min--moz-device-pixel-ratio: 2), only screen and (min-device-pixel-ratio: 2), only screen and (min-resolution: 192dpi), only screen and (min-resolution: 2dppx) {
   .icon-pointer-black {
     background-image: url("/static/export_elements/images/icon-pointer-black-2x.png");
     background-size: 100%;
@@ -1313,7 +1811,7 @@ form:after,
   background-image: url("/static/export_elements/images/icon-search.png");
 }
 
-@media only screen and (-webkit-min-device-pixel-ratio: 2), only screen and (min--moz-device-pixel-ratio: 2), only screen and (-o-min-device-pixel-ratio: 20 / 10), only screen and (min-device-pixel-ratio: 2), only screen and (min-resolution: 192dpi), only screen and (min-resolution: 2dppx) {
+@media only screen and (-webkit-min-device-pixel-ratio: 2), only screen and (min--moz-device-pixel-ratio: 2), only screen and (min-device-pixel-ratio: 2), only screen and (min-resolution: 192dpi), only screen and (min-resolution: 2dppx) {
   .icon-search {
     background-image: url("/static/export_elements/images/icon-search-2x.png");
     background-size: 100%;
@@ -1326,7 +1824,7 @@ form:after,
   background-image: url("/static/export_elements/images/icon-steps/icon-step-1.png");
 }
 
-@media only screen and (-webkit-min-device-pixel-ratio: 2), only screen and (min--moz-device-pixel-ratio: 2), only screen and (-o-min-device-pixel-ratio: 20 / 10), only screen and (min-device-pixel-ratio: 2), only screen and (min-resolution: 192dpi), only screen and (min-resolution: 2dppx) {
+@media only screen and (-webkit-min-device-pixel-ratio: 2), only screen and (min--moz-device-pixel-ratio: 2), only screen and (min-device-pixel-ratio: 2), only screen and (min-resolution: 192dpi), only screen and (min-resolution: 2dppx) {
   .icon-step-1 {
     background-image: url("/static/export_elements/images/icon-steps/icon-step-1-2x.png");
     background-size: 100%;
@@ -1339,7 +1837,7 @@ form:after,
   background-image: url("/static/export_elements/images/icon-steps/icon-step-2.png");
 }
 
-@media only screen and (-webkit-min-device-pixel-ratio: 2), only screen and (min--moz-device-pixel-ratio: 2), only screen and (-o-min-device-pixel-ratio: 20 / 10), only screen and (min-device-pixel-ratio: 2), only screen and (min-resolution: 192dpi), only screen and (min-resolution: 2dppx) {
+@media only screen and (-webkit-min-device-pixel-ratio: 2), only screen and (min--moz-device-pixel-ratio: 2), only screen and (min-device-pixel-ratio: 2), only screen and (min-resolution: 192dpi), only screen and (min-resolution: 2dppx) {
   .icon-step-2 {
     background-image: url("/static/export_elements/images/icon-steps/icon-step-2-2x.png");
     background-size: 100%;
@@ -1352,7 +1850,7 @@ form:after,
   background-image: url("/static/export_elements/images/icon-steps/icon-step-3.png");
 }
 
-@media only screen and (-webkit-min-device-pixel-ratio: 2), only screen and (min--moz-device-pixel-ratio: 2), only screen and (-o-min-device-pixel-ratio: 20 / 10), only screen and (min-device-pixel-ratio: 2), only screen and (min-resolution: 192dpi), only screen and (min-resolution: 2dppx) {
+@media only screen and (-webkit-min-device-pixel-ratio: 2), only screen and (min--moz-device-pixel-ratio: 2), only screen and (min-device-pixel-ratio: 2), only screen and (min-resolution: 192dpi), only screen and (min-resolution: 2dppx) {
   .icon-step-3 {
     background-image: url("/static/export_elements/images/icon-steps/icon-step-3-2x.png");
     background-size: 100%;
@@ -1365,7 +1863,7 @@ form:after,
   background-image: url("/static/export_elements/images/icon-steps/icon-step-4.png");
 }
 
-@media only screen and (-webkit-min-device-pixel-ratio: 2), only screen and (min--moz-device-pixel-ratio: 2), only screen and (-o-min-device-pixel-ratio: 20 / 10), only screen and (min-device-pixel-ratio: 2), only screen and (min-resolution: 192dpi), only screen and (min-resolution: 2dppx) {
+@media only screen and (-webkit-min-device-pixel-ratio: 2), only screen and (min--moz-device-pixel-ratio: 2), only screen and (min-device-pixel-ratio: 2), only screen and (min-resolution: 192dpi), only screen and (min-resolution: 2dppx) {
   .icon-step-4 {
     background-image: url("/static/export_elements/images/icon-steps/icon-step-4-2x.png");
     background-size: 100%;
@@ -1378,7 +1876,7 @@ form:after,
   background-image: url("/static/export_elements/images/icon-steps/icon-step-5.png");
 }
 
-@media only screen and (-webkit-min-device-pixel-ratio: 2), only screen and (min--moz-device-pixel-ratio: 2), only screen and (-o-min-device-pixel-ratio: 20 / 10), only screen and (min-device-pixel-ratio: 2), only screen and (min-resolution: 192dpi), only screen and (min-resolution: 2dppx) {
+@media only screen and (-webkit-min-device-pixel-ratio: 2), only screen and (min--moz-device-pixel-ratio: 2), only screen and (min-device-pixel-ratio: 2), only screen and (min-resolution: 192dpi), only screen and (min-resolution: 2dppx) {
   .icon-step-5 {
     background-image: url("/static/export_elements/images/icon-steps/icon-step-5-2x.png");
     background-size: 100%;
@@ -1391,7 +1889,7 @@ form:after,
   background-image: url("/static/export_elements/images/icon-steps/icon-step-6.png");
 }
 
-@media only screen and (-webkit-min-device-pixel-ratio: 2), only screen and (min--moz-device-pixel-ratio: 2), only screen and (-o-min-device-pixel-ratio: 20 / 10), only screen and (min-device-pixel-ratio: 2), only screen and (min-resolution: 192dpi), only screen and (min-resolution: 2dppx) {
+@media only screen and (-webkit-min-device-pixel-ratio: 2), only screen and (min--moz-device-pixel-ratio: 2), only screen and (min-device-pixel-ratio: 2), only screen and (min-resolution: 192dpi), only screen and (min-resolution: 2dppx) {
   .icon-step-6 {
     background-image: url("/static/export_elements/images/icon-steps/icon-step-6-2x.png");
     background-size: 100%;
@@ -1404,7 +1902,7 @@ form:after,
   background-image: url("/static/export_elements/images/icon-steps/icon-step-7.png");
 }
 
-@media only screen and (-webkit-min-device-pixel-ratio: 2), only screen and (min--moz-device-pixel-ratio: 2), only screen and (-o-min-device-pixel-ratio: 20 / 10), only screen and (min-device-pixel-ratio: 2), only screen and (min-resolution: 192dpi), only screen and (min-resolution: 2dppx) {
+@media only screen and (-webkit-min-device-pixel-ratio: 2), only screen and (min--moz-device-pixel-ratio: 2), only screen and (min-device-pixel-ratio: 2), only screen and (min-resolution: 192dpi), only screen and (min-resolution: 2dppx) {
   .icon-step-7 {
     background-image: url("/static/export_elements/images/icon-steps/icon-step-7-2x.png");
     background-size: 100%;
@@ -1417,7 +1915,7 @@ form:after,
   background-image: url("/static/export_elements/images/icon-steps/icon-step-8.png");
 }
 
-@media only screen and (-webkit-min-device-pixel-ratio: 2), only screen and (min--moz-device-pixel-ratio: 2), only screen and (-o-min-device-pixel-ratio: 20 / 10), only screen and (min-device-pixel-ratio: 2), only screen and (min-resolution: 192dpi), only screen and (min-resolution: 2dppx) {
+@media only screen and (-webkit-min-device-pixel-ratio: 2), only screen and (min--moz-device-pixel-ratio: 2), only screen and (min-device-pixel-ratio: 2), only screen and (min-resolution: 192dpi), only screen and (min-resolution: 2dppx) {
   .icon-step-8 {
     background-image: url("/static/export_elements/images/icon-steps/icon-step-8-2x.png");
     background-size: 100%;
@@ -1430,7 +1928,7 @@ form:after,
   background-image: url("/static/export_elements/images/icon-steps/icon-step-9.png");
 }
 
-@media only screen and (-webkit-min-device-pixel-ratio: 2), only screen and (min--moz-device-pixel-ratio: 2), only screen and (-o-min-device-pixel-ratio: 20 / 10), only screen and (min-device-pixel-ratio: 2), only screen and (min-resolution: 192dpi), only screen and (min-resolution: 2dppx) {
+@media only screen and (-webkit-min-device-pixel-ratio: 2), only screen and (min--moz-device-pixel-ratio: 2), only screen and (min-device-pixel-ratio: 2), only screen and (min-resolution: 192dpi), only screen and (min-resolution: 2dppx) {
   .icon-step-9 {
     background-image: url("/static/export_elements/images/icon-steps/icon-step-9-2x.png");
     background-size: 100%;
@@ -1443,7 +1941,7 @@ form:after,
   background-image: url("/static/export_elements/images/icon-steps/icon-step-10.png");
 }
 
-@media only screen and (-webkit-min-device-pixel-ratio: 2), only screen and (min--moz-device-pixel-ratio: 2), only screen and (-o-min-device-pixel-ratio: 20 / 10), only screen and (min-device-pixel-ratio: 2), only screen and (min-resolution: 192dpi), only screen and (min-resolution: 2dppx) {
+@media only screen and (-webkit-min-device-pixel-ratio: 2), only screen and (min--moz-device-pixel-ratio: 2), only screen and (min-device-pixel-ratio: 2), only screen and (min-resolution: 192dpi), only screen and (min-resolution: 2dppx) {
   .icon-step-10 {
     background-image: url("/static/export_elements/images/icon-steps/icon-step-10-2x.png");
     background-size: 100%;
@@ -1456,7 +1954,7 @@ form:after,
   background-image: url("/static/export_elements/images/icon-steps/icon-step-11.png");
 }
 
-@media only screen and (-webkit-min-device-pixel-ratio: 2), only screen and (min--moz-device-pixel-ratio: 2), only screen and (-o-min-device-pixel-ratio: 20 / 10), only screen and (min-device-pixel-ratio: 2), only screen and (min-resolution: 192dpi), only screen and (min-resolution: 2dppx) {
+@media only screen and (-webkit-min-device-pixel-ratio: 2), only screen and (min--moz-device-pixel-ratio: 2), only screen and (min-device-pixel-ratio: 2), only screen and (min-resolution: 192dpi), only screen and (min-resolution: 2dppx) {
   .icon-step-11 {
     background-image: url("/static/export_elements/images/icon-steps/icon-step-11-2x.png");
     background-size: 100%;
@@ -1469,7 +1967,7 @@ form:after,
   background-image: url("/static/export_elements/images/icon-steps/icon-step-12.png");
 }
 
-@media only screen and (-webkit-min-device-pixel-ratio: 2), only screen and (min--moz-device-pixel-ratio: 2), only screen and (-o-min-device-pixel-ratio: 20 / 10), only screen and (min-device-pixel-ratio: 2), only screen and (min-resolution: 192dpi), only screen and (min-resolution: 2dppx) {
+@media only screen and (-webkit-min-device-pixel-ratio: 2), only screen and (min--moz-device-pixel-ratio: 2), only screen and (min-device-pixel-ratio: 2), only screen and (min-resolution: 192dpi), only screen and (min-resolution: 2dppx) {
   .icon-step-12 {
     background-image: url("/static/export_elements/images/icon-steps/icon-step-12-2x.png");
     background-size: 100%;
@@ -1482,7 +1980,7 @@ form:after,
   background-image: url("/static/export_elements/images/icon-steps/icon-step-13.png");
 }
 
-@media only screen and (-webkit-min-device-pixel-ratio: 2), only screen and (min--moz-device-pixel-ratio: 2), only screen and (-o-min-device-pixel-ratio: 20 / 10), only screen and (min-device-pixel-ratio: 2), only screen and (min-resolution: 192dpi), only screen and (min-resolution: 2dppx) {
+@media only screen and (-webkit-min-device-pixel-ratio: 2), only screen and (min--moz-device-pixel-ratio: 2), only screen and (min-device-pixel-ratio: 2), only screen and (min-resolution: 192dpi), only screen and (min-resolution: 2dppx) {
   .icon-step-13 {
     background-image: url("/static/export_elements/images/icon-steps/icon-step-13-2x.png");
     background-size: 100%;
@@ -1495,7 +1993,7 @@ form:after,
   background-image: url("/static/export_elements/images/icon-steps/icon-step-14.png");
 }
 
-@media only screen and (-webkit-min-device-pixel-ratio: 2), only screen and (min--moz-device-pixel-ratio: 2), only screen and (-o-min-device-pixel-ratio: 20 / 10), only screen and (min-device-pixel-ratio: 2), only screen and (min-resolution: 192dpi), only screen and (min-resolution: 2dppx) {
+@media only screen and (-webkit-min-device-pixel-ratio: 2), only screen and (min--moz-device-pixel-ratio: 2), only screen and (min-device-pixel-ratio: 2), only screen and (min-resolution: 192dpi), only screen and (min-resolution: 2dppx) {
   .icon-step-14 {
     background-image: url("/static/export_elements/images/icon-steps/icon-step-14-2x.png");
     background-size: 100%;
@@ -1504,8 +2002,6 @@ form:after,
 
 .circle {
   display: inline-block;
-  -webkit-border-radius: 50%;
-  -moz-border-radius: 50%;
   border-radius: 50%;
   background: #000000;
   color: #ffffff;
@@ -1691,7 +2187,6 @@ details .arrow {
 
 .panel {
   -webkit-box-sizing: border-box;
-  -moz-box-sizing: border-box;
   box-sizing: border-box;
   clear: both;
   border-left-style: solid;
@@ -1738,6 +2233,48 @@ details .arrow {
   margin-bottom: 0;
 }
 
+.panel {
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  clear: both;
+  border-left-style: solid;
+  border-left-width: 4px;
+  border-color: #006ccc;
+  padding: 0.78947em;
+  margin-bottom: 0.78947em;
+}
+
+.panel :first-child {
+  margin-top: 0;
+}
+
+.panel :only-child,
+.panel :last-child {
+  margin-bottom: 0;
+}
+
+.panel-vertical-wide, .panel-vertical-narrow {
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  clear: both;
+  border-left-style: solid;
+  border-color: #006ccc;
+  padding: 0.78947em 0;
+  margin-bottom: 0.78947em;
+}
+
+.panel-vertical-wide {
+  border-top: solid 10px #006ccc;
+}
+
+.panel-vertical-narrow {
+  border-top: solid 6px #006ccc;
+}
+
+.panel-border-narrow {
+  border-left-width: 6px;
+}
+
 fieldset {
   width: 100%;
 }
@@ -1765,7 +2302,6 @@ textarea {
 form,
 .input-field-container p {
   -webkit-box-sizing: border-box;
-  -moz-box-sizing: border-box;
   box-sizing: border-box;
 }
 
@@ -1884,7 +2420,6 @@ form,
 .input-field-container select,
 .input-field-container textarea {
   -webkit-box-sizing: border-box;
-  -moz-box-sizing: border-box;
   box-sizing: border-box;
   font-family: "Roboto", arial, helvetica, verdana;
   font-weight: 400;
@@ -2001,6 +2536,17 @@ ul.select-multiple {
   margin-top: 10px;
 }
 
+select:focus,
+input:focus,
+a:focus {
+  outline: #ffbf47 solid 3px;
+  outline-offset: 0;
+}
+
+a:focus:active {
+  background-color: #ffbf47;
+}
+
 input[type='file'] {
   background: #f2eee8;
   border: 1px solid #dfd5c5;
@@ -2018,10 +2564,19 @@ select.form-control,
   border-radius: 0;
   margin: 0;
   -webkit-box-sizing: border-box;
-  -moz-box-sizing: border-box;
   box-sizing: border-box;
   -webkit-appearance: none;
   -moz-appearance: none;
+}
+
+select.form-control::-ms-expand,
+.input-field-container select::-ms-expand {
+  display: none;
+}
+
+.form-label,
+.form-hint {
+  padding-bottom: .25em;
 }
 
 .multiple-choice {
@@ -2078,8 +2633,6 @@ select.form-control,
   position: absolute;
   top: 0;
   left: 0;
-  -webkit-border-radius: 50%;
-  -moz-border-radius: 50%;
   border-radius: 50%;
 }
 
@@ -2091,8 +2644,6 @@ select.form-control,
   position: absolute;
   top: 9px;
   left: 9px;
-  -webkit-border-radius: 50%;
-  -moz-border-radius: 50%;
   border-radius: 50%;
   zoom: 1;
   filter: alpha(opacity=0);
@@ -2121,10 +2672,7 @@ select.form-control,
   position: absolute;
   top: 10px;
   left: 8px;
-  -moz-transform: rotate(-45deg);
-  -o-transform: rotate(-45deg);
   -webkit-transform: rotate(-45deg);
-  -ms-transform: rotate(-45deg);
   transform: rotate(-45deg);
   zoom: 1;
   filter: alpha(opacity=0);
@@ -2133,13 +2681,11 @@ select.form-control,
 
 .multiple-choice [type=radio]:focus + label::before {
   -webkit-box-shadow: 0 0 0 4px #ffbf47;
-  -moz-box-shadow: 0 0 0 4px #ffbf47;
   box-shadow: 0 0 0 4px #ffbf47;
 }
 
 .multiple-choice [type=checkbox]:focus + label::before {
   -webkit-box-shadow: 0 0 0 3px #ffbf47;
-  -moz-box-shadow: 0 0 0 3px #ffbf47;
   box-shadow: 0 0 0 3px #ffbf47;
 }
 
@@ -2180,7 +2726,8 @@ select.form-control,
 }
 
 .multiple-choice [type=radio] + label::before {
-  border: 2px solid #767676;
+  border: 2px solid #999999;
+  background-color: #ffffff;
 }
 
 .multiple-choice [type=checkbox] + label::after {
@@ -2189,7 +2736,8 @@ select.form-control,
 
 .multiple-choice [type=checkbox] + label::before {
   border-radius: 3px;
-  border: 2px solid #767676;
+  border: 2px solid #999999;
+  background-color: #ffffff;
 }
 
 input::-webkit-outer-spin-button,
@@ -2338,7 +2886,7 @@ input[type=number] {
   }
 }
 
-@media only screen and (-webkit-min-device-pixel-ratio: 2), only screen and (min--moz-device-pixel-ratio: 2), only screen and (-o-min-device-pixel-ratio: 20 / 10), only screen and (min-device-pixel-ratio: 2), only screen and (min-resolution: 192dpi), only screen and (min-resolution: 2dppx) {
+@media only screen and (-webkit-min-device-pixel-ratio: 2), only screen and (min--moz-device-pixel-ratio: 2), only screen and (min-device-pixel-ratio: 2), only screen and (min-resolution: 192dpi), only screen and (min-resolution: 2dppx) {
   .breadcrumbs li {
     background-image: url("/static/export_elements/images/separator-2x.png");
     background-size: 6px 11px;
@@ -2353,6 +2901,40 @@ input[type=number] {
 
 .breadcrumbs a {
   color: #0b0c0c;
+}
+
+.breadcrumbs {
+  padding: 1.5em 0;
+}
+
+.breadcrumbs li {
+  padding-left: 0;
+  background-image: none;
+}
+
+.breadcrumbs li:after {
+  -webkit-box-sizing: initial;
+  box-sizing: initial;
+  /* IE 9 */
+  -webkit-transform: rotate(-45deg);
+  transform: rotate(-45deg);
+  content: '';
+  border-style: solid;
+  display: inline-block;
+  height: 5px;
+  width: 5px;
+  position: relative;
+  vertical-align: top;
+  top: 1px;
+  border-color: #d8d8d8;
+  border-width: 0 2px 2px 0;
+  margin: 2px 0 0 10px;
+  margin: 0;
+  top: .45em;
+}
+
+.breadcrumbs ol li:last-child:after {
+  display: none;
 }
 
 .phase-banner {
@@ -2507,7 +3089,7 @@ input[type=number] {
 }
 
 .phase-banner span {
-  color: #767676;
+  color: #999999;
 }
 
 .govuk-box-highlight {
