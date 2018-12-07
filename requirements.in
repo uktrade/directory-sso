@@ -10,7 +10,7 @@ django-extensions==1.9.0
 django-pglocks==1.0.2
 whitenoise==3.3.0
 gunicorn==19.5.0
-psycopg2==2.6.1
+psycopg2==2.7.6.1
 raven==5.19.0
 boto3
 tldextract==2.0.2
