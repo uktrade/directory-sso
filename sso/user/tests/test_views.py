@@ -4,12 +4,13 @@ import urllib.parse
 import http
 from http.cookies import SimpleCookie
 
-from django.http import HttpResponse
-from django.urls import reverse, reverse_lazy
-
 from allauth.account.models import EmailAddress, EmailConfirmationHMAC
 from allauth.exceptions import ImmediateHttpResponse
+from directory_constants.constants import urls
 import pytest
+
+from django.http import HttpResponse
+from django.urls import reverse, reverse_lazy
 
 from sso.adapters import EMAIL_CONFIRMATION_TEMPLATE_ID, \
     PASSWORD_RESET_TEMPLATE_ID
@@ -979,11 +980,10 @@ def test_confirm_email_login_response_with_sso_handles_next(
 
 
 def test_email_verification_sent_view_feedback_url(client, settings):
-    settings.HEADER_FOOTER_URLS_CONTACT_US = 'http://test.com'
     url = reverse('account_email_verification_sent')
     response = client.get(url)
 
-    assert 'http://test.com' in response.rendered_content
+    assert urls.CONTACT_US in response.rendered_content
 
 
 @pytest.mark.parametrize('url', [

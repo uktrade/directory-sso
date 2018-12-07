@@ -60,19 +60,20 @@ DEBUG_SET_ENV_VARS := \
 	export HEALTH_CHECK_TOKEN=debug; \
 	export FEATURE_TEST_API_ENABLED=true; \
 	export GOV_NOTIFY_API_KEY=debug; \
-	export HEADER_FOOTER_URLS_GREAT_HOME=http://exred.trade.great:8007/; \
-	export HEADER_FOOTER_URLS_FAB=http://buyer.trade.great:8001; \
-	export HEADER_FOOTER_URLS_SOO=http://soo.trade.great:8008; \
-	export HEADER_FOOTER_URLS_CONTACT_US=http://exred.trade.great:8007/contact/; \
-	export HEADER_FOOTER_URLS_FEEDBACK=http://exred.trade.great:8007/contact/feedback/; \
 	export SSO_BASE_URL=http://sso.trade.great:8003; \
 	export ACTIVITY_STREAM_IP_WHITELIST=1.2.3.4; \
 	export ACTIVITY_STREAM_ACCESS_KEY_ID=some-id; \
 	export ACTIVITY_STREAM_SECRET_ACCESS_KEY=some-secret; \
 	export FEATURE_ACTIVITY_STREAM_NONCE_CACHE_ENABLED=true; \
-	export VCAP_SERVICES="{\"redis\": [{\"credentials\": {\"uri\": \"http://redis_cluster:7000/\"}}]}"; \
+	export VCAP_SERVICES="{\"redis\": [{\"credentials\": {\"uri\": \"redis://127.0.0.1:7000/\"}}]}"; \
 	export PRIVACY_COOKIE_DOMAIN=.trade.great; \
-	export SESSION_COOKIES_NAME_DOMAIN_MAPPING="debug_sso_session_cookie=.trade.great"
+	export SESSION_COOKIES_NAME_DOMAIN_MAPPING="debug_sso_session_cookie=.trade.great"; \
+	export DIRECTORY_CONSTANTS_URL_EXPORT_READINESS=http://exred.trade.great:8007; \
+	export DIRECTORY_CONSTANTS_URL_FIND_A_BUYER=http://buyer.trade.great:8001; \
+	export DIRECTORY_CONSTANTS_URL_SELLING_ONLINE_OVERSEAS=http://soo.trade.great:8008; \
+	export DIRECTORY_CONSTANTS_URL_FIND_A_SUPPLIER=http://supplier.trade.great:8005; \
+	export DIRECTORY_CONSTANTS_URL_INVEST=http://invest.trade.great:8012; \
+	export DIRECTORY_CONSTANTS_URL_SINGLE_SIGN_ON=http://sso.trade.great:8004
 
 debug_webserver:
 	 $(DEBUG_SET_ENV_VARS)&& $(COLLECT_STATIC) && $(DJANGO_WEBSERVER);

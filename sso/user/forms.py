@@ -29,9 +29,8 @@ class SignupForm(IndentedInvalidFieldsMixin, forms.SignupForm):
     terms_agreed = fields.BooleanField(
         label=mark_safe(
             'Tick this box to accept the '
-            '<a href="{url}" target="_blank">terms and '
-            'conditions</a> of the great.gov.uk service.'.format(
-                url=urls.INFO_TERMS_AND_CONDITIONS)
+            f'<a href="{urls.TERMS_AND_CONDITIONS}" target="_blank">terms and '
+            'conditions</a> of the great.gov.uk service.'
         )
     )
     field_order = [
@@ -82,7 +81,7 @@ class SignupForm(IndentedInvalidFieldsMixin, forms.SignupForm):
                     settings.SSO_BASE_URL +
                     reverse('account_reset_password')
                 ),
-                'contact_us_url': settings.HEADER_FOOTER_URLS_CONTACT_US
+                'contact_us_url': urls.CONTACT_US
             }
         )
 

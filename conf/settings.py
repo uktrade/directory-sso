@@ -422,6 +422,7 @@ DIRECTORY_CONSTANTS_URL_SINGLE_SIGN_ON = env.str(
 DIRECTORY_CONSTANTS_URL_FIND_A_BUYER = env.str(
     'DIRECTORY_CONSTANTS_URL_FIND_A_BUYER', ''
 )
+PRIVACY_COOKIE_DOMAIN = env.str('PRIVACY_COOKIE_DOMAIN')
 
 # the following should be 5, but our auth backend are calling check_password
 # twice, so we use 2*5

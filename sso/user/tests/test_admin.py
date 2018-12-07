@@ -6,7 +6,6 @@ from django.test import Client
 from django.core.urlresolvers import reverse
 
 import pytest
-from rest_framework import status
 from allauth.account.models import EmailAddress
 
 from sso.user.models import User
@@ -229,32 +228,6 @@ def test_download_csv_exops_not_fab_distinct(
     rows = str(response.content, 'utf-8').strip().split('\r\n')
     # then the user is listed only once, not once per token created
     assert len(rows) == 2  # header and single row
-
-
-@pytest.mark.django_db
-def test_admin_view_restricted_not_found(settings, client):
-
-    settings.RESTRICT_ADMIN = True
-    settings.ALLOWED_ADMIN_IPS = ['74.125.224.72']
-    response = client.get(
-        reverse('admin:login'),
-        **{'HTTP_X_FORWARDED_FOR': '74.125.224.73'}
-    )
-
-    assert response.status_code == status.HTTP_404_NOT_FOUND
-
-
-@pytest.mark.django_db
-def test_admin_view_restricted(settings, client):
-    settings.REMOTE_IP_ADDRESS_RETRIEVER = 'ipware'
-    settings.RESTRICT_ADMIN = True
-    settings.ALLOWED_ADMIN_IPS = ['74.125.224.72']
-    response = client.get(
-        reverse('admin:login'),
-        **{'HTTP_X_FORWARDED_FOR': '74.125.224.72'}
-    )
-
-    assert response.status_code == status.HTTP_200_OK
 
 
 @pytest.mark.django_db
