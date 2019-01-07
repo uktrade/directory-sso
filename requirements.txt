@@ -16,8 +16,8 @@ cryptography==2.4.1       # via pyopenssl, requests
 defusedxml==0.5.0         # via python3-openid
 directory-api-external==5.0.0
 directory-client-core==4.0.2  # via directory-api-external
-directory-components==3.5.0
-directory-constants==11.1.0
+directory-components==3.6.1
+directory-constants==11.4.0
 directory-healthcheck==0.6.0
 directory-validators==5.0.1
 dj-database-url==0.4.1
@@ -36,7 +36,7 @@ django==1.11.15
 djangorestframework==3.4.7
 docopt==0.6.2             # via notifications-python-client
 docutils==0.14            # via botocore
-export-elements==0.23.0   # via directory-components
+export-elements==1.0.0    # via directory-components
 future==0.16.0            # via notifications-python-client
 gunicorn==19.5.0
 idna==2.6                 # via cryptography, requests, tldextract
