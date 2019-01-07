@@ -4,10 +4,14 @@
 {% block head_title %}{% trans "Verify your email address - great.gov.uk" %}{% endblock %}
 
 {% block content %}
+<div class="grid-row">
+  <div class="column-half">
+
     <h1 class="heading-xlarge">{% trans "Verify your email address" %}</h1>
 
     <p>{% blocktrans %}We've sent you a confirmation email. Click on the link to verify your email address.{% endblocktrans %}</p>
 
     <p><a class="link" href="{{ services_urls.contact_us }}" target="_self">Contact us</a> if you haven’t received the email within 10 minutes.</p>
-
+  </div>
+</div>
 {% endblock %}

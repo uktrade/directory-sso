@@ -30,7 +30,6 @@ form .errorlist {
 
 form .helptext {
   color: #899093;
-  display: inline-block;
   line-height: 1.25;
   margin-bottom: 20px;
 }
@@ -251,4 +250,10 @@ label, input, button, select, textarea {
 
 #id_terms_agreed {
   width: 50px;
+}
+
+@media (min-width: 640px) {
+  .multiple-choice {
+    width: 50%;
+  }
 }
