@@ -6,25 +6,31 @@
 {% block head_title %}{% trans "Confirm email address - great.gov.uk" %}{% endblock %}
 
 {% block content %}
-<h1 class="heading-xlarge">{% trans "Confirm email address" %}</h1>
+<div class="grid-row">
+  <div class="column-half">
 
-{% if confirmation %}
+    <h1 class="heading-xlarge">{% trans "Confirm email address" %}</h1>
 
-{% user_display confirmation.email_address.user as user_display %}
+    {% if confirmation %}
 
-<p>{% blocktrans with confirmation.email_address.email as email %}Confirm that <a class="link" href="mailto:{{ email }}">{{ email }}</a> is an email address for user {{ user_display }}.{% endblocktrans %}</p>
+    {% user_display confirmation.email_address.user as user_display %}
 
-<form method="post" action="{{ form_url }}">
-{% csrf_token %}
-    <button class="button" type="submit">{% trans 'Confirm' %}</button>
-</form>
+    <p>{% blocktrans with confirmation.email_address.email as email %}Confirm that <a class="link" href="mailto:{{ email }}">{{ email }}</a> is an email address for user {{ user_display }}.{% endblocktrans %}</p>
 
-{% else %}
+    <form method="post" action="{{ form_url }}">
+    {% csrf_token %}
+        <button class="button" type="submit">{% trans 'Confirm' %}</button>
+    </form>
 
-{% url 'account_email' as email_url %}
+    {% else %}
 
-<p>{% blocktrans %}This email confirmation link expired or is invalid. <a href="{{ email_url }}">Request a new email confirmation link</a>.{% endblocktrans %}</p>
+    {% url 'account_email' as email_url %}
 
-{% endif %}
+    <p>{% blocktrans %}This email confirmation link expired or is invalid. <a href="{{ email_url }}">Request a new email confirmation link</a>.{% endblocktrans %}</p>
+
+    {% endif %}
+
+  </div>
+</div>
 
 {% endblock %}

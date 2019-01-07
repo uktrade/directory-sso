@@ -18,8 +18,8 @@ class IndentedInvalidFieldsMixin:
 
 class SignupForm(IndentedInvalidFieldsMixin, forms.SignupForm):
     PASSWORD_HELP_TEXT = (
-        'Your password must:'
-        '<ul>'
+        '<p>Your password must:</p>'
+        '<ul class="list list-bullet">'
         '<li>be at least 10 characters</li>'
         '<li>contain at least one letter</li>'
         '<li>contain at least one number</li>'

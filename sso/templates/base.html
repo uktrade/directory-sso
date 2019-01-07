@@ -1,24 +1,24 @@
 {% extends 'directory_components/base.html' %}
 
 {% block body_content_container %}
-    <main id="content" class="{% block css_layout_class %}sso-content grid-row{% endblock css_layout_class %}" role="main">
+    <main id="content" class="{% block css_layout_class %}sso-content{% endblock css_layout_class %}" role="main">
       <div class="container">
-        <div class="column-one-half">
-            {% block body %}
-                {% if messages %}
-                    <div>
-                        <strong>Messages:</strong>
-                        <ul class="list list-bullet">
-                            {% for message in messages %}<li>{{message}}</li>{% endfor %}
-                        </ul>
+          {% block body %}
+              {% if messages %}
+                  <div class="grid-row">
+                    <div class="column-half">
+                      <strong>Messages:</strong>
+                      <ul class="list list-bullet">
+                          {% for message in messages %}<li>{{message}}</li>{% endfor %}
+                      </ul>
                     </div>
-                {% endif %}
-                <div class="input-field-container">
-                  {% block content %}{% endblock %}
-                </div>
-            {% endblock %}
-            {% block extra_body %}{% endblock %}
-        </div>
+                  </div>
+              {% endif %}
+              <div class="input-field-container">
+                {% block content %}{% endblock %}
+              </div>
+          {% endblock %}
+          {% block extra_body %}{% endblock %}
       </div>
     </main>
 {% endblock %}
