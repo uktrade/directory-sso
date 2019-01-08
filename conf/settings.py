@@ -5,10 +5,12 @@ from django.urls import reverse_lazy
 
 from directory_components.constants import IP_RETRIEVER_NAME_GOV_UK
 import dj_database_url
+import directory_healthcheck.backends
 import environ
 import rediscluster
 
 from core.helpers import is_valid_domain
+
 
 env = environ.Env()
 
@@ -49,9 +51,8 @@ INSTALLED_APPS = [
     'sso.user.apps.UserConfig',
     'sso.testapi',
     'directory_constants',
-    'directory_healthcheck',
-    'health_check',
     'health_check.db',
+    'directory_healthcheck',
     'directory_components',
     'export_elements',
     'rediscluster',
@@ -366,9 +367,8 @@ for domain in ALLOWED_REDIRECT_DOMAINS:
 # Signature check
 SIGNATURE_SECRET = env.str('SIGNATURE_SECRET')
 SIGAUTH_URL_NAMES_WHITELIST = [
-    'healthcheck-database',
+    'healthcheck',
     'healthcheck-ping',
-    'healthcheck-sentry',
 ]
 
 # Use proxy host name when generating links (e.g. in emails)
@@ -436,7 +436,13 @@ SSO_SUSPICIOUS_ACTIVITY_NOTIFICATION_EMAIL = env.str(
 )
 
 # Health check
-HEALTH_CHECK_TOKEN = env.str('HEALTH_CHECK_TOKEN')
+DIRECTORY_HEALTHCHECK_TOKEN = env.str('HEALTH_CHECK_TOKEN')
+DIRECTORY_HEALTHCHECK_BACKENDS = [
+    # health_check.db.backends.DatabaseBackend and
+    # INSTALLED_APPS's health_check.db
+
+    directory_healthcheck.backends.SentryBackend,
+]
 
 GOV_NOTIFY_API_KEY = env.str('GOV_NOTIFY_API_KEY')
 GOV_NOTIFY_SIGNUP_CONFIRMATION_TEMPLATE_ID = env.str(
