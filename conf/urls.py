@@ -10,7 +10,6 @@ from django.contrib.sitemaps.views import sitemap
 import conf.sitemaps
 import sso.api.views_activity_stream
 import sso.api.views_user
-import sso.healthcheck.views
 import sso.oauth2.views_user
 import sso.testapi.views
 import sso.user.views
@@ -108,19 +107,14 @@ oauth2_provider_patterns = [
 
 api_urlpatterns = [
     url(
-        r'^healthcheck/database/$',
-        sso.healthcheck.views.DatabaseAPIView.as_view(),
-        name='healthcheck-database'
+        r'^$',
+        directory_healthcheck.views.HealthcheckView.as_view(),
+        name='healthcheck'
     ),
     url(
         r'^healthcheck/ping/$',
         directory_healthcheck.views.PingView.as_view(),
         name='healthcheck-ping'
-    ),
-    url(
-        r'^healthcheck/sentry/$',
-        directory_healthcheck.views.SentryHealthcheckView.as_view(),
-        name='healthcheck-sentry'
     ),
     url(
         r'^session-user/$',
