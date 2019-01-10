@@ -107,7 +107,7 @@ oauth2_provider_patterns = [
 
 api_urlpatterns = [
     url(
-        r'^$',
+        r'^healthcheck/$',
         directory_healthcheck.views.HealthcheckView.as_view(),
         name='healthcheck'
     ),
