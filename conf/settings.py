@@ -5,7 +5,6 @@ from django.urls import reverse_lazy
 
 from directory_components.constants import IP_RETRIEVER_NAME_GOV_UK
 import dj_database_url
-import directory_healthcheck.backends
 import environ
 import rediscluster
 
@@ -438,10 +437,8 @@ SSO_SUSPICIOUS_ACTIVITY_NOTIFICATION_EMAIL = env.str(
 # Health check
 DIRECTORY_HEALTHCHECK_TOKEN = env.str('HEALTH_CHECK_TOKEN')
 DIRECTORY_HEALTHCHECK_BACKENDS = [
-    # health_check.db.backends.DatabaseBackend and
+    # health_check.db.backends.DatabaseBackend
     # INSTALLED_APPS's health_check.db
-
-    directory_healthcheck.backends.SentryBackend,
 ]
 
 GOV_NOTIFY_API_KEY = env.str('GOV_NOTIFY_API_KEY')
