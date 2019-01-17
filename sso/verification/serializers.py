@@ -1,21 +1,12 @@
 from rest_framework import serializers
 
-from sso.verification.models import Validation
+from sso.verification.models import VerificationCode
 
 
-class ValidationSerializer(serializers.ModelSerializer):
+class VerificationCodeSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Validation
-
-        fields = (
-            'id',
-            'code',
-            'user',
-        )
-
-    def create(self, validated_data):
-
-        return super().create(validated_data)
+        model = VerificationCode
+        fields = []
 
     def to_internal_value(self, data):
         data['user'] = self.context['request'].user
