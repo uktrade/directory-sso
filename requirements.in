@@ -26,3 +26,5 @@ directory-healthcheck==1.0.0
 directory-components==3.6.1
 requests[security]==2.21.0
 urllib3>=1.23.0<2.0.0
+cryptography==2.3
+django-cryptography==0.3.0
