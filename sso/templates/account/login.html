@@ -1,49 +1,33 @@
 {% extends "account/base.html" %}
 
 {% load i18n %}
-{% load account socialaccount %}
-
-{% block head_title %}{% trans "Sign in - great.gov.uk" %}{% endblock %}
+{% load render_form from directory_components_tags %}
+{% block head_title %}Sign in - great.gov.uk"{% endblock %}
 
 {% block content %}
-<div class="grid-row">
+<div class="grid-row" id="login-form-container">
   <div class="column-half">
-
-    <h1 class="heading-xlarge">{% trans "Sign in" %}</h1>
-
-    {% get_providers as socialaccount_providers %}
-
-    {% if socialaccount_providers %}
-    <p>Login with one
-    of your existing third party accounts or <a href="{{ sso_register_url }}">register</a>
-    for a {{ site.name }} account.</p>
-
-    <div class="socialaccount_ballot">
-
-      <ul class="list list-bullet socialaccount_providers">
-        {% include "socialaccount/snippets/provider_list.html" with process="login" %}
-      </ul>
-
-      <div class="login-or">{% trans 'or' %}</div>
-
-    </div>
-
-    {% include "socialaccount/snippets/login_extra.html" %}
-
-    {% else %}
-    <p><a class="link" href="{{ sso_register_url }}">Register</a> if you don't have an account.</p>
-    {% endif %}
-
-    <form class="login" method="POST" action="{% url 'account_login' %}">
-      {% csrf_token %}
-      {{ form.as_p }}
-      {% if redirect_field_value %}
-        <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
-      {% endif %}
-      <button class="button" type="submit">{% trans "Sign in" %}</button>
-      <a class="link secondaryAction" href="{{ sso_reset_password_url }}">{% trans "Reset your password" %}</a>
-    </form>
-
+    <h1 class="heading-xlarge">Returning User</h1>
+    <p>Use your great.gov.uk login details to sign in.</p>
+    <section class="column-two-thirds" id="login-form">
+      <form method="POST" action="{% url 'account_login' %}">
+        {% csrf_token %}
+        {% render_form form %}
+        {% if redirect_field_value %}
+          <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
+        {% endif %}
+        <button class="button" type="submit">Sign in</button>
+        <a class="link secondary-action" href="{{ sso_reset_password_url }}">Forgotten password?</a>
+      </form>
+    </section>
+  </div>
+  <div class="column-half">
+    <section class="column-two-thirds"">
+      <h2 class="heading-xlarge">Register for an account</h2>
+      <p>Create an account and get a free business profile which you can use to promote your business.</p>
+      <p>It takes less than three minutes to register.</p>
+      <a class="button" href="{{ sso_register_url }}">Register</a>
+    </section>
   </div>
 </div>
 

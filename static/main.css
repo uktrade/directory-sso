@@ -3107,9 +3107,15 @@ button.button {
   text-decoration: none;
 }
 
-.secondaryAction {
-  padding: 14px 30px;
-  display: inline-block;
+.secondary-action {
+  line-height: 2.5em;
+  height: 50px;
+}
+
+@media (min-width: 640px) {
+  .secondary-action {
+    margin-left: 20px;
+  }
 }
 
 form > li {
@@ -3272,8 +3278,30 @@ label, input, button, select, textarea {
   display: block;
 }
 
-.input-field-container p input {
+#content form {
+  padding: 0;
+}
+
+#content form input {
   width: 100%;
+}
+
+#content a.button {
+  height: 50px;
+  line-height: 1.5em;
+}
+
+#content a.button:focus:active {
+  background-color: #005fb3;
+}
+
+#login-form-container section {
+  padding: 0;
+  overflow: inherit;
+}
+
+#login-form {
+  margin-bottom: 50px;
 }
 
 .input-field-container.has-error ul.errorlist {
