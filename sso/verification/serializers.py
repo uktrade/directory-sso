@@ -9,5 +9,6 @@ class VerificationCodeSerializer(serializers.ModelSerializer):
         fields = []
 
     def to_internal_value(self, data):
+        data = data.dict()
         data['user'] = self.context['request'].user
         return data
