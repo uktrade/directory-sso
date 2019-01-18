@@ -1,7 +1,6 @@
 import pytest
 
 from django.core.urlresolvers import reverse
-from django.test.client import Client
 from rest_framework import status
 from rest_framework.test import APIClient
 
