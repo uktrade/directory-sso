@@ -2,11 +2,10 @@ from rest_framework.generics import CreateAPIView
 from rest_framework.permissions import IsAuthenticated
 from conf.signature import SignatureCheckPermission
 
-from sso.verification import models, serializers
+from sso.verification import serializers
 
 
-class ValidationCodeCreateAPIView(CreateAPIView):
+class VerificationCodeCreateAPIView(CreateAPIView):
     serializer_class = serializers.VerificationCodeSerializer
-    '#queryset = models.VerificationCode.objects'
     permission_classes = [IsAuthenticated, SignatureCheckPermission]
     authentication_classes = []

@@ -11,7 +11,7 @@ def api_client():
 @pytest.mark.django_db
 def test_create_validation_code(api_client):
     response = api_client.post(
-        reversed('api:validation-code')
+        reversed('api:verification-code')
     )
 
     assert response.status_code == status.HTTP_200_OK

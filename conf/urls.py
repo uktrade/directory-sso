@@ -141,7 +141,7 @@ api_urlpatterns = [
     ),
     url(
         r'^verification-code/$',
-        views_verification_code.ValidationCodeCreateAPIView.as_view(),
+        views_verification_code.VerificationCodeCreateAPIView.as_view(),
         name='verification-code'
     )
 ]
