@@ -13,7 +13,7 @@ import sso.api.views_user
 import sso.oauth2.views_user
 import sso.testapi.views
 import sso.user.views
-import sso.api.views_verification_code
+from sso.verification import views_verification_code
 
 sitemaps = {
     'static': conf.sitemaps.StaticViewSitemap,
@@ -141,7 +141,7 @@ api_urlpatterns = [
     ),
     url(
         r'^verification-code/$',
-        sso.api.views_verification_code.ValidationCodeCreateAPIView.as_view(),
+        views_verification_code.ValidationCodeCreateAPIView.as_view(),
         name='verification-code'
     )
 ]

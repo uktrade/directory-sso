@@ -13,6 +13,9 @@ from sso.user.models import User
 
 class VerificationCode(TimeStampedModel):
 
+    class Meta:
+        ordering = ['-created']
+
     code = encrypt(models.CharField(
         max_length=128,
         default=partial(get_random_string, length=16),
@@ -38,9 +41,6 @@ class VerificationCode(TimeStampedModel):
     @property
     def expiry_days(self):
         return settings.VERIFICATION_EXPIRY_DAYS
-
-    class Meta:
-        ordering = ('-created', '-user')
 
     def __str__(self):
         return self.code
