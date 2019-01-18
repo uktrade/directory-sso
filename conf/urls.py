@@ -13,7 +13,7 @@ import sso.api.views_user
 import sso.oauth2.views_user
 import sso.testapi.views
 import sso.user.views
-from sso.verification import views
+import sso.verification.views
 
 sitemaps = {
     'static': conf.sitemaps.StaticViewSitemap,
