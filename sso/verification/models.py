@@ -21,10 +21,8 @@ class VerificationCode(TimeStampedModel):
         default=partial(get_random_string, length=16),
     ))
 
-    user = models.ForeignKey(
-        User,
-        related_name='verification',
-        null=False,
+    user_id = models.IntegerField(
+        null=True,
     )
     is_verified = models.BooleanField(
         _('verified'),
