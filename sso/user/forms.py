@@ -1,5 +1,6 @@
 from django.conf import settings
 from django.core.urlresolvers import reverse
+from django.forms import TextInput
 from django.utils.safestring import mark_safe
 
 from allauth.account import forms
@@ -10,6 +11,8 @@ from allauth.utils import set_form_field_order
 from directory_constants.constants import urls
 from directory_components import fields
 from notifications_python_client import NotificationsAPIClient
+
+from sso.user.fields import PasswordField
 
 
 class IndentedInvalidFieldsMixin:
@@ -92,20 +95,27 @@ class SignupForm(IndentedInvalidFieldsMixin, forms.SignupForm):
         return value
 
 
-class LoginForm(IndentedInvalidFieldsMixin, forms.LoginForm):
-
-    remember = fields.BooleanField(
-        label='Remember me',
-        required=False,
+class LoginForm(forms.LoginForm):
+    password = PasswordField(
+        label="Password",
+        label_suffix='',
     )
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.fields['login'].widget.attrs['autocomplete'] = 'new-password'
-        self.fields['login'].label = 'Email'
-        self.fields['login'].widget.attrs['placeholder'] = 'Email address'
-
         self.fields['password'].widget.attrs['autocomplete'] = 'new-password'
+        self.fields['login'] = fields.EmailField(
+            label='Email',
+            label_suffix='',
+            widget=TextInput(
+                attrs={
+                    'type': 'email',
+                    'placeholder': 'Email address',
+                    'autofocus': 'autofocus',
+                    'autocomplete': 'new-password',
+                }
+            )
+        )
 
 
 class UserForm(IndentedInvalidFieldsMixin, forms.UserForm):
