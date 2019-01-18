@@ -8,7 +8,6 @@ from django.utils.crypto import get_random_string
 from django_cryptography.fields import encrypt
 
 from sso.api.model_utils import TimeStampedModel
-from sso.user.models import User
 
 
 class VerificationCode(TimeStampedModel):
