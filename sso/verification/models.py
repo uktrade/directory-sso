@@ -8,6 +8,7 @@ from django.utils.crypto import get_random_string
 from django_cryptography.fields import encrypt
 
 from sso.api.model_utils import TimeStampedModel
+from sso.user.models import User
 
 
 class VerificationCode(TimeStampedModel):
@@ -19,9 +20,10 @@ class VerificationCode(TimeStampedModel):
         max_length=128,
         default=partial(get_random_string, length=16),
     ))
-
-    user_id = models.IntegerField(
-        null=True,
+    user = models.OneToOneField(
+        User,
+        on_delete=models.CASCADE,
+        primary_key=True,
     )
     is_verified = models.BooleanField(
         _('verified'),
