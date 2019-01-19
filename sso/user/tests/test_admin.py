@@ -189,6 +189,7 @@ def test_download_csv_exops_not_fab(
         ('modified', user_one.modified),
         ('oauth2_provider_application', ''),
         ('utm', user_one.utm),
+        ('verificationcode', ''),
     ])
 
     actual = str(response.content, 'utf-8').split('\r\n')
