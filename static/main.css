@@ -3366,7 +3366,7 @@ label, input, button, select, textarea {
 
 @media (min-width: 640px) {
   .multiple-choice {
-    width: 50%;
+    width: 100%;
   }
 }
 
