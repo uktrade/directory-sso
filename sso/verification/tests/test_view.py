@@ -1,7 +1,6 @@
 import pytest
 
 from django.core.urlresolvers import reverse
-from django.test.client import Client
 from rest_framework import status
 from rest_framework.test import APIClient
 
@@ -16,7 +15,7 @@ def api_client():
 
 
 @pytest.mark.django_db
-def test_create_validation_code_no_auth(api_client):
+def test_create_verification_code_no_auth(api_client):
     response = api_client.post(
         reverse('api:verification-code'),
         {},
@@ -26,7 +25,7 @@ def test_create_validation_code_no_auth(api_client):
 
 
 @pytest.mark.django_db
-def test_create_validation_code(api_client):
+def test_create_verification_code(api_client):
     user = UserFactory()
 
     assert models.VerificationCode.objects.filter(user=user).count() == 0

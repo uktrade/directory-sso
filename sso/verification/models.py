@@ -18,17 +18,19 @@ class VerificationCode(TimeStampedModel):
 
     code = encrypt(models.CharField(
         max_length=128,
-        default=partial(get_random_string, length=16),
+        default=partial(
+            get_random_string,
+            allowed_chars='0123456789',
+            length=5
+        ),
     ))
-
-    user = models.ForeignKey(
+    user = models.OneToOneField(
         User,
-        related_name='verification',
-        null=False,
     )
-    is_verified = models.BooleanField(
+    date_verified = models.DateField(
         _('verified'),
-        default=False,
+        blank=True,
+        null=True,
         help_text=_(
             'Designates whether this user has verified the code'
         ),
@@ -36,11 +38,8 @@ class VerificationCode(TimeStampedModel):
 
     @property
     def is_expired(self):
-        return (datetime.utcnow() - self.created).days > self.expiry_days
-
-    @property
-    def expiry_days(self):
-        return settings.VERIFICATION_EXPIRY_DAYS
+        delta = datetime.utcnow() - self.created
+        return delta.days > settings.VERIFICATION_EXPIRY_DAYS
 
     def __str__(self):
-        return self.code
+        return self.user

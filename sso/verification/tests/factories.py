@@ -5,9 +5,7 @@ from sso.user.tests.factories import UserFactory
 
 
 class VerificationFactory(factory.django.DjangoModelFactory):
-    code = factory.fuzzy.FuzzyText(length=12)
-    expiry_days = 3
-    is_verified = False
+    code = factory.fuzzy.FuzzyText(length=5)
     user = factory.SubFactory(UserFactory)
 
     class Meta:
