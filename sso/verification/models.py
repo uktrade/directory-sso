@@ -19,9 +19,9 @@ class VerificationCode(TimeStampedModel):
     code = encrypt(models.CharField(
         max_length=128,
         default=partial(
-                        get_random_string,
-                        allowed_chars='0123456789',
-                        length=5
+            get_random_string,
+            allowed_chars='0123456789',
+            length=5
         ),
     ))
     user = models.OneToOneField(
@@ -42,4 +42,4 @@ class VerificationCode(TimeStampedModel):
         return delta.days > settings.VERIFICATION_EXPIRY_DAYS
 
     def __str__(self):
-        return self.code
+        return self.user

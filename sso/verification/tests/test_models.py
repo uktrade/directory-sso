@@ -15,16 +15,13 @@ def verification_code():
 
 
 @pytest.mark.django_db
-def test_validation_expired(verification_code):
-    verification_code.created = datetime.now() - timedelta(
-            days=expiry_days+1)
+def test_verification_expired(verification_code):
+    verification_code.created = datetime.now() - timedelta(days=expiry_days+1)
 
     assert verification_code.is_expired is True
 
 
 @pytest.mark.django_db
 def test_verification_not_expired(verification_code):
-    verification_code.created = datetime.now() - timedelta(
-        days=expiry_days-1
-    )
+    verification_code.created = datetime.now() - timedelta(days=expiry_days-1)
     assert verification_code.is_expired is False
