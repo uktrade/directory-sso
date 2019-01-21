@@ -7,6 +7,8 @@ from rest_framework.test import APIClient
 
 from sso.user.tests.factories import UserFactory
 
+from sso.verification import models
+
 
 @pytest.fixture
 def api_client():
@@ -17,6 +19,7 @@ def api_client():
 def test_create_validation_code_no_auth(api_client):
     response = api_client.post(
         reverse('api:verification-code'),
+        {},
         format='json'
     )
     assert response.status_code == 401
@@ -25,9 +28,15 @@ def test_create_validation_code_no_auth(api_client):
 @pytest.mark.django_db
 def test_create_validation_code(api_client):
     user = UserFactory()
+
+    assert models.VerificationCode.objects.filter(user=user).count() == 0
+
     api_client.force_authenticate(user=user)
     response = api_client.post(
         reverse('api:verification-code'),
+        {},
         format='json'
     )
+
     assert response.status_code == status.HTTP_201_CREATED
+    assert models.VerificationCode.objects.filter(user=user).count() == 1
