@@ -4,8 +4,8 @@
 {% block head_title %}{% trans "Register - great.gov.uk" %}{% endblock %}
 
 {% block content %}
+<div class="column-half">
 <div id="profile-register-intro" class="grid-row">
-  <div class="column-half">
     <h1 class="heading-xlarge">{% trans "Register" %}</h1>
 
     <p class="margin-bottom-30"><a class="link" href="{{ sso_login_url }}">Sign in</a> if you have an account.</p>
@@ -16,7 +16,6 @@
         <li>express your interest and apply for export opportunities</li>
     </ul>
   </div>
-</div>
 
 <form class="signup" id="signup_form" method="post" action="{% url 'account_signup' %}">
     {% csrf_token %}
@@ -40,5 +39,6 @@
     {% endif %}
   <button class="button" type="submit">{% trans "Register" %}</button>
 </form>
+</div>
 
 {% endblock %}
