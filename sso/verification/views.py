@@ -6,7 +6,7 @@ from rest_framework.permissions import IsAuthenticated
 
 from conf.signature import SignatureCheckPermission
 from core.authentication import SessionAuthentication
-from sso.verification import serializers, models
+from sso.verification import serializers
 
 
 class VerificationCodeCreateAPIView(CreateAPIView):
@@ -22,9 +22,7 @@ class VerifyVerificationCodeAPIView(GenericAPIView):
 
     def post(self, request, *args, **kwargs):
 
-        verification_code = models.VerificationCode.objects.get(
-            user=request.user
-        )
+        verification_code = self.request.user.verificationcode
         status_code = status.HTTP_200_OK
 
         if verification_code:
