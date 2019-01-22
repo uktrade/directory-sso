@@ -11,8 +11,7 @@ class VerificationCodeSerializer(serializers.ModelSerializer):
         fields = []
 
     def to_internal_value(self, data):
-        if 'request' in self.context.keys():
-            data['user_id'] = self.context['request'].user.pk
+        data['user_id'] = self.context['request'].user.pk
         return data
 
 
