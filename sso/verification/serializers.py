@@ -9,5 +9,12 @@ class VerificationCodeSerializer(serializers.ModelSerializer):
         fields = []
 
     def to_internal_value(self, data):
-        data['user_id'] = self.context['request'].user.pk
+        if 'request' in self.context.keys():
+            data['user_id'] = self.context['request'].user.pk
         return data
+
+    def validate_code(self, value):
+        if value != self.context['expected_code']:
+            raise serializers.ValidationError(
+                "Invalid registration verification code"
+            )
