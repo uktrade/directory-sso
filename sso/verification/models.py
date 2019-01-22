@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import datetime, timezone
 from functools import partial
 
 from django.db import models
@@ -38,7 +38,7 @@ class VerificationCode(TimeStampedModel):
 
     @property
     def is_expired(self):
-        delta = datetime.utcnow() - self.created
+        delta = datetime.now(timezone.utc) - self.created
         return delta.days > settings.VERIFICATION_EXPIRY_DAYS
 
     def __str__(self):

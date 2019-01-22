@@ -19,7 +19,7 @@ class VerificationCodeCreateAPIView(CreateAPIView):
 
 
 class VerifyVerificationCodeAPIView(GenericAPIView):
-    serializer_class = serializers.VerificationCodeSerializer
+    serializer_class = serializers.CheckVerificationCodeSerializer
     permission_classes = [IsAuthenticated, SignatureCheckPermission]
     authentication_classes = [SessionAuthentication]
     queryset = models.VerificationCode.objects.all()
@@ -37,11 +37,10 @@ class VerifyVerificationCodeAPIView(GenericAPIView):
         if verification_code:
             serializer = self.serializer_class(
                 data=request.data,
-                context={'expected_code': verification_code.code},
+                context={'verificationcode': verification_code},
             )
-
             serializer.is_valid(raise_exception=True)
-            verification_code.verified_date = datetime.utcnow()
+            verification_code.date_verified = datetime.utcnow()
             verification_code.save()
         else:
             status_code = status.HTTP_404_NOT_FOUND
