@@ -4,7 +4,7 @@ from sso.verification.models import VerificationCode
 from sso.user.tests.factories import UserFactory
 
 
-class VerificationFactory(factory.django.DjangoModelFactory):
+class VerificationCodeFactory(factory.django.DjangoModelFactory):
     code = factory.fuzzy.FuzzyText(length=5)
     user = factory.SubFactory(UserFactory)
 

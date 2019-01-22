@@ -42,4 +42,4 @@ class VerificationCode(TimeStampedModel):
         return delta.days > settings.VERIFICATION_EXPIRY_DAYS
 
     def __str__(self):
-        return self.user
+        return str(self.user)
