@@ -145,9 +145,9 @@ api_urlpatterns = [
         name='verification-code'
     ),
     url(
-        r'^verify-code/$',
+        r'^verification-code/verify/$',
         sso.verification.views.VerifyVerificationCodeAPIView.as_view(),
-        name='verify-code'
+        name='verification-code-verify'
     ),
 ]
 

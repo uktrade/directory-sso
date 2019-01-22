@@ -1,15 +1,12 @@
-from datetime import datetime
-
+from django.utils.timezone import now
 from rest_framework.generics import CreateAPIView, GenericAPIView
 from rest_framework.response import Response
-from rest_framework.renderers import JSONRenderer
 from rest_framework import status
-
 from rest_framework.permissions import IsAuthenticated
-from conf.signature import SignatureCheckPermission
 
-from sso.verification import serializers, models
+from conf.signature import SignatureCheckPermission
 from core.authentication import SessionAuthentication
+from sso.verification import serializers, models
 
 
 class VerificationCodeCreateAPIView(CreateAPIView):
@@ -22,9 +19,6 @@ class VerifyVerificationCodeAPIView(GenericAPIView):
     serializer_class = serializers.CheckVerificationCodeSerializer
     permission_classes = [IsAuthenticated, SignatureCheckPermission]
     authentication_classes = [SessionAuthentication]
-    queryset = models.VerificationCode.objects.all()
-    http_method_names = ("post",)
-    renderer_classes = (JSONRenderer,)
 
     def post(self, request, *args, **kwargs):
 
@@ -32,24 +26,21 @@ class VerifyVerificationCodeAPIView(GenericAPIView):
             user=request.user
         )
         status_code = status.HTTP_200_OK
-        return_msg = 'User verified with code'
 
         if verification_code:
             serializer = self.serializer_class(
                 data=request.data,
-                context={'verificationcode': verification_code},
+                context={'request': self.request},
             )
             serializer.is_valid(raise_exception=True)
-            verification_code.date_verified = datetime.utcnow()
+            verification_code.date_verified = now()
             verification_code.save()
         else:
             status_code = status.HTTP_404_NOT_FOUND
-            return_msg = 'No verification code found for user'
 
         return Response(
             data={
                 "status_code": status_code,
-                "detail": return_msg
             },
             status=status_code,
         )
