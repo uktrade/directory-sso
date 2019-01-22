@@ -48,6 +48,7 @@ INSTALLED_APPS = [
     'sso',
     'sso.oauth2',
     'sso.user.apps.UserConfig',
+    'sso.verification',
     'sso.testapi',
     'directory_constants',
     'health_check.db',
@@ -326,6 +327,8 @@ ACCOUNT_SIGNUP_PASSWORD_ENTER_TWICE = True
 ACCOUNT_ADAPTER = 'sso.adapters.AccountAdapter'
 ACCOUNT_LOGIN_ON_EMAIL_CONFIRMATION = True
 
+VERIFICATION_EXPIRY_DAYS = env.int('VERIFICATION_EXPIRY_DAYS', 3)
+
 # Email
 EMAIL_BACKED_CLASSES = {
     'default': 'django.core.mail.backends.smtp.EmailBackend',
@@ -573,6 +576,5 @@ RESTRICTED_APP_NAMES = env.list(
 if env.bool('IP_RESTRICTOR_RESTRICT_UI', False):
     # restrict all pages that are not in apps API, healthcheck, admin, etc
     RESTRICTED_APP_NAMES.append('')
-
 
 ACCOUNT_SESSION_REMEMBER = True
