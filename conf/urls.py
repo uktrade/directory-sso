@@ -143,7 +143,12 @@ api_urlpatterns = [
         r'^verification-code/$',
         sso.verification.views.VerificationCodeCreateAPIView.as_view(),
         name='verification-code'
-    )
+    ),
+    url(
+        r'^verification-code/verify/$',
+        sso.verification.views.VerifyVerificationCodeAPIView.as_view(),
+        name='verification-code-verify'
+    ),
 ]
 
 testapi_urls = [
