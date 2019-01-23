@@ -11,22 +11,18 @@ expiry_days = settings.VERIFICATION_EXPIRY_DAYS
 
 @pytest.fixture
 def verification_code():
-    return VerificationCode(
-    )
+    return VerificationCode()
 
 
 @pytest.mark.django_db
 def test_verification_expired(verification_code):
-    verification_code.created = (
-        now() - timedelta(days=expiry_days+1)
-    )
+    verification_code.created = now() - timedelta(days=expiry_days+1)
 
     assert verification_code.is_expired is True
 
 
 @pytest.mark.django_db
 def test_verification_not_expired(verification_code):
-    verification_code.created = (
-        now() - timedelta(days=expiry_days-1)
-    )
+    verification_code.created = now() - timedelta(days=expiry_days-1)
+
     assert verification_code.is_expired is False

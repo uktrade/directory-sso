@@ -26,7 +26,7 @@ def verification_code():
 @pytest.mark.django_db
 def test_create_verification_code_no_auth(api_client):
     response = api_client.post(
-        reverse('api:verification-code-verify'),
+        reverse('api:verification-code'),
         {},
         format='json'
     )
@@ -41,7 +41,7 @@ def test_create_verification_code(api_client):
 
     api_client.force_authenticate(user=user)
     response = api_client.post(
-        reverse('api:verification-code-verify'),
+        reverse('api:verification-code'),
         {},
         format='json'
     )

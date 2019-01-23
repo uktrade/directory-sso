@@ -38,8 +38,7 @@ class VerificationCode(TimeStampedModel):
 
     @property
     def is_expired(self):
-        delta = now() - self.created
-        return delta.days > settings.VERIFICATION_EXPIRY_DAYS
+        return (now() - self.created).days > settings.VERIFICATION_EXPIRY_DAYS
 
     def __str__(self):
         return self.user
