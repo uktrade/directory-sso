@@ -7,20 +7,14 @@ from django.core.urlresolvers import reverse
 from rest_framework.test import APIClient
 from freezegun import freeze_time
 
-
 from sso.user.tests.factories import UserFactory
-from sso.verification.tests.factories import VerificationFactory
+from sso.verification.tests.factories import VerificationCodeFactory
 from sso.verification import models
 
 
 @pytest.fixture
 def api_client():
     return APIClient()
-
-
-@pytest.fixture
-def verification_code():
-    return VerificationFactory()
 
 
 @pytest.mark.django_db
@@ -50,15 +44,12 @@ def test_create_verification_code(api_client):
     assert models.VerificationCode.objects.filter(user=user).count() == 1
 
 
+@freeze_time("2018-01-14 12:00:01")
 @pytest.mark.django_db
-def test_verify_verification_code(api_client, verification_code):
-    freezer = freeze_time("2018-01-14 12:00:01")
-    freezer.start()
+def test_verify_verification_code(api_client):
+    verification_code = VerificationCodeFactory()
+    api_client.force_authenticate(user=verification_code.user)
 
-    user = verification_code.user
-    api_client.force_authenticate(user=user)
-
-    verification_code.refresh_from_db()
     assert verification_code.code
 
     url = reverse('api:verification-code-verify')
@@ -67,17 +58,14 @@ def test_verify_verification_code(api_client, verification_code):
     )
 
     assert response.status_code == 200
-
-    verification_code.refresh_from_db()
-    freezer.stop()
-    assert verification_code.date_verified == date(2018, 1, 14)
+    assert verification_code.date_verified.date() == date(2018, 1, 14)
 
 
 @pytest.mark.django_db
-def test_verify_verification_code_invalid(api_client, verification_code):
-    user = verification_code.user
-    api_client.force_authenticate(user=user)
-    verification_code.refresh_from_db()
+def test_verify_verification_code_invalid(api_client):
+    verification_code = VerificationCodeFactory()
+    api_client.force_authenticate(user=verification_code.user)
+
     assert verification_code.code
 
     url = reverse('api:verification-code-verify')
@@ -86,19 +74,15 @@ def test_verify_verification_code_invalid(api_client, verification_code):
     )
 
     assert response.status_code == 400
-
-    verification_code.refresh_from_db()
-
     assert verification_code.date_verified is None
 
 
 @pytest.mark.django_db
-def test_verify_verification_code_expired(api_client, verification_code):
-    verification_code.created = now() - timedelta(days=100)
-    verification_code.save()
-    user = verification_code.user
-    api_client.force_authenticate(user=user)
-    verification_code.refresh_from_db()
+def test_verify_verification_code_expired(api_client):
+    with freeze_time(now() - timedelta(days=100)):
+        verification_code = VerificationCodeFactory()
+
+    api_client.force_authenticate(user=verification_code.user)
 
     url = reverse('api:verification-code-verify')
     response = api_client.post(
@@ -106,7 +90,4 @@ def test_verify_verification_code_expired(api_client, verification_code):
     )
 
     assert response.status_code == 400
-
-    verification_code.refresh_from_db()
-
     assert verification_code.date_verified is None

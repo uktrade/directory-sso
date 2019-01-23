@@ -11,9 +11,12 @@ button.button {
   text-decoration: none;
 }
 
-.secondaryAction {
-  padding: 14px 30px;
-  display: inline-block;
+.secondary-action {
+  line-height: 2.5em;
+  height: 50px;
+  @media (min-width: 640px) {
+    margin-left: 20px;
+  }
 }
 
 form {
@@ -187,11 +190,34 @@ label, input, button, select, textarea {
 
 .input-field-container p {
   @extend .form-group;
+}
 
-  input {
-    width: 100%;
+#content {
+  form {
+    padding: 0;
+    input {
+      width: 100%;
+    }
+  }
+  a.button {
+    height: 50px;
+    line-height: 1.5em;
+    &:focus:active {
+      background-color: #005fb3;
+    }
   }
 }
+
+#login-form-container {
+  section {
+    padding: 0;
+    overflow: inherit;
+  }
+}
+#login-form {
+  margin-bottom: 50px;
+}
+
 .input-field-container.has-error ul.errorlist {
   margin: 0 0 10px;
   padding: 0;
@@ -254,6 +280,6 @@ label, input, button, select, textarea {
 
 @media (min-width: 640px) {
   .multiple-choice {
-    width: 50%;
+    width: 100%;
   }
 }
