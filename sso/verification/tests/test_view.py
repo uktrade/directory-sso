@@ -91,3 +91,14 @@ def test_verify_verification_code_expired(api_client):
 
     assert response.status_code == 400
     assert verification_code.date_verified is None
+
+
+@pytest.mark.django_db
+def test_verify_no_verification_code(api_client):
+    user = UserFactory()
+    api_client.force_authenticate(user=user)
+
+    url = reverse('api:verification-code-verify')
+    response = api_client.post(url, {'code': 'my-name-is-jeff'}, format='json')
+
+    assert response.status_code == 404
