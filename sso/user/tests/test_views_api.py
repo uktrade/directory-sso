@@ -29,17 +29,19 @@ def test_create_user_api(api_client):
 
 
 @pytest.mark.django_db
-@patch('sso.user.serializers.CreateUserSerializer.create')
+@patch('sso.user.models.User.objects.create_user')
 def test_create_user_api_exception_rollback(mock_create, api_client):
-    url = reverse('api:user')
+    new_email = 'test@test123.com'
+    password = 'mypassword'
+
     mock_create.side_effect = Exception('!')
 
     with pytest.raises(Exception):
-        api_client.post(
-            url,
-            {'email': '', 'test@test123.com': 'mypassword'},
+        response = api_client.post(
+            reverse('api:user'),
+            {'email': new_email, 'password': password},
             format='json'
         )
-
+        assert response.status_code == 500
     assert User.objects.count() == 0
     assert VerificationCode.objects.count() == 0
