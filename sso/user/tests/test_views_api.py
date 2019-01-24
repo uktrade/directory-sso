@@ -6,7 +6,6 @@ from django.urls import reverse
 from rest_framework.test import APIClient
 from sso.user.models import User
 from sso.verification.models import VerificationCode
-from sso.user.serializers import CreateUserSerializer
 
 
 @pytest.fixture
