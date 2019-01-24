@@ -151,9 +151,9 @@ api_urlpatterns = [
         name='verification-code-verify'
     ),
     url(
-        r'^create-user/$',
+        r'^user/$',
         sso.user.views_api.UserCreateAPIView.as_view(),
-        name='create-user'
+        name='user'
     ),
 ]
 

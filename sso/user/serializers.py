@@ -1,4 +1,6 @@
+from django.db import transaction
 from rest_framework import serializers
+
 
 from sso.user.models import User
 from sso.verification.models import VerificationCode
@@ -38,6 +40,7 @@ class CreateUserSerializer(serializers.ModelSerializer):
             'password',
         )
 
+    @transaction.atomic
     def create(self, validated_data):
         instance = User.objects.create_user(**validated_data)
         instance.verificationcode = VerificationCode.objects.create(
