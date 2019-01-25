@@ -44,3 +44,23 @@ def test_create_user_api_exception_rollback(mock_create, api_client):
         assert response.status_code == 500
     assert User.objects.count() == 0
     assert VerificationCode.objects.count() == 0
+
+
+@pytest.mark.django_db
+@patch('sso.verification.models.VerificationCode.objects.create')
+def test_create_user_api_verification_exception_rollback(
+        mock_create, api_client):
+    new_email = 'test@test123.com'
+    password = 'mypassword'
+
+    mock_create.side_effect = Exception('!')
+
+    with pytest.raises(Exception):
+        response = api_client.post(
+            reverse('api:user'),
+            {'email': new_email, 'password': password},
+            format='json'
+        )
+        assert response.status_code == 500
+    assert User.objects.count() == 0
+    assert VerificationCode.objects.count() == 0
