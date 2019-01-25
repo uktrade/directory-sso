@@ -37,6 +37,7 @@ def test_createuserprofileserializer_deserialization(user):
     assert instance.is_background_checks_allowed == data[
         'is_background_checks_allowed'
     ]
+    assert instance.user == user
 
 
 @pytest.mark.django_db

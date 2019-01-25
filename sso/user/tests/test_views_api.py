@@ -99,7 +99,7 @@ def test_create_user_profile(api_client):
 @pytest.mark.django_db
 def test_create_user_profile_no_auth(api_client):
     response = api_client.post(
-        reverse('api:verification-code'),
+        reverse('api:user-create-profile'),
         {},
         format='json'
     )

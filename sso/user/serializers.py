@@ -64,6 +64,3 @@ class CreateUserProfileSerializer(serializers.ModelSerializer):
     def to_internal_value(self, data):
         data['user_id'] = self.context['request'].user.pk
         return data
-
-    def __str__(self):
-        return str(self.user)
