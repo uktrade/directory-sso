@@ -2,7 +2,7 @@ from django.db import transaction
 from rest_framework import serializers
 
 
-from sso.user.models import User
+from sso.user.models import User, UserProfile
 from sso.verification.models import VerificationCode
 
 
@@ -47,3 +47,23 @@ class CreateUserSerializer(serializers.ModelSerializer):
             user=instance
         )
         return instance
+
+
+class CreateUserProfileSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = UserProfile
+        fields = (
+            'forename',
+            'surname',
+            'job_title',
+            'phone',
+            'is_official_representative',
+            'is_background_checks_allowed',
+        )
+
+    def to_internal_value(self, data):
+        data['user_id'] = self.context['request'].user.pk
+        return data
+
+    def __str__(self):
+        return str(self.user)

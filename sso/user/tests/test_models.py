@@ -4,7 +4,8 @@ from django_extensions.db.fields import (
     ModificationDateTimeField, CreationDateTimeField
 )
 
-from sso.user.models import User
+from sso.user.models import User, UserProfile
+from sso.user.tests.factories import UserFactory
 
 
 @pytest.mark.django_db
@@ -113,3 +114,28 @@ def test_create_superuser_not_superuser():
         User.objects.create_superuser(
             is_superuser=False, email=None, password=None,
         )
+
+
+@pytest.mark.django_db
+def test_create_user_profile():
+    user = UserFactory()
+    data = {'forename': 'john',
+            'surname': 'smith',
+            'phone': '0203044213',
+            'job_title': 'Director',
+            'is_official_representative': 'True',
+            'is_background_checks_allowed': 'False',
+            'user': user
+            }
+
+    expected = UserProfile.objects.create(**data)
+    assert expected.forename == data['forename']
+    assert expected.surname == data['surname']
+    assert expected.job_title == data['job_title']
+    assert expected.phone == data['phone']
+    assert expected.is_official_representative == data[
+        'is_official_representative'
+    ]
+    assert expected.is_background_checks_allowed == data[
+        'is_background_checks_allowed'
+    ]

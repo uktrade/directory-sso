@@ -155,6 +155,11 @@ api_urlpatterns = [
         sso.user.views_api.UserCreateAPIView.as_view(),
         name='user'
     ),
+    url(
+        r'^user/create-profile$',
+        sso.user.views_api.UserProfileCreateAPIView.as_view(),
+        name='user-create-profile'
+    ),
 ]
 
 testapi_urls = [
@@ -164,7 +169,6 @@ testapi_urls = [
         name='user_by_email'
     ),
 ]
-
 
 urlpatterns = [
     url(

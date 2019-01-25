@@ -149,3 +149,61 @@ class User(AbstractBaseUser, PermissionsMixin, TimeStampedModel):
         return reverse(
             "account_confirm_email", args=[email_confirmation.key]
         )
+
+
+class UserProfile(TimeStampedModel):
+    class Meta:
+        ordering = ['-created']
+
+    user = models.ForeignKey(
+        'User',
+        related_name='userprofile',
+        blank=True,
+        null=True,
+    )
+
+    forename = models.CharField(
+        max_length=128,
+        blank=True,
+        null=False,
+    )
+
+    surname = models.CharField(
+        max_length=128,
+        blank=True,
+        null=False,
+    )
+
+    job_title = models.CharField(
+        max_length=128,
+        blank=True,
+        null=False,
+    )
+
+    phone = models.CharField(
+        max_length=128,
+        blank=True,
+        null=False,
+    )
+
+    is_official_representative = models.BooleanField(
+        _('official representative'),
+        default=False,
+        help_text=_(
+            'User confirms they have the right to act on behalf of \
+            the company.'
+        ),
+    )
+
+    is_background_checks_allowed = models.BooleanField(
+        _('allow background checks'),
+        default=False,
+        help_text=_(
+            'Specifies if the user has given permission to run background  \
+            checks'
+
+        ),
+    )
+
+    def __str__(self):
+        return str(self.user)

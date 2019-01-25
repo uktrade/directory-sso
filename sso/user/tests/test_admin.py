@@ -18,7 +18,8 @@ class DownloadCaseStudyCSVTestCase(TestCase):
 
     header = (
         'created,date_joined,email,id,is_active,is_staff,is_superuser,'
-        'last_login,modified,oauth2_provider_application,utm,verificationcode'
+        'last_login,modified,oauth2_provider_application,userprofile,'
+        'utm,verificationcode'
     )
 
     def setUp(self):
@@ -43,7 +44,7 @@ class DownloadCaseStudyCSVTestCase(TestCase):
 
         row_one = (
             "{created},{date_joined},admin@example.com,{id},True,True,True,"
-            "{last_login},{modified},,{utm},"
+            "{last_login},{modified},,,{utm},"
         ).format(
             created=self.superuser.created,
             date_joined=self.superuser.date_joined,
@@ -77,7 +78,8 @@ class DownloadCaseStudyCSVTestCase(TestCase):
         user_one = User.objects.all()[2]
         row_one = (
             '{created},{date_joined},{email},{id},{is_active},{is_staff},'
-            '{is_superuser},,{modified},,{utm},{verificationcode}'
+            '{is_superuser},,{modified},,{userprofile},''{utm},'
+            '{verificationcode}'
         ).format(
             created=user_one.created,
             date_joined=user_one.date_joined,
@@ -87,6 +89,7 @@ class DownloadCaseStudyCSVTestCase(TestCase):
             is_staff=user_one.is_staff,
             is_superuser=user_one.is_superuser,
             modified=user_one.modified,
+            userprofile='',
             utm=user_one.utm,
             verificationcode='',
         )
@@ -94,7 +97,8 @@ class DownloadCaseStudyCSVTestCase(TestCase):
         user_two = User.objects.all()[1]
         row_two = (
             '{created},{date_joined},{email},{id},{is_active},{is_staff},'
-            '{is_superuser},,{modified},,{utm},{verificationcode}'
+            '{is_superuser},,{modified},,{userprofile},{utm},'
+            '{verificationcode}'
         ).format(
             created=user_two.created,
             date_joined=user_two.date_joined,
@@ -104,6 +108,7 @@ class DownloadCaseStudyCSVTestCase(TestCase):
             is_staff=user_two.is_staff,
             is_superuser=user_two.is_superuser,
             modified=user_two.modified,
+            userprofile='',
             utm=user_two.utm,
             verificationcode='',
         )
@@ -111,7 +116,8 @@ class DownloadCaseStudyCSVTestCase(TestCase):
         user_three = User.objects.all()[0]
         row_three = (
             '{created},{date_joined},{email},{id},{is_active},{is_staff},'
-            '{is_superuser},{last_login},{modified},,{utm},{verificationcode}'
+            '{is_superuser},{last_login},{modified},,{userprofile},{utm},'
+            '{verificationcode}'
         ).format(
             created=user_three.created,
             date_joined=user_three.date_joined,
@@ -122,6 +128,7 @@ class DownloadCaseStudyCSVTestCase(TestCase):
             is_superuser=user_three.is_superuser,
             last_login=user_three.last_login,
             modified=user_three.modified,
+            userprofile='',
             utm=user_three.utm,
             verificationcode='',
         )
@@ -188,6 +195,7 @@ def test_download_csv_exops_not_fab(
         ('last_login', user_one.last_login),
         ('modified', user_one.modified),
         ('oauth2_provider_application', ''),
+        ('userprofile', ''),
         ('utm', user_one.utm),
         ('verificationcode', ''),
     ])
