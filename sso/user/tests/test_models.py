@@ -119,24 +119,16 @@ def test_create_superuser_not_superuser():
 @pytest.mark.django_db
 def test_create_user_profile():
     user = UserFactory()
-    data = {'forename': 'john',
-            'surname': 'smith',
-            'phone': '0203044213',
+    data = {'first_name': 'john',
+            'last_name': 'smith',
+            'mobile_phone_number': '0203044213',
             'job_title': 'Director',
-            'is_official_representative': 'True',
-            'is_background_checks_allowed': 'False',
             'user': user
             }
 
     expected = UserProfile.objects.create(**data)
-    assert expected.forename == data['forename']
-    assert expected.surname == data['surname']
+    assert expected.first_name == data['first_name']
+    assert expected.last_name == data['last_name']
     assert expected.job_title == data['job_title']
-    assert expected.phone == data['phone']
-    assert expected.is_official_representative == data[
-        'is_official_representative'
-    ]
-    assert expected.is_background_checks_allowed == data[
-        'is_background_checks_allowed'
-    ]
+    assert expected.mobile_phone_number == data['mobile_phone_number']
     assert str(expected) == str(user)

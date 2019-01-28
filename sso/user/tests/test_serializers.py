@@ -13,12 +13,10 @@ def user():
 
 @pytest.mark.django_db
 def test_createuserprofileserializer_deserialization(user):
-    data = {'forename': 'john',
-            'surname': 'smith',
-            'phone': '0203044213',
+    data = {'first_name': 'john',
+            'last_name': 'smith',
+            'mobile_phone_number': '0203044213',
             'job_title': 'Director',
-            'is_official_representative': 'True',
-            'is_background_checks_allowed': 'False',
             }
     request = Mock()
     request.user = user
@@ -27,16 +25,10 @@ def test_createuserprofileserializer_deserialization(user):
     )
     assert serializer.is_valid()
     instance = serializer.save()
-    assert instance.forename == data['forename']
-    assert instance.surname == data['surname']
+    assert instance.first_name == data['first_name']
+    assert instance.last_name == data['last_name']
     assert instance.job_title == data['job_title']
-    assert instance.phone == data['phone']
-    assert instance.is_official_representative == data[
-        'is_official_representative'
-    ]
-    assert instance.is_background_checks_allowed == data[
-        'is_background_checks_allowed'
-    ]
+    assert instance.mobile_phone_number == data['mobile_phone_number']
     assert instance.user == user
 
 

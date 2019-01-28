@@ -53,12 +53,10 @@ class CreateUserProfileSerializer(serializers.ModelSerializer):
     class Meta:
         model = UserProfile
         fields = (
-            'forename',
-            'surname',
+            'first_name',
+            'last_name',
             'job_title',
-            'phone',
-            'is_official_representative',
-            'is_background_checks_allowed',
+            'mobile_phone_number',
         )
 
     def to_internal_value(self, data):

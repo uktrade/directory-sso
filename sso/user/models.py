@@ -162,47 +162,28 @@ class UserProfile(TimeStampedModel):
         null=True,
     )
 
-    forename = models.CharField(
+    first_name = models.CharField(
         max_length=128,
-        blank=True,
+        blank=False,
         null=False,
     )
 
-    surname = models.CharField(
+    last_name = models.CharField(
         max_length=128,
-        blank=True,
+        blank=False,
         null=False,
     )
 
     job_title = models.CharField(
         max_length=128,
-        blank=True,
+        blank=False,
         null=False,
     )
 
-    phone = models.CharField(
+    mobile_phone_number = models.CharField(
         max_length=128,
         blank=True,
-        null=False,
-    )
-
-    is_official_representative = models.BooleanField(
-        _('official representative'),
-        default=False,
-        help_text=_(
-            'User confirms they have the right to act on behalf of \
-            the company.'
-        ),
-    )
-
-    is_background_checks_allowed = models.BooleanField(
-        _('allow background checks'),
-        default=False,
-        help_text=_(
-            'Specifies if the user has given permission to run background  \
-            checks'
-
-        ),
+        null=True,
     )
 
     def __str__(self):

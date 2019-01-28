@@ -70,12 +70,10 @@ def test_create_user_api_verification_exception_rollback(
 @pytest.mark.django_db
 def test_create_user_profile(api_client):
     user = UserFactory()
-    data = {'forename': 'john',
-            'surname': 'smith',
-            'phone': '0203044213',
+    data = {'first_name': 'john',
+            'last_name': 'smith',
+            'mobile_phone_number': '0203044213',
             'job_title': 'Director',
-            'is_official_representative': 'True',
-            'is_background_checks_allowed': 'False',
             }
 
     assert UserProfile.objects.filter(user=user).count() == 0
@@ -88,12 +86,10 @@ def test_create_user_profile(api_client):
 
     instance = UserProfile.objects.last()
     assert response.status_code == 201
-    assert instance.forename == data['forename']
-    assert instance.surname == data['surname']
+    assert instance.first_name == data['first_name']
+    assert instance.last_name == data['last_name']
     assert instance.job_title == data['job_title']
-    assert instance.phone == data['phone']
-    assert instance.is_official_representative is True
-    assert instance.is_background_checks_allowed is False
+    assert instance.mobile_phone_number == data['mobile_phone_number']
 
 
 @pytest.mark.django_db
