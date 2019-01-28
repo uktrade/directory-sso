@@ -155,29 +155,20 @@ class UserProfile(TimeStampedModel):
     class Meta:
         ordering = ['-created']
 
-    user = models.ForeignKey(
-        'User',
-        related_name='userprofile',
-        blank=True,
-        null=True,
+    user = models.OneToOneField(
+        User,
     )
 
     first_name = models.CharField(
         max_length=128,
-        blank=False,
-        null=False,
     )
 
     last_name = models.CharField(
         max_length=128,
-        blank=False,
-        null=False,
     )
 
     job_title = models.CharField(
         max_length=128,
-        blank=False,
-        null=False,
     )
 
     mobile_phone_number = models.CharField(
