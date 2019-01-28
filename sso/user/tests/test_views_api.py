@@ -2,9 +2,10 @@ import pytest
 from unittest.mock import patch
 
 from django.urls import reverse
-
 from rest_framework.test import APIClient
-from sso.user.models import User
+
+from sso.user.tests.factories import UserFactory
+from sso.user.models import User, UserProfile
 from sso.verification.models import VerificationCode
 
 
@@ -64,3 +65,38 @@ def test_create_user_api_verification_exception_rollback(
         assert response.status_code == 500
     assert User.objects.count() == 0
     assert VerificationCode.objects.count() == 0
+
+
+@pytest.mark.django_db
+def test_create_user_profile(api_client):
+    user = UserFactory()
+    data = {'first_name': 'john',
+            'last_name': 'smith',
+            'mobile_phone_number': '0203044213',
+            'job_title': 'Director',
+            }
+
+    assert UserProfile.objects.filter(user=user).count() == 0
+    api_client.force_authenticate(user=user)
+    response = api_client.post(
+        reverse('api:user-create-profile'),
+        data,
+        format='json'
+    )
+
+    instance = UserProfile.objects.last()
+    assert response.status_code == 201
+    assert instance.first_name == data['first_name']
+    assert instance.last_name == data['last_name']
+    assert instance.job_title == data['job_title']
+    assert instance.mobile_phone_number == data['mobile_phone_number']
+
+
+@pytest.mark.django_db
+def test_create_user_profile_no_auth(api_client):
+    response = api_client.post(
+        reverse('api:user-create-profile'),
+        {},
+        format='json'
+    )
+    assert response.status_code == 401
