@@ -139,3 +139,4 @@ def test_create_user_profile():
     assert expected.is_background_checks_allowed == data[
         'is_background_checks_allowed'
     ]
+    assert str(expected) == str(user)
