@@ -4,7 +4,7 @@ from rest_framework import serializers
 
 from sso.user.models import User, UserProfile
 from sso.verification.models import VerificationCode
-from sso.verification.serializers import VerificationCodeSerializer
+
 
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
