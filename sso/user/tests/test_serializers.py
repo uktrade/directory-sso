@@ -41,4 +41,3 @@ def test_createuserserializer_deserialization():
     assert instance.email == data['email']
     assert serializer.data['email'] == data['email']
     assert serializer.data['verification_code']
-
