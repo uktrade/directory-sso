@@ -4,7 +4,7 @@ from rest_framework import serializers
 
 from sso.user.models import User, UserProfile
 from sso.verification.models import VerificationCode
-
+from sso.verification.serializers import VerificationCodeSerializer
 
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
@@ -32,13 +32,19 @@ class PasswordCheckSerializer(serializers.Serializer):
 
 
 class CreateUserSerializer(serializers.ModelSerializer):
+    verification_code = VerificationCodeSerializer(read_only=True)
+
     class Meta:
         model = User
-
         fields = (
             'email',
             'password',
+            'verification_code',
         )
+        extra_kwargs = {
+            'password': {'write_only': True},
+            'verification_code': {'read_only': True}
+        }
 
     @transaction.atomic
     def create(self, validated_data):
