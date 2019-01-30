@@ -32,7 +32,7 @@ class PasswordCheckSerializer(serializers.Serializer):
 
 
 class CreateUserSerializer(serializers.ModelSerializer):
-    verification_code = VerificationCodeSerializer(read_only=True)
+    verification_code = serializers.SerializerMethodField()
 
     class Meta:
         model = User
@@ -53,6 +53,9 @@ class CreateUserSerializer(serializers.ModelSerializer):
             user=instance
         )
         return instance
+
+    def get_verification_code(self, instance):
+        return instance.verificationcode.code
 
 
 class CreateUserProfileSerializer(serializers.ModelSerializer):
