@@ -26,6 +26,9 @@ def test_create_user_api(api_client):
     )
     assert response.status_code == 201
     assert User.objects.filter(email=new_email).count() == 1
+    data = response.json()
+    assert data['email'] == new_email
+    assert data['verification_code']
 
 
 @pytest.mark.django_db

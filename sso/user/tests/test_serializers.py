@@ -29,7 +29,6 @@ def test_createuserprofileserializer_deserialization(user):
     assert instance.last_name == data['last_name']
     assert instance.job_title == data['job_title']
     assert instance.mobile_phone_number == data['mobile_phone_number']
-    assert instance.user == user
 
 
 @pytest.mark.django_db
@@ -38,4 +37,7 @@ def test_createuserserializer_deserialization():
     serializer = CreateUserSerializer(data=data)
     assert serializer.is_valid()
     instance = serializer.save()
+
     assert instance.email == data['email']
+    assert serializer.data['email'] == data['email']
+    assert serializer.data['verification_code']

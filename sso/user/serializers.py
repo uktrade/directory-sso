@@ -32,13 +32,18 @@ class PasswordCheckSerializer(serializers.Serializer):
 
 
 class CreateUserSerializer(serializers.ModelSerializer):
+    verification_code = serializers.SerializerMethodField()
+
     class Meta:
         model = User
-
         fields = (
             'email',
             'password',
+            'verification_code',
         )
+        extra_kwargs = {
+            'password': {'write_only': True},
+        }
 
     @transaction.atomic
     def create(self, validated_data):
@@ -47,6 +52,9 @@ class CreateUserSerializer(serializers.ModelSerializer):
             user=instance
         )
         return instance
+
+    def get_verification_code(self, instance):
+        return instance.verificationcode.code
 
 
 class CreateUserProfileSerializer(serializers.ModelSerializer):
