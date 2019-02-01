@@ -1,11 +1,13 @@
-from django.utils.timezone import now
+from datetime import timedelta
 from functools import partial
 
-from django.db import models
+from django_cryptography.fields import encrypt
+
 from django.conf import settings
+from django.db import models
 from django.utils.translation import ugettext_lazy as _
 from django.utils.crypto import get_random_string
-from django_cryptography.fields import encrypt
+from django.utils.timezone import now
 
 from sso.api.model_utils import TimeStampedModel
 from sso.user.models import User
@@ -24,9 +26,7 @@ class VerificationCode(TimeStampedModel):
             length=5
         ),
     ))
-    user = models.OneToOneField(
-        User,
-    )
+    user = models.OneToOneField(User, related_name='verification_code')
     date_verified = models.DateField(
         _('verified'),
         blank=True,
@@ -37,9 +37,12 @@ class VerificationCode(TimeStampedModel):
     )
 
     @property
+    def expiration_date(self):
+        return self.created + timedelta(days=settings.VERIFICATION_EXPIRY_DAYS)
+
+    @property
     def is_expired(self):
-        delta = now() - self.created
-        return delta.days > settings.VERIFICATION_EXPIRY_DAYS
+        return now() >= self.expiration_date
 
     def __str__(self):
         return str(self.user)
