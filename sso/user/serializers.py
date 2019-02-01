@@ -1,7 +1,6 @@
 from django.db import transaction
 from rest_framework import serializers
 
-
 from sso.user.models import User, UserProfile
 from sso.verification.models import VerificationCode
 
