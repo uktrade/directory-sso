@@ -19,7 +19,7 @@ class DownloadCaseStudyCSVTestCase(TestCase):
     header = (
         'created,date_joined,email,id,is_active,is_staff,is_superuser,'
         'last_login,modified,oauth2_provider_application,userprofile,'
-        'utm,verificationcode'
+        'utm,verification_code'
     )
 
     def setUp(self):
@@ -79,7 +79,7 @@ class DownloadCaseStudyCSVTestCase(TestCase):
         row_one = (
             '{created},{date_joined},{email},{id},{is_active},{is_staff},'
             '{is_superuser},,{modified},,{userprofile},''{utm},'
-            '{verificationcode}'
+            '{verification_code}'
         ).format(
             created=user_one.created,
             date_joined=user_one.date_joined,
@@ -91,14 +91,14 @@ class DownloadCaseStudyCSVTestCase(TestCase):
             modified=user_one.modified,
             userprofile='',
             utm=user_one.utm,
-            verificationcode='',
+            verification_code='',
         )
 
         user_two = User.objects.all()[1]
         row_two = (
             '{created},{date_joined},{email},{id},{is_active},{is_staff},'
             '{is_superuser},,{modified},,{userprofile},{utm},'
-            '{verificationcode}'
+            '{verification_code}'
         ).format(
             created=user_two.created,
             date_joined=user_two.date_joined,
@@ -110,14 +110,14 @@ class DownloadCaseStudyCSVTestCase(TestCase):
             modified=user_two.modified,
             userprofile='',
             utm=user_two.utm,
-            verificationcode='',
+            verification_code='',
         )
 
         user_three = User.objects.all()[0]
         row_three = (
             '{created},{date_joined},{email},{id},{is_active},{is_staff},'
             '{is_superuser},{last_login},{modified},,{userprofile},{utm},'
-            '{verificationcode}'
+            '{verification_code}'
         ).format(
             created=user_three.created,
             date_joined=user_three.date_joined,
@@ -130,7 +130,7 @@ class DownloadCaseStudyCSVTestCase(TestCase):
             modified=user_three.modified,
             userprofile='',
             utm=user_three.utm,
-            verificationcode='',
+            verification_code='',
         )
 
         actual = str(response.content, 'utf-8').split('\r\n')
@@ -197,7 +197,7 @@ def test_download_csv_exops_not_fab(
         ('oauth2_provider_application', ''),
         ('userprofile', ''),
         ('utm', user_one.utm),
-        ('verificationcode', ''),
+        ('verification_code', ''),
     ])
 
     actual = str(response.content, 'utf-8').split('\r\n')

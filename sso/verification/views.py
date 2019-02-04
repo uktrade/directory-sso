@@ -24,7 +24,7 @@ class VerifyVerificationCodeAPIView(GenericAPIView):
 
     def get_object(self):
         try:
-            return self.request.user.verificationcode
+            return self.request.user.verification_code
         except ObjectDoesNotExist:
             raise Http404()
 
