@@ -1,5 +1,5 @@
 import pytest
-from unittest.mock import patch
+from unittest import mock
 
 from django.urls import reverse
 from rest_framework.test import APIClient
@@ -25,14 +25,18 @@ def test_create_user_api(api_client):
         format='json'
     )
     assert response.status_code == 201
+    assert response.cookies['debug_sso_session_cookie']
+    assert response.cookies['sso_display_logged_in'].value == 'true'
+    assert response.json() == {
+        'email': new_email,
+        'verification_code': mock.ANY
+    }
+
     assert User.objects.filter(email=new_email).count() == 1
-    data = response.json()
-    assert data['email'] == new_email
-    assert data['verification_code']
 
 
 @pytest.mark.django_db
-@patch('sso.user.models.User.objects.create_user')
+@mock.patch('sso.user.models.User.objects.create_user')
 def test_create_user_api_exception_rollback(mock_create, api_client):
     new_email = 'test@test123.com'
     password = 'mypassword'
@@ -51,7 +55,7 @@ def test_create_user_api_exception_rollback(mock_create, api_client):
 
 
 @pytest.mark.django_db
-@patch('sso.verification.models.VerificationCode.objects.create')
+@mock.patch('sso.verification.models.VerificationCode.objects.create')
 def test_create_user_api_verification_exception_rollback(
         mock_create, api_client):
     new_email = 'test@test123.com'
