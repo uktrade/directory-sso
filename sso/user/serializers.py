@@ -1,15 +1,22 @@
 from django.db import transaction
 from rest_framework import serializers
 
-
 from sso.user.models import User, UserProfile
 from sso.verification.models import VerificationCode
+
+
+class VerificationCodeSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = VerificationCode
+        fields = (
+            'code',
+            'expiration_date',
+        )
 
 
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-
         fields = (
             'id',
             'email',
@@ -19,7 +26,6 @@ class UserSerializer(serializers.ModelSerializer):
 class LastLoginSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-
         fields = (
             'id',
             'last_login',
@@ -32,7 +38,7 @@ class PasswordCheckSerializer(serializers.Serializer):
 
 
 class CreateUserSerializer(serializers.ModelSerializer):
-    verification_code = serializers.SerializerMethodField()
+    verification_code = VerificationCodeSerializer(read_only=True)
 
     class Meta:
         model = User
@@ -48,13 +54,8 @@ class CreateUserSerializer(serializers.ModelSerializer):
     @transaction.atomic
     def create(self, validated_data):
         instance = User.objects.create_user(**validated_data)
-        instance.verificationcode = VerificationCode.objects.create(
-            user=instance
-        )
+        VerificationCode.objects.create(user=instance)
         return instance
-
-    def get_verification_code(self, instance):
-        return instance.verificationcode.code
 
 
 class CreateUserProfileSerializer(serializers.ModelSerializer):
@@ -68,5 +69,4 @@ class CreateUserProfileSerializer(serializers.ModelSerializer):
         )
 
     def to_internal_value(self, data):
-        data['user_id'] = self.context['request'].user.pk
-        return data
+        return {**data, 'user_id': self.context['request'].user.pk}
