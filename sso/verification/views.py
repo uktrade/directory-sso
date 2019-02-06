@@ -2,13 +2,12 @@ from rest_framework.generics import CreateAPIView, GenericAPIView
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 
-from django.shortcuts import Http404
 from django.utils.timezone import now
-from django.core.exceptions import ObjectDoesNotExist
+from django.shortcuts import get_object_or_404
 
 from conf.signature import SignatureCheckPermission
 from core.authentication import SessionAuthentication
-from sso.verification import serializers
+from sso.verification import models, serializers
 
 
 class VerificationCodeCreateAPIView(CreateAPIView):
@@ -19,17 +18,18 @@ class VerificationCodeCreateAPIView(CreateAPIView):
 
 class VerifyVerificationCodeAPIView(GenericAPIView):
     serializer_class = serializers.CheckVerificationCodeSerializer
-    permission_classes = [IsAuthenticated, SignatureCheckPermission]
-    authentication_classes = [SessionAuthentication]
+    permission_classes = [SignatureCheckPermission]
+    authentication_classes = []
 
     def get_object(self):
-        try:
-            return self.request.user.verification_code
-        except ObjectDoesNotExist:
-            raise Http404()
+        return get_object_or_404(
+            models.VerificationCode.objects.all(),
+            user__email__iexact=self.request.data['email']
+        )
 
     def post(self, request, *args, **kwargs):
-        serializer = self.get_serializer(self.get_object(), data=request.data)
+        instance = self.get_object()
+        serializer = self.get_serializer(instance, data=request.data)
         serializer.is_valid(raise_exception=True)
         serializer.save(date_verified=now())
         return Response()

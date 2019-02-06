@@ -48,29 +48,39 @@ def test_create_verification_code(api_client):
 @pytest.mark.django_db
 def test_verify_verification_code(api_client):
     verification_code = VerificationCodeFactory()
-    api_client.force_authenticate(user=verification_code.user)
 
     assert verification_code.code
 
     url = reverse('api:verification-code-verify')
     response = api_client.post(
-        url, {'code': verification_code.code}, format='json'
+        url,
+        {
+            'code': verification_code.code,
+            'email': verification_code.user.email,
+        },
+        format='json'
     )
 
+    verification_code.refresh_from_db()
+
     assert response.status_code == 200
-    assert verification_code.date_verified.date() == date(2018, 1, 14)
+    assert verification_code.date_verified == date(2018, 1, 14)
 
 
 @pytest.mark.django_db
 def test_verify_verification_code_invalid(api_client):
     verification_code = VerificationCodeFactory()
-    api_client.force_authenticate(user=verification_code.user)
 
     assert verification_code.code
 
     url = reverse('api:verification-code-verify')
     response = api_client.post(
-        url, {'code': '12345'}, format='json'
+        url,
+        {
+            'code': '12345',
+            'email': verification_code.user.email,
+        },
+        format='json'
     )
 
     assert response.status_code == 400
@@ -82,11 +92,14 @@ def test_verify_verification_code_expired(api_client):
     with freeze_time(now() - timedelta(days=100)):
         verification_code = VerificationCodeFactory()
 
-    api_client.force_authenticate(user=verification_code.user)
-
     url = reverse('api:verification-code-verify')
     response = api_client.post(
-        url, {'code': '12345'}, format='json'
+        url,
+        {
+            'code': '12345',
+            'email': verification_code.user.email
+        },
+        format='json'
     )
 
     assert response.status_code == 400
@@ -99,6 +112,13 @@ def test_verify_no_verification_code(api_client):
     api_client.force_authenticate(user=user)
 
     url = reverse('api:verification-code-verify')
-    response = api_client.post(url, {'code': 'my-name-is-jeff'}, format='json')
+    response = api_client.post(
+        url,
+        {
+            'code': 'my-name-is-jeff',
+            'email': user.email,
+        },
+        format='json'
+    )
 
     assert response.status_code == 404
