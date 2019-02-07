@@ -25,8 +25,6 @@ def test_create_user_api(api_client):
         format='json'
     )
     assert response.status_code == 201
-    assert response.cookies['debug_sso_session_cookie']
-    assert response.cookies['sso_display_logged_in'].value == 'true'
     assert response.json() == {
         'email': new_email,
         'verification_code': mock.ANY
