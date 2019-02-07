@@ -1,3 +1,4 @@
+from datetime import datetime
 import pytest
 
 from django_extensions.db.fields import (
@@ -6,6 +7,7 @@ from django_extensions.db.fields import (
 
 from sso.user.models import User, UserProfile
 from sso.user.tests.factories import UserFactory
+from sso.verification.tests.factories import VerificationCodeFactory
 
 
 @pytest.mark.django_db
@@ -132,3 +134,21 @@ def test_create_user_profile():
     assert expected.job_title == data['job_title']
     assert expected.mobile_phone_number == data['mobile_phone_number']
     assert str(expected) == str(user)
+
+
+@pytest.mark.django_db
+def test_user_is_verified_by_email():
+    user = UserFactory()
+
+    assert user.is_verified() is False
+    user.emailaddress_set.create(email=user.email, verified=True)
+    assert user.is_verified() is True
+
+
+@pytest.mark.django_db
+def test_user_is_verified_by_verification_code():
+    user = UserFactory()
+    user.verification_code = VerificationCodeFactory()
+    assert user.is_verified() is False
+    user.verification_code.date_verified = datetime.now()
+    assert user.is_verified() is True

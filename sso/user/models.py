@@ -150,6 +150,13 @@ class User(AbstractBaseUser, PermissionsMixin, TimeStampedModel):
             "account_confirm_email", args=[email_confirmation.key]
         )
 
+    def is_verified(self):
+        if self.emailaddress_set.all().filter(verified=True).count() > 0:
+            return True
+        elif hasattr(self, 'verification_code'):
+            return self.verification_code.date_verified is not None
+        return False
+
 
 class UserProfile(TimeStampedModel):
     class Meta:

@@ -20,6 +20,7 @@ class UserSerializer(serializers.ModelSerializer):
         fields = (
             'id',
             'email',
+            'is_verified'
         )
 
 
