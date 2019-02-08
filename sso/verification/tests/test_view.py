@@ -64,6 +64,8 @@ def test_verify_verification_code(api_client):
     verification_code.refresh_from_db()
 
     assert response.status_code == 200
+    assert response.cookies['debug_sso_session_cookie']
+    assert response.cookies['sso_display_logged_in'].value == 'true'
     assert verification_code.date_verified == date(2018, 1, 14)
 
 

@@ -2,8 +2,9 @@ from rest_framework.generics import CreateAPIView, GenericAPIView
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 
-from django.utils.timezone import now
+from django.contrib.auth import login
 from django.shortcuts import get_object_or_404
+from django.utils.timezone import now
 
 from conf.signature import SignatureCheckPermission
 from core.authentication import SessionAuthentication
@@ -32,4 +33,9 @@ class VerifyVerificationCodeAPIView(GenericAPIView):
         serializer = self.get_serializer(instance, data=request.data)
         serializer.is_valid(raise_exception=True)
         serializer.save(date_verified=now())
+        login(
+            request=self.request,
+            user=instance.user,
+            backend='django.contrib.auth.backends.ModelBackend',
+        )
         return Response()
