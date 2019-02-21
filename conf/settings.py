@@ -502,9 +502,7 @@ CACHES = {}
 
 if FEATURE_FLAGS['USER_CACHE_ON']:
     if 'redis' in VCAP_SERVICES:
-        REDIS_URL = VCAP_SERVICES['redis'][0]['credentials']['uri'].replace(
-            'rediss://', 'redis://'
-        )
+        REDIS_URL = VCAP_SERVICES['redis'][0]['credentials']['uri']
     else:
         REDIS_URL = env.str('REDIS_URL', '')
     CACHES['default'] = {
