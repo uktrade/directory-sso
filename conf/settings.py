@@ -111,6 +111,8 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'conf.wsgi.application'
 
+VCAP_SERVICES = env.json('VCAP_SERVICES', {})
+
 # Database
 # https://docs.djangoproject.com/en/1.9/ref/settings/#databases
 DATABASES = {
@@ -499,9 +501,15 @@ CACHE_BACKENDS = {
 CACHES = {}
 
 if FEATURE_FLAGS['USER_CACHE_ON']:
+    if 'redis' in VCAP_SERVICES:
+        REDIS_URL = VCAP_SERVICES['redis'][0]['credentials']['uri'].replace(
+            'rediss://', 'redis://'
+        )
+    else:
+        REDIS_URL = env.str('REDIS_URL', '')
     CACHES['default'] = {
         'BACKEND': CACHE_BACKENDS[os.getenv('CACHE_BACKEND', 'redis')],
-        'LOCATION': os.getenv('REDIS_URL')
+        'LOCATION': REDIS_URL,
     }
     SESSION_ENGINE = 'django.contrib.sessions.backends.cached_db'
 else:
@@ -511,8 +519,7 @@ else:
     SESSION_ENGINE = 'django.contrib.sessions.backends.db'
 
 if FEATURE_FLAGS['ACTIVITY_STREAM_NONCE_CACHE_ON']:
-    vcap_services = json.loads(os.environ['VCAP_SERVICES'])
-    redis_credentials = vcap_services['redis'][0]['credentials']
+    redis_credentials = VCAP_SERVICES['redis'][0]['credentials']
 
     # rediscluster, by default, breaks if using the combination of
     # - rediss:// connection uri
