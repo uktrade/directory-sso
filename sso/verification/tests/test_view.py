@@ -1,4 +1,5 @@
-from datetime import timedelta, date
+from datetime import timedelta, date, datetime
+from pytz import UTC
 from django.utils.timezone import now
 
 import pytest
@@ -17,31 +18,64 @@ def api_client():
     return APIClient()
 
 
+@freeze_time("2018-01-14 12:00:01")
 @pytest.mark.django_db
-def test_create_verification_code_no_auth(api_client):
+def test_regenerate_code(api_client):
+    verification_code = VerificationCodeFactory()
+    old_code = verification_code.code
+
     response = api_client.post(
-        reverse('api:verification-code'),
-        {},
+        reverse('api:verification-code-regenerate'),
+        {'email': verification_code.user.email,
+         },
         format='json'
     )
-    assert response.status_code == 401
+    assert response.status_code == 200
+    verification_code.refresh_from_db()
+    assert verification_code.created == datetime(
+        2018, 1, 14, 12, 0, 1,
+        tzinfo=UTC
+    )
+    assert verification_code.code != old_code
+    assert response.json()['code'] == verification_code.code
 
 
 @pytest.mark.django_db
-def test_create_verification_code(api_client):
-    user = UserFactory()
+def test_regenerate_code_verified_code(api_client):
+    verification_code = VerificationCodeFactory()
+    original_code = verification_code.code
+    original_date_verified = date(2018, 1, 14)
+    verification_code.date_verified = original_date_verified
+    verification_code.save()
 
-    assert models.VerificationCode.objects.filter(user=user).count() == 0
-
-    api_client.force_authenticate(user=user)
     response = api_client.post(
-        reverse('api:verification-code'),
-        {},
+        reverse('api:verification-code-regenerate'),
+        {
+            'email': verification_code.user.email,
+         },
+        format='json'
+    )
+    assert response.status_code == 400
+    verification_code.refresh_from_db()
+    assert verification_code.date_verified == original_date_verified
+    assert verification_code.code == original_code
+
+
+@pytest.mark.django_db
+def test_regenerate_code_no_user(api_client):
+
+    assert models.VerificationCode.objects.all().count() == 0
+
+    response = api_client.post(
+        reverse('api:verification-code-regenerate'),
+        {
+            'email': 'donot@exist.com',
+         },
         format='json'
     )
 
-    assert response.status_code == 201
-    assert models.VerificationCode.objects.filter(user=user).count() == 1
+    assert response.status_code == 404
+    assert models.VerificationCode.objects.all().count() == 0
 
 
 @freeze_time("2018-01-14 12:00:01")

@@ -141,9 +141,9 @@ api_urlpatterns = [
         name='activity-stream'
     ),
     url(
-        r'^verification-code/$',
-        sso.verification.views.VerificationCodeCreateAPIView.as_view(),
-        name='verification-code'
+        r'^verification-code/Regenerate$',
+        sso.verification.views.RegenerateCodeCreateAPIView.as_view(),
+        name='verification-code-regenerate'
     ),
     url(
         r'^verification-code/verify/$',

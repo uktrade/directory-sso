@@ -1,16 +1,15 @@
 from datetime import timedelta
-from functools import partial
 
 from django_cryptography.fields import encrypt
 
 from django.conf import settings
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
-from django.utils.crypto import get_random_string
 from django.utils.timezone import now
 
 from sso.api.model_utils import TimeStampedModel
 from sso.user.models import User
+from sso.verification import helpers
 
 
 class VerificationCode(TimeStampedModel):
@@ -20,11 +19,7 @@ class VerificationCode(TimeStampedModel):
 
     code = encrypt(models.CharField(
         max_length=128,
-        default=partial(
-            get_random_string,
-            allowed_chars='0123456789',
-            length=5
-        ),
+        default=helpers.generate_verification_code
     ))
     user = models.OneToOneField(User, related_name='verification_code')
     date_verified = models.DateField(

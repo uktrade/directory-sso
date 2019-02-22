@@ -5,14 +5,17 @@ from django.utils.crypto import constant_time_compare
 from sso.verification.models import VerificationCode
 
 
-class VerificationCodeSerializer(serializers.ModelSerializer):
+class RegenerateCodeSerializer(serializers.ModelSerializer):
+    MESSAGE_CODE_VERIFIED = 'User is already verified'
+
     class Meta:
         model = VerificationCode
-        fields = []
+        fields = ['code', 'created']
 
-    def to_internal_value(self, data):
-        data['user_id'] = self.context['request'].user.pk
-        return data
+    def validate(self, value):
+        if self.instance.date_verified is not None:
+            raise serializers.ValidationError(self.MESSAGE_CODE_VERIFIED)
+        return value
 
 
 class CheckVerificationCodeSerializer(serializers.ModelSerializer):
