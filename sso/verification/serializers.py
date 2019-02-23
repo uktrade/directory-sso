@@ -10,7 +10,7 @@ class RegenerateCodeSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = VerificationCode
-        fields = ['code', 'created']
+        fields = ['code', 'expiration_date']
 
     def validate(self, value):
         if self.instance.date_verified is not None:

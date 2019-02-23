@@ -1,6 +1,7 @@
 from datetime import timedelta, date, datetime
 from pytz import UTC
 from django.utils.timezone import now
+import dateutil.parser
 
 import pytest
 
@@ -37,7 +38,10 @@ def test_regenerate_code(api_client):
         tzinfo=UTC
     )
     assert verification_code.code != old_code
-    assert response.json()['code'] == verification_code.code
+    new_code = response.json()
+    assert new_code['code'] == verification_code.code
+    expiration_date = dateutil.parser.parse(new_code['expiration_date'])
+    assert expiration_date == verification_code.expiration_date
 
 
 @pytest.mark.django_db

@@ -19,14 +19,14 @@ class RegenerateCodeCreateAPIView(CreateAPIView):
             instance,
             data={
                 'created': now(),
-                'code': helpers.generate_verification_code()
+                'code': helpers.generate_verification_code(),
+                'expiration_date': instance.expiration_date,
             },
             partial=True
         )
         serializer.is_valid(raise_exception=True)
         serializer.save()
-
-        return Response(data=serializer.validated_data)
+        return Response(data=serializer.data)
 
     def get_object(self):
         return get_object_or_404(
