@@ -68,7 +68,7 @@ def test_regenerate_code_verified_code(api_client):
 @pytest.mark.django_db
 def test_regenerate_code_no_user(api_client):
 
-    assert models.VerificationCode.objects.all().count() == 0
+    assert models.VerificationCode.objects.count() == 0
 
     response = api_client.post(
         reverse('api:verification-code-regenerate'),
@@ -79,7 +79,7 @@ def test_regenerate_code_no_user(api_client):
     )
 
     assert response.status_code == 404
-    assert models.VerificationCode.objects.all().count() == 0
+    assert models.VerificationCode.objects.count() == 0
 
 
 @freeze_time("2018-01-14 12:00:01")
