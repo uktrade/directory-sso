@@ -20,7 +20,6 @@ class RegenerateCodeCreateAPIView(CreateAPIView):
             data={
                 'created': now(),
                 'code': helpers.generate_verification_code(),
-                'expiration_date': instance.expiration_date,
             },
             partial=True
         )
