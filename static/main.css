@@ -3284,6 +3284,7 @@ label, input, button, select, textarea {
 
 #content form input {
   width: 100%;
+  z-index: -1;
 }
 
 #content a.button {
@@ -3358,10 +3359,6 @@ label, input, button, select, textarea {
 
 .sso-form-classification-container li {
   margin-bottom: 0;
-}
-
-#id_terms_agreed {
-  width: 50px;
 }
 
 @media (min-width: 640px) {

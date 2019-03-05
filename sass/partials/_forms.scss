@@ -197,6 +197,8 @@ label, input, button, select, textarea {
     padding: 0;
     input {
       width: 100%;
+      // moves the input box behind the label
+      z-index: -1;
     }
   }
   a.button {
@@ -272,10 +274,6 @@ label, input, button, select, textarea {
 
 .sso-form-classification-container li {
   margin-bottom: 0
-}
-
-#id_terms_agreed {
-  width: 50px;
 }
 
 @media (min-width: 640px) {
