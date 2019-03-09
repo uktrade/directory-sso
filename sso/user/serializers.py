@@ -58,8 +58,8 @@ class CreateUserSerializer(serializers.ModelSerializer):
     def validate_password(self, value):
         try:
             password_validation.validate_password(value)
-        except ValidationError as exc:
-            raise Http404
+        except ValidationError:
+            raise Http404()
         return value
 
     @transaction.atomic
