@@ -4,6 +4,10 @@ from rest_framework import serializers
 from sso.user.models import User, UserProfile
 from sso.verification.models import VerificationCode
 
+from django.contrib.auth import password_validation
+from django.core.exceptions import ValidationError
+from django.http import Http404
+
 
 class VerificationCodeSerializer(serializers.ModelSerializer):
     class Meta:
@@ -50,6 +54,13 @@ class CreateUserSerializer(serializers.ModelSerializer):
         extra_kwargs = {
             'password': {'write_only': True},
         }
+
+    def validate_password(self, value):
+        try:
+            password_validation.validate_password(value)
+        except ValidationError as exc:
+            raise Http404
+        return value
 
     @transaction.atomic
     def create(self, validated_data):

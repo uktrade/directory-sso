@@ -17,7 +17,7 @@ def api_client():
 @pytest.mark.django_db
 def test_create_user_api(api_client):
     new_email = 'test@test123.com'
-    password = 'mypassword'
+    password = 'Abh129Jk392Hj2'
 
     response = api_client.post(
         reverse('api:user'),
@@ -31,6 +31,21 @@ def test_create_user_api(api_client):
     }
 
     assert User.objects.filter(email=new_email).count() == 1
+
+
+@pytest.mark.django_db
+def test_create_user_api_invalid_password(api_client):
+    new_email = 'test@test123.com'
+    password = 'mypassword'
+
+    response = api_client.post(
+        reverse('api:user'),
+        {'email': new_email, 'password': password},
+        format='json'
+    )
+    assert response.status_code == 404
+
+    assert User.objects.filter(email=new_email).count() == 0
 
 
 @pytest.mark.django_db
