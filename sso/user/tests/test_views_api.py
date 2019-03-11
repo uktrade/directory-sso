@@ -43,7 +43,7 @@ def test_create_user_api_invalid_password(api_client):
         {'email': new_email, 'password': password},
         format='json'
     )
-    assert response.status_code == 404
+    assert response.status_code == 400
 
     assert User.objects.filter(email=new_email).count() == 0
 

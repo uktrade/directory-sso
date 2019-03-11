@@ -5,8 +5,6 @@ from sso.user.serializers import CreateUserProfileSerializer
 from sso.user.serializers import CreateUserSerializer
 from sso.user.tests.factories import UserFactory
 
-from django.http import Http404
-
 
 @pytest.fixture()
 def user():
@@ -49,29 +47,25 @@ def test_createuserserializer_deserialization():
 def test_createuserserializer_invalid_password_length():
     data = {'email': 'test@12345.com', 'password': 'AB123'}
     serializer = CreateUserSerializer(data=data)
-    with pytest.raises(Http404):
-        assert not serializer.is_valid()
+    assert not serializer.is_valid()
 
 
 @pytest.mark.django_db
 def test_createuserserializer_invalid_password_numeric():
     data = {'email': 'test@12345.com', 'password': '1234567891'}
     serializer = CreateUserSerializer(data=data)
-    with pytest.raises(Http404):
-        assert not serializer.is_valid()
+    assert not serializer.is_valid()
 
 
 @pytest.mark.django_db
 def test_createuserserializer_invalid_password_alpha():
     data = {'email': 'test@12345.com', 'password': 'ABCDEFGHIJK'}
     serializer = CreateUserSerializer(data=data)
-    with pytest.raises(Http404):
-        assert not serializer.is_valid()
+    assert not serializer.is_valid()
 
 
 @pytest.mark.django_db
 def test_createuserserializer_invalid_password_password():
     data = {'email': 'test@12345.com', 'password': '1passWord2'}
     serializer = CreateUserSerializer(data=data)
-    with pytest.raises(Http404):
-        assert not serializer.is_valid()
+    assert not serializer.is_valid()

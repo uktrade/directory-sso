@@ -1,12 +1,10 @@
 from django.db import transaction
 from rest_framework import serializers
 
+from django.contrib.auth import password_validation
+
 from sso.user.models import User, UserProfile
 from sso.verification.models import VerificationCode
-
-from django.contrib.auth import password_validation
-from django.core.exceptions import ValidationError
-from django.http import Http404
 
 
 class VerificationCodeSerializer(serializers.ModelSerializer):
@@ -56,10 +54,7 @@ class CreateUserSerializer(serializers.ModelSerializer):
         }
 
     def validate_password(self, value):
-        try:
-            password_validation.validate_password(value)
-        except ValidationError:
-            raise Http404()
+        password_validation.validate_password(value)
         return value
 
     @transaction.atomic
