@@ -33,7 +33,7 @@ def test_createuserprofileserializer_deserialization(user):
 
 @pytest.mark.django_db
 def test_createuserserializer_deserialization():
-    data = {'email': 'test@12345.com', 'password': 'mypassword'}
+    data = {'email': 'test@12345.com', 'password': 'Mypa11w0rd1'}
     serializer = CreateUserSerializer(data=data)
     assert serializer.is_valid()
     instance = serializer.save()
@@ -41,3 +41,31 @@ def test_createuserserializer_deserialization():
     assert instance.email == data['email']
     assert serializer.data['email'] == data['email']
     assert serializer.data['verification_code']
+
+
+@pytest.mark.django_db
+def test_createuserserializer_invalid_password_length():
+    data = {'email': 'test@12345.com', 'password': 'AB123'}
+    serializer = CreateUserSerializer(data=data)
+    assert not serializer.is_valid()
+
+
+@pytest.mark.django_db
+def test_createuserserializer_invalid_password_numeric():
+    data = {'email': 'test@12345.com', 'password': '1234567891'}
+    serializer = CreateUserSerializer(data=data)
+    assert not serializer.is_valid()
+
+
+@pytest.mark.django_db
+def test_createuserserializer_invalid_password_alpha():
+    data = {'email': 'test@12345.com', 'password': 'ABCDEFGHIJK'}
+    serializer = CreateUserSerializer(data=data)
+    assert not serializer.is_valid()
+
+
+@pytest.mark.django_db
+def test_createuserserializer_invalid_password_password():
+    data = {'email': 'test@12345.com', 'password': '1passWord2'}
+    serializer = CreateUserSerializer(data=data)
+    assert not serializer.is_valid()

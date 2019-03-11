@@ -107,7 +107,6 @@ TEMPLATES = [
     },
 ]
 
-
 WSGI_APPLICATION = 'conf.wsgi.application'
 
 VCAP_SERVICES = env.json('VCAP_SERVICES', {})

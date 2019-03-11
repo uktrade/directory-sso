@@ -1,6 +1,8 @@
 from django.db import transaction
 from rest_framework import serializers
 
+from django.contrib.auth import password_validation
+
 from sso.user.models import User, UserProfile
 from sso.verification.models import VerificationCode
 
@@ -50,6 +52,10 @@ class CreateUserSerializer(serializers.ModelSerializer):
         extra_kwargs = {
             'password': {'write_only': True},
         }
+
+    def validate_password(self, value):
+        password_validation.validate_password(value)
+        return value
 
     @transaction.atomic
     def create(self, validated_data):
