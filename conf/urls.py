@@ -156,7 +156,7 @@ api_urlpatterns = [
         name='user'
     ),
     url(
-        r'^user-profile/$',
+        r'^user/profile/$',
         sso.user.views_api.UserProfileCreateAPIView.as_view(),
         name='user-create-profile'
     ),
