@@ -1,13 +1,14 @@
 from datetime import timedelta, date, datetime
 from pytz import UTC
-from django.utils.timezone import now
-import dateutil.parser
 
+from allauth.account.models import EmailAddress
+import dateutil.parser
+from freezegun import freeze_time
 import pytest
+from rest_framework.test import APIClient
 
 from django.core.urlresolvers import reverse
-from rest_framework.test import APIClient
-from freezegun import freeze_time
+from django.utils.timezone import now
 
 from sso.user.tests.factories import UserFactory
 from sso.verification.tests.factories import VerificationCodeFactory
@@ -105,6 +106,13 @@ def test_verify_verification_code(api_client):
     assert response.cookies['debug_sso_session_cookie']
     assert response.cookies['sso_display_logged_in'].value == 'true'
     assert verification_code.date_verified == date(2018, 1, 14)
+
+    assert EmailAddress.objects.filter(
+        user=verification_code.user,
+        verified=True,
+        email=verification_code.user.email,
+        primary=True,
+    ).count() == 1
 
 
 @pytest.mark.django_db
