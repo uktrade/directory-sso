@@ -1,3 +1,4 @@
+from allauth.account.models import EmailAddress
 from rest_framework.generics import CreateAPIView, GenericAPIView
 from rest_framework.response import Response
 
@@ -50,6 +51,14 @@ class VerifyVerificationCodeAPIView(GenericAPIView):
         serializer = self.get_serializer(instance, data=request.data)
         serializer.is_valid(raise_exception=True)
         serializer.save(date_verified=now())
+
+        EmailAddress.objects.create(
+            user=instance.user,
+            verified=True,
+            email=instance.user.email,
+            primary=True,
+        )
+
         login(
             request=self.request,
             user=instance.user,
