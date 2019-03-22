@@ -3,7 +3,6 @@
 [![code-climate-image]][code-climate]
 [![circle-ci-image]][circle-ci]
 [![codecov-image]][codecov]
-[![snyk-image]][snyk]
 
 ---
 
@@ -17,57 +16,35 @@
 For more information on installation please check the [Developers Onboarding Checklist](https://uktrade.atlassian.net/wiki/spaces/ED/pages/32243946/Developers+onboarding+checklist)
 
 ## Requirements
-[Docker >= 1.10](https://docs.docker.com/engine/installation/)
+[Python 3.6](https://www.python.org/downloads/release/python-366/)
 
-[Docker Compose >= 1.8](https://docs.docker.com/compose/install/)
+[node](https://nodejs.org/en/download/)
 
-## Local installation
+[SASS](http://sass-lang.com/)
 
-    $ git clone https://github.com/uktrade/directory-sso
-    $ cd directory-sso
-    $ make
+[redis](https://redis.io/)
 
-## Running with Docker
-Requires all host environment variables to be set.
-
-    $ make docker_run
-
-### Run debug webserver in Docker
-Provides defaults for all environment variables.
-
-    $ make docker_debug
-
-### Run tests in Docker
-
-    $ make docker_test
-
-### Host environment variables for docker-compose
-``.env`` files will be automatically created with ``env_writer.py``, based on ``env.json`` and ``env-postgres.json``.
-
-## Running locally without Docker
+## Running locally
 
 ### Installing
 
-```bash
-$ git clone https://github.com/uktrade/directory-sso
-$ cd directory-sso
-$ virtualenv .venv -p python3.5
-$ source .venv/bin/activate
-$ pip install -r requirements_text.txt
-```
+    $ git clone https://github.com/uktrade/directory-sso
+    $ cd directory-sso
+    $ virtualenv .venv -p python3.6
+    $ source .venv/bin/activate
+    $ pip install -r requirements_text.txt
+
 
 ### Running the webserver
 
-```bash
-$ source .venv/bin/activate
-$ make debug_webserver
-```
+    $ source .venv/bin/activate
+    $ make debug_webserver
+
 
 ### Running the tests
 
-```bash
-$ make debug_test
-```
+    $ make debug_test
+
 
 ## Debugging
 
@@ -102,16 +79,24 @@ make dumpdata
 
 Then check the contents of `fixtures/development.json`.
 
-## CSS development
-
+### CSS development
 If you're doing front-end development work you will need to be able to compile the SASS to CSS. For this you need:
 
-	$ npm install
-	$ gulp
+    $ npm install yarn
+    $ yarn install --production=false
 
 We add compiled CSS files to version control. This will sometimes result in conflicts if multiple developers are working on the same SASS files. However, by adding the compiled CSS to version control we avoid having to install node, npm, node-sass, etc to non-development machines.
 
 You should not edit CSS files directly, instead edit their SCSS counterparts.
+
+### Update CSS under version control
+
+    $ make compile_css
+
+### Rebuild the CSS files when the scss file changes
+
+    $ make watch_css
+
 
 [code-climate-image]: https://codeclimate.com/github/uktrade/directory-sso/badges/issue_count.svg
 [code-climate]: https://codeclimate.com/github/uktrade/directory-sso
@@ -121,6 +106,3 @@ You should not edit CSS files directly, instead edit their SCSS counterparts.
 
 [codecov-image]: https://codecov.io/gh/uktrade/directory-sso/branch/master/graph/badge.svg
 [codecov]: https://codecov.io/gh/uktrade/directory-sso
-
-[snyk-image]: https://snyk.io/test/github/uktrade/directory-sso/badge.svg
-[snyk]: https://snyk.io/test/github/uktrade/directory-sso

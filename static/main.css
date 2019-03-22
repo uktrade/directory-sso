@@ -312,7 +312,36 @@ html, body, div, span, object, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, ab
   vertical-align: baseline;
 }
 
-h1, h2, h3, h4, h5, h6, p, blockquote, pre, small, strike, strong, sub, sup, tt, var, b, u, i, center, input, textarea, table, caption, tbody, tfoot, thead, tr, th, td {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+blockquote,
+pre,
+small,
+strike,
+strong,
+sub,
+sup,
+tt,
+var,
+b,
+u,
+i,
+center,
+input,
+textarea,
+table,
+caption,
+tbody,
+tfoot,
+thead,
+tr,
+th,
+td {
   font-size: 100%;
   font-family: inherit;
   line-height: inherit;
@@ -2306,12 +2335,18 @@ form,
   }
 }
 
-.form-group, form, .input-field-container p {
+
+.form-group,
+form,
+.input-field-container p {
   margin-bottom: 15px;
 }
 
 @media (min-width: 641px) {
-  .form-group, form, .input-field-container p {
+  
+  .form-group,
+  form,
+  .input-field-container p {
     margin-bottom: 30px;
   }
 }
@@ -2445,6 +2480,7 @@ textarea.form-control,
   -webkit-appearance: none;
   border-radius: 0;
 }
+
 
 textarea.form-control,
 .input-field-container textarea {
@@ -3227,11 +3263,9 @@ label, input, button, select, textarea {
   z-index: -1;
 }
 
-.data-form .form-control, .data-form .input-field-container input, .input-field-container .data-form input, .data-form
-.input-field-container select,
-.input-field-container .data-form select, .data-form
-.input-field-container textarea,
-.input-field-container .data-form textarea {
+.data-form .form-control, .data-form .input-field-container input, .input-field-container .data-form input,
+.data-form .input-field-container select, .input-field-container .data-form select,
+.data-form .input-field-container textarea, .input-field-container .data-form textarea {
   width: 100%;
   max-width: 500px;
 }

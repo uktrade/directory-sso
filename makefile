@@ -119,4 +119,10 @@ upgrade_requirements:
 	pip-compile --upgrade requirements.in
 	pip-compile --upgrade requirements_test.in
 
+compile_css:
+	./node_modules/.bin/gulp sass
+
+watch_css:
+	./node_modules/.bin/gulp sass:watch
+
 .PHONY: build clean test_requirements debug_webserver debug_db debug_test debug migrations heroku_deploy_dev
