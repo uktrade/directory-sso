@@ -2,11 +2,11 @@
   "name": "directory-sso",
   "version": "0.0.1",
   "description": "Accounts service",
-  "author": "Graham Veal",
   "license": "ISC",
   "devDependencies": {
-    "gulp": "^3.9.1",
+    "gulp": "^4.0.0",
     "gulp-sass": "^4.0.2",
-    "gulp-sourcemaps": "^2.6.4"
+    "gulp-sourcemaps": "^2.6.5",
+    "yarn": "^1.13.0"
   }
 }
