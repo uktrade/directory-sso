@@ -42,14 +42,14 @@ def test_signup_form_email_twice():
 def test_signup_form_customization():
     form = forms.SignupForm()
 
-    assert form.fields['password2'].label == 'Confirm password:'
+    assert form.fields['password2'].label == 'Confirm password'
     assert form.fields['password1'].help_text == form.PASSWORD_HELP_TEXT
 
 
 def test_change_password_form_customization():
     form = forms.ChangePasswordForm()
 
-    assert form.fields['password2'].label == 'Confirm password:'
+    assert form.fields['password2'].label == 'Confirm password'
 
 
 @patch('sso.adapters.NotificationsAPIClient')
@@ -154,18 +154,18 @@ def test_signup_accepts_password_length_ten_or_more():
     assert 'password1' not in form.errors
 
 
-def test_signup_autocomplete():
+@pytest.mark.parametrize('name', ['email', 'email2', 'password1', 'password2'])
+def test_signup_autocomplete(name):
     # http://stackoverflow.com/a/30976223/904887
     form = forms.SignupForm()
-    for name in ['email', 'email2', 'password1', 'password2']:
-        assert form.fields[name].widget.attrs['autocomplete'] == 'new-password'
+    assert form.fields[name].widget.attrs['autocomplete'] == 'new-password'
 
 
-def test_login_autocomplete():
+@pytest.mark.parametrize('name', ['login', 'password'])
+def test_login_autocomplete(name):
     # http://stackoverflow.com/a/30976223/904887
     form = forms.LoginForm()
-    for name in ['login', 'password']:
-        assert form.fields[name].widget.attrs['autocomplete'] == 'new-password'
+    assert form.fields[name].widget.attrs['autocomplete'] == 'new-password'
 
 
 def test_password_reset_autocomplete():
