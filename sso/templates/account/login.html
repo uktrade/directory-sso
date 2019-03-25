@@ -16,11 +16,13 @@
         {% if redirect_field_value %}
           <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
         {% endif %}
-        <ul class="errorlist">
-            {% if form.non_field_errors %}
-                <li>{{ form.non_field_errors }}</li>
-            {% endif %}
-        </ul>
+          <li class="input-field-container has-error">
+            <ul class="errorlist">
+                {% if form.non_field_errors %}
+                    <li>{{ form.non_field_errors }}</li>
+                {% endif %}
+            </ul>
+          </li>
         <button class="button" type="submit">Sign in</button>
         <a class="link secondary-action" href="{{ sso_reset_password_url }}">Forgotten password?</a>
       </form>
