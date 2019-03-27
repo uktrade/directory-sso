@@ -46,19 +46,42 @@ class SignupForm(IndentedInvalidFieldsMixin, forms.SignupForm):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.fields['email'].widget.attrs['autocomplete'] = 'new-password'
-        self.fields['email'].widget.attrs['placeholder'] = 'Email address'
-        self.fields['email'].label = 'Email:'
-        self.fields['email2'].widget.attrs['autocomplete'] = 'new-password'
-        self.fields['email2'].widget.attrs['placeholder'] = (
-            'Email address confirmation'
+        self.fields['email'] = fields.EmailField(
+            label='Email',
+            label_suffix='',
+            widget=TextInput(
+                attrs={
+                    'type': 'email',
+                    'placeholder': 'Email address',
+                    'autofocus': 'autofocus',
+                    'autocomplete': 'new-password',
+                }
+            )
+        )
+
+        self.fields['email2'] = fields.EmailField(
+            label='Confirm email',
+            label_suffix='',
+            widget=TextInput(
+                attrs={
+                    'type': 'email',
+                    'placeholder': 'Email address confirmation',
+                    'autofocus': 'autofocus',
+                    'autocomplete': 'new-password',
+                }
+            )
+        )
+        self.fields['password1'] = PasswordField(
+            label="Password",
+            label_suffix='',
+            help_text=mark_safe(self.PASSWORD_HELP_TEXT),
         )
         self.fields['password1'].widget.attrs['autocomplete'] = 'new-password'
+        self.fields['password2'] = PasswordField(
+            label="Confirm password",
+            label_suffix='',
+        )
         self.fields['password2'].widget.attrs['autocomplete'] = 'new-password'
-
-        self.fields['password1'].help_text = mark_safe(self.PASSWORD_HELP_TEXT)
-        self.fields['password2'].label = 'Confirm password:'
-        self.fields['email2'].label = 'Confirm email:'
         set_form_field_order(self, self.field_order)
 
     @staticmethod
@@ -129,7 +152,18 @@ class AddEmailForm(IndentedInvalidFieldsMixin, forms.AddEmailForm):
 class ChangePasswordForm(IndentedInvalidFieldsMixin, forms.ChangePasswordForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.fields['password2'].label = 'Confirm password:'
+        self.fields['oldpassword'] = PasswordField(
+            label="Password",
+            label_suffix='',
+        )
+        self.fields['password1'] = PasswordField(
+            label="New password",
+            label_suffix='',
+        )
+        self.fields['password2'] = PasswordField(
+            label="Confirm password",
+            label_suffix='',
+        )
 
 
 class SetPasswordForm(IndentedInvalidFieldsMixin, forms.SetPasswordForm):
@@ -139,9 +173,18 @@ class SetPasswordForm(IndentedInvalidFieldsMixin, forms.SetPasswordForm):
 class ResetPasswordForm(IndentedInvalidFieldsMixin, forms.ResetPasswordForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.fields['email'].widget.attrs['autocomplete'] = 'new-password'
-        self.fields['email'].widget.attrs['placeholder'] = 'Email address'
-        self.fields['email'].label = 'Email:'
+        self.fields['email'] = fields.EmailField(
+            label='Email',
+            label_suffix='',
+            widget=TextInput(
+                attrs={
+                    'type': 'email',
+                    'placeholder': 'Email address',
+                    'autofocus': 'autofocus',
+                    'autocomplete': 'new-password',
+                }
+            )
+        )
 
     def clean_email(self):
         """Overrides allauth's method for security reasons.
@@ -161,4 +204,14 @@ class ResetPasswordForm(IndentedInvalidFieldsMixin, forms.ResetPasswordForm):
 
 class ResetPasswordKeyForm(IndentedInvalidFieldsMixin,
                            forms.ResetPasswordKeyForm):
-    pass
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['password1'] = PasswordField(
+            label="New password",
+            label_suffix='',
+        )
+        self.fields['password2'] = PasswordField(
+            label="Confirm password",
+            label_suffix='',
+        )

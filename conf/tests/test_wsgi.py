@@ -25,7 +25,5 @@ def test_set_script_name(rf, script_name, prefix):
 
     soup = BeautifulSoup(response.content, 'html.parser')
 
-    ids = ['header-register-link', 'header-sign-in-link']
-    for element_id in ids:
-        element = soup.find(id=element_id)
-        assert element.attrs['href'].startswith(prefix)
+    element = soup.find(id='header-sign-in-link')
+    assert element.attrs['href'].startswith(prefix)

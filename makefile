@@ -68,13 +68,15 @@ DEBUG_SET_ENV_VARS := \
 	export VCAP_SERVICES="{\"redis\": [{\"credentials\": {\"uri\": \"redis://127.0.0.1:7000/\"}}]}"; \
 	export PRIVACY_COOKIE_DOMAIN=.trade.great; \
 	export SESSION_COOKIES_NAME_DOMAIN_MAPPING="debug_sso_session_cookie=.trade.great"; \
-	export DIRECTORY_CONSTANTS_URL_EXPORT_READINESS=http://exred.trade.great:8007; \
+	export DIRECTORY_CONSTANTS_URL_GREAT_DOMESTIC=http://exred.trade.great:8007; \
 	export DIRECTORY_CONSTANTS_URL_FIND_A_BUYER=http://buyer.trade.great:8001; \
 	export DIRECTORY_CONSTANTS_URL_SELLING_ONLINE_OVERSEAS=http://soo.trade.great:8008; \
 	export DIRECTORY_CONSTANTS_URL_FIND_A_SUPPLIER=http://supplier.trade.great:8005; \
 	export DIRECTORY_CONSTANTS_URL_INVEST=http://invest.trade.great:8012; \
 	export DIRECTORY_CONSTANTS_URL_SINGLE_SIGN_ON=http://sso.trade.great:8004; \
-	export FEATURE_EXPORT_JOURNEY_ENABLED=false
+	export FEATURE_EXPORT_JOURNEY_ENABLED=false; \
+	export FEATURE_NEW_HEADER_FOOTER_ENABLED=true; \
+	export FEATURE_HEADER_SEARCH_ENABLED=false
 
 debug_webserver:
 	 $(DEBUG_SET_ENV_VARS)&& $(COLLECT_STATIC) && $(DJANGO_WEBSERVER);
