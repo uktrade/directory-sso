@@ -473,7 +473,6 @@ ACTIVITY_STREAM_NONCE_EXPIRY_SECONDS = 60
 
 # feature flags
 FEATURE_FLAGS = {
-    'USER_CACHE_ON': env.bool('FEATURE_CACHE_ENABLED', False),
     'ACTIVITY_STREAM_NONCE_CACHE_ON': env.bool(
         'FEATURE_ACTIVITY_STREAM_NONCE_CACHE_ENABLED', False
     ),
@@ -501,21 +500,18 @@ CACHE_BACKENDS = {
 
 CACHES = {}
 
-if FEATURE_FLAGS['USER_CACHE_ON']:
-    if 'redis' in VCAP_SERVICES:
-        REDIS_URL = VCAP_SERVICES['redis'][0]['credentials']['uri']
-    else:
-        REDIS_URL = env.str('REDIS_URL', '')
-    CACHES['default'] = {
-        'BACKEND': CACHE_BACKENDS[os.getenv('CACHE_BACKEND', 'redis')],
-        'LOCATION': REDIS_URL
-    }
-    SESSION_ENGINE = 'django.contrib.sessions.backends.cached_db'
+if 'redis' in VCAP_SERVICES:
+    REDIS_URL = VCAP_SERVICES['redis'][0]['credentials']['uri']
 else:
-    CACHES['default'] = {
-        'BACKEND': CACHE_BACKENDS['locmem'],
-    }
-    SESSION_ENGINE = 'django.contrib.sessions.backends.db'
+    REDIS_URL = env.str('REDIS_URL', '')
+
+CACHES['default'] = {
+    'BACKEND': CACHE_BACKENDS[os.getenv('CACHE_BACKEND', 'redis')],
+    'LOCATION': REDIS_URL
+}
+
+SESSION_ENGINE = 'django.contrib.sessions.backends.cached_db'
+
 
 if FEATURE_FLAGS['ACTIVITY_STREAM_NONCE_CACHE_ON']:
     redis_credentials = VCAP_SERVICES['redis'][0]['credentials']

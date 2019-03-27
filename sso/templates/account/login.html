@@ -12,6 +12,13 @@
     <section class="column-two-thirds" id="login-form">
       <form method="POST" action="{% url 'account_login' %}">
         {% csrf_token %}
+        <li class="input-field-container has-error">
+            <ul class="errorlist">
+                {% if form.non_field_errors %}
+                    <li>{{ form.non_field_errors }}</li>
+                {% endif %}
+            </ul>
+        </li>
         {% render_form form %}
         {% if redirect_field_value %}
           <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
@@ -21,6 +28,7 @@
       </form>
     </section>
   </div>
+
   <div class="column-half">
     <section class="column-two-thirds"">
       <h2 class="heading-xlarge">Create a great.gov.uk account</h2>
