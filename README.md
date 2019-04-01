@@ -3,6 +3,8 @@
 [![code-climate-image]][code-climate]
 [![circle-ci-image]][circle-ci]
 [![codecov-image]][codecov]
+[![gitflow-image]][gitflow]
+[![calver-image]][calver]
 
 ---
 
@@ -18,13 +20,7 @@ For more information on installation please check the [Developers Onboarding Che
 ## Requirements
 [Python 3.6](https://www.python.org/downloads/release/python-366/)
 
-[node](https://nodejs.org/en/download/)
-
-[SASS](http://sass-lang.com/)
-
 [redis](https://redis.io/)
-
-## Running locally
 
 ### Installing
 
@@ -34,6 +30,12 @@ For more information on installation please check the [Developers Onboarding Che
     $ source .venv/bin/activate
     $ pip install -r requirements_text.txt
 
+
+## Development
+
+### Configuration
+
+Secrets such as API keys and environment specific configurations are placed in `conf/.env` - a file that is not added to version control. You will need to create that file locally in order for the project to run.
 
 ### Running the webserver
 
@@ -82,6 +84,12 @@ Then check the contents of `fixtures/development.json`.
 ### CSS development
 If you're doing front-end development work you will need to be able to compile the SASS to CSS. For this you need:
 
+[node](https://nodejs.org/en/download/)
+
+[SASS](http://sass-lang.com/)
+
+then run
+
     $ npm install yarn
     $ yarn install --production=false
 
@@ -106,3 +114,9 @@ You should not edit CSS files directly, instead edit their SCSS counterparts.
 
 [codecov-image]: https://codecov.io/gh/uktrade/directory-sso/branch/master/graph/badge.svg
 [codecov]: https://codecov.io/gh/uktrade/directory-sso
+
+[gitflow-image]: https://img.shields.io/badge/Branching%20strategy-gitflow-5FBB1C.svg
+[gitflow]: https://www.atlassian.com/git/tutorials/comparing-workflows/gitflow-workflow
+
+[calver-image]: https://img.shields.io/badge/Versioning%20strategy-CalVer-5FBB1C.svg
+[calver]: https://calver.org
