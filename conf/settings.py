@@ -61,6 +61,7 @@ SITE_ID = 1
 MIDDLEWARE_CLASSES = [
     'directory_components.middleware.MaintenanceModeMiddleware',
     'core.middleware.SSODisplayLoggedInCookieMiddleware',
+    'admin_ip_restrictor.middleware.AdminIPRestrictorMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',
     'conf.signature.SignatureCheckMiddleware',
@@ -547,3 +548,10 @@ if FEATURE_FLAGS['ACTIVITY_STREAM_NONCE_CACHE_ON']:
 
 
 ACCOUNT_SESSION_REMEMBER = True
+
+# Admin restrictor
+RESTRICT_ADMIN = env.bool('IP_RESTRICTOR_RESTRICT_IPS', False)
+ALLOWED_ADMIN_IPS = env.list('IP_RESTRICTOR_ALLOWED_ADMIN_IPS', default=[])
+ALLOWED_ADMIN_IP_RANGES = env.list(
+    'IP_RESTRICTOR_ALLOWED_ADMIN_IP_RANGES', default=[]
+)
