@@ -23,7 +23,8 @@ directory-constants>=14.0.0,<15.0.0
 directory-api-external==5.0.0
 directory-validators==5.0.1
 directory-healthcheck==1.0.1
-directory-components==8.2.0
+directory-components==8.3.1
 requests[security]==2.21.0
 urllib3>=1.23.0<2.0.0
 django-cryptography==0.3.0
+django-admin-ip-restrictor==1.0.0
