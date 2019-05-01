@@ -16,8 +16,6 @@ ratings:
 exclude_paths:
 - "**/settings.py"
 - "**/tests/"
-- "Dockerfile"
-- "docker/"
 - "README.md"
 - "LICENCE"
 - "*.yml"

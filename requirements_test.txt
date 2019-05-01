@@ -86,5 +86,5 @@ six==1.11.0               # via cryptography, django-extensions, faker, freezegu
 termcolor==1.1.0          # via pytest-sugar
 text-unidecode==1.2       # via faker
 tldextract==2.0.2
-urllib3==1.24.1
+urllib3==1.24.2
 whitenoise==3.3.0
