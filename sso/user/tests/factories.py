@@ -5,7 +5,7 @@ import factory.fuzzy
 
 from django.utils.timezone import make_aware
 
-from sso.user.models import User
+from sso.user import models
 
 
 class UserFactory(factory.django.DjangoModelFactory):
@@ -14,4 +14,14 @@ class UserFactory(factory.django.DjangoModelFactory):
         make_aware(datetime(2016, 11, 16)))
 
     class Meta:
-        model = User
+        model = models.User
+
+
+class UserProfileFactory(factory.django.DjangoModelFactory):
+    user = factory.SubFactory(UserFactory)
+    first_name = factory.fuzzy.FuzzyText()
+    last_name = factory.fuzzy.FuzzyText()
+    job_title = factory.fuzzy.FuzzyText()
+
+    class Meta:
+        model = models.UserProfile
