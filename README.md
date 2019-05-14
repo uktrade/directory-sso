@@ -18,7 +18,7 @@
     $ cd directory-sso
     $ virtualenv .venv -p python3.6
     $ source .venv/bin/activate
-    $ pip install -r requirements_text.txt
+    $ pip install -r requirements_test.txt
 
 
 ### Requirements
