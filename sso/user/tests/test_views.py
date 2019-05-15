@@ -16,6 +16,8 @@ from sso.adapters import EMAIL_CONFIRMATION_TEMPLATE_ID, \
     PASSWORD_RESET_TEMPLATE_ID
 from sso.user import models, views
 
+from core.helpers import createHash
+
 
 @pytest.fixture
 def user():
@@ -901,7 +903,6 @@ def test_signup_saves_hashed_id(
     client.post(
         reverse('account_signup'),
         data={
-            'id': 1,
             'email': 'jim@example.com',
             'email2': 'jim@example.com',
             'terms_agreed': True,
@@ -911,7 +912,9 @@ def test_signup_saves_hashed_id(
     )
 
     user = models.User.objects.last()
-    assert user.hashed_uuid != 1
+    hashed_id = createHash(user.id)
+
+    assert user.hashed_uuid == hashed_id
     assert user.hashed_uuid is not None
 
 

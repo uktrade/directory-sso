@@ -18,6 +18,9 @@ import allauth.exceptions
 import core.mixins
 from sso.user.utils import get_redirect_url, get_url_with_redirect
 
+from core.helpers import createHash
+
+
 
 class RedirectToNextMixin:
 
@@ -57,7 +60,8 @@ class SignupView(DisableRegistrationMixin,
     def form_valid(self, form):
         try:
             self.user = form.save(self.request)
-            self.user.hashed_uuid = hash(self.user.id)
+            self.user.hashed_uuid = createHash(self.user.id)
+            self.user.save()
         except IntegrityError as exc:
             # To prevent enumeration of users we return a fake success response
             if self.is_email_not_unique_error(exc):

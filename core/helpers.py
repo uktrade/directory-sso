@@ -1,6 +1,12 @@
 import tldextract
 from urllib.parse import urlparse
+import hashlib
 
+def createHash(id):
+    """This function generate 64 character long hash"""
+
+    hash = hashlib.sha256(str(id).encode('utf-8'))
+    return hash.hexdigest()
 
 def is_valid_domain(domain):
     # NOTE: tldextract and urlparse both have their shortcomings so

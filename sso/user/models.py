@@ -14,15 +14,6 @@ from allauth.account.models import EmailConfirmation
 
 from sso.api.model_utils import TimeStampedModel
 
-import hashlib
-
-
-def _createHash(id):
-    """This function generate 64 character long hash"""
-    hash = hashlib.sha256(str(id).encode('utf-8'))
-    return hash.hexdigest()
-
-
 class UserManager(BaseUserManager):
     use_in_migrations = True
 
@@ -93,7 +84,7 @@ class User(AbstractBaseUser, PermissionsMixin, TimeStampedModel):
     hashed_uuid = models.CharField(
         max_length=200,
         help_text='a hash representation of the object\'s id',
-        default=_createHash(id),
+        default={},
     )
 
     failed_login_attempts = models.PositiveSmallIntegerField(default=0)
