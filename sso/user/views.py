@@ -21,7 +21,6 @@ from sso.user.utils import get_redirect_url, get_url_with_redirect
 from core.helpers import createHash
 
 
-
 class RedirectToNextMixin:
 
     redirect_field_name = settings.REDIRECT_FIELD_NAME

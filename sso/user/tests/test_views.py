@@ -895,6 +895,7 @@ def test_signup_saves_utm(
     user = models.User.objects.last()
     assert user.utm == ed_utm_cookie_value
 
+
 @patch('sso.adapters.NotificationsAPIClient', mock.Mock())
 @pytest.mark.django_db
 def test_signup_saves_hashed_id(

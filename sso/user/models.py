@@ -14,6 +14,7 @@ from allauth.account.models import EmailConfirmation
 
 from sso.api.model_utils import TimeStampedModel
 
+
 class UserManager(BaseUserManager):
     use_in_migrations = True
 
