@@ -17,7 +17,8 @@ from sso.oauth2.tests.factories import AccessTokenFactory, ApplicationFactory
 class DownloadCaseStudyCSVTestCase(TestCase):
 
     header = (
-        'created,date_joined,email,hashed_uuid,id,is_active,is_staff,is_superuser,'
+        'created,date_joined,email,hashed_uuid,'
+        'id,is_active,is_staff,is_superuser,'
         'last_login,modified,oauth2_provider_application,userprofile,'
         'utm,verification_code'
     )
@@ -43,7 +44,8 @@ class DownloadCaseStudyCSVTestCase(TestCase):
         )
 
         row_one = (
-            "{created},{date_joined},admin@example.com,{hashed_uuid},{id},True,True,True,"
+            "{created},{date_joined},admin@example.com,"
+            "{hashed_uuid},{id},True,True,True,"
             "{last_login},{modified},,,{utm},"
         ).format(
             created=self.superuser.created,
@@ -78,7 +80,8 @@ class DownloadCaseStudyCSVTestCase(TestCase):
 
         user_one = User.objects.all()[2]
         row_one = (
-            '{created},{date_joined},{email},{hashed_uuid},{id},{is_active},{is_staff},'
+            '{created},{date_joined},{email},{hashed_uuid},'
+            '{id},{is_active},{is_staff},'
             '{is_superuser},,{modified},,{userprofile},''{utm},'
             '{verification_code}'
         ).format(
@@ -98,7 +101,8 @@ class DownloadCaseStudyCSVTestCase(TestCase):
 
         user_two = User.objects.all()[1]
         row_two = (
-            '{created},{date_joined},{email},{hashed_uuid},{id},{is_active},{is_staff},'
+            '{created},{date_joined},{email},{hashed_uuid},'
+            '{id},{is_active},{is_staff},'
             '{is_superuser},,{modified},,{userprofile},{utm},'
             '{verification_code}'
         ).format(
@@ -118,7 +122,8 @@ class DownloadCaseStudyCSVTestCase(TestCase):
 
         user_three = User.objects.all()[0]
         row_three = (
-            '{created},{date_joined},{email},{hashed_uuid},{id},{is_active},{is_staff},'
+            '{created},{date_joined},{email},{hashed_uuid},'
+            '{id},{is_active},{is_staff},'
             '{is_superuser},{last_login},{modified},,{userprofile},{utm},'
             '{verification_code}'
         ).format(
