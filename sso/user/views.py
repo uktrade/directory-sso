@@ -57,7 +57,7 @@ class SignupView(DisableRegistrationMixin,
     def form_valid(self, form):
         try:
             self.user = form.save(self.request)
-            self.user.hashed_uuid = hash(self.user.uuid)
+            self.user.hashed_uuid = hash(self.user.id)
         except IntegrityError as exc:
             # To prevent enumeration of users we return a fake success response
             if self.is_email_not_unique_error(exc):

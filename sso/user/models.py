@@ -92,7 +92,7 @@ class User(AbstractBaseUser, PermissionsMixin, TimeStampedModel):
     )
     hashed_uuid = models.CharField(
         max_length=200,
-        help_text='a hash representation of the object\'s UUID',
+        help_text='a hash representation of the object\'s id',
         default=_createHash(id),
     )
 

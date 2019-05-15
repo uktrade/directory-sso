@@ -17,7 +17,7 @@ from sso.oauth2.tests.factories import AccessTokenFactory, ApplicationFactory
 class DownloadCaseStudyCSVTestCase(TestCase):
 
     header = (
-        'created,date_joined,email,id,is_active,is_staff,is_superuser,'
+        'created,date_joined,email,hashed_uuid,id,is_active,is_staff,is_superuser,'
         'last_login,modified,oauth2_provider_application,userprofile,'
         'utm,verification_code'
     )
@@ -43,12 +43,13 @@ class DownloadCaseStudyCSVTestCase(TestCase):
         )
 
         row_one = (
-            "{created},{date_joined},admin@example.com,{id},True,True,True,"
+            "{created},{date_joined},admin@example.com,{hashed_uuid},{id},True,True,True,"
             "{last_login},{modified},,,{utm},"
         ).format(
             created=self.superuser.created,
             date_joined=self.superuser.date_joined,
             id=self.superuser.id,
+            hashed_uuid=self.superuser.hashed_uuid,
             last_login=self.superuser.last_login,
             modified=self.superuser.modified,
             utm=self.superuser.utm,
@@ -77,13 +78,14 @@ class DownloadCaseStudyCSVTestCase(TestCase):
 
         user_one = User.objects.all()[2]
         row_one = (
-            '{created},{date_joined},{email},{id},{is_active},{is_staff},'
+            '{created},{date_joined},{email},{hashed_uuid},{id},{is_active},{is_staff},'
             '{is_superuser},,{modified},,{userprofile},''{utm},'
             '{verification_code}'
         ).format(
             created=user_one.created,
             date_joined=user_one.date_joined,
             email=user_one.email,
+            hashed_uuid=user_one.hashed_uuid,
             id=user_one.id,
             is_active=user_one.is_active,
             is_staff=user_one.is_staff,
@@ -96,13 +98,14 @@ class DownloadCaseStudyCSVTestCase(TestCase):
 
         user_two = User.objects.all()[1]
         row_two = (
-            '{created},{date_joined},{email},{id},{is_active},{is_staff},'
+            '{created},{date_joined},{email},{hashed_uuid},{id},{is_active},{is_staff},'
             '{is_superuser},,{modified},,{userprofile},{utm},'
             '{verification_code}'
         ).format(
             created=user_two.created,
             date_joined=user_two.date_joined,
             email=user_two.email,
+            hashed_uuid=user_one.hashed_uuid,
             id=user_two.id,
             is_active=user_two.is_active,
             is_staff=user_two.is_staff,
@@ -115,13 +118,14 @@ class DownloadCaseStudyCSVTestCase(TestCase):
 
         user_three = User.objects.all()[0]
         row_three = (
-            '{created},{date_joined},{email},{id},{is_active},{is_staff},'
+            '{created},{date_joined},{email},{hashed_uuid},{id},{is_active},{is_staff},'
             '{is_superuser},{last_login},{modified},,{userprofile},{utm},'
             '{verification_code}'
         ).format(
             created=user_three.created,
             date_joined=user_three.date_joined,
             email=user_three.email,
+            hashed_uuid=user_one.hashed_uuid,
             id=user_three.id,
             is_active=user_three.is_active,
             is_staff=user_three.is_staff,
@@ -188,6 +192,7 @@ def test_download_csv_exops_not_fab(
         ('created', user_one.created),
         ('date_joined', user_one.date_joined),
         ('email', user_one.email),
+        ('hashed_uuid', user_one.hashed_uuid),
         ('id', user_one.id),
         ('is_active', user_one.is_active),
         ('is_staff', user_one.is_staff),
