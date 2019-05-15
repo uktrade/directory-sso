@@ -893,6 +893,27 @@ def test_signup_saves_utm(
     user = models.User.objects.last()
     assert user.utm == ed_utm_cookie_value
 
+@patch('sso.adapters.NotificationsAPIClient', mock.Mock())
+@pytest.mark.django_db
+def test_signup_saves_hashed_id(
+    settings, client, email_confirmation
+):
+    client.post(
+        reverse('account_signup'),
+        data={
+            'id': 1,
+            'email': 'jim@example.com',
+            'email2': 'jim@example.com',
+            'terms_agreed': True,
+            'password1': '*' * 10,
+            'password2': '*' * 10,
+        }
+    )
+
+    user = models.User.objects.last()
+    assert user.hashed_uuid != 1
+    assert user.hashed_uuid is not None
+
 
 @pytest.mark.django_db
 def test_login_response_with_sso_display_logged_in_cookie(
