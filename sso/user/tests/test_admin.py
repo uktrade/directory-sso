@@ -37,24 +37,26 @@ class DownloadCaseStudyCSVTestCase(TestCase):
                 'pk', flat=True
             )
         }
+
         response = self.client.post(
             reverse('admin:user_user_changelist'),
             data,
             follow=True
         )
 
+        user = User.objects.first()
         row_one = (
-            "{created},{date_joined},admin@example.com,"
-            "{hashed_uuid},{id},True,True,True,"
+            "{created},{date_joined},admin@example.com,{hashed_uuid},"
+            "{id},True,True,True,"
             "{last_login},{modified},,,{utm},"
         ).format(
-            created=self.superuser.created,
-            date_joined=self.superuser.date_joined,
-            id=self.superuser.id,
-            hashed_uuid=self.superuser.hashed_uuid,
-            last_login=self.superuser.last_login,
-            modified=self.superuser.modified,
-            utm=self.superuser.utm,
+            created=user.created,
+            date_joined=user.date_joined,
+            hashed_uuid=user.hashed_uuid,
+            id=user.id,
+            last_login=user.last_login,
+            modified=user.modified,
+            utm=user.utm,
         )
         actual = str(response.content, 'utf-8').split('\r\n')
 
@@ -109,7 +111,7 @@ class DownloadCaseStudyCSVTestCase(TestCase):
             created=user_two.created,
             date_joined=user_two.date_joined,
             email=user_two.email,
-            hashed_uuid=user_one.hashed_uuid,
+            hashed_uuid=user_two.hashed_uuid,
             id=user_two.id,
             is_active=user_two.is_active,
             is_staff=user_two.is_staff,
@@ -130,7 +132,7 @@ class DownloadCaseStudyCSVTestCase(TestCase):
             created=user_three.created,
             date_joined=user_three.date_joined,
             email=user_three.email,
-            hashed_uuid=user_one.hashed_uuid,
+            hashed_uuid=user_three.hashed_uuid,
             id=user_three.id,
             is_active=user_three.is_active,
             is_staff=user_three.is_staff,

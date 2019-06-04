@@ -16,8 +16,6 @@ from sso.adapters import EMAIL_CONFIRMATION_TEMPLATE_ID, \
     PASSWORD_RESET_TEMPLATE_ID
 from sso.user import models, views
 
-from core.helpers import createHash
-
 
 @pytest.fixture
 def user():
@@ -916,7 +914,6 @@ def test_signup_saves_hashed_id(
 
     assert user.hashed_uuid != '{}'
     assert user.hashed_uuid is not None
-
 
 
 @pytest.mark.django_db
