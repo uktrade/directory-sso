@@ -4,7 +4,7 @@ import hashlib
 
 
 def createHash(id):
-    """This function generate 64 character long hash"""
+    """This function generates a 64 character long hash"""
 
     hash = hashlib.sha256(str(id).encode('utf-8'))
     return hash.hexdigest()
