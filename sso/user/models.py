@@ -85,7 +85,7 @@ class User(AbstractBaseUser, PermissionsMixin, TimeStampedModel):
     hashed_uuid = models.CharField(
         max_length=200,
         help_text='a hash representation of the object\'s id',
-        default={},
+        default='',
     )
 
     failed_login_attempts = models.PositiveSmallIntegerField(default=0)
