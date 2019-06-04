@@ -4,4 +4,5 @@ import uuid
 
 
 def create_uuid(sender, instance, *args, **kwargs):
-    instance.hashed_uuid = createHash(uuid.uuid4())
+    if instance.hashed_uuid is None:
+        instance.hashed_uuid = createHash(uuid.uuid4())
