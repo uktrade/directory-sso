@@ -21,18 +21,20 @@
     {% for hidden in form.hidden_fields %}
         {{ hidden }}
     {% endfor %}
-    {% for field in form.visible_fields %}
-        <li class="{{ field.css_classes }}">
-            {{ field.errors }}
-            {{ field.label_tag }}
-            {% if field.help_text %}
-            <div class="grid-row">
-              <div class="helptext column-half">{{ field.help_text|safe }}</div>
-            </div>
-            {% endif %}
-            {{ field }}
-        </li>
-    {% endfor %}
+    <ul>
+        {% for field in form.visible_fields %}
+            <li class="{{ field.css_classes }}">
+                {{ field.errors }}
+                {{ field.label_tag }}
+                {% if field.help_text %}
+                <div class="grid-row">
+                  <div class="helptext column-half">{{ field.help_text|safe }}</div>
+                </div>
+                {% endif %}
+                {{ field }}
+            </li>
+        {% endfor %}
+    </ul>x
     {% if redirect_field_value %}
         <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
     {% endif %}
