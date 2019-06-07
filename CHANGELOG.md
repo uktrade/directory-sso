@@ -3,6 +3,7 @@
 ## Pre-release
 
 - GTRANSFORM-245 - UserID Anonymisation extension for GA360
+- TT-1556 incorrect use of ul lists
 
 ### Fixed bugs:
 
