@@ -75,13 +75,17 @@ class User(AbstractBaseUser, PermissionsMixin, TimeStampedModel):
         _('date joined'),
         default=timezone.now,
     )
-
     utm = JSONField(
         blank=True,
         default={},
         help_text=_(
             'Urchin Tracking Module query parameters passed in the URL'
         ),
+    )
+    hashed_uuid = models.CharField(
+        max_length=200,
+        help_text='a hash representation of the object\'s id',
+        default='',
     )
 
     failed_login_attempts = models.PositiveSmallIntegerField(default=0)
