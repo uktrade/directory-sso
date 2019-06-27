@@ -12,8 +12,9 @@ from directory_api_external.client import api_client
 @admin.register(User)
 class UserAdmin(admin.ModelAdmin):
 
-    search_fields = ('email', )
+    search_fields = ('email',)
     readonly_fields = ('created', 'modified',)
+    exclude = ('password',)
     actions = [
         'download_csv',
         'download_csv_exops_not_fab',

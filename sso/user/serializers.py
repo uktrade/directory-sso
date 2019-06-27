@@ -22,6 +22,7 @@ class UserSerializer(serializers.ModelSerializer):
         fields = (
             'id',
             'email',
+            'hashed_uuid',
         )
 
 

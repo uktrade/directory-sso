@@ -38,8 +38,8 @@ django-ipware==2.1.0      # via django-admin-ip-restrictor
 django-oauth-toolkit==1.0.0
 django-pglocks==1.0.2
 django-redis==4.8.0
-django==1.11.20
-djangorestframework==3.4.7
+django==1.11.21
+djangorestframework==3.9.1
 docopt==0.6.2             # via notifications-python-client
 docutils==0.14            # via botocore
 factory-boy==2.11.1
@@ -86,5 +86,5 @@ six==1.11.0               # via cryptography, django-extensions, faker, freezegu
 termcolor==1.1.0          # via pytest-sugar
 text-unidecode==1.2       # via faker
 tldextract==2.0.2
-urllib3==1.24.1
+urllib3==1.24.2
 whitenoise==3.3.0
