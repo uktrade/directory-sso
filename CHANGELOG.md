@@ -4,6 +4,10 @@
 
 ### Fixed bugs:
 
+## [2019.07.09](https://github.com/uktrade/directory-sso/releases/tag/2019.07.09)
+[Full Changelog](https://github.com/uktrade/directory-sso/compare/2019.06.27...2019.07.09)
+
+### Fixed bugs:
 - No ticket - Upgrade vulnerable django version to django 1.11.22
 
 ## [2019.06.27](https://github.com/uktrade/directory-sso/releases/tag/2019.06.27)
