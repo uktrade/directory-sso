@@ -5,8 +5,13 @@ from django.conf import settings
 from django.contrib import admin
 from django.http import HttpResponse
 
-from sso.user.models import User
+from sso.user.models import User, UserProfile
 from directory_api_external.client import api_client
+
+
+@admin.register(UserProfile)
+class UserProfileAdmin(admin.ModelAdmin):
+    readonly_fields = ('created', 'modified',)
 
 
 @admin.register(User)
@@ -14,6 +19,7 @@ class UserAdmin(admin.ModelAdmin):
 
     search_fields = ('email',)
     readonly_fields = ('created', 'modified',)
+    list_display = ('email', 'is_superuser', 'is_staff')
     exclude = ('password',)
     actions = [
         'download_csv',
