@@ -1,7 +1,8 @@
 # Changelog
 
 ### Implemented enhancements
-- TT-990 Making job title optional in user profile to accomodate individual user profile.
+- No Ticket - Adding missing models to admin view
+- TT-990 -  Making job title optional in user profile to accomodate individual user profile.
 
 ### Fixed bugs:
 
