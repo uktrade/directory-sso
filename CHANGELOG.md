@@ -1,6 +1,7 @@
 # Changelog
 
-## Pre-release
+### Implemented enhancements
+- TT-990 Making job title optional in user profile to accomodate individual user profile.
 
 ### Fixed bugs:
 
