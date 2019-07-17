@@ -52,7 +52,7 @@ class VerifyVerificationCodeAPIView(GenericAPIView):
         serializer.is_valid(raise_exception=True)
         serializer.save(date_verified=now())
 
-        EmailAddress.objects.create(
+        EmailAddress.objects.get_or_create(
             user=instance.user,
             verified=True,
             email=instance.user.email,
