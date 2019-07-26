@@ -6,7 +6,7 @@
 - No Ticket - Adding missing models to admin view
 - TT-990 -  Making job title optional in user profile to accomodate individual user profile.
 - TT-1573 - Expose has_user_profile on session user retrieval
-
+- No ticket - Send user to SSO profile enrolment instead of SSO register page
 
 ## [2019.07.09](https://github.com/uktrade/directory-sso/releases/tag/2019.07.09)
 [Full Changelog](https://github.com/uktrade/directory-sso/compare/2019.06.27...2019.07.09)
