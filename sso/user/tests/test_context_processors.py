@@ -59,7 +59,8 @@ def test_redirect_next_processor_appends_next_param_user_authenticated(
         '/accounts/password/reset/?next=http%3A%2F%2Fwww.example.com'
     )
     assert context['sso_register_url'] == (
-        '/accounts/signup/?next=http%3A%2F%2Fwww.example.com'
+        'http://profile.trade.great:8006/profile/enrol/?'
+        'next=http%3A%2F%2Fwww.example.com'
     )
     assert context['sso_is_logged_in'] is True
 
@@ -86,7 +87,7 @@ def test_redirect_next_processor_handles_no_next_param_user_authenticated(
         'next=http%3A%2F%2Fprofile.trade.great%3A8006%2Fprofile%2F'
     )
     assert context['sso_register_url'] == (
-        '/accounts/signup/?'
+        'http://profile.trade.great:8006/profile/enrol/?'
         'next=http%3A%2F%2Fprofile.trade.great%3A8006%2Fprofile%2F'
     )
     assert context['sso_is_logged_in'] is True
@@ -111,7 +112,8 @@ def test_redirect_next_processor_appends_next_param_no_user(
         '/accounts/password/reset/?next=http%3A%2F%2Fwww.example.com'
     )
     assert context['sso_register_url'] == (
-        '/accounts/signup/?next=http%3A%2F%2Fwww.example.com'
+        'http://profile.trade.great:8006/profile/enrol/?'
+        'next=http%3A%2F%2Fwww.example.com'
     )
     assert context['sso_is_logged_in'] is False
 
@@ -138,7 +140,7 @@ def test_redirect_next_processor_handles_no_next_param_no_user(
         'next=http%3A%2F%2Fprofile.trade.great%3A8006%2Fprofile%2F'
     )
     assert context['sso_register_url'] == (
-        '/accounts/signup/?'
+        'http://profile.trade.great:8006/profile/enrol/?'
         'next=http%3A%2F%2Fprofile.trade.great%3A8006%2Fprofile%2F'
     )
     assert context['sso_is_logged_in'] is False

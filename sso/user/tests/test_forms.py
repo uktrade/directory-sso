@@ -2,7 +2,7 @@ from unittest import mock
 from unittest.mock import patch
 
 from allauth.account.models import EmailAddress
-from directory_constants.constants import urls
+from directory_constants import urls
 import pytest
 
 from django.forms.fields import Field
