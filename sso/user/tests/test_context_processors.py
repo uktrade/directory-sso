@@ -59,7 +59,8 @@ def test_redirect_next_processor_appends_next_param_user_authenticated(
         '/accounts/password/reset/?next=http%3A%2F%2Fwww.example.com'
     )
     assert context['sso_register_url'] == (
-        '/accounts/signup/?next=http%3A%2F%2Fwww.example.com'
+        'http://profile.trade.great:8006/profile/enrol/?'
+        'next=http%3A%2F%2Fwww.example.com'
     )
     assert context['sso_is_logged_in'] is True
 
@@ -75,19 +76,19 @@ def test_redirect_next_processor_handles_no_next_param_user_authenticated(
     assert context['redirect_field_value'] == settings.DEFAULT_REDIRECT_URL
     assert context['sso_logout_url'] == (
         '/accounts/logout/?'
-        'next=http%3A%2F%2Fbuyer.trade.great%3A8001'
+        'next=http%3A%2F%2Fprofile.trade.great%3A8006%2Fprofile%2F'
     )
     assert context['sso_login_url'] == (
         '/accounts/login/?'
-        'next=http%3A%2F%2Fbuyer.trade.great%3A8001'
+        'next=http%3A%2F%2Fprofile.trade.great%3A8006%2Fprofile%2F'
     )
     assert context['sso_reset_password_url'] == (
         '/accounts/password/reset/?'
-        'next=http%3A%2F%2Fbuyer.trade.great%3A8001'
+        'next=http%3A%2F%2Fprofile.trade.great%3A8006%2Fprofile%2F'
     )
     assert context['sso_register_url'] == (
-        '/accounts/signup/?'
-        'next=http%3A%2F%2Fbuyer.trade.great%3A8001'
+        'http://profile.trade.great:8006/profile/enrol/?'
+        'next=http%3A%2F%2Fprofile.trade.great%3A8006%2Fprofile%2F'
     )
     assert context['sso_is_logged_in'] is True
 
@@ -111,7 +112,8 @@ def test_redirect_next_processor_appends_next_param_no_user(
         '/accounts/password/reset/?next=http%3A%2F%2Fwww.example.com'
     )
     assert context['sso_register_url'] == (
-        '/accounts/signup/?next=http%3A%2F%2Fwww.example.com'
+        'http://profile.trade.great:8006/profile/enrol/?'
+        'next=http%3A%2F%2Fwww.example.com'
     )
     assert context['sso_is_logged_in'] is False
 
@@ -127,18 +129,18 @@ def test_redirect_next_processor_handles_no_next_param_no_user(
     assert context['redirect_field_value'] == settings.DEFAULT_REDIRECT_URL
     assert context['sso_logout_url'] == (
         '/accounts/logout/?'
-        'next=http%3A%2F%2Fbuyer.trade.great%3A8001'
+        'next=http%3A%2F%2Fprofile.trade.great%3A8006%2Fprofile%2F'
     )
     assert context['sso_login_url'] == (
         '/accounts/login/?'
-        'next=http%3A%2F%2Fbuyer.trade.great%3A8001'
+        'next=http%3A%2F%2Fprofile.trade.great%3A8006%2Fprofile%2F'
     )
     assert context['sso_reset_password_url'] == (
         '/accounts/password/reset/?'
-        'next=http%3A%2F%2Fbuyer.trade.great%3A8001'
+        'next=http%3A%2F%2Fprofile.trade.great%3A8006%2Fprofile%2F'
     )
     assert context['sso_register_url'] == (
-        '/accounts/signup/?'
-        'next=http%3A%2F%2Fbuyer.trade.great%3A8001'
+        'http://profile.trade.great:8006/profile/enrol/?'
+        'next=http%3A%2F%2Fprofile.trade.great%3A8006%2Fprofile%2F'
     )
     assert context['sso_is_logged_in'] is False

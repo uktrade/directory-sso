@@ -1,7 +1,10 @@
 from functools import partial
+from urllib.parse import urljoin
 
 from django.conf import settings
 from django.core.urlresolvers import reverse
+
+from directory_constants import urls
 
 from sso.user.utils import get_redirect_url, get_url_with_redirect
 
@@ -13,6 +16,7 @@ def redirect_next_processor(request):
         request=request,
         redirect_field_name=redirect_field_name
     )
+    enrolment_url = urljoin(urls.SERVICES_SSO_PROFILE, 'enrol/')
     add_next = partial(get_url_with_redirect, redirect_url=redirect_url)
     return {
         'redirect_field_name': redirect_field_name,
@@ -20,7 +24,7 @@ def redirect_next_processor(request):
         'sso_logout_url': add_next(reverse('account_logout')),
         'sso_login_url': add_next(reverse('account_login')),
         'sso_reset_password_url': add_next(reverse('account_reset_password')),
-        'sso_register_url': add_next(reverse('account_signup')),
+        'sso_register_url': add_next(enrolment_url),
         'sso_is_logged_in': bool(
             request.user and request.user.is_authenticated
         ),

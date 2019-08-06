@@ -1,6 +1,5 @@
 from allauth.account import forms
-from directory_components.fields import DirectoryComponentsFieldMixin
+from directory_components.forms.fields import field_factory
 
 
-class PasswordField(DirectoryComponentsFieldMixin, forms.PasswordField):
-    pass
+PasswordField = field_factory(forms.PasswordField)
