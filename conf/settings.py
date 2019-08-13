@@ -481,16 +481,8 @@ FEATURE_FLAGS = {
     'SKIP_MIGRATE_ON': env.bool('FEATURE_SKIP_MIGRATE', False),
     'DISABLE_REGISTRATION_ON': env.bool('FEATURE_DISABLE_REGISTRATION', False),
     'TEST_API_ON': env.bool('FEATURE_TEST_API_ENABLED', False),
-    # used by directory-components
-    'SEARCH_ENGINE_INDEXING_OFF': env.bool(
-        'FEATURE_SEARCH_ENGINE_INDEXING_DISABLED', False
-    ),
-    # used by directory-components
-    'MAINTENANCE_MODE_ON': env.bool('FEATURE_MAINTENANCE_MODE_ENABLED', False),
-    'NEW_HEADER_FOOTER_ON': env.bool(
-        'FEATURE_NEW_HEADER_FOOTER_ENABLED', False
-    ),
-    'HEADER_SEARCH_ON': env.bool('FEATURE_HEADER_SEARCH_ENABLED', False)
+    'MAINTENANCE_MODE_ON': env.bool('FEATURE_MAINTENANCE_MODE_ENABLED', False),  # used by directory-components
+    'NEW_ENROLMENT_ON': env.bool('FEATURE_NEW_ENROLMENT_ENABLED', False),
 }
 
 CACHE_BACKENDS = {

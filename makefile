@@ -5,7 +5,7 @@ clean:
 test_requirements:
 	pip install -r requirements_test.txt
 
-FLAKE8 := flake8 . --exclude=migrations,.venv,node_modules
+FLAKE8 := flake8 . --exclude=migrations,.venv,node_modules --max-line-length=120
 PYTEST := pytest . -v --ignore=node_modules --cov=. --cov-config=.coveragerc --capture=no $(pytest_args)
 COLLECT_STATIC := python manage.py collectstatic --noinput
 CODECOV := \
@@ -77,7 +77,8 @@ DEBUG_SET_ENV_VARS := \
 	export DIRECTORY_CONSTANTS_URL_SSO_PROFILE=http://profile.trade.great:8006/profile/; \
 	export FEATURE_EXPORT_JOURNEY_ENABLED=false; \
 	export FEATURE_NEW_HEADER_FOOTER_ENABLED=true; \
-	export FEATURE_HEADER_SEARCH_ENABLED=false
+	export FEATURE_HEADER_SEARCH_ENABLED=false; \
+	export FEATURE_NEW_ENROLMENT_ENABLED=true
 
 debug_webserver:
 	 $(DEBUG_SET_ENV_VARS)&& $(COLLECT_STATIC) && $(DJANGO_WEBSERVER);
