@@ -2,6 +2,8 @@ from unittest.mock import Mock
 
 import pytest
 
+from django.urls import reverse
+
 from sso.user import context_processors
 
 
@@ -144,3 +146,13 @@ def test_redirect_next_processor_handles_no_next_param_no_user(
         'next=http%3A%2F%2Fprofile.trade.great%3A8006%2Fprofile%2F'
     )
     assert context['sso_is_logged_in'] is False
+
+
+def test_new_enrolment_url(settings, request_with_next_no_user):
+    settings.FEATURE_FLAGS['NEW_ENROLMENT_ON'] = False
+
+    context = context_processors.redirect_next_processor(request_with_next_no_user)
+
+    url = reverse('account_signup')
+
+    assert context['sso_register_url'] == f'{url}?next=http%3A%2F%2Fwww.example.com'
