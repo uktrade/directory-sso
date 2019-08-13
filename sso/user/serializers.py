@@ -1,3 +1,4 @@
+from django.core.exceptions import ObjectDoesNotExist
 from django.db import transaction
 from rest_framework import serializers
 
@@ -8,6 +9,7 @@ from sso.verification.models import VerificationCode
 
 
 class VerificationCodeSerializer(serializers.ModelSerializer):
+
     class Meta:
         model = VerificationCode
         fields = (
@@ -17,13 +19,25 @@ class VerificationCodeSerializer(serializers.ModelSerializer):
 
 
 class UserSerializer(serializers.ModelSerializer):
+
+    has_user_profile = serializers.SerializerMethodField()
+
     class Meta:
         model = User
         fields = (
             'id',
             'email',
             'hashed_uuid',
+            'has_user_profile',
         )
+
+    def get_has_user_profile(self, obj):
+        try:
+            obj.userprofile
+        except ObjectDoesNotExist:
+            return False
+        else:
+            return True
 
 
 class LastLoginSerializer(serializers.ModelSerializer):

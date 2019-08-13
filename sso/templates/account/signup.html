@@ -1,9 +1,14 @@
 {% extends "account/base.html" %}
+
 {% load i18n %}
+{% load breadcrumbs from directory_components %}
 
 {% block head_title %}{% trans "Register - great.gov.uk" %}{% endblock %}
 
 {% block content %}
+{% breadcrumbs 'Register' %}
+  <a href="{{ services_urls.great_domestic }}">Great.gov.uk</a>
+{% endbreadcrumbs %}
 <div class="column-half">
 <div id="profile-register-intro" class="grid-row">
     <h1 class="heading-xlarge">{% trans "Register" %}</h1>

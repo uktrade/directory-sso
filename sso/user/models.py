@@ -173,6 +173,8 @@ class UserProfile(TimeStampedModel):
 
     job_title = models.CharField(
         max_length=128,
+        blank=True,
+        null=True
     )
 
     mobile_phone_number = models.CharField(

@@ -6,7 +6,7 @@ from http.cookies import SimpleCookie
 
 from allauth.account.models import EmailAddress, EmailConfirmationHMAC
 from allauth.exceptions import ImmediateHttpResponse
-from directory_constants.constants import urls
+from directory_constants import urls
 import pytest
 
 from django.http import HttpResponse
@@ -842,7 +842,8 @@ def test_login_page_signup_has_next(
     assert response.status_code == http.client.OK
 
     expected_signup_url = (
-        '/accounts/signup/?next=http%3A%2F%2Fexample.com%2F%3Fparam%3Dtest'
+        'http://profile.trade.great:8006/profile/enrol/?'
+        'next=http%3A%2F%2Fexample.com%2F%3Fparam%3Dtest'
     )
     assert expected_signup_url in response.rendered_content
 

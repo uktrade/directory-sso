@@ -3,13 +3,13 @@ from django.core.urlresolvers import reverse
 from django.forms import TextInput
 from django.utils.safestring import mark_safe
 
-from allauth.account import forms
+import allauth.account.forms
 from allauth.account.adapter import get_adapter
 from allauth.account.models import EmailAddress
 from allauth.account.utils import filter_users_by_email
 from allauth.utils import set_form_field_order
-from directory_constants.constants import urls
-from directory_components import fields
+from directory_constants import urls
+from directory_components import forms
 from notifications_python_client import NotificationsAPIClient
 
 from sso.user.fields import PasswordField
@@ -19,7 +19,7 @@ class IndentedInvalidFieldsMixin:
     error_css_class = 'input-field-container has-error'
 
 
-class SignupForm(IndentedInvalidFieldsMixin, forms.SignupForm):
+class SignupForm(IndentedInvalidFieldsMixin, allauth.account.forms.SignupForm):
     PASSWORD_HELP_TEXT = (
         '<p>Your password must:</p>'
         '<ul class="list list-bullet">'
@@ -29,7 +29,7 @@ class SignupForm(IndentedInvalidFieldsMixin, forms.SignupForm):
         '<li>not contain the word "password"</li>'
         '</ul>'
     )
-    terms_agreed = fields.BooleanField(
+    terms_agreed = forms.BooleanField(
         label=mark_safe(
             'Tick this box to accept the '
             f'<a href="{urls.TERMS_AND_CONDITIONS}" target="_blank">terms and '
@@ -46,26 +46,24 @@ class SignupForm(IndentedInvalidFieldsMixin, forms.SignupForm):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.fields['email'] = fields.EmailField(
+        self.fields['email'] = forms.EmailField(
             label='Email',
             label_suffix='',
             widget=TextInput(
                 attrs={
                     'type': 'email',
-                    'placeholder': 'Email address',
                     'autofocus': 'autofocus',
                     'autocomplete': 'new-password',
                 }
             )
         )
 
-        self.fields['email2'] = fields.EmailField(
+        self.fields['email2'] = forms.EmailField(
             label='Confirm email',
             label_suffix='',
             widget=TextInput(
                 attrs={
                     'type': 'email',
-                    'placeholder': 'Email address confirmation',
                     'autofocus': 'autofocus',
                     'autocomplete': 'new-password',
                 }
@@ -118,7 +116,7 @@ class SignupForm(IndentedInvalidFieldsMixin, forms.SignupForm):
         return value
 
 
-class LoginForm(forms.LoginForm):
+class LoginForm(allauth.account.forms.LoginForm):
     password = PasswordField(
         label="Password",
         label_suffix='',
@@ -127,13 +125,13 @@ class LoginForm(forms.LoginForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.fields['password'].widget.attrs['autocomplete'] = 'new-password'
-        self.fields['login'] = fields.EmailField(
+        self.fields['password'].widget.attrs['placeholder'] = ''
+        self.fields['login'] = forms.EmailField(
             label='Email',
             label_suffix='',
             widget=TextInput(
                 attrs={
                     'type': 'email',
-                    'placeholder': 'Email address',
                     'autofocus': 'autofocus',
                     'autocomplete': 'new-password',
                 }
@@ -141,15 +139,19 @@ class LoginForm(forms.LoginForm):
         )
 
 
-class UserForm(IndentedInvalidFieldsMixin, forms.UserForm):
+class UserForm(IndentedInvalidFieldsMixin, allauth.account.forms.UserForm):
     pass
 
 
-class AddEmailForm(IndentedInvalidFieldsMixin, forms.AddEmailForm):
+class AddEmailForm(
+    IndentedInvalidFieldsMixin, allauth.account.forms.AddEmailForm
+):
     pass
 
 
-class ChangePasswordForm(IndentedInvalidFieldsMixin, forms.ChangePasswordForm):
+class ChangePasswordForm(
+    IndentedInvalidFieldsMixin, allauth.account.forms.ChangePasswordForm
+):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.fields['oldpassword'] = PasswordField(
@@ -166,20 +168,23 @@ class ChangePasswordForm(IndentedInvalidFieldsMixin, forms.ChangePasswordForm):
         )
 
 
-class SetPasswordForm(IndentedInvalidFieldsMixin, forms.SetPasswordForm):
+class SetPasswordForm(
+    IndentedInvalidFieldsMixin, allauth.account.forms.SetPasswordForm
+):
     pass
 
 
-class ResetPasswordForm(IndentedInvalidFieldsMixin, forms.ResetPasswordForm):
+class ResetPasswordForm(
+    IndentedInvalidFieldsMixin, allauth.account.forms.ResetPasswordForm
+):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.fields['email'] = fields.EmailField(
+        self.fields['email'] = forms.EmailField(
             label='Email',
             label_suffix='',
             widget=TextInput(
                 attrs={
                     'type': 'email',
-                    'placeholder': 'Email address',
                     'autofocus': 'autofocus',
                     'autocomplete': 'new-password',
                 }
@@ -202,8 +207,9 @@ class ResetPasswordForm(IndentedInvalidFieldsMixin, forms.ResetPasswordForm):
         return self.cleaned_data["email"]
 
 
-class ResetPasswordKeyForm(IndentedInvalidFieldsMixin,
-                           forms.ResetPasswordKeyForm):
+class ResetPasswordKeyForm(
+    IndentedInvalidFieldsMixin, allauth.account.forms.ResetPasswordKeyForm
+):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
