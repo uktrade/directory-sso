@@ -4,6 +4,7 @@
 
 ### Fixed bugs:
 - No ticket - Upgrade django to 1.11.23 for vulnerability fix
+- No ticket - Fix vulnerability with yarn
 
 ## [2019.08.13](https://github.com/uktrade/directory-sso/releases/tag/2019.08.13_1)
 [Full Changelog](https://github.com/uktrade/directory-sso/compare/2019.08.13...2019.08.13_1)
