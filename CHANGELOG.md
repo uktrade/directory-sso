@@ -2,6 +2,18 @@
 
 ## Pre release
 
+### Fixed bugs:
+- No ticket - Upgrade django to 1.11.23 for vulnerability fix
+
+## [2019.08.13](https://github.com/uktrade/directory-sso/releases/tag/2019.08.13_1)
+[Full Changelog](https://github.com/uktrade/directory-sso/compare/2019.08.13...2019.08.13_1)
+
+### Hot fix
+- No ticket - Add feature flag to "start now" on sign in page
+
+## [2019.08.13](https://github.com/uktrade/directory-sso/releases/tag/2019.08.13)
+[Full Changelog](https://github.com/uktrade/directory-sso/compare/2019.07.09...2019.08.13)
+
 ### Implemented enhancements
 - No Ticket - Adding missing models to admin view
 - TT-990 -  Making job title optional in user profile to accomodate individual user profile.
