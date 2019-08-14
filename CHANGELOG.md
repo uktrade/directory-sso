@@ -2,6 +2,9 @@
 
 ## Pre release
 
+## [2019.08.13](https://github.com/uktrade/directory-sso/releases/tag/2019.08.13)
+[Full Changelog](https://github.com/uktrade/directory-sso/compare/2019.07.09...2019.08.13)
+
 ### Implemented enhancements
 - No Ticket - Adding missing models to admin view
 - TT-990 -  Making job title optional in user profile to accomodate individual user profile.
