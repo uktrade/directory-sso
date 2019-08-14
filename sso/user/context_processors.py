@@ -16,7 +16,11 @@ def redirect_next_processor(request):
         request=request,
         redirect_field_name=redirect_field_name
     )
-    enrolment_url = urljoin(urls.SERVICES_SSO_PROFILE, 'enrol/')
+    if settings.FEATURE_FLAGS['NEW_ENROLMENT_ON']:
+        enrolment_url = urljoin(urls.SERVICES_SSO_PROFILE, 'enrol/')
+    else:
+        enrolment_url = reverse('account_signup')
+
     add_next = partial(get_url_with_redirect, redirect_url=redirect_url)
     return {
         'redirect_field_name': redirect_field_name,
