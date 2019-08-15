@@ -3,7 +3,7 @@
 {% load i18n %}
 {% load breadcrumbs from directory_components %}
 
-{% block head_title %}{% trans "Sign out - great.gov.uk" %}{% endblock %}
+{% block head_title %}{% trans "Log out - great.gov.uk" %}{% endblock %}
 
 {% block content %}
 {% breadcrumbs 'Log out' %}
@@ -13,15 +13,15 @@
 <div class="grid-row">
   <div class="column-half">
 
-    <h1 class="heading-xlarge">{% trans "Sign out" %}</h1>
+    <h1 class="heading-xlarge">{% trans "Log out" %}</h1>
 
-    <p>{% trans 'Are you sure you want to sign out?' %}</p>
+    <p>{% trans 'Are you sure you want to log out?' %}</p>
     <form method="post" action="{% url 'account_logout' %}">
       {% csrf_token %}
       {% if redirect_field_value %}
       <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}"/>
       {% endif %}
-      <button class="button" type="submit">{% trans 'Sign out' %}</button>
+      <button class="button" type="submit">{% trans 'Log out' %}</button>
     </form>
 
   </div>
