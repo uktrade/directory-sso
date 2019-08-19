@@ -1,4 +1,3 @@
-from django.core.exceptions import ObjectDoesNotExist
 from django.db import transaction
 from rest_framework import serializers
 
@@ -16,28 +15,6 @@ class VerificationCodeSerializer(serializers.ModelSerializer):
             'code',
             'expiration_date',
         )
-
-
-class UserSerializer(serializers.ModelSerializer):
-
-    has_user_profile = serializers.SerializerMethodField()
-
-    class Meta:
-        model = User
-        fields = (
-            'id',
-            'email',
-            'hashed_uuid',
-            'has_user_profile',
-        )
-
-    def get_has_user_profile(self, obj):
-        try:
-            obj.userprofile
-        except ObjectDoesNotExist:
-            return False
-        else:
-            return True
 
 
 class LastLoginSerializer(serializers.ModelSerializer):
@@ -79,7 +56,7 @@ class CreateUserSerializer(serializers.ModelSerializer):
         return instance
 
 
-class CreateUserProfileSerializer(serializers.ModelSerializer):
+class UserProfileSerializer(serializers.ModelSerializer):
     class Meta:
         model = UserProfile
         fields = (
@@ -91,3 +68,17 @@ class CreateUserProfileSerializer(serializers.ModelSerializer):
 
     def to_internal_value(self, data):
         return {**data, 'user_id': self.context['request'].user.pk}
+
+
+class UserSerializer(serializers.ModelSerializer):
+
+    user_profile = UserProfileSerializer()
+
+    class Meta:
+        model = User
+        fields = (
+            'id',
+            'email',
+            'hashed_uuid',
+            'user_profile',
+        )
