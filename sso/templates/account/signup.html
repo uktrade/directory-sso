@@ -11,14 +11,9 @@
 {% endbreadcrumbs %}
 <div class="column-half">
 <div id="profile-register-intro" class="grid-row">
-    <h1 class="heading-xlarge">{% trans "Register" %}</h1>
-
-    <p class="margin-bottom-30"><a class="link" href="{{ sso_login_url }}">Sign in</a> if you have an account.</p>
-    <p>Create a great.gov.uk account and you can:</p>
-    <ul class="list list-bullet ">
-        <li>create a free business profile to promote your company to overseas buyers</li>
-        <li>express your interest and apply for export opportunities</li>
-    </ul>
+    <h1 class="heading-xlarge">{% trans "Create an account" %}</h1>
+    <p>To create an account you'll need a business email address. We'll send you an email with a code to verify it.</p>
+    <p class="margin-bottom-30">Already have a great.gov.uk account? <a class="link" href="{{ sso_login_url }}">Sign in.</a></p>
   </div>
 
 <form class="signup" id="signup_form" method="post" action="{% url 'account_signup' %}">
@@ -43,7 +38,7 @@
     {% if redirect_field_value %}
         <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
     {% endif %}
-  <button class="button" type="submit">{% trans "Register" %}</button>
+  <button class="button" type="submit">{% trans "Save and continue" %}</button>
 </form>
 </div>
 
