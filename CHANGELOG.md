@@ -4,6 +4,7 @@
 
 ### Implemented enhancements
 - No ticket - Added django settings janitor
+- Expose user profile on user retrieve endpoint
 
 ### Fixed bugs:
 - No ticket - Upgrade django to 1.11.23 for vulnerability fix

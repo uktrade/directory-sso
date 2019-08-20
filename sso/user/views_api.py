@@ -15,7 +15,7 @@ class UserCreateAPIView(CreateAPIView):
 
 
 class UserProfileCreateAPIView(CreateAPIView):
-    serializer_class = serializers.CreateUserProfileSerializer
+    serializer_class = serializers.UserProfileSerializer
     permission_classes = [IsAuthenticated, SignatureCheckPermission]
     authentication_classes = [SessionAuthentication]
 

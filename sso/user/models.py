@@ -159,29 +159,11 @@ class UserProfile(TimeStampedModel):
     class Meta:
         ordering = ['-created']
 
-    user = models.OneToOneField(
-        User,
-    )
-
-    first_name = models.CharField(
-        max_length=128,
-    )
-
-    last_name = models.CharField(
-        max_length=128,
-    )
-
-    job_title = models.CharField(
-        max_length=128,
-        blank=True,
-        null=True
-    )
-
-    mobile_phone_number = models.CharField(
-        max_length=128,
-        blank=True,
-        null=True,
-    )
+    user = models.OneToOneField(User, related_name='user_profile')
+    first_name = models.CharField(max_length=128)
+    last_name = models.CharField(max_length=128)
+    job_title = models.CharField(max_length=128, blank=True, null=True)
+    mobile_phone_number = models.CharField(max_length=128, blank=True, null=True)
 
     def __str__(self):
         return str(self.user)

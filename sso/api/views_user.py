@@ -24,7 +24,7 @@ class GetUserBySessionKeyMixin:
         queryset = self.get_session_queryset()
         session = get_object_or_404(queryset, session_key=session_key)
         user_id = session.get_decoded().get('_auth_user_id')
-        return get_object_or_404(models.User, pk=user_id)
+        return get_object_or_404(models.User.objects.select_related('user_profile'), pk=user_id)
 
 
 class SessionUserAPIView(GetUserBySessionKeyMixin, RetrieveAPIView):
