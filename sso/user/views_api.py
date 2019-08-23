@@ -1,6 +1,8 @@
 from rest_framework.generics import CreateAPIView
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
+from rest_framework.renderers import JSONRenderer
+
 
 from django.db import IntegrityError
 
@@ -18,14 +20,15 @@ class UserProfileCreateAPIView(CreateAPIView):
     serializer_class = serializers.CreateUserProfileSerializer
     permission_classes = [IsAuthenticated, SignatureCheckPermission]
     authentication_classes = [SessionAuthentication]
+    renderer_classes = [JSONRenderer]
 
     def create(self, request, *args, **kwargs):
         try:
-            super().create(request, *args, **kwargs)
+            return super().create(request, *args, **kwargs)
+
         except IntegrityError as error:
             if 'already exists' in str(error):
                 return Response(status=200)
             else:
                 raise
-        else:
-            return Response(status=201)
+
