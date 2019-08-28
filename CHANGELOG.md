@@ -5,6 +5,7 @@
 ### Implemented enhancements
 - No ticket - Added django settings janitor
 - Expose user profile on user retrieve endpoint
+- TT-1673 - Redirect to enrolment after login if no company or personal details
 
 ### Fixed bugs:
 - No ticket - Upgrade django to 1.11.23 for vulnerability fix

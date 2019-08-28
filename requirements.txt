@@ -15,8 +15,8 @@ chardet==3.0.4            # via requests
 contextlib2==0.5.5        # via raven
 cryptography==2.4.1       # via django-cryptography, pyopenssl, requests
 defusedxml==0.5.0         # via python3-openid
-directory-api-external==5.0.0
-directory-client-core==4.0.2  # via directory-api-external
+directory-api-client==16.3.0
+directory-client-core==6.1.0  # via directory-api-client
 directory-components==27.5.0
 directory-constants==18.3.0
 directory-healthcheck==1.1.2
@@ -67,7 +67,8 @@ requests-oauthlib==1.0.0  # via django-allauth
 requests[security]==2.21.0
 s3transfer==0.1.13        # via boto3
 sigauth==4.0.1
-six==1.11.0               # via cryptography, django-extensions, jsonschema, mohawk, pyopenssl, pyrsistent, python-dateutil, requests-file
+six==1.11.0               # via cryptography, django-extensions, jsonschema, mohawk, pyopenssl, pyrsistent, python-dateutil, requests-file, w3lib
 tldextract==2.0.2
 urllib3==1.24.2
+w3lib==1.21.0             # via directory-client-core
 whitenoise==3.3.0
