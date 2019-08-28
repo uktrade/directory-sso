@@ -385,15 +385,14 @@ GOOGLE_TAG_MANAGER_ENV = env.str('GOOGLE_TAG_MANAGER_ENV', '')
 # sso profile
 SSO_PROFILE_URL = env.str('SSO_PROFILE_URL')
 
-# directory-external-api
-DIRECTORY_API_CLIENT_EXTERNAL_BASE_URL = env.str(
-    'DIRECTORY_API_EXTERNAL_CLIENT_BASE_URL'
-)
-DIRECTORY_API_CLIENT_EXTERNAL_API_KEY = env.str(
-    'DIRECTORY_API_EXTERNAL_SIGNATURE_SECRET'
-)
-DIRECTORY_API_CLIENT_EXTERNAL_SENDER_ID = 'directory'
-DIRECTORY_API_CLIENT_EXTERNAL_DEFAULT_TIMEOUT = 5
+# directory-api
+DIRECTORY_API_CLIENT_BASE_URL = env.str('DIRECTORY_API_CLIENT_BASE_URL')
+DIRECTORY_API_CLIENT_API_KEY = env.str('DIRECTORY_API_CLIENT_API_KEY')
+DIRECTORY_API_CLIENT_SENDER_ID = env.str('DIRECTORY_API_CLIENT_SENDER_ID', 'directory')
+DIRECTORY_API_CLIENT_DEFAULT_TIMEOUT = env.str('DIRECTORY_API_CLIENT_DEFAULT_TIMEOUT', 15)
+
+# directory clients
+DIRECTORY_CLIENT_CORE_CACHE_EXPIRE_SECONDS = 60 * 60 * 24 * 30  # 30 days
 
 
 # Export Opportunities
@@ -485,23 +484,27 @@ FEATURE_FLAGS = {
     'NEW_ENROLMENT_ON': env.bool('FEATURE_NEW_ENROLMENT_ENABLED', False),
 }
 
-CACHE_BACKENDS = {
-    'redis': 'django_redis.cache.RedisCache',
-    'dummy': 'django.core.cache.backends.dummy.DummyCache',
-    'locmem': 'django.core.cache.backends.locmem.LocMemCache'
-}
 
-CACHES = {}
+VCAP_SERVICES = env.json('VCAP_SERVICES', {})
 
 if 'redis' in VCAP_SERVICES:
     REDIS_URL = VCAP_SERVICES['redis'][0]['credentials']['uri']
 else:
-    REDIS_URL = env.str('REDIS_URL', '')
+    REDIS_URL = env.str('REDIS_URL')
 
-CACHES['default'] = {
-    'BACKEND': CACHE_BACKENDS[os.getenv('CACHE_BACKEND', 'redis')],
-    'LOCATION': REDIS_URL
+cache = {
+    'BACKEND': 'django_redis.cache.RedisCache',
+    'LOCATION': REDIS_URL,
+    'OPTIONS': {
+        'CLIENT_CLASS': "django_redis.client.DefaultClient",
+    }
 }
+
+CACHES = {
+    'default': cache,
+    'api_fallback': cache,
+}
+
 
 SESSION_ENGINE = 'django.contrib.sessions.backends.cached_db'
 

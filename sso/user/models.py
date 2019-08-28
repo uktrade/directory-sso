@@ -1,13 +1,11 @@
 from django.conf import settings
+from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin
+from django.contrib.postgres.fields import JSONField
 from django.core.mail import send_mail
 from django.db import models
-from django.contrib.auth.models import (
-    AbstractBaseUser, BaseUserManager, PermissionsMixin
-)
-from django.contrib.postgres.fields import JSONField
+from django.urls import reverse
 from django.utils import timezone
 from django.utils.translation import ugettext_lazy as _
-from django.urls import reverse
 
 from allauth.account.forms import default_token_generator, user_pk_to_url_str
 from allauth.account.models import EmailConfirmation
