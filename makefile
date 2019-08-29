@@ -64,7 +64,6 @@ DEBUG_SET_ENV_VARS := \
 	export ACTIVITY_STREAM_IP_WHITELIST=1.2.3.4; \
 	export ACTIVITY_STREAM_ACCESS_KEY_ID=some-id; \
 	export ACTIVITY_STREAM_SECRET_ACCESS_KEY=some-secret; \
-	export FEATURE_ACTIVITY_STREAM_NONCE_CACHE_ENABLED=false; \
 	export VCAP_SERVICES="{\"redis\": [{\"credentials\": {\"uri\": \"redis://localhost:6379/\"}}]}"; \
 	export PRIVACY_COOKIE_DOMAIN=.trade.great; \
 	export SESSION_COOKIES_NAME_DOMAIN_MAPPING="debug_sso_session_cookie=.trade.great"; \
@@ -77,8 +76,9 @@ DEBUG_SET_ENV_VARS := \
 	export DIRECTORY_CONSTANTS_URL_SSO_PROFILE=http://profile.trade.great:8006/profile/; \
 	export FEATURE_NEW_ENROLMENT_ENABLED=true
 
+
 debug_webserver:
-	 $(DEBUG_SET_ENV_VARS)&& $(COLLECT_STATIC) && $(DJANGO_WEBSERVER);
+	 $(DEBUG_SET_ENV_VARS) && $(COLLECT_STATIC) && $(DJANGO_WEBSERVER);
 
 debug_shell:
 	 $(DEBUG_SET_ENV_VARS); ./manage.py shell

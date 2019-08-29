@@ -78,7 +78,7 @@ class LoginView(RedirectToNextMixin, allauth_views.LoginView):
         response = super().form_valid(form)
         self.request.session.save()
         if settings.FEATURE_FLAGS['NEW_ENROLMENT_ON']:
-            has_company = bool(utils.retrieve_company(sso_session_id=self.request.session.session_key))
+            has_company = utils.user_has_company(self.request.session.session_key)
             has_profile = utils.user_has_profile(form.user)
             if not has_company or not has_profile:
                 url = urllib.parse.urljoin(urls.SERVICES_SSO_PROFILE, 'enrol/')
