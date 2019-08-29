@@ -249,58 +249,12 @@ def test_empty_object_returned_with_authentication_3_ips(api_client):
         _url(),
         content_type='',
         HTTP_AUTHORIZATION=sender.request_header,
-        HTTP_X_FORWARDED_FOR='3.3.3.3, {}'.format(
-            WHITELISTED_X_FORWARDED_FOR_HEADER),
+        HTTP_X_FORWARDED_FOR=f'3.3.3.3, {WHITELISTED_X_FORWARDED_FOR_HEADER}',
     )
 
     assert response.status_code == status.HTTP_200_OK
     content = {'secret': 'content-for-pen-test'}
     assert response.json() == content
-
-
-@pytest.mark.django_db
-def test_if_authentication_reused_401_returned(api_client):
-    """If the Authorization header is reused, then a 401 is returned"""
-    auth = _auth_sender().request_header
-
-    response_1 = api_client.get(
-        _url(),
-        content_type='',
-        HTTP_AUTHORIZATION=auth,
-        HTTP_X_FORWARDED_FOR=WHITELISTED_X_FORWARDED_FOR_HEADER,
-    )
-    assert response_1.status_code == status.HTTP_200_OK
-
-    response_2 = api_client.get(
-        _url(),
-        content_type='',
-        HTTP_AUTHORIZATION=auth,
-        HTTP_X_FORWARDED_FOR=WHITELISTED_X_FORWARDED_FOR_HEADER,
-    )
-    assert response_2.status_code == status.HTTP_401_UNAUTHORIZED
-    error = {'detail': 'Incorrect authentication credentials.'}
-    assert response_2.json() == error
-
-
-@pytest.mark.django_db
-def test_if_nonce_cache_disabled_401_returned(api_client, settings):
-    """If the nonce cache is disabled, then we cannot authenticate"""
-    settings.FEATURE_FLAGS = {
-        **settings.FEATURE_FLAGS,
-        'ACTIVITY_STREAM_NONCE_CACHE_ON': False,
-    }
-
-    auth = _auth_sender().request_header
-
-    response = api_client.get(
-        _url(),
-        content_type='',
-        HTTP_AUTHORIZATION=auth,
-        HTTP_X_FORWARDED_FOR='1.2.3.4, 123.123.123.123',
-    )
-    assert response.status_code == status.HTTP_401_UNAUTHORIZED
-    error = {'detail': 'Incorrect authentication credentials.'}
-    assert response.json() == error
 
 
 @pytest.mark.django_db

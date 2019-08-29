@@ -9,9 +9,7 @@ machine_python3_postgres: &machine_python3_postgres_redis
         POSTGRES_USER: debug
         POSTGRES_PASSWORD: debug
         POSTGRES_DB: sso_debug
-    - image: grokzen/redis-cluster:3.2.11
-      environment:
-        CLUSTER_ONLY: 'true'
+    - image: circleci/redis:3.2-alpine
 
 
 # Individual (shared) steps.
