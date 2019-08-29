@@ -52,8 +52,8 @@ DEBUG_SET_ENV_VARS := \
 	export SSO_PROFILE_URL=http://profile.trade.great:8006; \
 	export EMAIL_BACKEND_CLASS_NAME=console; \
 	export DEFAULT_REDIRECT_URL=http://profile.trade.great:8006/profile/ \
-	export DIRECTORY_API_EXTERNAL_CLIENT_BASE_URL=http://buyer.trade.great:8001/api/external/; \
-	export DIRECTORY_API_EXTERNAL_SIGNATURE_SECRET=debug; \
+	export DIRECTORY_API_CLIENT_API_KEY=debug; \
+	export DIRECTORY_API_CLIENT_BASE_URL=http://api.trade.great:8000; \
 	export EXOPS_APPLICATION_CLIENT_ID=debug; \
 	export CACHE_BACKEND=locmem; \
 	export SECURE_SSL_REDIRECT=false; \
@@ -64,8 +64,7 @@ DEBUG_SET_ENV_VARS := \
 	export ACTIVITY_STREAM_IP_WHITELIST=1.2.3.4; \
 	export ACTIVITY_STREAM_ACCESS_KEY_ID=some-id; \
 	export ACTIVITY_STREAM_SECRET_ACCESS_KEY=some-secret; \
-	export FEATURE_ACTIVITY_STREAM_NONCE_CACHE_ENABLED=true; \
-	export VCAP_SERVICES="{\"redis\": [{\"credentials\": {\"uri\": \"redis://127.0.0.1:7000/\"}}]}"; \
+	export VCAP_SERVICES="{\"redis\": [{\"credentials\": {\"uri\": \"redis://localhost:6379/\"}}]}"; \
 	export PRIVACY_COOKIE_DOMAIN=.trade.great; \
 	export SESSION_COOKIES_NAME_DOMAIN_MAPPING="debug_sso_session_cookie=.trade.great"; \
 	export DIRECTORY_CONSTANTS_URL_GREAT_DOMESTIC=http://exred.trade.great:8007; \
@@ -77,8 +76,9 @@ DEBUG_SET_ENV_VARS := \
 	export DIRECTORY_CONSTANTS_URL_SSO_PROFILE=http://profile.trade.great:8006/profile/; \
 	export FEATURE_NEW_ENROLMENT_ENABLED=true
 
+
 debug_webserver:
-	 $(DEBUG_SET_ENV_VARS)&& $(COLLECT_STATIC) && $(DJANGO_WEBSERVER);
+	 $(DEBUG_SET_ENV_VARS) && $(COLLECT_STATIC) && $(DJANGO_WEBSERVER);
 
 debug_shell:
 	 $(DEBUG_SET_ENV_VARS); ./manage.py shell

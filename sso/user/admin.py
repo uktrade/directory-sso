@@ -6,7 +6,7 @@ from django.contrib import admin
 from django.http import HttpResponse
 
 from sso.user.models import User, UserProfile
-from directory_api_external.client import api_client
+from directory_api_client import api_client
 
 
 @admin.register(UserProfile)
@@ -37,7 +37,7 @@ class UserAdmin(admin.ModelAdmin):
 
     @staticmethod
     def get_fab_user_ids():
-        response = api_client.supplier.list_supplier_sso_ids()
+        response = api_client.supplier.list_sso_ids()
         response.raise_for_status()
         return response.json()
 
