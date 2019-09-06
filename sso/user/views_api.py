@@ -7,7 +7,7 @@ from django.db import IntegrityError
 from conf.signature import SignatureCheckPermission
 from core.authentication import SessionAuthentication
 from sso.user import serializers
-from django.http import Http404
+
 
 class UserCreateAPIView(CreateAPIView):
     serializer_class = serializers.CreateUserSerializer

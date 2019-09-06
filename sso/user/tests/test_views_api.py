@@ -23,6 +23,7 @@ def user_profile_data():
         'job_title': 'Director',
     }
 
+
 @pytest.mark.django_db
 def test_create_user_api(api_client):
     new_email = 'test@test123.com'
@@ -169,18 +170,6 @@ def test_update_user_profile(api_client, user_profile_data):
     assert profile.last_name == user_profile_data['last_name']
     assert profile.job_title == user_profile_data['job_title']
     assert profile.mobile_phone_number == user_profile_data['mobile_phone_number']
-
-
-@pytest.mark.django_db
-def test_update_user_profile_no_auth(api_client, user_profile_data):
-
-    response = api_client.patch(
-        reverse('api:user-update-profile'),
-        user_profile_data,
-        format='json'
-    )
-
-    assert response.status_code == 401
 
 
 @pytest.mark.django_db
