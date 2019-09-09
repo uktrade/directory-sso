@@ -160,6 +160,11 @@ api_urlpatterns = [
         sso.user.views_api.UserProfileCreateAPIView.as_view(),
         name='user-create-profile'
     ),
+    url(
+        r'^user/profile/update/$',
+        sso.user.views_api.UserProfileUpdateAPIView.as_view(),
+        name='user-update-profile'
+    ),
 ]
 
 testapi_urls = [
