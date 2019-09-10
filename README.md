@@ -106,11 +106,14 @@ https://github.com/uktrade?q=great
 [code-climate-image]: https://codeclimate.com/github/uktrade/directory-sso/badges/issue_count.svg
 [code-climate]: https://codeclimate.com/github/uktrade/directory-sso
 
-[code-climate-image]: https://codeclimate.com/github/uktrade/directory-sso/badges/issue_count.svg
-[code-climate]: https://codeclimate.com/github/uktrade/directory-sso
-
 [circle-ci-image]: https://circleci.com/gh/uktrade/directory-sso/tree/master.svg?style=svg
 [circle-ci]: https://circleci.com/gh/uktrade/directory-sso/tree/master
 
 [codecov-image]: https://codecov.io/gh/uktrade/directory-sso/branch/master/graph/badge.svg
 [codecov]: https://codecov.io/gh/uktrade/directory-sso
+
+[gitflow-image]: https://img.shields.io/badge/Branching%20strategy-gitflow-5FBB1C.svg
+[gitflow]: https://www.atlassian.com/git/tutorials/comparing-workflows/gitflow-workflow
+
+[calver-image]: https://img.shields.io/badge/Versioning%20strategy-CalVer-5FBB1C.svg
+[calver]: https://calver.org
