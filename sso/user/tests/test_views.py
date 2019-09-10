@@ -529,7 +529,6 @@ def test_password_reset_redirect_default_param_if_no_next_param(
     url = call[1]['personalisation']['password_reset']
 
     preflight_response = client.get(url)
-
     response = client.post(
         preflight_response.url,
         {'password1': new_password, 'password2': new_password}
