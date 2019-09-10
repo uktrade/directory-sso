@@ -54,7 +54,7 @@ jobs:
           name: Run tests
           command: |
             . venv/bin/activate
-            make debug_test
+            make pytest
             codecov
   flake8:
     docker:
@@ -69,7 +69,7 @@ jobs:
             python3 -m venv venv
             . venv/bin/activate
             pip install flake8
-            flake8 . --exclude=migrations,venv --max-line-length=120
+            make flake8
 
 workflows:
   version: 2

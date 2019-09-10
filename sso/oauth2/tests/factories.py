@@ -1,7 +1,9 @@
-from datetime import datetime, timedelta
+from datetime import timedelta
 
 import factory
 from oauth2_provider.models import AccessToken, Application
+
+from django.utils import timezone
 
 from sso.user.tests.factories import UserFactory
 
@@ -16,7 +18,7 @@ class AccessTokenFactory(factory.django.DjangoModelFactory):
 
     application = factory.SubFactory(ApplicationFactory)
     user = factory.SubFactory(UserFactory)
-    expires = datetime.now() + timedelta(minutes=60)
+    expires = timezone.now() + timedelta(minutes=60)
     token = factory.fuzzy.FuzzyText()
 
     class Meta:

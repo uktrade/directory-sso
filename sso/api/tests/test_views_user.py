@@ -1,4 +1,4 @@
-from datetime import date
+from datetime import datetime
 from unittest.mock import patch, Mock
 
 import pytest
@@ -7,6 +7,7 @@ from rest_framework.test import APIClient
 
 from django.core.urlresolvers import reverse
 from django.test.client import Client
+from django.utils.timezone import make_aware
 
 from sso.user.models import User
 from sso.user.tests.factories import UserFactory
@@ -108,12 +109,12 @@ def test_get_last_login(api_client):
 
 @pytest.mark.django_db
 def test_get_last_login_with_params(api_client):
-    user1 = UserFactory(last_login=date(2016, 12, 25))
-    user2 = UserFactory(last_login=date(2017, 1, 1))
-    user3 = UserFactory(last_login=date(2016, 12, 26))
+    user1 = UserFactory(last_login=make_aware(datetime(2016, 12, 25)))
+    user2 = UserFactory(last_login=make_aware(datetime(2017, 1, 1)))
+    user3 = UserFactory(last_login=make_aware(datetime(2016, 12, 26)))
     # outside of filtered params, should not be in response
-    UserFactory(last_login=date(2016, 12, 24))
-    UserFactory(last_login=date(2017, 1, 2))
+    UserFactory(last_login=make_aware(datetime(2016, 12, 24)))
+    UserFactory(last_login=make_aware(datetime(2017, 1, 2)))
     setup_data()  # creates active user that should not be in response
 
     response = api_client.get(
@@ -142,9 +143,9 @@ def test_get_last_login_with_params(api_client):
 
 @pytest.mark.django_db
 def test_get_last_login_with_invalid_date_params(client):
-    UserFactory(last_login=date(2016, 12, 25))
-    UserFactory(last_login=date(2017, 1, 1))
-    UserFactory(last_login=date(2016, 12, 26))
+    UserFactory(last_login=make_aware(datetime(2016, 12, 25)))
+    UserFactory(last_login=make_aware(datetime(2017, 1, 1)))
+    UserFactory(last_login=make_aware(datetime(2016, 12, 26)))
     setup_data()
 
     response = client.get(

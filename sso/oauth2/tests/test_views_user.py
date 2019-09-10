@@ -1,12 +1,12 @@
 import datetime
 
-from django.core.urlresolvers import reverse
-
+from oauth2_provider.models import AccessToken, Application
 import pytest
-
 from rest_framework import status
 from rest_framework.test import APIClient
-from oauth2_provider.models import AccessToken, Application
+
+from django.core.urlresolvers import reverse
+from django.utils import timezone
 
 from sso.user.models import User
 
@@ -32,7 +32,7 @@ def setup_data():
         user=user,
         token='test',
         application=application,
-        expires=datetime.datetime.now() + datetime.timedelta(days=1),
+        expires=timezone.now() + datetime.timedelta(days=1),
         scope='profile'
     )
 
