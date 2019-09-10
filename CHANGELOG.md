@@ -13,6 +13,7 @@
 - No ticket - Fix vulnerability with yarn
 - No ticket - Cleared up old settings
 - TT-1758 - Fix breadcrumbs on change password page
+- TT-1779 - Fix login hanging
 
 ## [2019.08.13](https://github.com/uktrade/directory-sso/releases/tag/2019.08.13_1)
 [Full Changelog](https://github.com/uktrade/directory-sso/compare/2019.08.13...2019.08.13_1)
