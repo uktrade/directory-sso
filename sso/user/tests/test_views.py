@@ -539,7 +539,6 @@ def test_password_reset_redirect_default_param_if_no_next_param(
     assert response.url == reverse('account_email_verification_sent')
 
 
-
 @pytest.mark.django_db
 def test_password_reset_invalid_key(client, user):
     response = client.get('/accounts/password/reset/key/gc-asdf/')
