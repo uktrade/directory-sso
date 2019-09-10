@@ -1,9 +1,10 @@
 import datetime
 
 from allauth.account.models import EmailAddress
+from oauth2_provider.models import AccessToken, Application
 
 from django.core.management.base import BaseCommand
-from oauth2_provider.models import AccessToken, Application
+from django.utils import timezone
 
 from sso.user.models import User
 
@@ -62,6 +63,6 @@ def create_login_for_token_integration_test_user(user, token):
         user=user,
         application=create_application(user),
         token=token,
-        expires=datetime.datetime.now() + datetime.timedelta(days=1000),
+        expires=timezone.now() + datetime.timedelta(days=1000),
         scope='profile'
     )
