@@ -1,4 +1,4 @@
-from rest_framework.generics import CreateAPIView
+from rest_framework.generics import CreateAPIView, UpdateAPIView
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 
@@ -15,7 +15,7 @@ class UserCreateAPIView(CreateAPIView):
 
 
 class UserProfileCreateAPIView(CreateAPIView):
-    serializer_class = serializers.CreateUserProfileSerializer
+    serializer_class = serializers.UserProfileSerializer
     permission_classes = [IsAuthenticated, SignatureCheckPermission]
     authentication_classes = [SessionAuthentication]
 
@@ -29,3 +29,13 @@ class UserProfileCreateAPIView(CreateAPIView):
                 raise
         else:
             return Response(status=201)
+
+
+class UserProfileUpdateAPIView(UpdateAPIView):
+    serializer_class = serializers.UserProfileSerializer
+    permission_classes = [IsAuthenticated, SignatureCheckPermission]
+    authentication_classes = [SessionAuthentication]
+    lookup_field = 'user_id'
+
+    def get_object(self):
+        return self.request.user.user_profile
