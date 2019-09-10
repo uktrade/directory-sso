@@ -1,24 +1,20 @@
-from datetime import datetime
-
-from rest_framework.generics import (
-    RetrieveAPIView, get_object_or_404, ListAPIView
-)
 from rest_framework import status
+from rest_framework.generics import RetrieveAPIView, get_object_or_404, ListAPIView
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from django.contrib.sessions.models import Session
 from django.core.exceptions import ValidationError
+from django.utils import timezone
 
-from sso.api import filters
 from conf.signature import SignatureCheckPermission
+from sso.api import filters
 from sso.user import models, serializers
 
 
 class GetUserBySessionKeyMixin:
     def get_session_queryset(self):
-        utcnow = datetime.utcnow()
-        return Session.objects.filter(expire_date__gt=utcnow)
+        return Session.objects.filter(expire_date__gt=timezone.now())
 
     def get_session_key_user(self, session_key):
         queryset = self.get_session_queryset()

@@ -48,12 +48,12 @@ def get_redirect_url(request, redirect_field_name):
     return redirect_url
 
 
-def user_has_company(sso_session_id):
-    response = api_client.company.retrieve_private_profile(sso_session_id)
+def user_has_company(sso_id):
+    response = api_client.supplier.retrieve_profile(sso_id)
     if response.status_code == 404:
         return False
     response.raise_for_status()
-    return True
+    return bool(response.json()['company'])
 
 
 def user_has_profile(user):

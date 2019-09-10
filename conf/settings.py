@@ -9,7 +9,9 @@ from core.helpers import is_valid_domain
 
 
 env = environ.Env()
-env.read_env()
+for env_file in env.list('ENV_FILES', default=[]):
+    env.read_env(f'conf/env/{env_file}')
+
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
@@ -134,8 +136,10 @@ if not os.path.exists(STATIC_ROOT):
 
 STATIC_HOST = env.str('STATIC_HOST', '')
 STATIC_URL = STATIC_HOST + '/static/'
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
-
+STATICFILES_STORAGE = env.str(
+    'STATICFILES_STORAGE',
+    'whitenoise.storage.CompressedManifestStaticFilesStorage'
+)
 # Extra places for collectstatic to find static files.
 STATICFILES_DIRS = (
     os.path.join(BASE_DIR, 'static'),
@@ -175,6 +179,16 @@ if DEBUG:
                 'handlers': ['console'],
                 'level': 'ERROR',
                 'propagate': True,
+            },
+            'mohawk': {
+                'handlers': ['console'],
+                'level': 'ERROR',
+                'propagate': False,
+            },
+            'factory': {
+                'handlers': ['console'],
+                'level': 'ERROR',
+                'propagate': False,
             },
             '': {
                 'handlers': ['console'],
@@ -288,6 +302,10 @@ OAUTH2_PROVIDER = {
         'profile': 'Access to your profile'
     }
 }
+# https://github.com/jazzband/django-oauth-toolkit/issues/240
+OAUTH2_PROVIDER_ACCESS_TOKEN_MODEL = 'oauth2_provider.AccessToken'
+OAUTH2_PROVIDER_APPLICATION_MODEL = 'oauth2_provider.Application'
+OAUTH2_PROVIDER_REFRESH_TOKEN_MODEL = 'oauth2_provider.RefreshToken'
 
 # django-allauth
 REDIRECT_FIELD_NAME = env.str(

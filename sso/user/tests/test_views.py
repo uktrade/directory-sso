@@ -32,6 +32,15 @@ def mock_retrieve_company():
     patch.stop()
 
 
+@pytest.fixture(autouse=True)
+def mock_retrieve_supplier():
+    data = {'company': None}
+    response = create_response(data)
+    patch = mock.patch.object(api_client.supplier, 'retrieve_profile', return_value=response)
+    yield patch.start()
+    patch.stop()
+
+
 @pytest.fixture
 def user():
     profile = factories.UserProfileFactory.create(user__email='test@example.com')
@@ -85,9 +94,9 @@ def test_public_views(client):
 
 
 @pytest.mark.django_db
-def test_login_redirect_next_param_oauth2(
-    client, settings, verified_user
-):
+def test_login_redirect_next_param_oauth2(client, settings, verified_user, mock_retrieve_supplier):
+    mock_retrieve_supplier.return_value = create_response({'company': 12})
+
     settings.DEFAULT_REDIRECT_URL = 'http://www.other.com/?param=test'
     settings.ALLOWED_REDIRECT_DOMAINS = ['example.com', 'other.com']
     url = reverse('account_login')
@@ -126,8 +135,8 @@ def test_login_redirect_no_profile(client, verified_user, settings):
 
 
 @pytest.mark.django_db
-def test_login_redirect_no_business(client, verified_user, settings, mock_retrieve_company):
-    mock_retrieve_company.return_value = create_response(status_code=404)
+def test_login_redirect_no_business(client, verified_user, settings, mock_retrieve_supplier):
+    mock_retrieve_supplier.return_value = create_response({'company': None})
     response = client.post(
         reverse('account_login'),
         {'login': verified_user.email, 'password': 'password'}
@@ -153,7 +162,9 @@ def test_login_redirect_feature_off(client, verified_user, settings, mock_retrie
 
 
 @pytest.mark.django_db
-def test_login_redirect_default_param_if_no_next_param(client, verified_user, settings):
+def test_login_redirect_default_param_if_no_next_param(client, verified_user, settings, mock_retrieve_supplier):
+    mock_retrieve_supplier.return_value = create_response({'company': 12})
+
     settings.DEFAULT_REDIRECT_URL = 'http://www.example.com'
     settings.ALLOWED_REDIRECT_DOMAINS = ['example.com', 'other.com']
     response = client.post(
@@ -166,9 +177,9 @@ def test_login_redirect_default_param_if_no_next_param(client, verified_user, se
 
 
 @pytest.mark.django_db
-def test_login_redirect_next_param_if_next_param_internal(
-    client, settings, verified_user
-):
+def test_login_redirect_next_param_if_next_param_internal(client, settings, verified_user, mock_retrieve_supplier):
+    mock_retrieve_supplier.return_value = create_response({'company': 12})
+
     settings.DEFAULT_REDIRECT_URL = 'http://www.other.com/?param=test'
     settings.ALLOWED_REDIRECT_DOMAINS = ['example.com', 'other.com']
     url = reverse('account_login')
@@ -184,9 +195,9 @@ def test_login_redirect_next_param_if_next_param_internal(
 
 
 @pytest.mark.django_db
-def test_login_redirect_next_param_if_next_param_valid(
-    client, settings, verified_user
-):
+def test_login_redirect_next_param_if_next_param_valid(client, settings, verified_user, mock_retrieve_supplier):
+    mock_retrieve_supplier.return_value = create_response({'company': 12})
+
     settings.DEFAULT_REDIRECT_URL = 'http://www.other.com/?param=test'
     settings.ALLOWED_REDIRECT_DOMAINS = ['example.com', 'other.com']
     url = reverse('account_login')
@@ -202,7 +213,9 @@ def test_login_redirect_next_param_if_next_param_valid(
 
 
 @pytest.mark.django_db
-def test_login_redirect_next_param_if_next_param_invalid(client, settings, verified_user):
+def test_login_redirect_next_param_if_next_param_invalid(client, settings, verified_user, mock_retrieve_supplier):
+    mock_retrieve_supplier.return_value = create_response({'company': 12})
+
     settings.DEFAULT_REDIRECT_URL = 'http://www.other.com/?param=test'
     settings.ALLOWED_REDIRECT_DOMAINS = ['other.com']
     url = reverse('account_login')

@@ -7,5 +7,6 @@ omit =
     **/tests/*
     *__init__*
     */admin.py
-   */migrations/*
-  conftest.py
+    */migrations/*
+    conftest.py
+    sso/conftest.py
