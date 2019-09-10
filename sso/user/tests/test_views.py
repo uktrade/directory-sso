@@ -516,13 +516,15 @@ def test_password_reset_redirect_default_param_if_no_next_param(
     url = call[1]['personalisation']['password_reset']
 
     preflight_response = client.get(url)
+
     response = client.post(
         preflight_response.url,
         {'password1': new_password, 'password2': new_password}
     )
 
     assert response.status_code == 302
-    assert response.url == settings.DEFAULT_REDIRECT_URL
+    assert response.url == reverse('account_email_verification_sent')
+
 
 
 @pytest.mark.django_db
@@ -572,7 +574,7 @@ def test_password_reset_redirect_next_param_if_next_param_valid(
     settings.ALLOWED_REDIRECT_DOMAINS = ['example.com', 'other.com']
     new_password = '*' * 10
     password_reset_url = reverse('account_reset_password')
-    expected = 'http://www.example.com'
+    expected = reverse('account_email_verification_sent')
 
     # submit form and send 'password reset link' email with a 'next' param
     client.post(
@@ -637,7 +639,7 @@ def test_password_reset_redirect_next_param_if_next_param_invalid(
     )
 
     assert response.status_code == 302
-    assert response.url == settings.DEFAULT_REDIRECT_URL
+    assert response.url == reverse('account_email_verification_sent')
 
 
 @patch('sso.adapters.NotificationsAPIClient')
@@ -649,7 +651,7 @@ def test_password_reset_redirect_next_param_if_next_param_internal(
     settings.ALLOWED_REDIRECT_DOMAINS = ['example.com', 'other.com']
     new_password = '*' * 10
     password_reset_url = reverse('account_reset_password')
-    expected = '/exporting/'
+    expected = reverse('account_email_verification_sent')
 
     # submit form and send 'password reset link' email with a 'next' param
     client.post(
