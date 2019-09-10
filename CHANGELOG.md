@@ -3,6 +3,7 @@
 ## Pre release
 
 ### Implemented enhancements
+- TT-1080 - Login user automatically after password reset
 - No ticket - Added django settings janitor
 - Expose user profile on user retrieve endpoint
 - TT-1673 - Redirect to enrolment after login if no company or personal details
