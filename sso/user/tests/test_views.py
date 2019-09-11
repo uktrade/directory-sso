@@ -27,7 +27,7 @@ def mock_retrieve_company():
         'is_identity_check_message_sent': False,
     }
     response = create_response(data)
-    patch = mock.patch.object(api_client.company, 'retrieve_private_profile', return_value=response)
+    patch = mock.patch.object(api_client.company, 'profile_retrieve', return_value=response)
     yield patch.start()
     patch.stop()
 

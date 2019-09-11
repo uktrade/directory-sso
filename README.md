@@ -18,7 +18,7 @@
     $ cd directory-sso
     $ virtualenv .venv -p python3.6
     $ source .venv/bin/activate
-    $ pip install -r requirements_test.txt
+    $ make requirements
 
 
 ### Requirements
@@ -29,24 +29,6 @@
 ### Configuration
 
 Secrets such as API keys and environment specific configurations are placed in `conf/env/secrets-do-not-commit` - a file that is not added to version control. To create a template secrets file with dummy values run `make init_secrets`.
-
-### Development data
-
-For development efficiency a dummy user can be loaded into the database from `fixtures/development.json`. To do this run:
-
-```bash
-make loaddata
-```
-
-The credentials for the development user `dev@example.com`:`password`.
-
-To update `fixtures/development.json` with the current contents of the database run:
-
-```bash
-make dumpdata
-```
-
-Then check the contents of `fixtures/development.json`.
 
 ### Commands
 
@@ -83,14 +65,6 @@ If you're doing front-end development work you will need to be able to compile t
 We add compiled CSS files to version control. This will sometimes result in conflicts if multiple developers are working on the same SASS files. However, by adding the compiled CSS to version control we avoid having to install node, npm, node-sass, etc to non-development machines.
 
 You should not edit CSS files directly, instead edit their SCSS counterparts.
-
-### Update CSS under version control
-
-    $ make compile_css
-
-### Rebuild the CSS files when the scss file changes
-
-    $ make watch_css
 
 ## Helpful links
 * [Developers Onboarding Checklist](https://uktrade.atlassian.net/wiki/spaces/ED/pages/32243946/Developers+onboarding+checklist)
