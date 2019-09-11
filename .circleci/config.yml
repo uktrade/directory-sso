@@ -54,7 +54,7 @@ jobs:
           name: Run tests
           command: |
             . venv/bin/activate
-            make pytest
+            make pytest -- --cov=. --cov-config=.coveragerc --cov-report=term
             codecov
   flake8:
     docker:
