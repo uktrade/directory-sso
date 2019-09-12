@@ -373,8 +373,10 @@ SESSION_COOKIE_DOMAIN = env.str('SESSION_COOKIE_DOMAIN')
 # env var not same as setting to be more explicit (directory-ui uses same name)
 SESSION_COOKIE_NAME = env.str('SSO_SESSION_COOKIE')
 SESSION_COOKIE_SECURE = env.bool('SESSION_COOKIE_SECURE', True)
-SESSION_COOKIE_HTTPONLY = True
+
 CSRF_COOKIE_SECURE = env.bool('CSRF_COOKIE_SECURE', True)
+CSRF_COOKIE_HTTPONLY = True
+
 
 # Set with comma separated values in env
 ALLOWED_REDIRECT_DOMAINS = env.list('ALLOWED_REDIRECT_DOMAINS', default=[])
