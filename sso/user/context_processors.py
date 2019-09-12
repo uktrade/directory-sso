@@ -1,5 +1,4 @@
 from functools import partial
-from urllib.parse import urljoin
 
 from django.conf import settings
 from django.core.urlresolvers import reverse
@@ -17,7 +16,7 @@ def redirect_next_processor(request):
         redirect_field_name=redirect_field_name
     )
     if settings.FEATURE_FLAGS['NEW_ENROLMENT_ON']:
-        enrolment_url = urljoin(urls.SERVICES_SSO_PROFILE, 'enrol/')
+        enrolment_url = urls.domestic.SINGLE_SIGN_ON_PROFILE / 'enrol/'
     else:
         enrolment_url = reverse('account_signup')
 

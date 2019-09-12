@@ -1,7 +1,7 @@
 {% extends "account/base.html" %}
 
 {% load i18n %}
-{% load breadcrumbs render_form from directory_components %}
+{% load breadcrumbs from directory_components %}
 {% block head_title %}Sign in - great.gov.uk{% endblock %}
 
 {% block content %}
@@ -22,7 +22,7 @@
                 {% endif %}
             </ul>
         </li>
-        {% render_form form %}
+        {{ form }}
         {% if redirect_field_value %}
           <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
         {% endif %}
