@@ -1068,7 +1068,7 @@ def test_email_verification_sent_view_feedback_url(client, settings):
     url = reverse('account_email_verification_sent')
     response = client.get(url)
 
-    assert urls.CONTACT_US in response.rendered_content
+    assert urls.domestic.CONTACT_US in response.rendered_content
 
 
 @pytest.mark.parametrize('url', [

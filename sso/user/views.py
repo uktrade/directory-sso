@@ -81,7 +81,7 @@ class LoginView(RedirectToNextMixin, allauth_views.LoginView):
             has_company = utils.user_has_company(self.request.user.pk)
             has_profile = utils.user_has_profile(form.user)
             if not has_company or not has_profile:
-                url = urllib.parse.urljoin(urls.SERVICES_SSO_PROFILE, 'enrol/')
+                url = urls.domestic.SINGLE_SIGN_ON_PROFILE / 'enrol/'
                 response = redirect(f'{url}?backfill-details-intent=true')
         return response
 
