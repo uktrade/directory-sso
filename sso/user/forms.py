@@ -32,7 +32,7 @@ class SignupForm(IndentedInvalidFieldsMixin, allauth.account.forms.SignupForm):
     terms_agreed = forms.BooleanField(
         label=mark_safe(
             'Tick this box to accept the '
-            f'<a href="{urls.TERMS_AND_CONDITIONS}" target="_blank">terms and '
+            f'<a href="{urls.domestic.TERMS_AND_CONDITIONS}" target="_blank">terms and '
             'conditions</a> of the great.gov.uk service.'
         )
     )
@@ -105,7 +105,7 @@ class SignupForm(IndentedInvalidFieldsMixin, allauth.account.forms.SignupForm):
                     settings.SSO_BASE_URL +
                     reverse('account_reset_password')
                 ),
-                'contact_us_url': urls.CONTACT_US
+                'contact_us_url': urls.domestic.CONTACT_US
             }
         )
 
