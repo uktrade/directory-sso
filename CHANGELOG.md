@@ -8,6 +8,7 @@
 - Expose user profile on user retrieve endpoint
 - TT-1673 - Redirect to enrolment after login if no company or personal details
 - TT-1760 - added user profile update
+- TT-1808: Update directory components to add "no-validate" no cache middleware
 
 ### Fixed bugs:
 - No ticket - Upgrade django to 1.11.23 for vulnerability fix
@@ -15,6 +16,7 @@
 - No ticket - Cleared up old settings
 - TT-1758 - Fix breadcrumbs on change password page
 - TT-1779 - Fix login hanging
+- TT-1614 - CRSF httponly
 
 ## [2019.08.13](https://github.com/uktrade/directory-sso/releases/tag/2019.08.13_1)
 [Full Changelog](https://github.com/uktrade/directory-sso/compare/2019.08.13...2019.08.13_1)
