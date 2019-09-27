@@ -147,6 +147,35 @@ def test_login_redirect_no_business(client, verified_user, settings, mock_retrie
 
 
 @pytest.mark.django_db
+@patch('sso.adapters.NotificationsAPIClient')
+def test_login_redirect_no_profile_unverified(mock_notification, client, user, settings):
+
+    user.user_profile.delete()
+    response = client.post(
+        reverse('account_login'),
+        {'login': user.email, 'password': 'password'}
+    )
+
+    assert response.status_code == 302
+    assert response.url == reverse("account_email_verification_sent")
+    assert mock_notification().send_email_notification.call_count == 1
+
+
+@pytest.mark.django_db
+@patch('sso.adapters.NotificationsAPIClient')
+def test_login_redirect_no_business_unverified(mock_notification, client, user, settings, mock_retrieve_supplier):
+    mock_retrieve_supplier.return_value = create_response({'company': None})
+    response = client.post(
+        reverse('account_login'),
+        {'login': user.email, 'password': 'password'}
+    )
+
+    assert response.status_code == 302
+    assert response.url == reverse("account_email_verification_sent")
+    assert mock_notification().send_email_notification.call_count == 1
+
+
+@pytest.mark.django_db
 def test_login_redirect_feature_off(client, verified_user, settings, mock_retrieve_company):
     settings.FEATURE_FLAGS['NEW_ENROLMENT_ON'] = False
     verified_user.user_profile.delete()
