@@ -78,9 +78,8 @@ class LoginView(RedirectToNextMixin, allauth_views.LoginView):
             return response
         elif settings.FEATURE_FLAGS['NEW_ENROLMENT_ON']:
             self.request.session.save()
-            has_company = utils.user_has_company(self.request.user.pk)
             has_profile = utils.user_has_profile(form.user)
-            if not has_company or not has_profile:
+            if not has_profile:
                 url = urls.domestic.SINGLE_SIGN_ON_PROFILE / 'enrol/'
                 response = redirect(f'{url}?backfill-details-intent=true')
         return response
