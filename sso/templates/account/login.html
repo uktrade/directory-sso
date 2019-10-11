@@ -15,13 +15,6 @@
     <section class="column-two-thirds" id="login-form">
       <form method="POST" action="{% url 'account_login' %}">
         {% csrf_token %}
-        <li class="input-field-container has-error">
-            <ul class="errorlist">
-                {% if form.non_field_errors %}
-                    <li>{{ form.non_field_errors }}</li>
-                {% endif %}
-            </ul>
-        </li>
         {{ form }}
         {% if redirect_field_value %}
           <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
