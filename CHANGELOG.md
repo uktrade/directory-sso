@@ -19,6 +19,7 @@
 - TT-1614 - CRSF httponly
 - TT-1834 - Fix bad spacing on login page
 - TT-1823 - Send unverified users to verification page on login
+- TT-1927 - Fix duplicate error messages on login page
 
 ## [2019.08.13](https://github.com/uktrade/directory-sso/releases/tag/2019.08.13_1)
 [Full Changelog](https://github.com/uktrade/directory-sso/compare/2019.08.13...2019.08.13_1)
