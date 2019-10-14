@@ -135,18 +135,6 @@ def test_login_redirect_no_profile(client, verified_user, settings):
 
 
 @pytest.mark.django_db
-def test_login_redirect_no_business(client, verified_user, settings, mock_retrieve_supplier):
-    mock_retrieve_supplier.return_value = create_response({'company': None})
-    response = client.post(
-        reverse('account_login'),
-        {'login': verified_user.email, 'password': 'password'}
-    )
-
-    assert response.status_code == 302
-    assert response.url == 'http://profile.trade.great:8006/profile/enrol/?backfill-details-intent=true'
-
-
-@pytest.mark.django_db
 @patch('sso.adapters.NotificationsAPIClient')
 def test_login_redirect_no_profile_unverified(mock_notification, client, user, settings):
 
