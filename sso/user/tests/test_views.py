@@ -135,15 +135,32 @@ def test_login_redirect_no_profile(client, verified_user, settings):
 
 
 @pytest.mark.django_db
-def test_login_redirect_no_business(client, verified_user, settings, mock_retrieve_supplier):
-    mock_retrieve_supplier.return_value = create_response({'company': None})
+@patch('sso.adapters.NotificationsAPIClient')
+def test_login_redirect_no_profile_unverified(mock_notification, client, user, settings):
+
+    user.user_profile.delete()
     response = client.post(
         reverse('account_login'),
-        {'login': verified_user.email, 'password': 'password'}
+        {'login': user.email, 'password': 'password'}
     )
 
     assert response.status_code == 302
-    assert response.url == 'http://profile.trade.great:8006/profile/enrol/?backfill-details-intent=true'
+    assert response.url == reverse("account_email_verification_sent")
+    assert mock_notification().send_email_notification.call_count == 1
+
+
+@pytest.mark.django_db
+@patch('sso.adapters.NotificationsAPIClient')
+def test_login_redirect_no_business_unverified(mock_notification, client, user, settings, mock_retrieve_supplier):
+    mock_retrieve_supplier.return_value = create_response({'company': None})
+    response = client.post(
+        reverse('account_login'),
+        {'login': user.email, 'password': 'password'}
+    )
+
+    assert response.status_code == 302
+    assert response.url == reverse("account_email_verification_sent")
+    assert mock_notification().send_email_notification.call_count == 1
 
 
 @pytest.mark.django_db

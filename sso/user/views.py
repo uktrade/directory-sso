@@ -38,9 +38,7 @@ class DisableRegistrationMixin:
         return super().dispatch(request, *args, **kwargs)
 
 
-class SignupView(DisableRegistrationMixin,
-                 RedirectToNextMixin,
-                 allauth_views.SignupView):
+class SignupView(DisableRegistrationMixin, RedirectToNextMixin, allauth_views.SignupView):
 
     @staticmethod
     def is_email_not_unique_error(integrity_error):
@@ -76,11 +74,12 @@ class SignupView(DisableRegistrationMixin,
 class LoginView(RedirectToNextMixin, allauth_views.LoginView):
     def form_valid(self, form):
         response = super().form_valid(form)
-        self.request.session.save()
-        if settings.FEATURE_FLAGS['NEW_ENROLMENT_ON']:
-            has_company = utils.user_has_company(self.request.user.pk)
+        if response.status_code == 302 and response.url == reverse("account_email_verification_sent"):
+            return response
+        elif settings.FEATURE_FLAGS['NEW_ENROLMENT_ON']:
+            self.request.session.save()
             has_profile = utils.user_has_profile(form.user)
-            if not has_company or not has_profile:
+            if not has_profile:
                 url = urls.domestic.SINGLE_SIGN_ON_PROFILE / 'enrol/'
                 response = redirect(f'{url}?backfill-details-intent=true')
         return response
