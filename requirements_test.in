@@ -1,10 +1,11 @@
 -r requirements.in
 
-pytest
+pytest>=4.4.0,<5.0.0
 pytest-cov
-pytest-django
+pytest-django>=3.5.1,<4.0.0
 pytest-sugar
-flake8
+flake8>=3.7.8,<4.0.0
 factory-boy
 codecov
 freezegun
+pytest-xdist

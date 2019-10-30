@@ -1,36 +1,61 @@
 from unittest import mock
 from unittest.mock import patch
 import urllib.parse
-import http
 from http.cookies import SimpleCookie
 
 from allauth.account.models import EmailAddress, EmailConfirmationHMAC
 from allauth.exceptions import ImmediateHttpResponse
 from directory_constants import urls
+from directory_api_client import api_client
 import pytest
 
 from django.http import HttpResponse
 from django.urls import reverse, reverse_lazy
 
-from sso.adapters import EMAIL_CONFIRMATION_TEMPLATE_ID, \
-    PASSWORD_RESET_TEMPLATE_ID
+from core.tests.helpers import create_response
+from sso.adapters import EMAIL_CONFIRMATION_TEMPLATE_ID, PASSWORD_RESET_TEMPLATE_ID
 from sso.user import models, views
+from sso.user.tests import factories
+
+
+@pytest.fixture(autouse=True)
+def mock_retrieve_company():
+    data = {
+        'name': 'Cool Company',
+        'is_publishable': True,
+        'expertise_products_services': {},
+        'is_identity_check_message_sent': False,
+    }
+    response = create_response(data)
+    patch = mock.patch.object(api_client.company, 'profile_retrieve', return_value=response)
+    yield patch.start()
+    patch.stop()
+
+
+@pytest.fixture(autouse=True)
+def mock_retrieve_supplier():
+    data = {'company': None}
+    response = create_response(data)
+    patch = mock.patch.object(api_client.supplier, 'retrieve_profile', return_value=response)
+    yield patch.start()
+    patch.stop()
 
 
 @pytest.fixture
 def user():
-    return models.User.objects.create_user(
-        email='test@example.com',
-        password='password',
-    )
+    profile = factories.UserProfileFactory.create(user__email='test@example.com')
+    user = profile.user
+    user.set_password('password')
+    user.save()
+    return profile.user
 
 
 @pytest.fixture
 def verified_user():
-    user = models.User.objects.create_user(
-        email='verified@example.com',
-        password='password',
-    )
+    profile = factories.UserProfileFactory.create(user__email='verified@example.com')
+    user = profile.user
+    user.set_password('password')
+    user.save()
     EmailAddress.objects.create(
         user=user,
         email=user.email,
@@ -69,9 +94,9 @@ def test_public_views(client):
 
 
 @pytest.mark.django_db
-def test_login_redirect_next_param_oauth2(
-    client, settings, verified_user
-):
+def test_login_redirect_next_param_oauth2(client, settings, verified_user, mock_retrieve_supplier):
+    mock_retrieve_supplier.return_value = create_response({'company': 12})
+
     settings.DEFAULT_REDIRECT_URL = 'http://www.other.com/?param=test'
     settings.ALLOWED_REDIRECT_DOMAINS = ['example.com', 'other.com']
     url = reverse('account_login')
@@ -88,8 +113,8 @@ def test_login_redirect_next_param_oauth2(
         {'login': verified_user.email, 'password': 'password'}
     )
 
-    assert response.status_code == http.client.FOUND
-    assert response.get('Location') == (
+    assert response.status_code == 302
+    assert response.url == (
         '/oauth2/authorize/?client_id=aisudhgfg943287895as'
         '&redirect_uri=https%3A%2F%2Fuktieig-secondary.staging.'
         'dxw.net%2Fusers%2Fauth%2Fexporting_is_great%2Fcallback&'
@@ -98,9 +123,65 @@ def test_login_redirect_next_param_oauth2(
 
 
 @pytest.mark.django_db
-def test_login_redirect_default_param_if_no_next_param(
-    client, verified_user, settings
-):
+def test_login_redirect_no_profile(client, verified_user, settings):
+    verified_user.user_profile.delete()
+    response = client.post(
+        reverse('account_login'),
+        {'login': verified_user.email, 'password': 'password'}
+    )
+
+    assert response.status_code == 302
+    assert response.url == 'http://profile.trade.great:8006/profile/enrol/?backfill-details-intent=true'
+
+
+@pytest.mark.django_db
+@patch('sso.adapters.NotificationsAPIClient')
+def test_login_redirect_no_profile_unverified(mock_notification, client, user, settings):
+
+    user.user_profile.delete()
+    response = client.post(
+        reverse('account_login'),
+        {'login': user.email, 'password': 'password'}
+    )
+
+    assert response.status_code == 302
+    assert response.url == reverse("account_email_verification_sent")
+    assert mock_notification().send_email_notification.call_count == 1
+
+
+@pytest.mark.django_db
+@patch('sso.adapters.NotificationsAPIClient')
+def test_login_redirect_no_business_unverified(mock_notification, client, user, settings, mock_retrieve_supplier):
+    mock_retrieve_supplier.return_value = create_response({'company': None})
+    response = client.post(
+        reverse('account_login'),
+        {'login': user.email, 'password': 'password'}
+    )
+
+    assert response.status_code == 302
+    assert response.url == reverse("account_email_verification_sent")
+    assert mock_notification().send_email_notification.call_count == 1
+
+
+@pytest.mark.django_db
+def test_login_redirect_feature_off(client, verified_user, settings, mock_retrieve_company):
+    settings.FEATURE_FLAGS['NEW_ENROLMENT_ON'] = False
+    verified_user.user_profile.delete()
+    mock_retrieve_company.return_value = create_response(status_code=404)
+
+    response = client.post(
+        reverse('account_login'),
+        {'login': verified_user.email, 'password': 'password'}
+    )
+
+    assert response.status_code == 302
+    assert response.url == settings.DEFAULT_REDIRECT_URL
+
+
+@pytest.mark.django_db
+def test_login_redirect_default_param_if_no_next_param(client, verified_user, settings, mock_retrieve_supplier):
+    mock_retrieve_supplier.return_value = create_response({'company': 12})
+
     settings.DEFAULT_REDIRECT_URL = 'http://www.example.com'
     settings.ALLOWED_REDIRECT_DOMAINS = ['example.com', 'other.com']
     response = client.post(
@@ -108,14 +189,14 @@ def test_login_redirect_default_param_if_no_next_param(
         {'login': verified_user.email, 'password': 'password'}
     )
 
-    assert response.status_code == http.client.FOUND
-    assert response.get('Location') == settings.DEFAULT_REDIRECT_URL
+    assert response.status_code == 302
+    assert response.url == settings.DEFAULT_REDIRECT_URL
 
 
 @pytest.mark.django_db
-def test_login_redirect_next_param_if_next_param_internal(
-    client, settings, verified_user
-):
+def test_login_redirect_next_param_if_next_param_internal(client, settings, verified_user, mock_retrieve_supplier):
+    mock_retrieve_supplier.return_value = create_response({'company': 12})
+
     settings.DEFAULT_REDIRECT_URL = 'http://www.other.com/?param=test'
     settings.ALLOWED_REDIRECT_DOMAINS = ['example.com', 'other.com']
     url = reverse('account_login')
@@ -126,14 +207,14 @@ def test_login_redirect_next_param_if_next_param_internal(
         {'login': verified_user.email, 'password': 'password'}
     )
 
-    assert response.status_code == http.client.FOUND
-    assert response.get('Location') == expected
+    assert response.status_code == 302
+    assert response.url == expected
 
 
 @pytest.mark.django_db
-def test_login_redirect_next_param_if_next_param_valid(
-    client, settings, verified_user
-):
+def test_login_redirect_next_param_if_next_param_valid(client, settings, verified_user, mock_retrieve_supplier):
+    mock_retrieve_supplier.return_value = create_response({'company': 12})
+
     settings.DEFAULT_REDIRECT_URL = 'http://www.other.com/?param=test'
     settings.ALLOWED_REDIRECT_DOMAINS = ['example.com', 'other.com']
     url = reverse('account_login')
@@ -144,14 +225,14 @@ def test_login_redirect_next_param_if_next_param_valid(
         {'login': verified_user.email, 'password': 'password'}
     )
 
-    assert response.status_code == http.client.FOUND
-    assert response.get('Location') == expected
+    assert response.status_code == 302
+    assert response.url == expected
 
 
 @pytest.mark.django_db
-def test_login_redirect_next_param_if_next_param_invalid(
-    client, settings, verified_user
-):
+def test_login_redirect_next_param_if_next_param_invalid(client, settings, verified_user, mock_retrieve_supplier):
+    mock_retrieve_supplier.return_value = create_response({'company': 12})
+
     settings.DEFAULT_REDIRECT_URL = 'http://www.other.com/?param=test'
     settings.ALLOWED_REDIRECT_DOMAINS = ['other.com']
     url = reverse('account_login')
@@ -162,8 +243,8 @@ def test_login_redirect_next_param_if_next_param_invalid(
         {'login': verified_user.email, 'password': 'password'}
     )
 
-    assert response.status_code == http.client.FOUND
-    assert response.get('Location') == settings.DEFAULT_REDIRECT_URL
+    assert response.status_code == 302
+    assert response.url == settings.DEFAULT_REDIRECT_URL
 
 
 @pytest.mark.django_db
@@ -185,8 +266,8 @@ def test_logout_redirect_next_param_if_next_param_oath2(
         '{url}?next={next}'.format(url=url, next=redirect_field_value)
     )
 
-    assert response.status_code == http.client.FOUND
-    assert response.get('Location') == (
+    assert response.status_code == 302
+    assert response.url == (
         '/oauth2/authorize/?client_id=aisudhgfg943287895as'
         '&redirect_uri=https%3A%2F%2Fuktieig-secondary.staging.'
         'dxw.net%2Fusers%2Fauth%2Fexporting_is_great%2Fcallback&'
@@ -203,8 +284,8 @@ def test_logout_redirect_default_param_if_no_next_param(
                                          'http://www.other.com']
     response = authed_client.post(reverse('account_logout'))
 
-    assert response.status_code == http.client.FOUND
-    assert response.get('Location') == settings.DEFAULT_REDIRECT_URL
+    assert response.status_code == 302
+    assert response.url == settings.DEFAULT_REDIRECT_URL
 
 
 @pytest.mark.django_db
@@ -220,8 +301,8 @@ def test_logout_redirect_next_param_if_next_param_valid(
         '{url}?next={next}'.format(url=url, next=expected)
     )
 
-    assert response.status_code == http.client.FOUND
-    assert response.get('Location') == expected
+    assert response.status_code == 302
+    assert response.url == expected
 
 
 @pytest.mark.django_db
@@ -237,8 +318,8 @@ def test_logout_redirect_next_param_if_next_param_invalid(
         '{url}?next={next}'.format(url=url, next=next_param)
     )
 
-    assert response.status_code == http.client.FOUND
-    assert response.get('Location') == settings.DEFAULT_REDIRECT_URL
+    assert response.status_code == 302
+    assert response.url == settings.DEFAULT_REDIRECT_URL
 
 
 @pytest.mark.django_db
@@ -255,8 +336,8 @@ def test_logout_redirect_next_param_if_next_param_internal(
         '{url}?next={next}'.format(url=url, next=expected)
     )
 
-    assert response.status_code == http.client.FOUND
-    assert response.get('Location') == expected
+    assert response.status_code == 302
+    assert response.url == expected
 
 
 @pytest.mark.django_db
@@ -267,7 +348,7 @@ def test_confirm_email_invalid_key(
         '/accounts/confirm-email/invalid/'
     )
 
-    assert response.status_code == http.client.OK
+    assert response.status_code == 200
     assert "confirmation link expired or is invalid" in str(response.content)
 
 
@@ -305,15 +386,15 @@ def test_confirm_email_redirect_next_param_if_next_param_valid(
     url = call[1]['personalisation']['confirmation_link']
     response = client.post(url)
 
-    assert response.status_code == http.client.FOUND
-    next_url = response.get('Location')
+    assert response.status_code == 302
+    next_url = response.url
 
     assert next_url == (
         '/accounts/login/?next=http%3A%2F%2Fwww.example.com'
     )
 
     response = client.get(next_url)
-    assert response.get('Location') == expected
+    assert response.url == expected
 
 
 @patch('sso.adapters.NotificationsAPIClient')
@@ -353,16 +434,16 @@ def test_confirm_email_redirect_next_param_if_next_param_invalid(
 
     response = client.post(url)
 
-    assert response.status_code == http.client.FOUND
+    assert response.status_code == 302
 
-    next_url = response.get('Location')
+    next_url = response.url
 
     assert next_url == (
         '/accounts/login/?next=http%3A%2F%2Fother.com'
     )
 
     response = client.get(next_url)
-    assert response.get('Location') == settings.DEFAULT_REDIRECT_URL
+    assert response.url == settings.DEFAULT_REDIRECT_URL
 
 
 @patch('sso.adapters.NotificationsAPIClient')
@@ -400,14 +481,14 @@ def test_confirm_email_redirect_next_param_if_next_param_internal(
     url = call[1]['personalisation']['confirmation_link']
     response = client.post(url)
 
-    assert response.status_code == http.client.FOUND
+    assert response.status_code == 302
 
-    next_url = response.get('Location')
+    next_url = response.url
 
     assert next_url == '/accounts/login/?next=%2Fexporting%2F'
 
     response = client.get(next_url)
-    assert response.get('Location') == expected
+    assert response.url == expected
 
 
 @patch('sso.adapters.NotificationsAPIClient')
@@ -438,8 +519,8 @@ def test_confirm_email_redirect_default_param_if_no_next_param(
     url = call[1]['personalisation']['confirmation_link']
     response = client.post(url)
 
-    assert response.status_code == http.client.FOUND
-    assert response.get('Location') == settings.DEFAULT_REDIRECT_URL
+    assert response.status_code == 302
+    assert response.url == settings.DEFAULT_REDIRECT_URL
 
 
 @patch('sso.adapters.NotificationsAPIClient')
@@ -466,12 +547,12 @@ def test_password_reset_redirect_default_param_if_no_next_param(
 
     preflight_response = client.get(url)
     response = client.post(
-        preflight_response.get('Location'),
+        preflight_response.url,
         {'password1': new_password, 'password2': new_password}
     )
 
-    assert response.status_code == http.client.FOUND
-    assert response.get('Location') == settings.DEFAULT_REDIRECT_URL
+    assert response.status_code == 302
+    assert response.url == reverse('account_email_verification_sent')
 
 
 @pytest.mark.django_db
@@ -505,7 +586,7 @@ def test_password_reset_no_internal_session(
 
     new_password = 'new'
     response = client.post(
-        preflight_response.get('Location'),
+        preflight_response.url,
         {'password1': new_password, 'password2': new_password}
     )
 
@@ -521,7 +602,7 @@ def test_password_reset_redirect_next_param_if_next_param_valid(
     settings.ALLOWED_REDIRECT_DOMAINS = ['example.com', 'other.com']
     new_password = '*' * 10
     password_reset_url = reverse('account_reset_password')
-    expected = 'http://www.example.com'
+    expected = reverse('account_email_verification_sent')
 
     # submit form and send 'password reset link' email with a 'next' param
     client.post(
@@ -545,12 +626,12 @@ def test_password_reset_redirect_next_param_if_next_param_valid(
     }
     preflight_response = client.post(url)
     response = client.post(
-        preflight_response.get('Location'),
+        preflight_response.url,
         data,
     )
 
-    assert response.status_code == http.client.FOUND
-    assert response.get('Location') == expected
+    assert response.status_code == 302
+    assert response.url == expected
 
 
 @patch('sso.adapters.NotificationsAPIClient')
@@ -581,12 +662,12 @@ def test_password_reset_redirect_next_param_if_next_param_invalid(
     # Reset the password
     preflight_response = client.post(url)
     response = client.post(
-        preflight_response.get('Location'),
+        preflight_response.url,
         {'password1': new_password, 'password2': new_password}
     )
 
-    assert response.status_code == http.client.FOUND
-    assert response.get('Location') == settings.DEFAULT_REDIRECT_URL
+    assert response.status_code == 302
+    assert response.url == reverse('account_email_verification_sent')
 
 
 @patch('sso.adapters.NotificationsAPIClient')
@@ -598,7 +679,7 @@ def test_password_reset_redirect_next_param_if_next_param_internal(
     settings.ALLOWED_REDIRECT_DOMAINS = ['example.com', 'other.com']
     new_password = '*' * 10
     password_reset_url = reverse('account_reset_password')
-    expected = '/exporting/'
+    expected = reverse('account_email_verification_sent')
 
     # submit form and send 'password reset link' email with a 'next' param
     client.post(
@@ -618,12 +699,12 @@ def test_password_reset_redirect_next_param_if_next_param_internal(
     # Reset the password
     preflight_response = client.post(url)
     response = client.post(
-        preflight_response.get('Location'),
+        preflight_response.url,
         {'password1': new_password, 'password2': new_password}
     )
 
-    assert response.status_code == http.client.FOUND
-    assert response.get('Location') == expected
+    assert response.status_code == 302
+    assert response.url == expected
 
 
 @patch('sso.adapters.NotificationsAPIClient')
@@ -646,8 +727,8 @@ def test_password_reset_doesnt_allow_email_enumeration(
     # don't send an email cause no account exists
     assert mocked_notification_client().send_email_notification.called is False
     # but redirect anyway so attackers dont find out if it exists
-    assert response.status_code == http.client.FOUND
-    assert response.get('Location') == reverse('account_reset_password_done')
+    assert response.status_code == 302
+    assert response.url == reverse('account_reset_password_done')
 
 
 @patch('sso.user.forms.SignupForm.notify_already_registered')
@@ -668,7 +749,7 @@ def test_signup_email_enumeration_not_possible_and_notification_sent(
     assert response.status_code == 302
     assert models.User.objects.all().count() == 1
     assert models.User.objects.all().last() == verified_user
-    assert response.get('Location') == reverse(
+    assert response.url == reverse(
         'account_email_verification_sent'
     )
     mocked_notify.assert_called_once_with(email='verified@example.com')
@@ -747,9 +828,9 @@ def test_confirm_email_redirect_next_param_oath2(
     url = call[1]['personalisation']['confirmation_link']
     response = client.post(url)
 
-    assert response.status_code == http.client.FOUND
+    assert response.status_code == 302
 
-    next_url = response.get('Location')
+    next_url = response.url
 
     assert next_url == (
         '/accounts/login/?next=%2Foauth2%2Fauthorize%2F%3Fclient_id'
@@ -760,7 +841,7 @@ def test_confirm_email_redirect_next_param_oath2(
     )
 
     response = client.get(next_url)
-    assert response.get('Location') == (
+    assert response.url == (
         '/oauth2/authorize/?client_id=aisudhgfg943287895as&redirect_uri'
         '=https%3A%2F%2Fuktieig-secondary.staging.dxw.net%2Fusers%2Fauth'
         '%2Fexporting_is_great%2Fcallback&response_type=code&scope=profile'
@@ -798,15 +879,15 @@ def test_confirm_email_redirect_next_param(
     )
     url = call[1]['personalisation']['confirmation_link']
     response = client.post(url)
-    assert response.status_code == http.client.FOUND
-    next_url = response.get('Location')
+    assert response.status_code == 302
+    next_url = response.url
 
     assert next_url == (
         '/accounts/login/?next=http%3A%2F%2Fwww.test.example.com%2Fregister'
     )
 
     response = client.get(next_url)
-    assert response.get('Location') == 'http://www.test.example.com/register'
+    assert response.url == 'http://www.test.example.com/register'
 
 
 @pytest.mark.django_db
@@ -820,7 +901,7 @@ def test_signup_page_login_has_next(
 
     response = client.get('{url}?next={next}'.format(url=url, next=next_value))
 
-    assert response.status_code == http.client.OK
+    assert response.status_code == 200
 
     expected_signup_url = (
         '/accounts/login/?next=http%3A%2F%2Fexample.com%2F%3Fparam%3Dtest'
@@ -839,7 +920,7 @@ def test_login_page_signup_has_next(
 
     response = client.get('{url}?next={next}'.format(url=url, next=next_value))
 
-    assert response.status_code == http.client.OK
+    assert response.status_code == 200
 
     expected_signup_url = (
         'http://profile.trade.great:8006/profile/enrol/?'
@@ -859,7 +940,7 @@ def test_login_page_password_reset_has_next(
 
     response = client.get('{url}?next={next}'.format(url=url, next=next_value))
 
-    assert response.status_code == http.client.OK
+    assert response.status_code == 200
 
     expected_password_reset_url = (
         '/password/reset/?next=http%3A%2F%2Fexample.com%2F%3Fparam%3Dtest'
@@ -918,9 +999,7 @@ def test_signup_saves_hashed_id(
 
 
 @pytest.mark.django_db
-def test_login_response_with_sso_display_logged_in_cookie(
-    client, verified_user
-):
+def test_login_response_with_sso_display_logged_in_cookie(client, verified_user):
     response = client.post(
         reverse('account_login'),
         {'login': verified_user.email, 'password': 'password'}
@@ -996,7 +1075,7 @@ def test_confirm_email_login_response_with_sso_handles_next(
     response = client.post(url)
 
     assert response.status_code == 302
-    assert response.get('Location') == (
+    assert response.url == (
        "/accounts/login/"
        "?next=http%3A%2F%2Fbuyer.trade.great%3A8001%2Fcompany-profile"
     )
@@ -1006,7 +1085,7 @@ def test_email_verification_sent_view_feedback_url(client, settings):
     url = reverse('account_email_verification_sent')
     response = client.get(url)
 
-    assert urls.CONTACT_US in response.rendered_content
+    assert urls.domestic.CONTACT_US in response.rendered_content
 
 
 @pytest.mark.parametrize('url', [

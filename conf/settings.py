@@ -4,13 +4,14 @@ from django.urls import reverse_lazy
 
 import dj_database_url
 import environ
-import rediscluster
 
 from core.helpers import is_valid_domain
 
 
 env = environ.Env()
-env.read_env()
+for env_file in env.list('ENV_FILES', default=[]):
+    env.read_env(f'conf/env/{env_file}')
+
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
@@ -53,7 +54,6 @@ INSTALLED_APPS = [
     'health_check.db',
     'directory_healthcheck',
     'directory_components',
-    'rediscluster',
 ]
 
 SITE_ID = 1
@@ -136,8 +136,10 @@ if not os.path.exists(STATIC_ROOT):
 
 STATIC_HOST = env.str('STATIC_HOST', '')
 STATIC_URL = STATIC_HOST + '/static/'
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
-
+STATICFILES_STORAGE = env.str(
+    'STATICFILES_STORAGE',
+    'whitenoise.storage.CompressedManifestStaticFilesStorage'
+)
 # Extra places for collectstatic to find static files.
 STATICFILES_DIRS = (
     os.path.join(BASE_DIR, 'static'),
@@ -177,6 +179,16 @@ if DEBUG:
                 'handlers': ['console'],
                 'level': 'ERROR',
                 'propagate': True,
+            },
+            'mohawk': {
+                'handlers': ['console'],
+                'level': 'ERROR',
+                'propagate': False,
+            },
+            'factory': {
+                'handlers': ['console'],
+                'level': 'ERROR',
+                'propagate': False,
             },
             '': {
                 'handlers': ['console'],
@@ -290,6 +302,10 @@ OAUTH2_PROVIDER = {
         'profile': 'Access to your profile'
     }
 }
+# https://github.com/jazzband/django-oauth-toolkit/issues/240
+OAUTH2_PROVIDER_ACCESS_TOKEN_MODEL = 'oauth2_provider.AccessToken'
+OAUTH2_PROVIDER_APPLICATION_MODEL = 'oauth2_provider.Application'
+OAUTH2_PROVIDER_REFRESH_TOKEN_MODEL = 'oauth2_provider.RefreshToken'
 
 # django-allauth
 REDIRECT_FIELD_NAME = env.str(
@@ -324,6 +340,7 @@ ACCOUNT_SIGNUP_EMAIL_ENTER_TWICE = True
 ACCOUNT_SIGNUP_PASSWORD_ENTER_TWICE = True
 ACCOUNT_ADAPTER = 'sso.adapters.AccountAdapter'
 ACCOUNT_LOGIN_ON_EMAIL_CONFIRMATION = True
+ACCOUNT_LOGIN_ON_PASSWORD_RESET = True
 
 VERIFICATION_EXPIRY_DAYS = env.int('VERIFICATION_EXPIRY_DAYS', 3)
 
@@ -356,8 +373,10 @@ SESSION_COOKIE_DOMAIN = env.str('SESSION_COOKIE_DOMAIN')
 # env var not same as setting to be more explicit (directory-ui uses same name)
 SESSION_COOKIE_NAME = env.str('SSO_SESSION_COOKIE')
 SESSION_COOKIE_SECURE = env.bool('SESSION_COOKIE_SECURE', True)
-SESSION_COOKIE_HTTPONLY = True
+
 CSRF_COOKIE_SECURE = env.bool('CSRF_COOKIE_SECURE', True)
+CSRF_COOKIE_HTTPONLY = True
+
 
 # Set with comma separated values in env
 ALLOWED_REDIRECT_DOMAINS = env.list('ALLOWED_REDIRECT_DOMAINS', default=[])
@@ -385,15 +404,14 @@ GOOGLE_TAG_MANAGER_ENV = env.str('GOOGLE_TAG_MANAGER_ENV', '')
 # sso profile
 SSO_PROFILE_URL = env.str('SSO_PROFILE_URL')
 
-# directory-external-api
-DIRECTORY_API_CLIENT_EXTERNAL_BASE_URL = env.str(
-    'DIRECTORY_API_EXTERNAL_CLIENT_BASE_URL'
-)
-DIRECTORY_API_CLIENT_EXTERNAL_API_KEY = env.str(
-    'DIRECTORY_API_EXTERNAL_SIGNATURE_SECRET'
-)
-DIRECTORY_API_CLIENT_EXTERNAL_SENDER_ID = 'directory'
-DIRECTORY_API_CLIENT_EXTERNAL_DEFAULT_TIMEOUT = 5
+# directory-api
+DIRECTORY_API_CLIENT_BASE_URL = env.str('DIRECTORY_API_CLIENT_BASE_URL')
+DIRECTORY_API_CLIENT_API_KEY = env.str('DIRECTORY_API_CLIENT_API_KEY')
+DIRECTORY_API_CLIENT_SENDER_ID = env.str('DIRECTORY_API_CLIENT_SENDER_ID', 'directory')
+DIRECTORY_API_CLIENT_DEFAULT_TIMEOUT = env.str('DIRECTORY_API_CLIENT_DEFAULT_TIMEOUT', 15)
+
+# directory clients
+DIRECTORY_CLIENT_CORE_CACHE_EXPIRE_SECONDS = 60 * 60 * 24 * 30  # 30 days
 
 
 # Export Opportunities
@@ -475,9 +493,6 @@ ACTIVITY_STREAM_NONCE_EXPIRY_SECONDS = 60
 
 # feature flags
 FEATURE_FLAGS = {
-    'ACTIVITY_STREAM_NONCE_CACHE_ON': env.bool(
-        'FEATURE_ACTIVITY_STREAM_NONCE_CACHE_ENABLED', False
-    ),
     'SKIP_MIGRATE_ON': env.bool('FEATURE_SKIP_MIGRATE', False),
     'DISABLE_REGISTRATION_ON': env.bool('FEATURE_DISABLE_REGISTRATION', False),
     'TEST_API_ON': env.bool('FEATURE_TEST_API_ENABLED', False),
@@ -485,62 +500,29 @@ FEATURE_FLAGS = {
     'NEW_ENROLMENT_ON': env.bool('FEATURE_NEW_ENROLMENT_ENABLED', False),
 }
 
-CACHE_BACKENDS = {
-    'redis': 'django_redis.cache.RedisCache',
-    'dummy': 'django.core.cache.backends.dummy.DummyCache',
-    'locmem': 'django.core.cache.backends.locmem.LocMemCache'
-}
 
-CACHES = {}
+VCAP_SERVICES = env.json('VCAP_SERVICES', {})
 
 if 'redis' in VCAP_SERVICES:
     REDIS_URL = VCAP_SERVICES['redis'][0]['credentials']['uri']
 else:
-    REDIS_URL = env.str('REDIS_URL', '')
+    REDIS_URL = env.str('REDIS_URL')
 
-CACHES['default'] = {
-    'BACKEND': CACHE_BACKENDS[os.getenv('CACHE_BACKEND', 'redis')],
-    'LOCATION': REDIS_URL
+cache = {
+    'BACKEND': 'django_redis.cache.RedisCache',
+    'LOCATION': REDIS_URL,
+    'OPTIONS': {
+        'CLIENT_CLASS': "django_redis.client.DefaultClient",
+    }
 }
 
+CACHES = {
+    'default': cache,
+    'api_fallback': cache,
+}
+
+
 SESSION_ENGINE = 'django.contrib.sessions.backends.cached_db'
-
-
-if FEATURE_FLAGS['ACTIVITY_STREAM_NONCE_CACHE_ON']:
-    redis_credentials = VCAP_SERVICES['redis'][0]['credentials']
-
-    # rediscluster, by default, breaks if using the combination of
-    # - rediss:// connection uri
-    # - skip_full_coverage_check=True
-    # We work around the issues by forcing the uri to start with redis://
-    # and setting the connection class to use SSL if necessary
-    is_tls_enabled = redis_credentials['uri'].startswith('rediss://')
-    if is_tls_enabled:
-        redis_uri = redis_credentials['uri'].replace('rediss://', 'redis://')
-        redis_connection_class = rediscluster.connection.SSLClusterConnection
-    else:
-        redis_uri = redis_credentials['uri']
-        redis_connection_class = rediscluster.connection.ClusterConnection
-
-    CACHES['activity_stream_nonce'] = {
-        'BACKEND': 'django_redis.cache.RedisCache',
-        'LOCATION': redis_uri,
-        'OPTIONS': {
-            'REDIS_CLIENT_CLASS': 'rediscluster.StrictRedisCluster',
-            'REDIS_CLIENT_KWARGS': {
-                'decode_responses': True,
-            },
-            'CONNECTION_POOL_CLASS':
-                'rediscluster.connection.ClusterConnectionPool',
-            'CONNECTION_POOL_KWARGS': {
-                # AWS ElasticCache disables CONFIG commands
-                'skip_full_coverage_check': True,
-                'connection_class': redis_connection_class,
-            },
-        },
-        'KEY_PREFIX': 'directory-sso-activity-stream-nonce',
-    }
-
 
 ACCOUNT_SESSION_REMEMBER = True
 
@@ -550,3 +532,11 @@ ALLOWED_ADMIN_IPS = env.list('IP_RESTRICTOR_ALLOWED_ADMIN_IPS', default=[])
 ALLOWED_ADMIN_IP_RANGES = env.list(
     'IP_RESTRICTOR_ALLOWED_ADMIN_IP_RANGES', default=[]
 )
+
+
+# Directory Components
+if env.bool('FEATURE_SETTINGS_JANITOR_ENABLED', False):
+    INSTALLED_APPS.append('directory_components.janitor')
+    DIRECTORY_COMPONENTS_VAULT_DOMAIN = env.str('DIRECTORY_COMPONENTS_VAULT_DOMAIN')
+    DIRECTORY_COMPONENTS_VAULT_ROOT_PATH = env.str('DIRECTORY_COMPONENTS_VAULT_ROOT_PATH')
+    DIRECTORY_COMPONENTS_VAULT_PROJECT = env.str('DIRECTORY_COMPONENTS_VAULT_PROJECT')

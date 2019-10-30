@@ -3,20 +3,18 @@ import urllib
 from django.db import IntegrityError
 from django.conf import settings
 from django.core.urlresolvers import reverse
-from django.http import HttpResponseRedirect
 from django.shortcuts import redirect
 from django.views.generic import RedirectView
 from django.urls import reverse_lazy
 
 from allauth.account import views as allauth_views
-from allauth.account.views import (
-    INTERNAL_RESET_URL_KEY, INTERNAL_RESET_SESSION_KEY
-)
+from allauth.account.views import INTERNAL_RESET_URL_KEY, INTERNAL_RESET_SESSION_KEY
 from allauth.account.utils import complete_signup
 import allauth.exceptions
+from directory_constants import urls
 
 import core.mixins
-from sso.user.utils import get_redirect_url, get_url_with_redirect
+from sso.user import utils
 
 
 class RedirectToNextMixin:
@@ -24,7 +22,7 @@ class RedirectToNextMixin:
     redirect_field_name = settings.REDIRECT_FIELD_NAME
 
     def get_redirect_url(self):
-        return get_redirect_url(
+        return utils.get_redirect_url(
             request=self.request,
             redirect_field_name=self.redirect_field_name
         )
@@ -40,9 +38,7 @@ class DisableRegistrationMixin:
         return super().dispatch(request, *args, **kwargs)
 
 
-class SignupView(DisableRegistrationMixin,
-                 RedirectToNextMixin,
-                 allauth_views.SignupView):
+class SignupView(DisableRegistrationMixin, RedirectToNextMixin, allauth_views.SignupView):
 
     @staticmethod
     def is_email_not_unique_error(integrity_error):
@@ -60,9 +56,7 @@ class SignupView(DisableRegistrationMixin,
         except IntegrityError as exc:
             # To prevent enumeration of users we return a fake success response
             if self.is_email_not_unique_error(exc):
-                return HttpResponseRedirect(
-                    reverse('account_email_verification_sent')
-                )
+                return redirect(reverse('account_email_verification_sent'))
             else:
                 raise
         else:
@@ -78,7 +72,17 @@ class SignupView(DisableRegistrationMixin,
 
 
 class LoginView(RedirectToNextMixin, allauth_views.LoginView):
-    pass
+    def form_valid(self, form):
+        response = super().form_valid(form)
+        if response.status_code == 302 and response.url == reverse("account_email_verification_sent"):
+            return response
+        elif settings.FEATURE_FLAGS['NEW_ENROLMENT_ON']:
+            self.request.session.save()
+            has_profile = utils.user_has_profile(form.user)
+            if not has_profile:
+                url = urls.domestic.SINGLE_SIGN_ON_PROFILE / 'enrol/'
+                response = redirect(f'{url}?backfill-details-intent=true')
+        return response
 
 
 class LogoutView(RedirectToNextMixin, allauth_views.LogoutView):
@@ -92,7 +96,7 @@ class ConfirmEmailView(
 
     def get_context_data(self, **kwargs):
         if self.object:
-            kwargs['form_url'] = get_url_with_redirect(
+            kwargs['form_url'] = utils.get_url_with_redirect(
                 url=reverse('account_confirm_email', args=(self.object.key,)),
                 redirect_url=self.get_redirect_url(),
             )
@@ -117,7 +121,7 @@ class PasswordResetFromKeyView(
         response = super().dispatch(request, uidb36, key, **kwargs)
 
         if key != INTERNAL_RESET_URL_KEY and response.status_code == 302:
-            return redirect(urllib.parse.unquote(get_url_with_redirect(
+            return redirect(urllib.parse.unquote(utils.get_url_with_redirect(
                 url=response.url,
                 redirect_url=self.get_redirect_url()
             )))

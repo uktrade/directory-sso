@@ -16,9 +16,9 @@
 
     $ git clone https://github.com/uktrade/directory-sso
     $ cd directory-sso
-    $ virtualenv .venv -p python3.6
+    $ [create virtual environment]
     $ source .venv/bin/activate
-    $ pip install -r requirements_test.txt
+    $ make requirements
 
 
 ### Requirements
@@ -28,34 +28,24 @@
 
 ### Configuration
 
-Secrets such as API keys and environment specific configurations are placed in `conf/.env` - a file that is not added to version control. You will need to create that file locally in order for the project to run.
+Secrets such as API keys and environment specific configurations are placed in `conf/env/secrets-do-not-commit` - a file that is not added to version control. To create a template secrets file with dummy values run `make secrets`.
 
-### Development data
+### Commands
 
-For development efficiency a dummy user can be loaded into the database from `fixtures/development.json`. To do this run:
-
-```bash
-make loaddata
-```
-
-The credentials for the development user `dev@example.com`:`password`.
-
-To update `fixtures/development.json` with the current contents of the database run:
-
-```bash
-make dumpdata
-```
-
-Then check the contents of `fixtures/development.json`.
-
-
-### Run the webserver
-
-    $ make debug_webserver
-
-### Run the tests
-
-    $ make debug_test
+| Command                       | Description |
+| ----------------------------- | ------------|
+| make clean                    | Delete pyc files |
+| make pytest                   | Run all tests |
+| make pytest test_foo.py       | Run all tests in file called test_foo.py |
+| make pytest -- --last-failed` | Run the last tests to fail |
+| make pytest -- -k foo         | Run the test called foo |
+| make pytest -- <foo>          | Run arbitrary pytest command |
+| make manage <foo>             | Run arbitrary management command |
+| make webserver                | Run the development web server |
+| make requirements             | Compile the requirements file |
+| make install_requirements     | Installed the compile requirements file |
+| make css                      | Compile scss to css |
+| make secrets                  | Create your secret env var file |
 
 ### CSS development
 
@@ -75,14 +65,6 @@ We add compiled CSS files to version control. This will sometimes result in conf
 
 You should not edit CSS files directly, instead edit their SCSS counterparts.
 
-### Update CSS under version control
-
-    $ make compile_css
-
-### Rebuild the CSS files when the scss file changes
-
-    $ make watch_css
-
 ## Helpful links
 * [Developers Onboarding Checklist](https://uktrade.atlassian.net/wiki/spaces/ED/pages/32243946/Developers+onboarding+checklist)
 * [Gitflow branching](https://uktrade.atlassian.net/wiki/spaces/ED/pages/737182153/Gitflow+and+releases)
@@ -97,11 +79,14 @@ https://github.com/uktrade?q=great
 [code-climate-image]: https://codeclimate.com/github/uktrade/directory-sso/badges/issue_count.svg
 [code-climate]: https://codeclimate.com/github/uktrade/directory-sso
 
-[code-climate-image]: https://codeclimate.com/github/uktrade/directory-sso/badges/issue_count.svg
-[code-climate]: https://codeclimate.com/github/uktrade/directory-sso
-
 [circle-ci-image]: https://circleci.com/gh/uktrade/directory-sso/tree/master.svg?style=svg
 [circle-ci]: https://circleci.com/gh/uktrade/directory-sso/tree/master
 
 [codecov-image]: https://codecov.io/gh/uktrade/directory-sso/branch/master/graph/badge.svg
 [codecov]: https://codecov.io/gh/uktrade/directory-sso
+
+[gitflow-image]: https://img.shields.io/badge/Branching%20strategy-gitflow-5FBB1C.svg
+[gitflow]: https://www.atlassian.com/git/tutorials/comparing-workflows/gitflow-workflow
+
+[calver-image]: https://img.shields.io/badge/Versioning%20strategy-CalVer-5FBB1C.svg
+[calver]: https://calver.org

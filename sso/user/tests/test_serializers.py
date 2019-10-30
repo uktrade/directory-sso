@@ -5,7 +5,7 @@ from sso.user.tests import factories
 
 
 @pytest.mark.django_db
-def test_createuserprofileserializer_deserialization(rf):
+def test_user_profile_serializer_deserialization(rf):
     data = {
         'first_name': 'john',
         'last_name': 'smith',
@@ -14,7 +14,7 @@ def test_createuserprofileserializer_deserialization(rf):
     }
     request = rf.get('/')
     request.user = factories.UserFactory.create()
-    serializer = serializers.CreateUserProfileSerializer(
+    serializer = serializers.UserProfileSerializer(
         data=data, context={'request': request}
     )
     assert serializer.is_valid()
@@ -70,7 +70,7 @@ def test_user_serializer_no_profile():
     user = factories.UserFactory.create()
     serializer = serializers.UserSerializer(user)
 
-    assert serializer.data['has_user_profile'] is False
+    assert serializer.data['user_profile'] is None
 
 
 @pytest.mark.django_db
@@ -78,4 +78,4 @@ def test_user_serializer_has_profile():
     user_profile = factories.UserProfileFactory.create()
     serializer = serializers.UserSerializer(user_profile.user)
 
-    assert serializer.data['has_user_profile'] is True
+    assert serializer.data['user_profile'] == serializers.UserProfileSerializer(user_profile).data

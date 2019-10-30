@@ -1,8 +1,10 @@
 import urllib.parse
 
 from allauth.account.utils import get_request_param
+from directory_api_client import api_client
 import tldextract
 
+from django.core.exceptions import ObjectDoesNotExist
 from django.conf import settings
 from django.utils.http import urlencode
 
@@ -44,3 +46,20 @@ def get_redirect_url(request, redirect_field_name):
         if is_valid_redirect(urllib.parse.unquote(redirect_param_value)):
             redirect_url = redirect_param_value
     return redirect_url
+
+
+def user_has_company(sso_id):
+    response = api_client.supplier.retrieve_profile(sso_id)
+    if response.status_code == 404:
+        return False
+    response.raise_for_status()
+    return bool(response.json()['company'])
+
+
+def user_has_profile(user):
+    try:
+        user.user_profile
+    except ObjectDoesNotExist:
+        return False
+    else:
+        return True

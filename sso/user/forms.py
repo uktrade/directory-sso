@@ -15,11 +15,7 @@ from notifications_python_client import NotificationsAPIClient
 from sso.user.fields import PasswordField
 
 
-class IndentedInvalidFieldsMixin:
-    error_css_class = 'input-field-container has-error'
-
-
-class SignupForm(IndentedInvalidFieldsMixin, allauth.account.forms.SignupForm):
+class SignupForm(forms.DirectoryComponentsFormMixin, allauth.account.forms.SignupForm):
     PASSWORD_HELP_TEXT = (
         '<p>Your password must:</p>'
         '<ul class="list list-bullet">'
@@ -32,7 +28,7 @@ class SignupForm(IndentedInvalidFieldsMixin, allauth.account.forms.SignupForm):
     terms_agreed = forms.BooleanField(
         label=mark_safe(
             'Tick this box to accept the '
-            f'<a href="{urls.TERMS_AND_CONDITIONS}" target="_blank">terms and '
+            f'<a href="{urls.domestic.TERMS_AND_CONDITIONS}" target="_blank">terms and '
             'conditions</a> of the great.gov.uk service.'
         )
     )
@@ -105,7 +101,7 @@ class SignupForm(IndentedInvalidFieldsMixin, allauth.account.forms.SignupForm):
                     settings.SSO_BASE_URL +
                     reverse('account_reset_password')
                 ),
-                'contact_us_url': urls.CONTACT_US
+                'contact_us_url': urls.domestic.CONTACT_US
             }
         )
 
@@ -116,7 +112,7 @@ class SignupForm(IndentedInvalidFieldsMixin, allauth.account.forms.SignupForm):
         return value
 
 
-class LoginForm(allauth.account.forms.LoginForm):
+class LoginForm(forms.DirectoryComponentsFormMixin, allauth.account.forms.LoginForm):
     password = PasswordField(
         label="Password",
         label_suffix='',
@@ -139,19 +135,15 @@ class LoginForm(allauth.account.forms.LoginForm):
         )
 
 
-class UserForm(IndentedInvalidFieldsMixin, allauth.account.forms.UserForm):
+class UserForm(forms.DirectoryComponentsFormMixin, allauth.account.forms.UserForm):
     pass
 
 
-class AddEmailForm(
-    IndentedInvalidFieldsMixin, allauth.account.forms.AddEmailForm
-):
+class AddEmailForm(forms.DirectoryComponentsFormMixin, allauth.account.forms.AddEmailForm):
     pass
 
 
-class ChangePasswordForm(
-    IndentedInvalidFieldsMixin, allauth.account.forms.ChangePasswordForm
-):
+class ChangePasswordForm(forms.DirectoryComponentsFormMixin, allauth.account.forms.ChangePasswordForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.fields['oldpassword'] = PasswordField(
@@ -168,15 +160,11 @@ class ChangePasswordForm(
         )
 
 
-class SetPasswordForm(
-    IndentedInvalidFieldsMixin, allauth.account.forms.SetPasswordForm
-):
+class SetPasswordForm(forms.DirectoryComponentsFormMixin, allauth.account.forms.SetPasswordForm):
     pass
 
 
-class ResetPasswordForm(
-    IndentedInvalidFieldsMixin, allauth.account.forms.ResetPasswordForm
-):
+class ResetPasswordForm(forms.DirectoryComponentsFormMixin, allauth.account.forms.ResetPasswordForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.fields['email'] = forms.EmailField(
@@ -207,9 +195,7 @@ class ResetPasswordForm(
         return self.cleaned_data["email"]
 
 
-class ResetPasswordKeyForm(
-    IndentedInvalidFieldsMixin, allauth.account.forms.ResetPasswordKeyForm
-):
+class ResetPasswordKeyForm(forms.DirectoryComponentsFormMixin, allauth.account.forms.ResetPasswordKeyForm):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)

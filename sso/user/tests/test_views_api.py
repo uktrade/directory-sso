@@ -14,6 +14,16 @@ def api_client():
     return APIClient()
 
 
+@pytest.fixture
+def user_profile_data():
+    return {
+        'first_name': 'john',
+        'last_name': 'smith',
+        'mobile_phone_number': '0203044213',
+        'job_title': 'Director',
+    }
+
+
 @pytest.mark.django_db
 def test_create_user_api(api_client):
     new_email = 'test@test123.com'
@@ -140,4 +150,35 @@ def test_create_user_profile_no_auth(api_client):
         {},
         format='json'
     )
+    assert response.status_code == 401
+
+
+@pytest.mark.django_db
+def test_update_user_profile(api_client, user_profile_data):
+
+    profile = factories.UserProfileFactory()
+    api_client.force_authenticate(user=profile.user)
+
+    response = api_client.patch(
+        reverse('api:user-update-profile'),
+        user_profile_data,
+        format='json'
+    )
+    profile.refresh_from_db()
+    assert response.status_code == 200
+    assert profile.first_name == user_profile_data['first_name']
+    assert profile.last_name == user_profile_data['last_name']
+    assert profile.job_title == user_profile_data['job_title']
+    assert profile.mobile_phone_number == user_profile_data['mobile_phone_number']
+
+
+@pytest.mark.django_db
+def test_update_user_profile_no_auth(api_client, user_profile_data):
+
+    response = api_client.patch(
+        reverse('api:user-update-profile'),
+        user_profile_data,
+        format='json'
+    )
+
     assert response.status_code == 401
