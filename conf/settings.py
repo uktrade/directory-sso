@@ -290,7 +290,6 @@ FEATURE_ENFORCE_STAFF_SSO_ENABLED = env.bool('FEATURE_ENFORCE_STAFF_SSO_ENABLED'
 if FEATURE_ENFORCE_STAFF_SSO_ENABLED:
     AUTHENTICATION_BACKENDS += ('authbroker_client.backends.AuthbrokerBackend',)
     LOGIN_URL = reverse_lazy('authbroker_client:login')
-    LOGIN_ADMIN_REDIRECT_URL = reverse_lazy('admin:index')
 
 # authbroker config
 AUTHBROKER_URL = env.str('STAFF_SSO_AUTHBROKER_URL')
