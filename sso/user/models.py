@@ -86,6 +86,16 @@ class User(AbstractBaseUser, PermissionsMixin, TimeStampedModel):
         default='',
     )
 
+    first_name = models.CharField(
+        max_length=30,
+        blank=True,
+    )
+
+    last_name = models.CharField(
+        max_length=30,
+        blank=True,
+    )
+
     failed_login_attempts = models.PositiveSmallIntegerField(default=0)
 
     objects = UserManager()
