@@ -30,9 +30,7 @@ def response_with_session_cookie(settings):
 
 @pytest.fixture(autouse=False)
 def admin_user():
-    admin_user = factories.UserFactory()
-    admin_user.save()
-    admin_user.is_staff = False
+    admin_user = factories.UserFactory(is_staff=False)
     admin_user.save()
     return admin_user
 
@@ -46,7 +44,7 @@ def test_sso_middleware_display_logged_in_state_installed(settings):
 def admin_client_sso(db, admin_user):
     """A Django test client logged in as an admin user."""
     client = Client()
-    client.login(username=admin_user.email, password="password")
+    client.login(username=admin_user.email, password=admin_user._password)
     return client
 
 

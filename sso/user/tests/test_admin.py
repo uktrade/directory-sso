@@ -4,6 +4,7 @@ from unittest.mock import patch
 
 from django.test import Client
 from django.core.urlresolvers import reverse
+from django.conf import settings
 
 import pytest
 from allauth.account.models import EmailAddress
@@ -11,6 +12,8 @@ from allauth.account.models import EmailAddress
 from sso.user.models import User
 from sso.user.tests.factories import UserFactory
 from sso.oauth2.tests.factories import AccessTokenFactory, ApplicationFactory
+
+from core.tests.test_helpers import reload_urlconf
 
 
 @pytest.mark.django_db
@@ -292,3 +295,43 @@ def test_download_email_verification_links(settings, superuser_client):
     )
 
     assert '/accounts/confirm-email/' in str(response.content)
+
+
+@pytest.mark.django_db
+class CompanyAdminAuthTestCase(TestCase):
+
+    def setUp(self):
+        self.client = Client()
+
+    AUTHENTICATION_BACKENDS_CLASSES = (
+        'authbroker_client.backends.AuthbrokerBackend',
+        'oauth2_provider.backends.OAuth2Backend',
+        'django.contrib.auth.backends.ModelBackend',
+        'allauth.account.auth_backends.AuthenticationBackend'
+    )
+
+    @pytest.mark.django_db
+    def test_nonsuperuser_cannot_access_user_changelist(self):
+        non_admin_user = UserFactory(is_staff=False)
+        non_admin_user.save()
+
+        settings.AUTHENTICATION_BACKENDS = self.AUTHENTICATION_BACKENDS_CLASSES
+        settings.FEATURE_ENFORCE_STAFF_SSO_ENABLED = True
+        reload_urlconf()
+        self.client.force_login(non_admin_user)
+        url = reverse('admin:user_user_changelist')
+
+        response = self.client.get(url)
+        assert response.status_code == 401
+
+    @pytest.mark.django_db
+    def test_no_user_cannot_access_user_changelist(self):
+
+        settings.AUTHENTICATION_BACKENDS = self.AUTHENTICATION_BACKENDS_CLASSES
+        settings.FEATURE_ENFORCE_STAFF_SSO_ENABLED = True
+        reload_urlconf()
+
+        url = reverse('admin:user_user_changelist')
+
+        response = self.client.get(url)
+        assert response.status_code == 302
