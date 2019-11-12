@@ -32,7 +32,6 @@ class AdminPermissionCheckMiddleware(MiddlewareMixin):
             return True
         return False
 
-
     def process_view(self, request, view_func, view_args, view_kwarg):
         # Django admin users without permission will be displayed custom message to request access
         if request.user.is_authenticated():
