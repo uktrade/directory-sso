@@ -54,6 +54,7 @@ INSTALLED_APPS = [
     'health_check.db',
     'directory_healthcheck',
     'directory_components',
+    'authbroker_client',
 ]
 
 SITE_ID = 1
@@ -61,6 +62,7 @@ SITE_ID = 1
 MIDDLEWARE_CLASSES = [
     'directory_components.middleware.MaintenanceModeMiddleware',
     'core.middleware.SSODisplayLoggedInCookieMiddleware',
+    'core.middleware.AdminPermissionCheckMiddleware',
     'admin_ip_restrictor.middleware.AdminIPRestrictorMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',
@@ -280,7 +282,20 @@ AUTHENTICATION_BACKENDS = (
     'allauth.account.auth_backends.AuthenticationBackend'
 )
 
-LOGIN_URL = reverse_lazy('account_login')
+
+# SSO config
+FEATURE_ENFORCE_STAFF_SSO_ENABLED = env.bool('FEATURE_ENFORCE_STAFF_SSO_ENABLED', False)
+# authbroker config
+if FEATURE_ENFORCE_STAFF_SSO_ENABLED:
+    AUTHENTICATION_BACKENDS += ('authbroker_client.backends.AuthbrokerBackend',)
+    LOGIN_URL = reverse_lazy('authbroker_client:login')
+else:
+    LOGIN_URL = reverse_lazy('account_login')
+
+# SSO config
+AUTHBROKER_URL = env.str('STAFF_SSO_AUTHBROKER_URL')
+AUTHBROKER_CLIENT_ID = env.str('AUTHBROKER_CLIENT_ID')
+AUTHBROKER_CLIENT_SECRET = env.str('AUTHBROKER_CLIENT_SECRET')
 
 # DRF
 REST_FRAMEWORK = {

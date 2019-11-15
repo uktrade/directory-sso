@@ -3,6 +3,7 @@
 ## Pre release
 
 ### Implemented enhancements
+-- TT-1798 implement-staff-sso
 
 ### Fixed bugs
 

@@ -1,4 +1,6 @@
 from django.conf import settings
+from django.utils.deprecation import MiddlewareMixin
+from django.http import HttpResponse
 
 
 class SSODisplayLoggedInCookieMiddleware:
@@ -17,3 +19,22 @@ class SSODisplayLoggedInCookieMiddleware:
             httponly=False
         )
         return response
+
+
+class AdminPermissionCheckMiddleware(MiddlewareMixin):
+    SSO_UNAUTHORISED_ACCESS_MESSAGE = (
+        'This application now uses internal Single Sign On. Please email '
+        'directory@digital.trade.gov.uk so that we can enable your account.'
+    )
+
+    def is_admin_name_space(self, request):
+        if request.resolver_match.namespace in ['authbroker_client', 'admin']:
+            return True
+        return False
+
+    def process_view(self, request, view_func, view_args, view_kwarg):
+        # Django admin users without permission will be displayed custom message to request access
+        if request.user.is_authenticated():
+            if self.is_admin_name_space(request) or request.path_info.startswith('/admin/login'):
+                if not request.user.is_staff:
+                    return HttpResponse(self.SSO_UNAUTHORISED_ACCESS_MESSAGE, status=401)
