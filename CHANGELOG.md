@@ -16,6 +16,7 @@
 - TT-1673 - Redirect to enrolment after login if no company or personal details
 - TT-1760 - added user profile update
 - TT-1808: Update directory components to add "no-validate" no cache middleware
+- XOT-1214 - Pass on exit-intent parameter at login page
 
 ### Fixed bugs:
 - No ticket - Upgrade django to 1.11.23 for vulnerability fix
