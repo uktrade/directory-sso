@@ -5,7 +5,7 @@ from django.core.urlresolvers import reverse
 
 from directory_constants import urls
 
-from sso.user.utils import get_redirect_url, get_url_with_redirect
+from sso.user.utils import get_redirect_url, get_url_with_redirect, get_intent
 
 redirect_field_name = settings.REDIRECT_FIELD_NAME
 
@@ -15,12 +15,13 @@ def redirect_next_processor(request):
         request=request,
         redirect_field_name=redirect_field_name
     )
+    intent = get_intent(request)
     if settings.FEATURE_FLAGS['NEW_ENROLMENT_ON']:
         enrolment_url = urls.domestic.SINGLE_SIGN_ON_PROFILE / 'enrol/'
     else:
         enrolment_url = reverse('account_signup')
 
-    add_next = partial(get_url_with_redirect, redirect_url=redirect_url)
+    add_next = partial(get_url_with_redirect, redirect_url=redirect_url, intent=intent)
     return {
         'redirect_field_name': redirect_field_name,
         'redirect_field_value': redirect_url or None,

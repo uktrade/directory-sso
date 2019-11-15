@@ -9,12 +9,17 @@ from django.conf import settings
 from django.utils.http import urlencode
 
 
-def get_url_with_redirect(url, redirect_url):
+def get_url_with_redirect(url, redirect_url, intent):
     """Adds redirect param to url"""
     if redirect_url:
         url = url + '?' + urlencode(
             {settings.REDIRECT_FIELD_NAME: redirect_url}
         )
+        """Adds intent param to url"""
+        if intent:
+            url = url + '&' + urlencode(
+                {settings.INTENT_FIELD_NAME: 'true'}
+            )
 
     return url
 
@@ -46,6 +51,10 @@ def get_redirect_url(request, redirect_field_name):
         if is_valid_redirect(urllib.parse.unquote(redirect_param_value)):
             redirect_url = redirect_param_value
     return redirect_url
+
+
+def get_intent(request):
+    return get_request_param(request, settings.INTENT_FIELD_NAME)
 
 
 def user_has_company(sso_id):

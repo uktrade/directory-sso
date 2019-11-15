@@ -311,6 +311,7 @@ OAUTH2_PROVIDER_REFRESH_TOKEN_MODEL = 'oauth2_provider.RefreshToken'
 REDIRECT_FIELD_NAME = env.str(
     'REDIRECT_FIELD_NAME', 'next'
 )
+INTENT_FIELD_NAME = 'return-after-completion'
 DEFAULT_REDIRECT_URL = env.str(
     'DEFAULT_REDIRECT_URL', 'https://find-a-buyer.export.great.gov.uk/'
 )
