@@ -73,8 +73,7 @@ class TestUsersAPIView(core.mixins.NoIndexMixin, DestroyAPIView):
     def delete(self, request, **kwargs):
         test_users = get_list_or_404(
             models.User,
-            email__startswith='test+',
-            email__endswith='@directory.uktrade.io',
+            email__regex=r'^test\+(.*)@directory\.uktrade\.io',
         )
         for user in test_users:
             user.delete()
