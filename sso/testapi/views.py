@@ -11,7 +11,6 @@ from rest_framework.response import Response
 
 import core.mixins
 from conf.signature import SignatureCheckPermission
-from core.authentication import SessionAuthentication
 from sso.user import models
 
 
