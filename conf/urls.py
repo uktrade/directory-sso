@@ -176,6 +176,11 @@ testapi_urls = [
         sso.testapi.views.UserByEmailAPIView.as_view(),
         name='user_by_email'
     ),
+    url(
+        r'^test-users/$',
+        sso.testapi.views.TestUsersAPIView.as_view(),
+        name='delete_test_users'
+    ),
 ]
 
 urlpatterns = [

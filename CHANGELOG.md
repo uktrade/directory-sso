@@ -4,6 +4,7 @@
 
 ### Implemented enhancements
 -- TT-1798 implement-staff-sso
+-- TT-2197 Add testapi endpoint to SSO to delete users created by automated tests
 
 ### Fixed bugs
 

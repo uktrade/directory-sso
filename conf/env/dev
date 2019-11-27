@@ -46,3 +46,6 @@ DIRECTORY_CONSTANTS_URL_SINGLE_SIGN_ON=http://sso.trade.great:8004
 DIRECTORY_CONSTANTS_URL_SSO_PROFILE=http://profile.trade.great:8006/profile/
 FEATURE_NEW_ENROLMENT_ENABLED=true
 STATICFILES_STORAGE=django.contrib.staticfiles.storage.StaticFilesStorage
+STAFF_SSO_AUTHBROKER_URL=http://staff.sso.trade.great:8013/
+AUTHBROKER_CLIENT_ID=debug
+AUTHBROKER_CLIENT_SECRET=debug
