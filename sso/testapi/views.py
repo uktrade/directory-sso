@@ -11,7 +11,6 @@ from rest_framework.response import Response
 
 import core.mixins
 from conf.signature import SignatureCheckPermission
-from core.authentication import SessionAuthentication
 from sso.user import models
 
 
@@ -61,7 +60,7 @@ class UserByEmailAPIView(
 
 class TestUsersAPIView(core.mixins.NoIndexMixin, DestroyAPIView):
     permission_classes = [SignatureCheckPermission]
-    authentication_classes = [SessionAuthentication]
+    authentication_classes = []
     queryset = models.User.objects.all()
     http_method_names = 'delete'
 
