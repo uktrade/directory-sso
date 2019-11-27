@@ -1,15 +1,17 @@
 from django.conf import settings
 from django.http import HttpResponseNotFound
+from django.shortcuts import get_list_or_404
 from rest_framework.generics import (
-    get_object_or_404,
     DestroyAPIView,
     RetrieveAPIView,
-    UpdateAPIView
+    UpdateAPIView,
+    get_object_or_404,
 )
 from rest_framework.response import Response
 
-from conf.signature import SignatureCheckPermission
 import core.mixins
+from conf.signature import SignatureCheckPermission
+from core.authentication import SessionAuthentication
 from sso.user import models
 
 
@@ -54,4 +56,26 @@ class UserByEmailAPIView(
                 'primary': True
             }
         )
+        return Response(status=204)
+
+
+class TestUsersAPIView(core.mixins.NoIndexMixin, DestroyAPIView):
+    permission_classes = [SignatureCheckPermission]
+    authentication_classes = [SessionAuthentication]
+    queryset = models.User.objects.all()
+    http_method_names = 'delete'
+
+    def dispatch(self, *args, **kwargs):
+        if not settings.FEATURE_FLAGS['TEST_API_ON']:
+            return HttpResponseNotFound()
+        return super().dispatch(*args, **kwargs)
+
+    def delete(self, request, **kwargs):
+        test_users = get_list_or_404(
+            models.User,
+            email__startswith='test+',
+            email__endswith='@directory.uktrade.io',
+        )
+        for user in test_users:
+            user.delete()
         return Response(status=204)
