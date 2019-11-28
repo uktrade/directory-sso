@@ -252,11 +252,11 @@ AUTH_PASSWORD_VALIDATORS = [
     {'NAME': 'directory_validators.password.PasswordWordPasswordValidator'}
 ]
 
-AUTHENTICATION_BACKENDS = (
+AUTHENTICATION_BACKENDS = [
     'oauth2_provider.backends.OAuth2Backend',
     'django.contrib.auth.backends.ModelBackend',
-    'allauth.account.auth_backends.AuthenticationBackend'
-)
+    'allauth.account.auth_backends.AuthenticationBackend',
+]
 
 # SSO config
 FEATURE_ENFORCE_STAFF_SSO_ENABLED = env.bool('FEATURE_ENFORCE_STAFF_SSO_ENABLED', False)
