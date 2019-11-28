@@ -1,7 +1,7 @@
 import urllib.parse
 
 from django.conf import settings
-from django.core.urlresolvers import reverse
+from django.urls import reverse
 
 from allauth.account.adapter import DefaultAccountAdapter
 from allauth.account.utils import get_request_param

@@ -1,14 +1,19 @@
 from collections import OrderedDict
+from datetime import timedelta
 from unittest import TestCase
 from unittest.mock import patch
 
 from django.test import Client
-from django.core.urlresolvers import reverse
+from django.contrib.admin import site
+from django.urls import reverse
 from django.conf import settings
+from django.utils import timezone
 
+from freezegun import freeze_time
 import pytest
 from allauth.account.models import EmailAddress
 
+from sso.user import admin
 from sso.user.models import User
 from sso.user.tests.factories import UserFactory
 from sso.oauth2.tests.factories import AccessTokenFactory, ApplicationFactory
@@ -157,9 +162,7 @@ class DownloadCaseStudyCSVTestCase(TestCase):
 
 @pytest.fixture
 def superuser():
-    return User.objects.create_superuser(
-        email='admin@example.com', password='test'
-    )
+    return User.objects.create_superuser(email='admin@example.com', password='test')
 
 
 @pytest.fixture
@@ -322,7 +325,7 @@ class CompanyAdminAuthTestCase(TestCase):
         url = reverse('admin:user_user_changelist')
 
         response = self.client.get(url)
-        assert response.status_code == 401
+        assert response.status_code == 302
 
     @pytest.mark.django_db
     def test_no_user_cannot_access_user_changelist(self):
@@ -335,3 +338,28 @@ class CompanyAdminAuthTestCase(TestCase):
 
         response = self.client.get(url)
         assert response.status_code == 302
+
+
+@pytest.mark.django_db
+def test_GDPR_compliance_filter(rf, superuser):
+    three_years_ago = 365 * 3
+
+    with freeze_time(timezone.now() - timedelta(days=three_years_ago + 1)):
+        user_one = UserFactory()
+
+    with freeze_time(timezone.now() - timedelta(days=three_years_ago)):
+        user_two = UserFactory()
+
+    with freeze_time(timezone.now() - timedelta(days=three_years_ago - 1)):
+        user_three = UserFactory()
+
+    modeladmin = admin.UserAdmin(User, site)
+    request = rf.get('/', {'gdpr': True})
+    request.user = superuser
+    changelist = modeladmin.get_changelist_instance(request)
+    queryset = changelist.get_queryset(request)
+
+    assert queryset.count() == 2
+    assert user_one in queryset
+    assert user_two in queryset
+    assert user_three not in queryset

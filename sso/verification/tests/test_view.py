@@ -7,7 +7,7 @@ from freezegun import freeze_time
 import pytest
 from rest_framework.test import APIClient
 
-from django.core.urlresolvers import reverse
+from django.urls import reverse
 from django.utils.timezone import now
 
 from sso.user.tests.factories import UserFactory

@@ -3,12 +3,12 @@ from django.utils.deprecation import MiddlewareMixin
 from django.http import HttpResponse
 
 
-class SSODisplayLoggedInCookieMiddleware:
+class SSODisplayLoggedInCookieMiddleware(MiddlewareMixin):
 
     def process_response(self, request, response):
         cookie_value = 'false'
         user = getattr(request, 'user', None)
-        if user and user.is_authenticated():
+        if user and user.is_authenticated:
             cookie_value = 'true'
         response.set_cookie(
             'sso_display_logged_in',
@@ -34,7 +34,7 @@ class AdminPermissionCheckMiddleware(MiddlewareMixin):
 
     def process_view(self, request, view_func, view_args, view_kwarg):
         # Django admin users without permission will be displayed custom message to request access
-        if request.user.is_authenticated():
+        if request.user.is_authenticated:
             if self.is_admin_name_space(request) or request.path_info.startswith('/admin/login'):
                 if not request.user.is_staff:
                     return HttpResponse(self.SSO_UNAUTHORISED_ACCESS_MESSAGE, status=401)

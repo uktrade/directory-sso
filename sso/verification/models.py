@@ -4,7 +4,6 @@ from django_cryptography.fields import encrypt
 
 from django.conf import settings
 from django.db import models
-from django.utils.translation import ugettext_lazy as _
 from django.utils.timezone import now
 
 from sso.api.model_utils import TimeStampedModel
@@ -21,14 +20,12 @@ class VerificationCode(TimeStampedModel):
         max_length=128,
         default=helpers.generate_verification_code
     ))
-    user = models.OneToOneField(User, related_name='verification_code')
+    user = models.OneToOneField(User, related_name='verification_code', on_delete=models.CASCADE)
     date_verified = models.DateField(
-        _('verified'),
+        'verified',
         blank=True,
         null=True,
-        help_text=_(
-            'Designates whether this user has verified the code'
-        ),
+        help_text='Designates whether this user has verified the code',
     )
 
     @property
