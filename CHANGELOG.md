@@ -3,8 +3,10 @@
 ## Pre release
 
 ### Implemented enhancements
--- TT-1798 implement-staff-sso
--- TT-2197 Add testapi endpoint to SSO to delete users created by automated tests
+- TT-1798 implement-staff-sso
+- TT-2197 Add testapi endpoint to SSO to delete users created by automated tests
+- No ticket - Upgrade Django
+- TT-2188 - Add GDRP admin filter
 
 ### Fixed bugs
 

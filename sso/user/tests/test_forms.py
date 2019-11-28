@@ -46,7 +46,7 @@ def test_signup_form_customization():
     assert form.fields['password1'].help_text == form.PASSWORD_HELP_TEXT
 
 
-def test_change_password_form_customization():
+def test_account_change_password_form_customization():
     form = forms.ChangePasswordForm()
 
     assert form.fields['password2'].label == 'Confirm password'
@@ -142,13 +142,11 @@ def test_signup_rejects_password_length_less_than_ten():
         )
 
         assert form.is_valid() is False
-        assert form.errors['password1'] == [expected]
+        assert expected in form.errors['password1']
 
 
 def test_signup_accepts_password_length_ten_or_more():
-    form = forms.SignupForm(data={
-        'password1': '*' * 10
-    })
+    form = forms.SignupForm(data={'password1': 'ZaronZ0xos'})
 
     assert form.is_valid() is False
     assert 'password1' not in form.errors

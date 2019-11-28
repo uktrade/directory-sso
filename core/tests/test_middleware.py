@@ -36,8 +36,7 @@ def admin_user():
 
 
 def test_sso_middleware_display_logged_in_state_installed(settings):
-    expected = 'core.middleware.SSODisplayLoggedInCookieMiddleware'
-    assert expected in settings.MIDDLEWARE_CLASSES
+    assert 'core.middleware.SSODisplayLoggedInCookieMiddleware' in settings.MIDDLEWARE
 
 
 @pytest.fixture()
@@ -68,7 +67,7 @@ def test_admin_permission_middleware_authorised_no_staff(client, settings, admin
 
     response = client.get(reverse('admin:login'))
 
-    assert response.status_code == 401
+    assert response.status_code == 302
 
 
 @pytest.mark.django_db

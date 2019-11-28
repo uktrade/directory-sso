@@ -370,8 +370,8 @@ def test_confirm_email_redirect_next_param_if_next_param_valid(
             'email': 'jim@example.com',
             'email2': 'jim@example.com',
             'terms_agreed': True,
-            'password1': '*' * 10,
-            'password2': '*' * 10,
+            'password1': 'ZaronZ0xos',
+            'password2': 'ZaronZ0xos',
         }
     )
 
@@ -417,8 +417,8 @@ def test_confirm_email_redirect_next_param_if_next_param_invalid(
             'email': 'jim@example.com',
             'email2': 'jim@example.com',
             'terms_agreed': True,
-            'password1': '*' * 10,
-            'password2': '*' * 10,
+            'password1': 'ZaronZ0xos',
+            'password2': 'ZaronZ0xos',
         }
     )
 
@@ -466,8 +466,8 @@ def test_confirm_email_redirect_next_param_if_next_param_internal(
             'email': 'jim@example.com',
             'email2': 'jim@example.com',
             'terms_agreed': True,
-            'password1': '*' * 10,
-            'password2': '*' * 10,
+            'password1': 'ZaronZ0xos',
+            'password2': 'ZaronZ0xos',
         }
     )
     assert mocked_notification_client().send_email_notification.called is True
@@ -504,8 +504,8 @@ def test_confirm_email_redirect_default_param_if_no_next_param(
             'email': 'jim@example.com',
             'email2': 'jim@example.com',
             'terms_agreed': True,
-            'password1': '*' * 10,
-            'password2': '*' * 10,
+            'password1': 'ZaronZ0xos',
+            'password2': 'ZaronZ0xos',
         }
     )
     assert mocked_notification_client().send_email_notification.called is True
@@ -530,7 +530,7 @@ def test_password_reset_redirect_default_param_if_no_next_param(
 ):
 
     settings.ALLOWED_REDIRECT_DOMAINS = ['example.com', 'other.com']
-    new_password = '*' * 10
+    new_password = 'ZaronZ0xos'
     # submit form and send 'password reset link' email without a 'next' param
     client.post(
         reverse('account_reset_password'),
@@ -600,7 +600,7 @@ def test_password_reset_redirect_next_param_if_next_param_valid(
 ):
     settings.DEFAULT_REDIRECT_URL = 'http://other.com'
     settings.ALLOWED_REDIRECT_DOMAINS = ['example.com', 'other.com']
-    new_password = '*' * 10
+    new_password = 'ZaronZ0xos'
     password_reset_url = reverse('account_reset_password')
     expected = reverse('account_email_verification_sent')
 
@@ -641,7 +641,7 @@ def test_password_reset_redirect_next_param_if_next_param_invalid(
 ):
     settings.DEFAULT_REDIRECT_URL = 'http://other.com'
     settings.ALLOWED_REDIRECT_DOMAINS = ['other.com']
-    new_password = '*' * 10
+    new_password = 'ZaronZ0xos'
     password_reset_url = reverse('account_reset_password')
     next_param = 'http://www.example.com'
 
@@ -677,7 +677,7 @@ def test_password_reset_redirect_next_param_if_next_param_internal(
 ):
     settings.DEFAULT_REDIRECT_URL = 'http://other.com'
     settings.ALLOWED_REDIRECT_DOMAINS = ['example.com', 'other.com']
-    new_password = '*' * 10
+    new_password = 'ZaronZ0xos'
     password_reset_url = reverse('account_reset_password')
     expected = reverse('account_email_verification_sent')
 
@@ -813,8 +813,8 @@ def test_confirm_email_redirect_next_param_oath2(
             'email': 'jim@example.com',
             'email2': 'jim@example.com',
             'terms_agreed': True,
-            'password1': '*' * 10,
-            'password2': '*' * 10,
+            'password1': 'ZaronZ0xos',
+            'password2': 'ZaronZ0xos',
         }
     )
 
@@ -866,8 +866,8 @@ def test_confirm_email_redirect_next_param(
             'email': 'jim@example.com',
             'email2': 'jim@example.com',
             'terms_agreed': True,
-            'password1': '*' * 10,
-            'password2': '*' * 10,
+            'password1': 'ZaronZ0xos',
+            'password2': 'ZaronZ0xos',
         }
     )
     assert mocked_notification_client().send_email_notification.called is True
@@ -967,8 +967,8 @@ def test_signup_saves_utm(
             'email': 'jim@example.com',
             'email2': 'jim@example.com',
             'terms_agreed': True,
-            'password1': '*' * 10,
-            'password2': '*' * 10,
+            'password1': 'ZaronZ0xos',
+            'password2': 'ZaronZ0xos',
         }
     )
 
@@ -987,8 +987,8 @@ def test_signup_saves_hashed_id(
             'email': 'jim@example.com',
             'email2': 'jim@example.com',
             'terms_agreed': True,
-            'password1': '*' * 10,
-            'password2': '*' * 10,
+            'password1': 'ZaronZ0xos',
+            'password2': 'ZaronZ0xos',
         }
     )
 
@@ -1029,8 +1029,8 @@ def test_confirm_email_login_response_with_sso_display_logged_in_cookie(
             'email': 'jim@example.com',
             'email2': 'jim@example.com',
             'terms_agreed': True,
-            'password1': '*' * 10,
-            'password2': '*' * 10,
+            'password1': 'ZaronZ0xos',
+            'password2': 'ZaronZ0xos',
         }
     )
 
@@ -1049,9 +1049,7 @@ def test_confirm_email_login_response_with_sso_display_logged_in_cookie(
 
 @patch('sso.adapters.NotificationsAPIClient')
 @pytest.mark.django_db
-def test_confirm_email_login_response_with_sso_handles_next(
-    mocked_notification_client, client, email_confirmation
-):
+def test_confirm_email_login_response_with_sso_handles_next(mocked_notification_client, client, email_confirmation):
     querystring = '?next=http%3A//buyer.trade.great%3A8001/company-profile'
     client.post(
         reverse('account_signup') + querystring,
@@ -1059,8 +1057,8 @@ def test_confirm_email_login_response_with_sso_handles_next(
             'email': 'jim@example.com',
             'email2': 'jim@example.com',
             'terms_agreed': True,
-            'password1': '*' * 10,
-            'password2': '*' * 10,
+            'password1': 'ZaronZ0xos',
+            'password2': 'ZaronZ0xos',
         }
     )
 
@@ -1116,7 +1114,7 @@ def test_disabled_registration_views(url, client, settings):
 
 
 @pytest.mark.django_db
-def test_disabled_registration_change_password_view(authed_client, settings):
+def test_disabled_registration_account_change_password_view(authed_client, settings):
     settings.FEATURE_FLAGS = {
         **settings.FEATURE_FLAGS, 'DISABLE_REGISTRATION_ON': True
     }

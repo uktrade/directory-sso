@@ -1,3 +1,4 @@
+from django_filters.views import FilterMixin
 from rest_framework import status
 from rest_framework.generics import RetrieveAPIView, get_object_or_404, ListAPIView
 from rest_framework.response import Response
@@ -34,18 +35,19 @@ class SessionUserAPIView(GetUserBySessionKeyMixin, RetrieveAPIView):
         return self.get_session_key_user(session_key)
 
 
-class LastLoginAPIView(ListAPIView):
+class LastLoginAPIView(FilterMixin, ListAPIView):
     authentication_classes = []
-    filter_class = filters.LastLoginFilter
+    filterset_class = filters.LastLoginFilter
     permission_classes = [SignatureCheckPermission]
     queryset = models.User.objects.exclude(last_login__isnull=True)
     serializer_class = serializers.LastLoginSerializer
+    strict = True
 
     def handle_exception(self, exception):
         if isinstance(exception, ValidationError):
-            return Response(
-                exception.message_dict, status=status.HTTP_400_BAD_REQUEST
-            )
+            return Response(exception.message_dict, status=status.HTTP_400_BAD_REQUEST)
+        elif isinstance(exception, TypeError):
+            return Response(str(exception), status=status.HTTP_400_BAD_REQUEST)
         return super().handle_exception(exception)
 
 
