@@ -3,6 +3,7 @@
 ## Pre release
 
 ### Implemented enhancements
+- GTRANSFORM-385 - Business sso response to include first/last name
 - TT-1798 implement-staff-sso
 - TT-2197 Add testapi endpoint to SSO to delete users created by automated tests
 - No ticket - Upgrade Django
