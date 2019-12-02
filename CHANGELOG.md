@@ -45,6 +45,40 @@
 ### Fixed bugs:
 - No ticket - Upgrade vulnerable django version to django 1.11.22
 
+
+### Fixed bugs:
+- No ticket - Upgrade django to 1.11.23 for vulnerability fix
+- No ticket - Fix vulnerability with yarn
+- No ticket - Cleared up old settings
+- TT-1758 - Fix breadcrumbs on change password page
+- TT-1779 - Fix login hanging
+- TT-1614 - CRSF httponly
+- TT-1834 - Fix bad spacing on login page
+- TT-1823 - Send unverified users to verification page on login
+- TT-1952 - Removing loop for individual users to select business type on login
+- TT-1927 - Fix duplicate error messages on login page
+
+## [2019.08.13](https://github.com/uktrade/directory-sso/releases/tag/2019.08.13_1)
+[Full Changelog](https://github.com/uktrade/directory-sso/compare/2019.08.13...2019.08.13_1)
+
+### Hot fix
+- No ticket - Add feature flag to "start now" on sign in page
+
+## [2019.08.13](https://github.com/uktrade/directory-sso/releases/tag/2019.08.13)
+[Full Changelog](https://github.com/uktrade/directory-sso/compare/2019.07.09...2019.08.13)
+
+### Implemented enhancements
+- No Ticket - Adding missing models to admin view
+- TT-990 -  Making job title optional in user profile to accomodate individual user profile.
+- TT-1573 - Expose has_user_profile on session user retrieval
+- No ticket - Send user to SSO profile enrolment instead of SSO register page
+
+## [2019.07.09](https://github.com/uktrade/directory-sso/releases/tag/2019.07.09)
+[Full Changelog](https://github.com/uktrade/directory-sso/compare/2019.06.27...2019.07.09)
+
+### Fixed bugs:
+- No ticket - Upgrade vulnerable django version to django 1.11.22
+
 ## [2019.06.27](https://github.com/uktrade/directory-sso/releases/tag/2019.06.27)
 [Full Changelog](https://github.com/uktrade/directory-sso/compare/2019.04.11...2019.06.27)
 
