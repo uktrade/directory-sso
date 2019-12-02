@@ -8,7 +8,7 @@ from rest_framework.test import APIClient
 from django.urls import reverse
 from django.utils import timezone
 
-from sso.user.models import User
+from sso.user.models import User, UserProfile
 
 
 def setup_data():
@@ -28,6 +28,13 @@ def setup_data():
         email='test@example.com',
         password='pass'
     )
+    user_profile = UserProfile.objects.create(
+        first_name='alexander',
+        last_name='thegreatdotgovdotuk',
+        mobile_phone_number='0203044213',
+        job_title='Director',
+        user=user
+    )
     access_token = AccessToken.objects.create(
         user=user,
         token='test',
@@ -36,12 +43,12 @@ def setup_data():
         scope='profile'
     )
 
-    return superuser, application, user, access_token
+    return superuser, application, user, user_profile, access_token
 
 
 @pytest.mark.django_db
 def test_user_retrieve_view_authorised():
-    _, _, user, access_token = setup_data()
+    _, _, user, user_profile, access_token = setup_data()
 
     client = APIClient()
     client.credentials(
@@ -52,6 +59,8 @@ def test_user_retrieve_view_authorised():
 
     assert response.status_code == status.HTTP_200_OK
     assert response.data['email'] == user.email
+    assert response.data['user_profile']['first_name'] == user_profile.first_name
+    assert response.data['user_profile']['last_name'] == user_profile.last_name
 
 
 @pytest.mark.django_db
