@@ -3,6 +3,7 @@
 ## Pre release
 
 ### Implemented enhancements
+- GTRANSFORM-385 - UK Business SSO should return first name/last name in response
 - TT-1080 - Login user automatically after password reset
 - No ticket - Added django settings janitor
 - Expose user profile on user retrieve endpoint

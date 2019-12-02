@@ -65,6 +65,9 @@ We add compiled CSS files to version control. This will sometimes result in conf
 
 You should not edit CSS files directly, instead edit their SCSS counterparts.
 
+### Testing
+We are using distributed testing by default. You can disable it by removing `-n auto --dist=loadfile ` from the pytest.ini 
+You can also disable it by running pytest with `--dist=no --pdb` and insert a breaking assertion (e.g. `assert 0`) where you would normally `pdb.set_trace()`.
 ## Helpful links
 * [Developers Onboarding Checklist](https://uktrade.atlassian.net/wiki/spaces/ED/pages/32243946/Developers+onboarding+checklist)
 * [Gitflow branching](https://uktrade.atlassian.net/wiki/spaces/ED/pages/737182153/Gitflow+and+releases)
