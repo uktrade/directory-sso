@@ -3,6 +3,18 @@
 ## Pre release
 
 ### Implemented enhancements
+- GTRANSFORM-385 - Business sso response to include first/last name
+- TT-1798 implement-staff-sso
+- TT-2197 Add testapi endpoint to SSO to delete users created by automated tests
+- No ticket - Upgrade Django
+- TT-2188 - Add GDRP admin filter
+
+### Fixed bugs
+
+## [2019.10.30](https://github.com/uktrade/directory-sso/releases/tag/.2019.10.30)
+[Full Changelog](https://github.com/uktrade/directory-sso/compare/2019.08.13_1....2019.10.30)
+
+### Implemented enhancements
 - TT-1080 - Login user automatically after password reset
 - No ticket - Added django settings janitor
 - Expose user profile on user retrieve endpoint

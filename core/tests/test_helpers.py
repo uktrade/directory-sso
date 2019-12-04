@@ -1,4 +1,21 @@
+import sys
+
 from core.helpers import is_valid_domain
+from django.conf import settings
+from django.urls import clear_url_caches
+from importlib import import_module, reload
+
+
+def reload_urlconf():
+    clear_url_caches()
+    reload_module(settings.ROOT_URLCONF)
+
+
+def reload_module(module):
+    if module in sys.modules:
+        reload(sys.modules[module])
+    else:
+        import_module(module)
 
 
 def test_is_valid_domain_returns_true_for_valid_domains():

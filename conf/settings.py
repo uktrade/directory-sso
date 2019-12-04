@@ -36,6 +36,7 @@ INSTALLED_APPS = [
     'django.contrib.sites',
     'django.contrib.staticfiles',
     'django.contrib.admin',
+    'django.contrib.messages',
     'raven.contrib.django.raven_compat',
     'allauth',
     'allauth.account',
@@ -43,7 +44,6 @@ INSTALLED_APPS = [
     'oauth2_provider',
     'rest_framework',
     'django_filters',
-    'corsheaders',
     'core',
     'sso',
     'sso.oauth2',
@@ -54,11 +54,12 @@ INSTALLED_APPS = [
     'health_check.db',
     'directory_healthcheck',
     'directory_components',
+    'authbroker_client',
 ]
 
 SITE_ID = 1
 
-MIDDLEWARE_CLASSES = [
+MIDDLEWARE = [
     'directory_components.middleware.MaintenanceModeMiddleware',
     'core.middleware.SSODisplayLoggedInCookieMiddleware',
     'admin_ip_restrictor.middleware.AdminIPRestrictorMiddleware',
@@ -69,11 +70,8 @@ MIDDLEWARE_CLASSES = [
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
-    'corsheaders.middleware.CorsMiddleware',
     'directory_components.middleware.NoCacheMiddlware',
 ]
-
-CORS_ORIGIN_ALLOW_ALL = env.bool('CORS_ORIGIN_ALLOW_ALL', False)
 
 ROOT_URLCONF = 'conf.urls'
 
@@ -88,18 +86,17 @@ TEMPLATES = [
                 'django.template.context_processors.debug',
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
+                'django.contrib.messages.context_processors.messages',
                 'sso.user.context_processors.redirect_next_processor',
                 'directory_components.context_processors.feature_flags',
                 'directory_components.context_processors.urls_processor',
-                ('directory_components.context_processors.'
-                 'header_footer_processor'),
+                'directory_components.context_processors.header_footer_processor',
                 'directory_components.context_processors.analytics',
                 'directory_components.context_processors.cookie_notice',
             ],
             'loaders': [
                 'django.template.loaders.filesystem.Loader',
                 'django.template.loaders.app_directories.Loader',
-                'django.template.loaders.eggs.Loader',
             ],
         },
     },
@@ -248,39 +245,33 @@ else:
 # Authentication
 AUTH_USER_MODEL = 'user.User'
 AUTH_PASSWORD_VALIDATORS = [
-    {
-        'NAME': (
-            'django.contrib.auth.password_validation.MinimumLengthValidator'
-        ),
-        'OPTIONS': {
-            'min_length': 10,
-        }
-    },
-    {
-        'NAME':
-            'django.contrib.auth.password_validation.CommonPasswordValidator',
-    },
-    {
-        'NAME':
-            'django.contrib.auth.password_validation.NumericPasswordValidator',
-    },
-    {
-        'NAME': 'directory_validators.password_validation.'
-                'AlphabeticPasswordValidator'
-    },
-    {
-        'NAME': 'directory_validators.password_validation.'
-                'PasswordWordPasswordValidator'
-    }
+    {'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator', 'OPTIONS': {'min_length': 10}},
+    {'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator'},
+    {'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator'},
+    {'NAME': 'directory_validators.password.AlphabeticPasswordValidator'},
+    {'NAME': 'directory_validators.password.PasswordWordPasswordValidator'}
 ]
 
-AUTHENTICATION_BACKENDS = (
+AUTHENTICATION_BACKENDS = [
     'oauth2_provider.backends.OAuth2Backend',
     'django.contrib.auth.backends.ModelBackend',
-    'allauth.account.auth_backends.AuthenticationBackend'
-)
+    'allauth.account.auth_backends.AuthenticationBackend',
+]
 
-LOGIN_URL = reverse_lazy('account_login')
+# SSO config
+FEATURE_ENFORCE_STAFF_SSO_ENABLED = env.bool('FEATURE_ENFORCE_STAFF_SSO_ENABLED', False)
+# authbroker config
+if FEATURE_ENFORCE_STAFF_SSO_ENABLED:
+    AUTHENTICATION_BACKENDS.append('authbroker_client.backends.AuthbrokerBackend')
+    LOGIN_URL = reverse_lazy('authbroker_client:login')
+    MIDDLEWARE.append('core.middleware.AdminPermissionCheckMiddleware')
+else:
+    LOGIN_URL = reverse_lazy('account_login')
+
+# SSO config
+AUTHBROKER_URL = env.str('STAFF_SSO_AUTHBROKER_URL')
+AUTHBROKER_CLIENT_ID = env.str('AUTHBROKER_CLIENT_ID')
+AUTHBROKER_CLIENT_SECRET = env.str('AUTHBROKER_CLIENT_SECRET')
 
 # DRF
 REST_FRAMEWORK = {
@@ -308,18 +299,10 @@ OAUTH2_PROVIDER_APPLICATION_MODEL = 'oauth2_provider.Application'
 OAUTH2_PROVIDER_REFRESH_TOKEN_MODEL = 'oauth2_provider.RefreshToken'
 
 # django-allauth
-REDIRECT_FIELD_NAME = env.str(
-    'REDIRECT_FIELD_NAME', 'next'
-)
-DEFAULT_REDIRECT_URL = env.str(
-    'DEFAULT_REDIRECT_URL', 'https://find-a-buyer.export.great.gov.uk/'
-)
-LOGIN_REDIRECT_URL = env.str(
-    'LOGIN_REDIRECT_URL', DEFAULT_REDIRECT_URL
-)
-LOGOUT_REDIRECT_URL = env.str(
-    'LOGOUT_REDIRECT_URL', DEFAULT_REDIRECT_URL
-)
+REDIRECT_FIELD_NAME = env.str('REDIRECT_FIELD_NAME', 'next')
+DEFAULT_REDIRECT_URL = env.str('DEFAULT_REDIRECT_URL', 'https://find-a-buyer.export.great.gov.uk/')
+LOGIN_REDIRECT_URL = env.str('LOGIN_REDIRECT_URL', DEFAULT_REDIRECT_URL)
+LOGOUT_REDIRECT_URL = env.str('LOGOUT_REDIRECT_URL', DEFAULT_REDIRECT_URL)
 ACCOUNT_AUTHENTICATION_METHOD = 'email'
 ACCOUNT_UNIQUE_EMAIL = True
 ACCOUNT_USER_MODEL_USERNAME_FIELD = None
@@ -328,12 +311,8 @@ ACCOUNT_USERNAME_REQUIRED = False
 ACCOUNT_CONFIRM_EMAIL_ON_GET = False
 ACCOUNT_EMAIL_CONFIRMATION_EXPIRE_DAYS = 3
 ACCOUNT_EMAIL_VERIFICATION = 'mandatory'
-ACCOUNT_EMAIL_SUBJECT_PREFIX = env.str(
-    'ACCOUNT_EMAIL_SUBJECT_PREFIX', 'Your great.gov.uk account: '
-)
-ACCOUNT_DEFAULT_HTTP_PROTOCOL = env.str(
-    'ACCOUNT_DEFAULT_HTTP_PROTOCOL', 'https'
-)
+ACCOUNT_EMAIL_SUBJECT_PREFIX = env.str('ACCOUNT_EMAIL_SUBJECT_PREFIX', 'Your great.gov.uk account: ')
+ACCOUNT_DEFAULT_HTTP_PROTOCOL = env.str('ACCOUNT_DEFAULT_HTTP_PROTOCOL', 'https')
 ACCOUNT_LOGIN_ATTEMPTS_LIMIT = 5
 ACCOUNT_LOGIN_ATTEMPTS_TIMEOUT = 300  # seconds
 ACCOUNT_SIGNUP_EMAIL_ENTER_TWICE = True
@@ -363,7 +342,7 @@ ACCOUNT_FORMS = {
     'login': 'sso.user.forms.LoginForm',
     'user': 'sso.user.forms.UserForm',
     'add_email': 'sso.user.forms.AddEmailForm',
-    'change_password': 'sso.user.forms.ChangePasswordForm',
+    'account_change_password': 'sso.user.forms.ChangePasswordForm',
     'set_password': 'sso.user.forms.SetPasswordForm',
     'reset_password': 'sso.user.forms.ResetPasswordForm',
     'reset_password_from_key': 'sso.user.forms.ResetPasswordKeyForm',
@@ -376,7 +355,6 @@ SESSION_COOKIE_SECURE = env.bool('SESSION_COOKIE_SECURE', True)
 
 CSRF_COOKIE_SECURE = env.bool('CSRF_COOKIE_SECURE', True)
 CSRF_COOKIE_HTTPONLY = True
-
 
 # Set with comma separated values in env
 ALLOWED_REDIRECT_DOMAINS = env.list('ALLOWED_REDIRECT_DOMAINS', default=[])
@@ -395,7 +373,6 @@ SECURE_SSL_REDIRECT = env.bool('SECURE_SSL_REDIRECT', True)
 USE_X_FORWARDED_HOST = True
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
-
 # Google tag manager
 UTM_COOKIE_DOMAIN = env.str('UTM_COOKIE_DOMAIN')
 GOOGLE_TAG_MANAGER_ID = env.str('GOOGLE_TAG_MANAGER_ID')
@@ -413,48 +390,25 @@ DIRECTORY_API_CLIENT_DEFAULT_TIMEOUT = env.str('DIRECTORY_API_CLIENT_DEFAULT_TIM
 # directory clients
 DIRECTORY_CLIENT_CORE_CACHE_EXPIRE_SECONDS = 60 * 60 * 24 * 30  # 30 days
 
-
 # Export Opportunities
 EXOPS_APPLICATION_CLIENT_ID = env.str('EXOPS_APPLICATION_CLIENT_ID')
 
 # HEADER AND FOOTER LINKS
-DIRECTORY_CONSTANTS_URL_GREAT_DOMESTIC = env.str(
-    'DIRECTORY_CONSTANTS_URL_GREAT_DOMESTIC', ''
-)
-DIRECTORY_CONSTANTS_URL_EXPORT_OPPORTUNITIES = env.str(
-    'DIRECTORY_CONSTANTS_URL_EXPORT_OPPORTUNITIES', ''
-)
-DIRECTORY_CONSTANTS_URL_SELLING_ONLINE_OVERSEAS = env.str(
-    'DIRECTORY_CONSTANTS_URL_SELLING_ONLINE_OVERSEAS', ''
-)
-DIRECTORY_CONSTANTS_URL_EVENTS = env.str(
-    'DIRECTORY_CONSTANTS_URL_EVENTS', ''
-)
+DIRECTORY_CONSTANTS_URL_GREAT_DOMESTIC = env.str('DIRECTORY_CONSTANTS_URL_GREAT_DOMESTIC', '')
+DIRECTORY_CONSTANTS_URL_EXPORT_OPPORTUNITIES = env.str('DIRECTORY_CONSTANTS_URL_EXPORT_OPPORTUNITIES', '')
+DIRECTORY_CONSTANTS_URL_SELLING_ONLINE_OVERSEAS = env.str('DIRECTORY_CONSTANTS_URL_SELLING_ONLINE_OVERSEAS', '')
+DIRECTORY_CONSTANTS_URL_EVENTS = env.str('DIRECTORY_CONSTANTS_URL_EVENTS', '')
 DIRECTORY_CONSTANTS_URL_INVEST = env.str('DIRECTORY_CONSTANTS_URL_INVEST', '')
-DIRECTORY_CONSTANTS_URL_FIND_A_SUPPLIER = env.str(
-    'DIRECTORY_CONSTANTS_URL_FIND_A_SUPPLIER', ''
-)
-DIRECTORY_CONSTANTS_URL_SINGLE_SIGN_ON = env.str(
-    'DIRECTORY_CONSTANTS_URL_SINGLE_SIGN_ON', ''
-)
-DIRECTORY_CONSTANTS_URL_FIND_A_BUYER = env.str(
-    'DIRECTORY_CONSTANTS_URL_FIND_A_BUYER', ''
-)
-DIRECTORY_CONSTANTS_URL_SSO_PROFILE = env.str(
-    'DIRECTORY_CONSTANTS_URL_SSO_PROFILE', ''
-)
+DIRECTORY_CONSTANTS_URL_FIND_A_SUPPLIER = env.str('DIRECTORY_CONSTANTS_URL_FIND_A_SUPPLIER', '')
+DIRECTORY_CONSTANTS_URL_SINGLE_SIGN_ON = env.str('DIRECTORY_CONSTANTS_URL_SINGLE_SIGN_ON', '')
+DIRECTORY_CONSTANTS_URL_FIND_A_BUYER = env.str('DIRECTORY_CONSTANTS_URL_FIND_A_BUYER', '')
+DIRECTORY_CONSTANTS_URL_SSO_PROFILE = env.str('DIRECTORY_CONSTANTS_URL_SSO_PROFILE', '')
 PRIVACY_COOKIE_DOMAIN = env.str('PRIVACY_COOKIE_DOMAIN')
 
 # the following should be 5, but our auth backend are calling check_password
 # twice, so we use 2*5
-SSO_SUSPICIOUS_LOGIN_MAX_ATTEMPTS = env.int(
-    'SSO_SUSPICIOUS_LOGIN_MAX_ATTEMPTS',
-    10
-)
-SSO_SUSPICIOUS_ACTIVITY_NOTIFICATION_EMAIL = env.str(
-    'SSO_SUSPICIOUS_ACTIVITY_NOTIFICATION_EMAIL',
-    ''
-)
+SSO_SUSPICIOUS_LOGIN_MAX_ATTEMPTS = env.int('SSO_SUSPICIOUS_LOGIN_MAX_ATTEMPTS', 10)
+SSO_SUSPICIOUS_ACTIVITY_NOTIFICATION_EMAIL = env.str('SSO_SUSPICIOUS_ACTIVITY_NOTIFICATION_EMAIL', '')
 
 # Health check
 DIRECTORY_HEALTHCHECK_TOKEN = env.str('HEALTH_CHECK_TOKEN')
@@ -483,12 +437,8 @@ SSO_BASE_URL = env.str('SSO_BASE_URL', 'https://sso.trade.great.gov.uk')
 ACTIVITY_STREAM_IP_WHITELIST = env.str('ACTIVITY_STREAM_IP_WHITELIST', '')
 # Defaults are not used so we don't accidentally expose the endpoint
 # with default credentials
-ACTIVITY_STREAM_ACCESS_KEY_ID = env.str(
-    'ACTIVITY_STREAM_ACCESS_KEY_ID'
-)
-ACTIVITY_STREAM_SECRET_ACCESS_KEY = env.str(
-    'ACTIVITY_STREAM_SECRET_ACCESS_KEY'
-)
+ACTIVITY_STREAM_ACCESS_KEY_ID = env.str('ACTIVITY_STREAM_ACCESS_KEY_ID')
+ACTIVITY_STREAM_SECRET_ACCESS_KEY = env.str('ACTIVITY_STREAM_SECRET_ACCESS_KEY')
 ACTIVITY_STREAM_NONCE_EXPIRY_SECONDS = 60
 
 # feature flags
@@ -529,9 +479,7 @@ ACCOUNT_SESSION_REMEMBER = True
 # Admin restrictor
 RESTRICT_ADMIN = env.bool('IP_RESTRICTOR_RESTRICT_IPS', False)
 ALLOWED_ADMIN_IPS = env.list('IP_RESTRICTOR_ALLOWED_ADMIN_IPS', default=[])
-ALLOWED_ADMIN_IP_RANGES = env.list(
-    'IP_RESTRICTOR_ALLOWED_ADMIN_IP_RANGES', default=[]
-)
+ALLOWED_ADMIN_IP_RANGES = env.list('IP_RESTRICTOR_ALLOWED_ADMIN_IP_RANGES', default=[])
 
 
 # Directory Components

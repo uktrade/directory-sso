@@ -11,8 +11,6 @@ import os
 
 from django.core.wsgi import get_wsgi_application
 
-from whitenoise.django import DjangoWhiteNoise
-
 
 class SetScriptName:
     def __init__(self, application):
@@ -26,5 +24,4 @@ class SetScriptName:
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "conf.settings")
 
 application = get_wsgi_application()
-application = DjangoWhiteNoise(application)
 application = SetScriptName(application)
