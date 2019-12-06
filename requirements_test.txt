@@ -11,7 +11,7 @@ attrs==18.1.0             # via jsonschema, packaging, pytest
 beautifulsoup4==4.6.0     # via directory-components
 boto3==1.10.23
 botocore==1.13.28         # via boto3, s3transfer
-certifi==2018.4.16        # via requests
+certifi==2018.4.16        # via requests, sentry-sdk
 cffi==1.11.5              # via cryptography
 chardet==3.0.4            # via requests
 codecov==2.0.15
@@ -22,7 +22,7 @@ directory-api-client==21.0.0
 directory-client-core==6.1.0  # via directory-api-client
 directory-components==35.6.2
 directory-constants==20.9.0
-directory-healthcheck==1.1.2
+directory-healthcheck==2.0.0
 directory-validators==6.0.0
 dj-database-url==0.5.0
 django-admin-ip-restrictor==1.0.0
@@ -38,7 +38,7 @@ django-oauth-toolkit==1.2.0
 django-pglocks==1.0.3
 django-redis==4.10.0
 django-staff-sso-client==0.4.0
-django==2.2.7
+django==2.2.8
 djangorestframework==3.10.3
 docopt==0.6.2             # via notifications-python-client
 docutils==0.14            # via botocore
@@ -82,12 +82,13 @@ pytest==4.6.5
 python-dateutil==2.7.3    # via botocore, faker, freezegun
 python3-openid==3.1.0     # via django-allauth
 pytz==2017.2              # via directory-validators, django
-raven==6.10.0
+raven==6.10.0             # via django-staff-sso-client
 redis==2.10.5             # via django-redis
 requests-file==1.4.3      # via tldextract
 requests-oauthlib==1.0.0  # via django-allauth, django-staff-sso-client
 requests[security]==2.22.0
 s3transfer==0.2.1         # via boto3
+sentry-sdk==0.13.4
 sigauth==4.1.1
 six==1.11.0               # via cryptography, django-extensions, faker, freezegun, jsonschema, mohawk, more-itertools, packaging, pyopenssl, pyrsistent, pytest, pytest-xdist, python-dateutil, requests-file, w3lib
 sqlparse==0.3.0           # via django
@@ -99,3 +100,6 @@ w3lib==1.21.0             # via directory-client-core
 wcwidth==0.1.7            # via pytest
 whitenoise==4.1.4
 zipp==0.6.0               # via importlib-metadata
+
+# The following packages are considered to be unsafe in a requirements file:
+# setuptools

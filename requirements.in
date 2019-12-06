@@ -1,5 +1,5 @@
 dj-database-url==0.5.0
-django>=2.2.4<2.3
+django==2.2.8
 django-allauth==0.40.0
 django-environ==0.4.5
 djangorestframework==3.10.3
@@ -10,7 +10,7 @@ django-pglocks==1.0.3
 whitenoise==4.1.4
 gunicorn==20.0.4
 psycopg2==2.8.4
-raven==6.10.0
+sentry-sdk==0.13.4
 boto3==1.10.23
 tldextract==2.2.2
 django-redis==4.10.0
@@ -19,7 +19,7 @@ sigauth==4.1.1
 directory-constants==20.9.0
 directory-api-client==21.0.0
 directory-validators==6.0.0
-directory-healthcheck==1.1.2
+directory-healthcheck==2.0.0
 directory-components==35.6.2
 requests[security]==2.22.0
 urllib3>=1.24.2<2.0.0
