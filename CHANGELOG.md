@@ -8,6 +8,7 @@
 - TT-2197 Add testapi endpoint to SSO to delete users created by automated tests
 - No ticket - Upgrade Django
 - TT-2188 - Add GDRP admin filter
+- TT-1304 - Upgrade sentry client
 
 ### Fixed bugs
 
