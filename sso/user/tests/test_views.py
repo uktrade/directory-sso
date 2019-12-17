@@ -9,13 +9,14 @@ from directory_constants import urls
 from directory_api_client import api_client
 import pytest
 
+from django.conf import settings
 from django.http import HttpResponse
 from django.urls import reverse, reverse_lazy
 
 from core.tests.helpers import create_response
-from sso.adapters import EMAIL_CONFIRMATION_TEMPLATE_ID, PASSWORD_RESET_TEMPLATE_ID
 from sso.user import models, views
 from sso.user.tests import factories
+from sso.verification.models import VerificationCode
 
 
 @pytest.fixture(autouse=True)
@@ -147,6 +148,20 @@ def test_login_redirect_no_profile_unverified(mock_notification, client, user, s
     assert response.status_code == 302
     assert response.url == reverse("account_email_verification_sent")
     assert mock_notification().send_email_notification.call_count == 1
+
+
+@pytest.mark.django_db
+@patch('sso.adapters.NotificationsAPIClient')
+def test_login_redirect_new_flow_unverified(mock_notification, client, user, settings):
+    VerificationCode.objects.create(user=user)
+    response = client.post(
+        reverse('account_login'),
+        {'login': user.email, 'password': 'password'}
+    )
+
+    assert response.status_code == 302
+    assert response.url == 'http://profile.trade.great:8006/profile/enrol/resend-verification/resend/'
+    assert mock_notification().send_email_notification.call_count == 0
 
 
 @pytest.mark.django_db
@@ -380,7 +395,7 @@ def test_confirm_email_redirect_next_param_if_next_param_valid(
     assert call == mock.call(
         email_address='jim@example.com',
         personalisation={'confirmation_link': mock.ANY},
-        template_id=EMAIL_CONFIRMATION_TEMPLATE_ID
+        template_id=settings.GOV_NOTIFY_SIGNUP_CONFIRMATION_TEMPLATE_ID
     )
 
     url = call[1]['personalisation']['confirmation_link']
@@ -427,7 +442,7 @@ def test_confirm_email_redirect_next_param_if_next_param_invalid(
     assert call == mock.call(
         email_address='jim@example.com',
         personalisation={'confirmation_link': mock.ANY},
-        template_id=EMAIL_CONFIRMATION_TEMPLATE_ID
+        template_id=settings.GOV_NOTIFY_SIGNUP_CONFIRMATION_TEMPLATE_ID
     )
 
     url = call[1]['personalisation']['confirmation_link']
@@ -475,7 +490,7 @@ def test_confirm_email_redirect_next_param_if_next_param_internal(
     assert call == mock.call(
         email_address='jim@example.com',
         personalisation={'confirmation_link': mock.ANY},
-        template_id=EMAIL_CONFIRMATION_TEMPLATE_ID
+        template_id=settings.GOV_NOTIFY_SIGNUP_CONFIRMATION_TEMPLATE_ID
     )
 
     url = call[1]['personalisation']['confirmation_link']
@@ -513,7 +528,7 @@ def test_confirm_email_redirect_default_param_if_no_next_param(
     assert call == mock.call(
         email_address='jim@example.com',
         personalisation={'confirmation_link': mock.ANY},
-        template_id=EMAIL_CONFIRMATION_TEMPLATE_ID
+        template_id=settings.GOV_NOTIFY_SIGNUP_CONFIRMATION_TEMPLATE_ID
     )
 
     url = call[1]['personalisation']['confirmation_link']
@@ -541,7 +556,7 @@ def test_password_reset_redirect_default_param_if_no_next_param(
     assert call == mock.call(
         email_address='test@example.com',
         personalisation={'password_reset': mock.ANY},
-        template_id=PASSWORD_RESET_TEMPLATE_ID
+        template_id=settings.GOV_NOTIFY_PASSWORD_RESET_TEMPLATE_ID
     )
     url = call[1]['personalisation']['password_reset']
 
@@ -576,7 +591,7 @@ def test_password_reset_no_internal_session(
     assert call == mock.call(
         email_address='test@example.com',
         personalisation={'password_reset': mock.ANY},
-        template_id=PASSWORD_RESET_TEMPLATE_ID
+        template_id=settings.GOV_NOTIFY_PASSWORD_RESET_TEMPLATE_ID
     )
     url = call[1]['personalisation']['password_reset']
 
@@ -614,7 +629,7 @@ def test_password_reset_redirect_next_param_if_next_param_valid(
     assert call == mock.call(
         email_address='test@example.com',
         personalisation={'password_reset': mock.ANY},
-        template_id=PASSWORD_RESET_TEMPLATE_ID
+        template_id=settings.GOV_NOTIFY_PASSWORD_RESET_TEMPLATE_ID
     )
     url = call[1]['personalisation']['password_reset']
 
@@ -655,7 +670,7 @@ def test_password_reset_redirect_next_param_if_next_param_invalid(
     assert call == mock.call(
         email_address='test@example.com',
         personalisation={'password_reset': mock.ANY},
-        template_id=PASSWORD_RESET_TEMPLATE_ID
+        template_id=settings.GOV_NOTIFY_PASSWORD_RESET_TEMPLATE_ID
     )
     url = call[1]['personalisation']['password_reset']
 
@@ -692,7 +707,7 @@ def test_password_reset_redirect_next_param_if_next_param_internal(
     assert call == mock.call(
         email_address='test@example.com',
         personalisation={'password_reset': mock.ANY},
-        template_id=PASSWORD_RESET_TEMPLATE_ID
+        template_id=settings.GOV_NOTIFY_PASSWORD_RESET_TEMPLATE_ID
     )
     url = call[1]['personalisation']['password_reset']
 
@@ -823,7 +838,7 @@ def test_confirm_email_redirect_next_param_oath2(
     assert call == mock.call(
         email_address='jim@example.com',
         personalisation={'confirmation_link': mock.ANY},
-        template_id=EMAIL_CONFIRMATION_TEMPLATE_ID
+        template_id=settings.GOV_NOTIFY_SIGNUP_CONFIRMATION_TEMPLATE_ID
     )
     url = call[1]['personalisation']['confirmation_link']
     response = client.post(url)
@@ -875,7 +890,7 @@ def test_confirm_email_redirect_next_param(
     assert call == mock.call(
         email_address='jim@example.com',
         personalisation={'confirmation_link': mock.ANY},
-        template_id=EMAIL_CONFIRMATION_TEMPLATE_ID
+        template_id=settings.GOV_NOTIFY_SIGNUP_CONFIRMATION_TEMPLATE_ID
     )
     url = call[1]['personalisation']['confirmation_link']
     response = client.post(url)
@@ -1039,7 +1054,7 @@ def test_confirm_email_login_response_with_sso_display_logged_in_cookie(
     assert call == mock.call(
         email_address='jim@example.com',
         personalisation={'confirmation_link': mock.ANY},
-        template_id=EMAIL_CONFIRMATION_TEMPLATE_ID
+        template_id=settings.GOV_NOTIFY_SIGNUP_CONFIRMATION_TEMPLATE_ID
     )
     url = call[1]['personalisation']['confirmation_link']
     response = client.post(url)
@@ -1067,7 +1082,7 @@ def test_confirm_email_login_response_with_sso_handles_next(mocked_notification_
     assert call == mock.call(
         email_address='jim@example.com',
         personalisation={'confirmation_link': mock.ANY},
-        template_id=EMAIL_CONFIRMATION_TEMPLATE_ID
+        template_id=settings.GOV_NOTIFY_SIGNUP_CONFIRMATION_TEMPLATE_ID
     )
     url = call[1]['personalisation']['confirmation_link']
     response = client.post(url)
