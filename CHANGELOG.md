@@ -5,6 +5,7 @@
 ### Fixed bugs
 
 ### Implemented enhancements
+- TT-2234 - upgrade staff sso foruser id
 
 ## [2019.12.18](https://github.com/uktrade/directory-sso/releases/tag/2019.12.18_1)
 [Full Changelog](https://github.com/uktrade/directory-sso/compare/2019.10.30...2019.12.18_1)
@@ -16,7 +17,6 @@
 - No ticket - Upgrade Django
 - TT-2188 - Add GDRP admin filter
 - TT-1304 - Upgrade sentry client
-- TT-2234 - upgrade staff sso foruser id
 
 ### Fixed bugs
 - TT-1096 - redirect to resend verification code if not provided code
