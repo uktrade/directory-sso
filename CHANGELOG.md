@@ -6,7 +6,7 @@
 
 ### Implemented enhancements
 
-## [2019.12.18](https://github.com/uktrade/directory-sso/releases/tag/2019.12.18)
+## [2019.12.18](https://github.com/uktrade/directory-sso/releases/tag/2019.12.18_1)
 [Full Changelog](https://github.com/uktrade/directory-sso/compare/2019.10.30...2019.12.18_1)
 
 ### Implemented enhancements
