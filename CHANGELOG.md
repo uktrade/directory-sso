@@ -9,6 +9,7 @@
 - No ticket - Upgrade Django
 - TT-2188 - Add GDRP admin filter
 - TT-1304 - Upgrade sentry client
+- TT-2234 - upgrade staff sso foruser id
 
 ### Fixed bugs
 - TT-1096 - redirect to resend verification code if not provided code
