@@ -11,6 +11,7 @@
 - TT-1304 - Upgrade sentry client
 
 ### Fixed bugs
+- TT-1096 - redirect to resend verification code if not provided code
 
 ## [2019.10.30](https://github.com/uktrade/directory-sso/releases/tag/.2019.10.30)
 [Full Changelog](https://github.com/uktrade/directory-sso/compare/2019.08.13_1....2019.10.30)

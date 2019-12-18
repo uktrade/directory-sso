@@ -2,22 +2,21 @@ import urllib.parse
 
 from django.conf import settings
 from django.urls import reverse
+from django.shortcuts import redirect
 
 from allauth.account.adapter import DefaultAccountAdapter
 from allauth.account.utils import get_request_param
+from directory_constants.urls import domestic
 from notifications_python_client import NotificationsAPIClient
 
 from sso.user.utils import get_url_with_redirect, is_valid_redirect
+from sso.verification.models import VerificationCode
 
-EMAIL_CONFIRMATION_TEMPLATE_ID = \
-    settings.GOV_NOTIFY_SIGNUP_CONFIRMATION_TEMPLATE_ID
-PASSWORD_RESET_TEMPLATE_ID = settings.GOV_NOTIFY_PASSWORD_RESET_TEMPLATE_ID
 
 EMAIL_TEMPLATES = {
-    'account/email/email_confirmation_signup': EMAIL_CONFIRMATION_TEMPLATE_ID,
-    'account/email/email_confirmation': EMAIL_CONFIRMATION_TEMPLATE_ID,
-
-    'account/email/password_reset_key': PASSWORD_RESET_TEMPLATE_ID
+    'account/email/email_confirmation_signup': settings.GOV_NOTIFY_SIGNUP_CONFIRMATION_TEMPLATE_ID,
+    'account/email/email_confirmation': settings.GOV_NOTIFY_SIGNUP_CONFIRMATION_TEMPLATE_ID,
+    'account/email/password_reset_key': settings.GOV_NOTIFY_PASSWORD_RESET_TEMPLATE_ID
 }
 
 
@@ -29,15 +28,11 @@ class AccountAdapter(DefaultAccountAdapter):
         """
         redirect_url = settings.DEFAULT_REDIRECT_URL
 
-        redirect_param_value = get_request_param(
-            request, settings.REDIRECT_FIELD_NAME
-        )
+        redirect_param_value = get_request_param(request, settings.REDIRECT_FIELD_NAME)
         if redirect_param_value:
             redirect_url = redirect_param_value
 
-        email_confirmation_url = super().get_email_confirmation_url(
-            request, emailconfirmation
-        )
+        email_confirmation_url = super().get_email_confirmation_url(request, emailconfirmation)
 
         if redirect_url:
             if is_valid_redirect(urllib.parse.unquote(redirect_url)):
@@ -68,9 +63,7 @@ class AccountAdapter(DefaultAccountAdapter):
         Saves a new `User` instance using information provided in the
         signup form.
         """
-        user = super().save_user(
-            request, user, form, commit=False
-        )
+        user = super().save_user(request, user, form, commit=False)
 
         user.utm = request.COOKIES.get('ed_utm', {})
 
@@ -92,7 +85,7 @@ class AccountAdapter(DefaultAccountAdapter):
         template_id = EMAIL_TEMPLATES[template_prefix]
 
         #  build personalisation dict from context
-        if template_id == PASSWORD_RESET_TEMPLATE_ID:
+        if template_id == settings.GOV_NOTIFY_PASSWORD_RESET_TEMPLATE_ID:
             personalisation = {
                 'password_reset': self.build_password_reset_url(context)
             }
@@ -109,3 +102,21 @@ class AccountAdapter(DefaultAccountAdapter):
             template_id=template_id,
             personalisation=personalisation,
         )
+
+    def send_confirmation_mail(self, request, emailconfirmation, signup):
+        # Send the email only if the user signed up via the "old flow". The "new flow" involved a verification code
+        try:
+            emailconfirmation.email_address.user.verification_code
+        except VerificationCode.DoesNotExist:
+            return super().send_confirmation_mail(request=request, emailconfirmation=emailconfirmation, signup=signup)
+        else:
+            pass
+
+    def respond_email_verification_sent(self, request, user):
+        # Checking if using "old flow" or "new flow".
+        try:
+            user.verification_code
+        except VerificationCode.DoesNotExist:
+            return super().respond_email_verification_sent(request, user)
+        else:
+            return redirect(domestic.SINGLE_SIGN_ON_PROFILE / 'enrol/resend-verification/resend/')
