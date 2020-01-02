@@ -11,6 +11,7 @@
 - TT-1304 - Upgrade sentry client
 
 ### Fixed bugs
+- TT-1614 - set secure flag on sso_display_logged_in
 
 ## [2019.10.30](https://github.com/uktrade/directory-sso/releases/tag/.2019.10.30)
 [Full Changelog](https://github.com/uktrade/directory-sso/compare/2019.08.13_1....2019.10.30)
