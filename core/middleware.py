@@ -15,7 +15,7 @@ class SSODisplayLoggedInCookieMiddleware(MiddlewareMixin):
             value=cookie_value,
             domain=settings.SESSION_COOKIE_DOMAIN,
             max_age=settings.SESSION_COOKIE_AGE,
-            secure=False,
+            secure=settings.SESSION_COOKIE_SECURE,
             httponly=False
         )
         return response

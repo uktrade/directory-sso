@@ -1014,6 +1014,16 @@ def test_signup_saves_hashed_id(
 
 
 @pytest.mark.django_db
+@pytest.mark.parametrize('is_secure,expected', [(True, True), (False, '')])
+def test_sso_display_logged_in_cookie_secure(authed_client, settings, is_secure, expected):
+    settings.SESSION_COOKIE_SECURE = is_secure
+
+    response = authed_client.get(reverse('account_login'))
+
+    assert response.cookies['sso_display_logged_in']['secure'] == expected
+
+
+@pytest.mark.django_db
 def test_login_response_with_sso_display_logged_in_cookie(client, verified_user):
     response = client.post(
         reverse('account_login'),
@@ -1024,9 +1034,7 @@ def test_login_response_with_sso_display_logged_in_cookie(client, verified_user)
 
 
 @pytest.mark.django_db
-def test_logout_response_with_sso_display_logged_in_cookie(
-    authed_client
-):
+def test_logout_response_with_sso_display_logged_in_cookie(authed_client):
     response = authed_client.post(reverse('account_logout'))
 
     assert response.cookies['sso_display_logged_in'].value == 'false'

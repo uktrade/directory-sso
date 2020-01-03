@@ -9,6 +9,7 @@
 
 ### Fixed bugs
 - TT-1096 - redirect to resend verification code if not provided code
+- TT-1614 - set secure flag on sso_display_logged_in
 
 ## [2019.12.18](https://github.com/uktrade/directory-sso/releases/tag/2019.12.18_1)
 [Full Changelog](https://github.com/uktrade/directory-sso/compare/2019.10.30...2019.12.18_1)
