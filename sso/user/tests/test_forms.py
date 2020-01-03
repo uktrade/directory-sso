@@ -5,10 +5,10 @@ from allauth.account.models import EmailAddress
 from directory_constants import urls
 import pytest
 
-from django.forms.fields import Field
 from django.core.validators import EmailValidator
+from django.conf import settings
+from django.forms.fields import Field
 
-from sso.adapters import PASSWORD_RESET_TEMPLATE_ID
 from sso.user import forms
 from sso.user.models import User
 
@@ -84,7 +84,7 @@ def test_password_reset_form_accepts_existing_email_and_sends(
     assert call == mock.call(
         email_address='verified@example.com',
         personalisation={'password_reset': mock.ANY},
-        template_id=PASSWORD_RESET_TEMPLATE_ID
+        template_id=settings.GOV_NOTIFY_PASSWORD_RESET_TEMPLATE_ID
     )
 
 
