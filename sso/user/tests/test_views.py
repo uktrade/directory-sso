@@ -356,12 +356,8 @@ def test_logout_redirect_next_param_if_next_param_internal(
 
 
 @pytest.mark.django_db
-def test_confirm_email_invalid_key(
-    settings, client, email_confirmation
-):
-    response = client.get(
-        '/accounts/confirm-email/invalid/'
-    )
+def test_confirm_email_invalid_key(settings, client, email_confirmation):
+    response = client.get('/sso/accounts/confirm-email/invalid/')
 
     assert response.status_code == 200
     assert "confirmation link expired or is invalid" in str(response.content)
@@ -404,9 +400,7 @@ def test_confirm_email_redirect_next_param_if_next_param_valid(
     assert response.status_code == 302
     next_url = response.url
 
-    assert next_url == (
-        '/accounts/login/?next=http%3A%2F%2Fwww.example.com'
-    )
+    assert next_url == '/sso/accounts/login/?next=http%3A%2F%2Fwww.example.com'
 
     response = client.get(next_url)
     assert response.url == expected
@@ -453,9 +447,7 @@ def test_confirm_email_redirect_next_param_if_next_param_invalid(
 
     next_url = response.url
 
-    assert next_url == (
-        '/accounts/login/?next=http%3A%2F%2Fother.com'
-    )
+    assert next_url == '/sso/accounts/login/?next=http%3A%2F%2Fother.com'
 
     response = client.get(next_url)
     assert response.url == settings.DEFAULT_REDIRECT_URL
@@ -500,7 +492,7 @@ def test_confirm_email_redirect_next_param_if_next_param_internal(
 
     next_url = response.url
 
-    assert next_url == '/accounts/login/?next=%2Fexporting%2F'
+    assert next_url == '/sso/accounts/login/?next=%2Fexporting%2F'
 
     response = client.get(next_url)
     assert response.url == expected
@@ -572,7 +564,7 @@ def test_password_reset_redirect_default_param_if_no_next_param(
 
 @pytest.mark.django_db
 def test_password_reset_invalid_key(client, user):
-    response = client.get('/accounts/password/reset/key/gc-asdf/')
+    response = client.get('/sso/accounts/password/reset/key/gc-asdf/')
 
     assert "Bad Token" in str(response.content)
 
@@ -807,21 +799,17 @@ def test_signup_email_raises_exception(mock_save, client):
 
 @patch('sso.adapters.NotificationsAPIClient')
 @pytest.mark.django_db
-def test_confirm_email_redirect_next_param_oath2(
-    mocked_notification_client, settings, client, email_confirmation
-):
+def test_confirm_email_redirect_next_param_oath2(mocked_notification_client, settings, client, email_confirmation):
     settings.DEFAULT_REDIRECT_URL = 'http://other.com'
     settings.ALLOWED_REDIRECT_DOMAINS = ['example.com', 'other.com']
     redirect_field_value = (
-        '/oauth2/authorize/%3Fclient_id%3Daisudhgfg943287895as'
+        '/sso/oauth2/authorize/%3Fclient_id%3Daisudhgfg943287895as'
         '%26redirect_uri%3Dhttps%253A%252F%252Fuktieig-secondary'
         '.staging.dxw.net%252Fusers%252Fauth%252Fexporting_is_great'
         '%252Fcallback%26response_type%3Dcode%26scope%3Dprofile%26st'
         'ate%3D23947asdoih4380'
     )
-    signup_url = "{}?next={}".format(
-        reverse('account_signup'), redirect_field_value
-    )
+    signup_url = "{}?next={}".format(reverse('account_signup'), redirect_field_value)
     client.post(
         signup_url,
         data={
@@ -848,7 +836,7 @@ def test_confirm_email_redirect_next_param_oath2(
     next_url = response.url
 
     assert next_url == (
-        '/accounts/login/?next=%2Foauth2%2Fauthorize%2F%3Fclient_id'
+        '/sso/accounts/login/?next=%2Fsso%2Foauth2%2Fauthorize%2F%3Fclient_id'
         '%3Daisudhgfg943287895as%26redirect_uri%3Dhttps%253A%252F%252F'
         'uktieig-secondary.staging.dxw.net%252Fusers%252Fauth%252F'
         'exporting_is_great%252Fcallback%26response_type%3Dcode'
@@ -857,7 +845,7 @@ def test_confirm_email_redirect_next_param_oath2(
 
     response = client.get(next_url)
     assert response.url == (
-        '/oauth2/authorize/?client_id=aisudhgfg943287895as&redirect_uri'
+        '/sso/oauth2/authorize/?client_id=aisudhgfg943287895as&redirect_uri'
         '=https%3A%2F%2Fuktieig-secondary.staging.dxw.net%2Fusers%2Fauth'
         '%2Fexporting_is_great%2Fcallback&response_type=code&scope=profile'
         '&state=23947asdoih4380'
@@ -866,9 +854,7 @@ def test_confirm_email_redirect_next_param_oath2(
 
 @patch('sso.adapters.NotificationsAPIClient')
 @pytest.mark.django_db
-def test_confirm_email_redirect_next_param(
-    mocked_notification_client, settings, client, email_confirmation
-):
+def test_confirm_email_redirect_next_param(mocked_notification_client, settings, client, email_confirmation):
     settings.DEFAULT_REDIRECT_URL = 'http://other.com'
     settings.ALLOWED_REDIRECT_DOMAINS = ['example.com', 'other.com']
     redirect_field_value = 'http%3A//www.test.example.com/register'
@@ -897,9 +883,7 @@ def test_confirm_email_redirect_next_param(
     assert response.status_code == 302
     next_url = response.url
 
-    assert next_url == (
-        '/accounts/login/?next=http%3A%2F%2Fwww.test.example.com%2Fregister'
-    )
+    assert next_url == '/sso/accounts/login/?next=http%3A%2F%2Fwww.test.example.com%2Fregister'
 
     response = client.get(next_url)
     assert response.url == 'http://www.test.example.com/register'
@@ -1097,8 +1081,7 @@ def test_confirm_email_login_response_with_sso_handles_next(mocked_notification_
 
     assert response.status_code == 302
     assert response.url == (
-       "/accounts/login/"
-       "?next=http%3A%2F%2Fbuyer.trade.great%3A8001%2Fcompany-profile"
+       "/sso/accounts/login/?next=http%3A%2F%2Fbuyer.trade.great%3A8001%2Fcompany-profile"
     )
 
 

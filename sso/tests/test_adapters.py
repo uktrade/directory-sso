@@ -119,37 +119,25 @@ def test_account_adapter_returns_default_url_if_next_param_invalid(
     assert url == 'default_url'
 
 
-@patch('allauth.account.adapter.DefaultAccountAdapter.'
-       'send_mail', Mock())
-@patch('allauth.account.adapter.DefaultAccountAdapter.'
-       'get_email_confirmation_url', Mock(return_value='default_url'))
-def test_account_adapter_returns_modified_url_if_next_param_valid(
-        rf, settings):
+@patch('allauth.account.adapter.DefaultAccountAdapter.send_mail', Mock())
+@patch('allauth.account.adapter.DefaultAccountAdapter.get_email_confirmation_url', Mock(return_value='default_url'))
+def test_account_adapter_returns_modified_url_if_next_param_valid(rf, settings):
     settings.ALLOWED_REDIRECT_DOMAINS = ['iloveexporting.com']
     adapter = AccountAdapter()
     request = rf.get('/export?next=http://iloveexporting.com')
 
     url = adapter.get_email_confirmation_url(request, None)
 
-    assert url == (
-        'default_url?next=%2Faccounts%2Flogin%2F%3F'
-        'next%3Dhttp%253A%252F%252Filoveexporting.com'
-    )
+    assert url == 'default_url?next=%2Fsso%2Faccounts%2Flogin%2F%3Fnext%3Dhttp%253A%252F%252Filoveexporting.com'
 
 
-@patch('allauth.account.adapter.DefaultAccountAdapter.'
-       'send_mail', Mock())
-@patch('allauth.account.adapter.DefaultAccountAdapter.'
-       'get_email_confirmation_url', Mock(return_value='default_url'))
-def test_account_adapter_returns_modified_url_if_next_param_internal(
-        rf, settings):
+@patch('allauth.account.adapter.DefaultAccountAdapter.send_mail', Mock())
+@patch('allauth.account.adapter.DefaultAccountAdapter.get_email_confirmation_url', Mock(return_value='default_url'))
+def test_account_adapter_returns_modified_url_if_next_param_internal(rf, settings):
     settings.ALLOWED_REDIRECT_DOMAINS = []
     adapter = AccountAdapter()
     request = rf.get('/export?next=/exportingismytruelove/')
 
     url = adapter.get_email_confirmation_url(request, None)
 
-    assert url == (
-        'default_url?next=%2Faccounts%2Flogin%2F%3F'
-        'next%3D%252Fexportingismytruelove%252F'
-    )
+    assert url == 'default_url?next=%2Fsso%2Faccounts%2Flogin%2F%3Fnext%3D%252Fexportingismytruelove%252F'

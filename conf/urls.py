@@ -107,6 +107,10 @@ urlpatterns = [
 if settings.FEATURE_ENFORCE_STAFF_SSO_ENABLED:
     authbroker_urls = [
         url(r'^admin/login/$', RedirectView.as_view(url=reverse_lazy('authbroker_client:login'), query_string=True)),
-        url('^auth/', include('authbroker_client.urls')),
+        url(r'^auth/', include('authbroker_client.urls')),
     ]
     urlpatterns = [url('^', include(authbroker_urls))] + urlpatterns
+
+
+# += for backwards compatibility. remove once released to prod
+urlpatterns += [url(r'^sso/', include(urlpatterns[:]))]
