@@ -6,6 +6,7 @@
 
 ### Implemented enhancements
 - TT-2234 - upgrade staff sso foruser id
+- TT-2248 - Facilitate .internal domain communication
 
 ### Fixed bugs
 - TT-1096 - redirect to resend verification code if not provided code
