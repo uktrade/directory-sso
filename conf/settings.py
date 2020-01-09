@@ -326,7 +326,6 @@ SIGAUTH_URL_NAMES_WHITELIST = [
 ]
 
 # Use proxy host name when generating links (e.g. in emails)
-SECURE_SSL_REDIRECT = env.bool('SECURE_SSL_REDIRECT', True)
 USE_X_FORWARDED_HOST = True
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
