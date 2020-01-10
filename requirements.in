@@ -24,5 +24,5 @@ directory-components==35.6.2
 requests[security]==2.22.0
 urllib3>=1.24.2<2.0.0
 django-cryptography==0.3.0
-django-admin-ip-restrictor==1.0.0
+django-admin-ip-restrictor==2.1.0
 django-staff-sso-client==1.0.0
