@@ -2,6 +2,19 @@
 
 ## Pre release
 
+### Fixed bugs
+
+### Implemented enhancements
+- TT-2234 - upgrade staff sso foruser id
+- TT-2248 - Facilitate .internal domain communication
+
+### Fixed bugs
+- TT-1096 - redirect to resend verification code if not provided code
+- TT-1614 - set secure flag on sso_display_logged_in
+
+## [2019.12.18](https://github.com/uktrade/directory-sso/releases/tag/2019.12.18_1)
+[Full Changelog](https://github.com/uktrade/directory-sso/compare/2019.10.30...2019.12.18_1)
+
 ### Implemented enhancements
 - GTRANSFORM-385 - Business sso response to include first/last name
 - TT-1798 implement-staff-sso
@@ -9,8 +22,6 @@
 - No ticket - Upgrade Django
 - TT-2188 - Add GDRP admin filter
 - TT-1304 - Upgrade sentry client
-
-### Fixed bugs
 
 ## [2019.10.30](https://github.com/uktrade/directory-sso/releases/tag/.2019.10.30)
 [Full Changelog](https://github.com/uktrade/directory-sso/compare/2019.08.13_1....2019.10.30)
