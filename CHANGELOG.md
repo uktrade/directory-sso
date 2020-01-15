@@ -5,6 +5,13 @@
 ### Fixed bugs
 
 ### Implemented enhancements
+
+### Fixed bugs 
+
+## [2020.01.14](https://github.com/uktrade/directory-sso/releases/tag/2020.01.14)
+[Full Changelog](https://github.com/uktrade/directory-sso/compare/2019.12.18_1...2020.01.14)
+
+### Implemented enhancements
 - TT-2234 - upgrade staff sso foruser id
 - TT-2248 - Facilitate .internal domain communication
 
