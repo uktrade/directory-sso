@@ -15,10 +15,6 @@ def redirect_next_processor(request):
         request=request,
         redirect_field_name=redirect_field_name
     )
-    if settings.FEATURE_FLAGS['NEW_ENROLMENT_ON']:
-        enrolment_url = urls.domestic.SINGLE_SIGN_ON_PROFILE / 'enrol/'
-    else:
-        enrolment_url = reverse('account_signup')
 
     add_next = partial(get_url_with_redirect, redirect_url=redirect_url)
     return {
@@ -27,9 +23,7 @@ def redirect_next_processor(request):
         'sso_logout_url': add_next(reverse('account_logout')),
         'sso_login_url': add_next(reverse('account_login')),
         'sso_reset_password_url': add_next(reverse('account_reset_password')),
-        'sso_register_url': add_next(enrolment_url),
-        'sso_is_logged_in': bool(
-            request.user and request.user.is_authenticated
-        ),
+        'sso_register_url': add_next(urls.domestic.SINGLE_SIGN_ON_PROFILE / 'enrol/'),
+        'sso_is_logged_in': bool(request.user and request.user.is_authenticated),
         'sso_profile_url': settings.SSO_PROFILE_URL,
     }

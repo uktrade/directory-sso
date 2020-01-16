@@ -403,7 +403,6 @@ FEATURE_FLAGS = {
     'DISABLE_REGISTRATION_ON': env.bool('FEATURE_DISABLE_REGISTRATION', False),
     'TEST_API_ON': env.bool('FEATURE_TEST_API_ENABLED', False),
     'MAINTENANCE_MODE_ON': env.bool('FEATURE_MAINTENANCE_MODE_ENABLED', False),  # used by directory-components
-    'NEW_ENROLMENT_ON': env.bool('FEATURE_NEW_ENROLMENT_ENABLED', False),
 }
 
 
