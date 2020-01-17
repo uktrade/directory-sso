@@ -72,7 +72,7 @@ class LoginView(RedirectToNextMixin, allauth_views.LoginView):
         response = super().form_valid(form)
         if response.status_code == 302 and response.url == reverse("account_email_verification_sent"):
             return response
-        elif settings.FEATURE_FLAGS['NEW_ENROLMENT_ON']:
+        else:
             self.request.session.save()
             has_profile = utils.user_has_profile(form.user)
             if not has_profile:

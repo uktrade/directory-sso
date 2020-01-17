@@ -3,6 +3,7 @@
 ## Pre release
 
 ### Fixed bugs
+- TT-2254 - Cleaned up obsolete settings
 
 ### Implemented enhancements
 
