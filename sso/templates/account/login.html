@@ -1,6 +1,7 @@
 {% extends "account/base.html" %}
 
 {% load i18n %}
+{% load socialaccount %}
 {% load breadcrumbs from directory_components %}
 {% block head_title %}Sign in - great.gov.uk{% endblock %}
 
@@ -12,6 +13,12 @@
   <div class="column-half">
     <h1 class="heading-xlarge margin-bottom-15">Sign in</h1>
     <p>Use your great.gov.uk login details to sign in.</p>
+    <br>
+
+    <a href="{% provider_login_url 'google' %}">Google Sign Up</a>
+    <a href="{% provider_login_url 'linkedin' %}">LinkedIn Sign Up</a>
+
+    <br>
     <section class="column-two-thirds" id="login-form">
       <form method="POST" action="{% url 'account_login' %}">
         {% csrf_token %}

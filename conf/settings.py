@@ -42,6 +42,8 @@ INSTALLED_APPS = [
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
+    'allauth.socialaccount.providers.linkedin_oauth2',
+    'allauth.socialaccount.providers.google',
     'oauth2_provider',
     'rest_framework',
     'django_filters',
@@ -443,3 +445,22 @@ if env.bool('FEATURE_SETTINGS_JANITOR_ENABLED', False):
     DIRECTORY_COMPONENTS_VAULT_DOMAIN = env.str('DIRECTORY_COMPONENTS_VAULT_DOMAIN')
     DIRECTORY_COMPONENTS_VAULT_ROOT_PATH = env.str('DIRECTORY_COMPONENTS_VAULT_ROOT_PATH')
     DIRECTORY_COMPONENTS_VAULT_PROJECT = env.str('DIRECTORY_COMPONENTS_VAULT_PROJECT')
+
+# Provider specific settings
+SOCIALACCOUNT_PROVIDERS = {
+    'linkedin_oauth2': {
+        'APP': {
+            'client_id': env.str('SOCIAL_LINKEDIN_ID'),
+            'secret': env.str('SOCIAL_LINKEDIN_SECRET'),
+            'key': env.str('SOCIAL_LINKEDIN_KEY')
+        }
+    },
+    'google': {
+        'APP': {
+            'client_id': env.str('SOCIAL_GOOGLE_ID'),
+            'secret': env.str('SOCIAL_GOOGLE_SECRET'),
+            'key': env.str('SOCIAL_GOOGLE_KEY')
+        }
+    }
+}
+
