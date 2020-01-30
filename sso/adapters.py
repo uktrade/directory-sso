@@ -1,13 +1,13 @@
 import urllib.parse
 
-from django.conf import settings
-from django.urls import reverse
-from django.shortcuts import redirect
-
 from allauth.account.adapter import DefaultAccountAdapter
 from allauth.account.utils import get_request_param
 from directory_constants.urls import domestic
 from notifications_python_client import NotificationsAPIClient
+
+from django.conf import settings
+from django.urls import reverse
+from django.shortcuts import redirect
 
 from sso.user.utils import get_url_with_redirect, is_valid_redirect
 from sso.verification.models import VerificationCode
@@ -120,3 +120,7 @@ class AccountAdapter(DefaultAccountAdapter):
             return super().respond_email_verification_sent(request, user)
         else:
             return redirect(domestic.SINGLE_SIGN_ON_PROFILE / 'enrol/resend-verification/resend/')
+
+    def is_safe_url(self, url):
+        if url:
+            return is_valid_redirect(urllib.parse.unquote(url))

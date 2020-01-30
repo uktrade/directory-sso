@@ -136,3 +136,13 @@ class PasswordChangeView(DisableRegistrationMixin,
 
 class SSOLandingPage(RedirectView):
     url = reverse_lazy('account_login')
+
+
+class LoginViaLinkedinView(RedirectView):
+    def get_redirect_url(self):
+        return utils.get_login_provider_url(request=self.request, provider_id='linkedin_oauth2')
+
+
+class LoginViaGoogleView(RedirectView):
+    def get_redirect_url(self):
+        return utils.get_login_provider_url(request=self.request, provider_id='google')
