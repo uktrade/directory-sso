@@ -71,6 +71,3 @@ tldextract==2.2.2
 urllib3==1.24.2
 w3lib==1.21.0             # via directory-client-core
 whitenoise==4.1.4
-
-# The following packages are considered to be unsafe in a requirements file:
-# setuptools

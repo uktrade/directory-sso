@@ -1129,3 +1129,21 @@ def test_disabled_registration_account_change_password_view(authed_client, setti
     response = authed_client.get(reverse('account_change_password'))
     assert response.status_code == 302
     assert response.url == 'https://sorry.great.gov.uk/'
+
+
+def test_login_via_linkedin(client, settings):
+    url = reverse('login-via-linkedin')
+
+    response = client.get(url)
+
+    assert response.status_code == 302
+    assert response.url == '/login-providers/linkedin_oauth2/login/'
+
+
+def test_login_via_google(client, settings):
+    url = reverse('login-via-google')
+
+    response = client.get(url)
+
+    assert response.status_code == 302
+    assert response.url == '/login-providers/google/login/'

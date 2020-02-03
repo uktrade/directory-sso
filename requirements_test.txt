@@ -100,6 +100,3 @@ w3lib==1.21.0             # via directory-client-core
 wcwidth==0.1.7            # via pytest
 whitenoise==4.1.4
 zipp==0.6.0               # via importlib-metadata
-
-# The following packages are considered to be unsafe in a requirements file:
-# setuptools

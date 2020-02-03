@@ -1,6 +1,7 @@
 import urllib.parse
 
 from allauth.account.utils import get_request_param
+from allauth.socialaccount.templatetags.socialaccount import ProviderLoginURLNode
 from directory_api_client import api_client
 import tldextract
 
@@ -63,3 +64,8 @@ def user_has_profile(user):
         return False
     else:
         return True
+
+
+def get_login_provider_url(request, provider_id):
+    node = ProviderLoginURLNode(provider_id=f"'{provider_id}'", params={})
+    return node.render({'request': request})
