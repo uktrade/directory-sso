@@ -2,10 +2,35 @@
 
 ## Pre release
 
+### Fixed bugs
+- TT-2254 - Cleaned up obsolete settings
+
 ### Implemented enhancements
--- TT-1798 implement-staff-sso
+- XOT-1214 - Pass on exit-intent parameter at login page
+
+### Fixed bugs 
+
+## [2020.01.14](https://github.com/uktrade/directory-sso/releases/tag/2020.01.14)
+[Full Changelog](https://github.com/uktrade/directory-sso/compare/2019.12.18_1...2020.01.14)
+
+### Implemented enhancements
+- TT-2234 - upgrade staff sso foruser id
+- TT-2248 - Facilitate .internal domain communication
 
 ### Fixed bugs
+- TT-1096 - redirect to resend verification code if not provided code
+- TT-1614 - set secure flag on sso_display_logged_in
+
+## [2019.12.18](https://github.com/uktrade/directory-sso/releases/tag/2019.12.18_1)
+[Full Changelog](https://github.com/uktrade/directory-sso/compare/2019.10.30...2019.12.18_1)
+
+### Implemented enhancements
+- GTRANSFORM-385 - Business sso response to include first/last name
+- TT-1798 implement-staff-sso
+- TT-2197 Add testapi endpoint to SSO to delete users created by automated tests
+- No ticket - Upgrade Django
+- TT-2188 - Add GDRP admin filter
+- TT-1304 - Upgrade sentry client
 
 ## [2019.10.30](https://github.com/uktrade/directory-sso/releases/tag/.2019.10.30)
 [Full Changelog](https://github.com/uktrade/directory-sso/compare/2019.08.13_1....2019.10.30)
@@ -17,7 +42,6 @@
 - TT-1673 - Redirect to enrolment after login if no company or personal details
 - TT-1760 - added user profile update
 - TT-1808: Update directory components to add "no-validate" no cache middleware
-- XOT-1214 - Pass on exit-intent parameter at login page
 
 ### Fixed bugs:
 - No ticket - Upgrade django to 1.11.23 for vulnerability fix

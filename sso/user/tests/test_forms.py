@@ -5,10 +5,10 @@ from allauth.account.models import EmailAddress
 from directory_constants import urls
 import pytest
 
-from django.forms.fields import Field
 from django.core.validators import EmailValidator
+from django.conf import settings
+from django.forms.fields import Field
 
-from sso.adapters import PASSWORD_RESET_TEMPLATE_ID
 from sso.user import forms
 from sso.user.models import User
 
@@ -46,7 +46,7 @@ def test_signup_form_customization():
     assert form.fields['password1'].help_text == form.PASSWORD_HELP_TEXT
 
 
-def test_change_password_form_customization():
+def test_account_change_password_form_customization():
     form = forms.ChangePasswordForm()
 
     assert form.fields['password2'].label == 'Confirm password'
@@ -84,7 +84,7 @@ def test_password_reset_form_accepts_existing_email_and_sends(
     assert call == mock.call(
         email_address='verified@example.com',
         personalisation={'password_reset': mock.ANY},
-        template_id=PASSWORD_RESET_TEMPLATE_ID
+        template_id=settings.GOV_NOTIFY_PASSWORD_RESET_TEMPLATE_ID
     )
 
 
@@ -142,13 +142,11 @@ def test_signup_rejects_password_length_less_than_ten():
         )
 
         assert form.is_valid() is False
-        assert form.errors['password1'] == [expected]
+        assert expected in form.errors['password1']
 
 
 def test_signup_accepts_password_length_ten_or_more():
-    form = forms.SignupForm(data={
-        'password1': '*' * 10
-    })
+    form = forms.SignupForm(data={'password1': 'ZaronZ0xos'})
 
     assert form.is_valid() is False
     assert 'password1' not in form.errors

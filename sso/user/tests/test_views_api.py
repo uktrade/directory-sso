@@ -25,7 +25,7 @@ def user_profile_data():
 
 
 @pytest.mark.django_db
-def test_create_user_api(api_client):
+def test_create_user_api_valid(api_client):
     new_email = 'test@test123.com'
     password = 'Abh129Jk392Hj2'
 

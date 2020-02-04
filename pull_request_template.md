@@ -9,3 +9,4 @@ To do (delete all that do not apply):
  - [ ] (if adding env vars) Added any new environment variable to vault.
  - [ ] (if adding feature flags) Cleaned up old flags
  - [ ] (if changing the UI) Add a printscreen to the PR
+ - [ ] (if hotfix) Has made PR into develop too

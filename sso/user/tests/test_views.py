@@ -9,13 +9,14 @@ from directory_constants import urls
 from directory_api_client import api_client
 import pytest
 
+from django.conf import settings
 from django.http import HttpResponse
 from django.urls import reverse, reverse_lazy
 
 from core.tests.helpers import create_response
-from sso.adapters import EMAIL_CONFIRMATION_TEMPLATE_ID, PASSWORD_RESET_TEMPLATE_ID
 from sso.user import models, views
 from sso.user.tests import factories
+from sso.verification.models import VerificationCode
 
 
 @pytest.fixture(autouse=True)
@@ -151,6 +152,20 @@ def test_login_redirect_no_profile_unverified(mock_notification, client, user, s
 
 @pytest.mark.django_db
 @patch('sso.adapters.NotificationsAPIClient')
+def test_login_redirect_new_flow_unverified(mock_notification, client, user, settings):
+    VerificationCode.objects.create(user=user)
+    response = client.post(
+        reverse('account_login'),
+        {'login': user.email, 'password': 'password'}
+    )
+
+    assert response.status_code == 302
+    assert response.url == 'http://profile.trade.great:8006/profile/enrol/resend-verification/resend/'
+    assert mock_notification().send_email_notification.call_count == 0
+
+
+@pytest.mark.django_db
+@patch('sso.adapters.NotificationsAPIClient')
 def test_login_redirect_no_business_unverified(mock_notification, client, user, settings, mock_retrieve_supplier):
     mock_retrieve_supplier.return_value = create_response({'company': None})
     response = client.post(
@@ -161,21 +176,6 @@ def test_login_redirect_no_business_unverified(mock_notification, client, user, 
     assert response.status_code == 302
     assert response.url == reverse("account_email_verification_sent")
     assert mock_notification().send_email_notification.call_count == 1
-
-
-@pytest.mark.django_db
-def test_login_redirect_feature_off(client, verified_user, settings, mock_retrieve_company):
-    settings.FEATURE_FLAGS['NEW_ENROLMENT_ON'] = False
-    verified_user.user_profile.delete()
-    mock_retrieve_company.return_value = create_response(status_code=404)
-
-    response = client.post(
-        reverse('account_login'),
-        {'login': verified_user.email, 'password': 'password'}
-    )
-
-    assert response.status_code == 302
-    assert response.url == settings.DEFAULT_REDIRECT_URL
 
 
 @pytest.mark.django_db
@@ -370,8 +370,8 @@ def test_confirm_email_redirect_next_param_if_next_param_valid(
             'email': 'jim@example.com',
             'email2': 'jim@example.com',
             'terms_agreed': True,
-            'password1': '*' * 10,
-            'password2': '*' * 10,
+            'password1': 'ZaronZ0xos',
+            'password2': 'ZaronZ0xos',
         }
     )
 
@@ -380,7 +380,7 @@ def test_confirm_email_redirect_next_param_if_next_param_valid(
     assert call == mock.call(
         email_address='jim@example.com',
         personalisation={'confirmation_link': mock.ANY},
-        template_id=EMAIL_CONFIRMATION_TEMPLATE_ID
+        template_id=settings.GOV_NOTIFY_SIGNUP_CONFIRMATION_TEMPLATE_ID
     )
 
     url = call[1]['personalisation']['confirmation_link']
@@ -417,8 +417,8 @@ def test_confirm_email_redirect_next_param_if_next_param_invalid(
             'email': 'jim@example.com',
             'email2': 'jim@example.com',
             'terms_agreed': True,
-            'password1': '*' * 10,
-            'password2': '*' * 10,
+            'password1': 'ZaronZ0xos',
+            'password2': 'ZaronZ0xos',
         }
     )
 
@@ -427,7 +427,7 @@ def test_confirm_email_redirect_next_param_if_next_param_invalid(
     assert call == mock.call(
         email_address='jim@example.com',
         personalisation={'confirmation_link': mock.ANY},
-        template_id=EMAIL_CONFIRMATION_TEMPLATE_ID
+        template_id=settings.GOV_NOTIFY_SIGNUP_CONFIRMATION_TEMPLATE_ID
     )
 
     url = call[1]['personalisation']['confirmation_link']
@@ -466,8 +466,8 @@ def test_confirm_email_redirect_next_param_if_next_param_internal(
             'email': 'jim@example.com',
             'email2': 'jim@example.com',
             'terms_agreed': True,
-            'password1': '*' * 10,
-            'password2': '*' * 10,
+            'password1': 'ZaronZ0xos',
+            'password2': 'ZaronZ0xos',
         }
     )
     assert mocked_notification_client().send_email_notification.called is True
@@ -475,7 +475,7 @@ def test_confirm_email_redirect_next_param_if_next_param_internal(
     assert call == mock.call(
         email_address='jim@example.com',
         personalisation={'confirmation_link': mock.ANY},
-        template_id=EMAIL_CONFIRMATION_TEMPLATE_ID
+        template_id=settings.GOV_NOTIFY_SIGNUP_CONFIRMATION_TEMPLATE_ID
     )
 
     url = call[1]['personalisation']['confirmation_link']
@@ -504,8 +504,8 @@ def test_confirm_email_redirect_default_param_if_no_next_param(
             'email': 'jim@example.com',
             'email2': 'jim@example.com',
             'terms_agreed': True,
-            'password1': '*' * 10,
-            'password2': '*' * 10,
+            'password1': 'ZaronZ0xos',
+            'password2': 'ZaronZ0xos',
         }
     )
     assert mocked_notification_client().send_email_notification.called is True
@@ -513,7 +513,7 @@ def test_confirm_email_redirect_default_param_if_no_next_param(
     assert call == mock.call(
         email_address='jim@example.com',
         personalisation={'confirmation_link': mock.ANY},
-        template_id=EMAIL_CONFIRMATION_TEMPLATE_ID
+        template_id=settings.GOV_NOTIFY_SIGNUP_CONFIRMATION_TEMPLATE_ID
     )
 
     url = call[1]['personalisation']['confirmation_link']
@@ -530,7 +530,7 @@ def test_password_reset_redirect_default_param_if_no_next_param(
 ):
 
     settings.ALLOWED_REDIRECT_DOMAINS = ['example.com', 'other.com']
-    new_password = '*' * 10
+    new_password = 'ZaronZ0xos'
     # submit form and send 'password reset link' email without a 'next' param
     client.post(
         reverse('account_reset_password'),
@@ -541,7 +541,7 @@ def test_password_reset_redirect_default_param_if_no_next_param(
     assert call == mock.call(
         email_address='test@example.com',
         personalisation={'password_reset': mock.ANY},
-        template_id=PASSWORD_RESET_TEMPLATE_ID
+        template_id=settings.GOV_NOTIFY_PASSWORD_RESET_TEMPLATE_ID
     )
     url = call[1]['personalisation']['password_reset']
 
@@ -576,7 +576,7 @@ def test_password_reset_no_internal_session(
     assert call == mock.call(
         email_address='test@example.com',
         personalisation={'password_reset': mock.ANY},
-        template_id=PASSWORD_RESET_TEMPLATE_ID
+        template_id=settings.GOV_NOTIFY_PASSWORD_RESET_TEMPLATE_ID
     )
     url = call[1]['personalisation']['password_reset']
 
@@ -600,7 +600,7 @@ def test_password_reset_redirect_next_param_if_next_param_valid(
 ):
     settings.DEFAULT_REDIRECT_URL = 'http://other.com'
     settings.ALLOWED_REDIRECT_DOMAINS = ['example.com', 'other.com']
-    new_password = '*' * 10
+    new_password = 'ZaronZ0xos'
     password_reset_url = reverse('account_reset_password')
     expected = reverse('account_email_verification_sent')
 
@@ -614,7 +614,7 @@ def test_password_reset_redirect_next_param_if_next_param_valid(
     assert call == mock.call(
         email_address='test@example.com',
         personalisation={'password_reset': mock.ANY},
-        template_id=PASSWORD_RESET_TEMPLATE_ID
+        template_id=settings.GOV_NOTIFY_PASSWORD_RESET_TEMPLATE_ID
     )
     url = call[1]['personalisation']['password_reset']
 
@@ -641,7 +641,7 @@ def test_password_reset_redirect_next_param_if_next_param_invalid(
 ):
     settings.DEFAULT_REDIRECT_URL = 'http://other.com'
     settings.ALLOWED_REDIRECT_DOMAINS = ['other.com']
-    new_password = '*' * 10
+    new_password = 'ZaronZ0xos'
     password_reset_url = reverse('account_reset_password')
     next_param = 'http://www.example.com'
 
@@ -655,7 +655,7 @@ def test_password_reset_redirect_next_param_if_next_param_invalid(
     assert call == mock.call(
         email_address='test@example.com',
         personalisation={'password_reset': mock.ANY},
-        template_id=PASSWORD_RESET_TEMPLATE_ID
+        template_id=settings.GOV_NOTIFY_PASSWORD_RESET_TEMPLATE_ID
     )
     url = call[1]['personalisation']['password_reset']
 
@@ -677,7 +677,7 @@ def test_password_reset_redirect_next_param_if_next_param_internal(
 ):
     settings.DEFAULT_REDIRECT_URL = 'http://other.com'
     settings.ALLOWED_REDIRECT_DOMAINS = ['example.com', 'other.com']
-    new_password = '*' * 10
+    new_password = 'ZaronZ0xos'
     password_reset_url = reverse('account_reset_password')
     expected = reverse('account_email_verification_sent')
 
@@ -692,7 +692,7 @@ def test_password_reset_redirect_next_param_if_next_param_internal(
     assert call == mock.call(
         email_address='test@example.com',
         personalisation={'password_reset': mock.ANY},
-        template_id=PASSWORD_RESET_TEMPLATE_ID
+        template_id=settings.GOV_NOTIFY_PASSWORD_RESET_TEMPLATE_ID
     )
     url = call[1]['personalisation']['password_reset']
 
@@ -813,8 +813,8 @@ def test_confirm_email_redirect_next_param_oath2(
             'email': 'jim@example.com',
             'email2': 'jim@example.com',
             'terms_agreed': True,
-            'password1': '*' * 10,
-            'password2': '*' * 10,
+            'password1': 'ZaronZ0xos',
+            'password2': 'ZaronZ0xos',
         }
     )
 
@@ -823,7 +823,7 @@ def test_confirm_email_redirect_next_param_oath2(
     assert call == mock.call(
         email_address='jim@example.com',
         personalisation={'confirmation_link': mock.ANY},
-        template_id=EMAIL_CONFIRMATION_TEMPLATE_ID
+        template_id=settings.GOV_NOTIFY_SIGNUP_CONFIRMATION_TEMPLATE_ID
     )
     url = call[1]['personalisation']['confirmation_link']
     response = client.post(url)
@@ -866,8 +866,8 @@ def test_confirm_email_redirect_next_param(
             'email': 'jim@example.com',
             'email2': 'jim@example.com',
             'terms_agreed': True,
-            'password1': '*' * 10,
-            'password2': '*' * 10,
+            'password1': 'ZaronZ0xos',
+            'password2': 'ZaronZ0xos',
         }
     )
     assert mocked_notification_client().send_email_notification.called is True
@@ -875,7 +875,7 @@ def test_confirm_email_redirect_next_param(
     assert call == mock.call(
         email_address='jim@example.com',
         personalisation={'confirmation_link': mock.ANY},
-        template_id=EMAIL_CONFIRMATION_TEMPLATE_ID
+        template_id=settings.GOV_NOTIFY_SIGNUP_CONFIRMATION_TEMPLATE_ID
     )
     url = call[1]['personalisation']['confirmation_link']
     response = client.post(url)
@@ -967,8 +967,8 @@ def test_signup_saves_utm(
             'email': 'jim@example.com',
             'email2': 'jim@example.com',
             'terms_agreed': True,
-            'password1': '*' * 10,
-            'password2': '*' * 10,
+            'password1': 'ZaronZ0xos',
+            'password2': 'ZaronZ0xos',
         }
     )
 
@@ -987,8 +987,8 @@ def test_signup_saves_hashed_id(
             'email': 'jim@example.com',
             'email2': 'jim@example.com',
             'terms_agreed': True,
-            'password1': '*' * 10,
-            'password2': '*' * 10,
+            'password1': 'ZaronZ0xos',
+            'password2': 'ZaronZ0xos',
         }
     )
 
@@ -996,6 +996,16 @@ def test_signup_saves_hashed_id(
 
     assert user.hashed_uuid != '{}'
     assert user.hashed_uuid is not None
+
+
+@pytest.mark.django_db
+@pytest.mark.parametrize('is_secure,expected', [(True, True), (False, '')])
+def test_sso_display_logged_in_cookie_secure(authed_client, settings, is_secure, expected):
+    settings.SESSION_COOKIE_SECURE = is_secure
+
+    response = authed_client.get(reverse('account_login'))
+
+    assert response.cookies['sso_display_logged_in']['secure'] == expected
 
 
 @pytest.mark.django_db
@@ -1009,9 +1019,7 @@ def test_login_response_with_sso_display_logged_in_cookie(client, verified_user)
 
 
 @pytest.mark.django_db
-def test_logout_response_with_sso_display_logged_in_cookie(
-    authed_client
-):
+def test_logout_response_with_sso_display_logged_in_cookie(authed_client):
     response = authed_client.post(reverse('account_logout'))
 
     assert response.cookies['sso_display_logged_in'].value == 'false'
@@ -1029,8 +1037,8 @@ def test_confirm_email_login_response_with_sso_display_logged_in_cookie(
             'email': 'jim@example.com',
             'email2': 'jim@example.com',
             'terms_agreed': True,
-            'password1': '*' * 10,
-            'password2': '*' * 10,
+            'password1': 'ZaronZ0xos',
+            'password2': 'ZaronZ0xos',
         }
     )
 
@@ -1039,7 +1047,7 @@ def test_confirm_email_login_response_with_sso_display_logged_in_cookie(
     assert call == mock.call(
         email_address='jim@example.com',
         personalisation={'confirmation_link': mock.ANY},
-        template_id=EMAIL_CONFIRMATION_TEMPLATE_ID
+        template_id=settings.GOV_NOTIFY_SIGNUP_CONFIRMATION_TEMPLATE_ID
     )
     url = call[1]['personalisation']['confirmation_link']
     response = client.post(url)
@@ -1049,9 +1057,7 @@ def test_confirm_email_login_response_with_sso_display_logged_in_cookie(
 
 @patch('sso.adapters.NotificationsAPIClient')
 @pytest.mark.django_db
-def test_confirm_email_login_response_with_sso_handles_next(
-    mocked_notification_client, client, email_confirmation
-):
+def test_confirm_email_login_response_with_sso_handles_next(mocked_notification_client, client, email_confirmation):
     querystring = '?next=http%3A//buyer.trade.great%3A8001/company-profile'
     client.post(
         reverse('account_signup') + querystring,
@@ -1059,8 +1065,8 @@ def test_confirm_email_login_response_with_sso_handles_next(
             'email': 'jim@example.com',
             'email2': 'jim@example.com',
             'terms_agreed': True,
-            'password1': '*' * 10,
-            'password2': '*' * 10,
+            'password1': 'ZaronZ0xos',
+            'password2': 'ZaronZ0xos',
         }
     )
 
@@ -1069,7 +1075,7 @@ def test_confirm_email_login_response_with_sso_handles_next(
     assert call == mock.call(
         email_address='jim@example.com',
         personalisation={'confirmation_link': mock.ANY},
-        template_id=EMAIL_CONFIRMATION_TEMPLATE_ID
+        template_id=settings.GOV_NOTIFY_SIGNUP_CONFIRMATION_TEMPLATE_ID
     )
     url = call[1]['personalisation']['confirmation_link']
     response = client.post(url)
@@ -1116,10 +1122,28 @@ def test_disabled_registration_views(url, client, settings):
 
 
 @pytest.mark.django_db
-def test_disabled_registration_change_password_view(authed_client, settings):
+def test_disabled_registration_account_change_password_view(authed_client, settings):
     settings.FEATURE_FLAGS = {
         **settings.FEATURE_FLAGS, 'DISABLE_REGISTRATION_ON': True
     }
     response = authed_client.get(reverse('account_change_password'))
     assert response.status_code == 302
     assert response.url == 'https://sorry.great.gov.uk/'
+
+
+def test_login_via_linkedin(client, settings):
+    url = reverse('login-via-linkedin')
+
+    response = client.get(url)
+
+    assert response.status_code == 302
+    assert response.url == '/login-providers/linkedin_oauth2/login/'
+
+
+def test_login_via_google(client, settings):
+    url = reverse('login-via-google')
+
+    response = client.get(url)
+
+    assert response.status_code == 302
+    assert response.url == '/login-providers/google/login/'

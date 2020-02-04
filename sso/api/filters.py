@@ -13,15 +13,14 @@ class LastLoginFilter(django_filters.rest_framework.FilterSet):
     }
 
     start = django_filters.DateTimeFilter(
-        name='last_login', lookup_expr='gte', error_messages=error_messages,
+        field_name='last_login', lookup_expr='gte', error_messages=error_messages,
         input_formats=settings.DATETIME_INPUT_FORMATS,
     )
     end = django_filters.DateTimeFilter(
-        name='last_login', lookup_expr='lte', error_messages=error_messages,
+        field_name='last_login', lookup_expr='lte', error_messages=error_messages,
         input_formats=settings.DATETIME_INPUT_FORMATS,
     )
 
     class Meta:
         model = models.User
         fields = ['end', 'start']
-        strict = django_filters.constants.STRICTNESS.RAISE_VALIDATION_ERROR

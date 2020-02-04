@@ -4,9 +4,27 @@ import datetime
 from django.conf import settings
 from django.contrib import admin
 from django.http import HttpResponse
+from django.utils import timezone
 
 from sso.user.models import User, UserProfile
 from directory_api_client import api_client
+
+
+class GDPRComplianceFilter(admin.SimpleListFilter):
+    title = 'GDPR compliance'
+    parameter_name = 'gdpr'
+
+    def lookups(self, request, model_admin):
+        return (
+            (True, 'is not compliant'),
+        )
+
+    def queryset(self, request, queryset):
+        value = self.value()
+        if value:
+            three_years_ago = timezone.now() - datetime.timedelta(days=365 * 3)
+            queryset = queryset.filter(modified__date__lte=three_years_ago)
+        return queryset
 
 
 @admin.register(UserProfile)
@@ -20,6 +38,7 @@ class UserAdmin(admin.ModelAdmin):
     search_fields = ('email',)
     readonly_fields = ('created', 'modified',)
     list_display = ('email', 'is_superuser', 'is_staff')
+    list_filter = (GDPRComplianceFilter,)
     exclude = ('password',)
     actions = [
         'download_csv',

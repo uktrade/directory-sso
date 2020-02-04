@@ -21,7 +21,7 @@ def test_invalid_password(password):
 @pytest.mark.parametrize(
     'password',
     (
-        'ABCDE12345',
+        'ZaronZ0xos',
         '6yUu9QrmFR'
     )
 )

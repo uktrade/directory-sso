@@ -75,7 +75,7 @@ class User(AbstractBaseUser, PermissionsMixin, TimeStampedModel):
     )
     utm = JSONField(
         blank=True,
-        default={},
+        default=dict,
         help_text=_(
             'Urchin Tracking Module query parameters passed in the URL'
         ),
@@ -167,7 +167,7 @@ class UserProfile(TimeStampedModel):
     class Meta:
         ordering = ['-created']
 
-    user = models.OneToOneField(User, related_name='user_profile')
+    user = models.OneToOneField(User, related_name='user_profile', on_delete=models.CASCADE)
     first_name = models.CharField(max_length=128)
     last_name = models.CharField(max_length=128)
     job_title = models.CharField(max_length=128, blank=True, null=True)

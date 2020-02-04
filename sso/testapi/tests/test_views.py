@@ -1,7 +1,10 @@
 import json
+
 import pytest
-from django.core.urlresolvers import reverse
+from django.urls import reverse
 from rest_framework import status
+
+from sso.testapi.conftest import AutomatedTestUserFactory
 
 
 @pytest.mark.django_db
@@ -172,4 +175,25 @@ def test_patch_user_by_email_with_disabled_test_api(
         reverse('testapi:user_by_email', kwargs={'email': active_user.email}),
         data=data
     )
+    assert response.status_code == status.HTTP_404_NOT_FOUND
+
+
+@pytest.mark.django_db
+def test_delete_test_users(client):
+    AutomatedTestUserFactory.create_batch(3)
+    response = client.delete(reverse('testapi:delete_test_users'))
+    assert response.status_code == status.HTTP_204_NO_CONTENT
+
+
+@pytest.mark.django_db
+def test_delete_test_users_returns_404_when_no_test_users(client):
+    response = client.delete(reverse('testapi:delete_test_users'))
+    assert response.status_code == status.HTTP_404_NOT_FOUND
+
+
+@pytest.mark.django_db
+def test_delete_test_users_returns_404_with_disabled_testapi(client, settings):
+    settings.FEATURE_FLAGS = {**settings.FEATURE_FLAGS, 'TEST_API_ON': False}
+    AutomatedTestUserFactory.create()
+    response = client.delete(reverse('testapi:delete_test_users'))
     assert response.status_code == status.HTTP_404_NOT_FOUND
