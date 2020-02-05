@@ -1,5 +1,6 @@
 import allauth.account.views
 import allauth.urls
+import allauth.socialaccount
 import directory_components.views
 import directory_healthcheck.views
 
@@ -103,6 +104,8 @@ urlpatterns = [
     url(r'^api/v1/', include((api_urlpatterns, 'api'), namespace='api')),
     url(r'^testapi/', include((testapi_urls, 'testapi'), namespace='testapi')),
     url(r'^login-providers/', include(allauth.urls.provider_urlpatterns)),
+    url(r'^social/', include(allauth.socialaccount.urls)),
+
     url(r'^accounts/login/via-linkedin/', sso.user.views.LoginViaLinkedinView.as_view(), name='login-via-linkedin'),
     url(r'^accounts/login/via-google/', sso.user.views.LoginViaGoogleView.as_view(), name='login-via-google'),
 ]
