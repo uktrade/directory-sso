@@ -2,6 +2,9 @@
 
 ## Pre release
 
+### Hotfix
+- XOT-1296 - replace cookie banner with cookie modal
+
 ### Fixed bugs
 
 ### Implemented enhancements
