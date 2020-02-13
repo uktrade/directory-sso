@@ -48,7 +48,7 @@ def inactive_user():
 
 
 class AutomatedTestUserFactory(django.DjangoModelFactory):
-    email = Sequence(lambda n: f'test+{n}@directory.uktrade.io')
+    email = Sequence(lambda n: f'test+{n}@directory.uktrade.digital')
     last_login = fuzzy.FuzzyDateTime(
         make_aware(datetime(2016, 11, 16)))
 
