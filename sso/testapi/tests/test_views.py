@@ -197,3 +197,43 @@ def test_delete_test_users_returns_404_with_disabled_testapi(client, settings):
     AutomatedTestUserFactory.create()
     response = client.delete(reverse('testapi:test_users'))
     assert response.status_code == status.HTTP_404_NOT_FOUND
+
+
+@pytest.mark.django_db
+def test_create_test_user_with_enabled_test_api(client):
+    response = client.post(reverse('testapi:test_users'))
+    assert response.status_code == status.HTTP_200_OK
+    assert response.data['email'].endswith('@directory.uktrade.digital')
+    assert response.data['password'] == 'password'
+    assert response.data['id']
+    assert response.data['first_name']
+    assert response.data['last_name']
+    assert response.data['job_title'] == 'AUTOMATED TESTS'
+    assert response.data['mobile_phone_number']
+
+
+@pytest.mark.django_db
+def test_create_test_user_returns_404_with_disabled_testapi(client, settings):
+    settings.FEATURE_FLAGS = {**settings.FEATURE_FLAGS, 'TEST_API_ON': False}
+    response = client.post(reverse('testapi:test_users'))
+    assert response.status_code == status.HTTP_404_NOT_FOUND
+
+
+@pytest.mark.django_db
+def test_create_test_user_with_custom_properties(client):
+    data = {
+        'email': 'automated@tests.com',
+        'password': 'custom password',
+        'first_name': 'automated',
+        'last_name': 'test',
+        'job_title': 'pytester',
+        'mobile_phone_number': '1234567890',
+    }
+    response = client.post(reverse('testapi:test_users'), data=data)
+    assert response.status_code == status.HTTP_200_OK
+    assert response.data['email'] == data['email']
+    assert response.data['password'] == data['password']
+    assert response.data['first_name'] == data['first_name']
+    assert response.data['last_name'] == data['last_name']
+    assert response.data['job_title'] == data['job_title']
+    assert response.data['mobile_phone_number'] == data['mobile_phone_number']
