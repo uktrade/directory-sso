@@ -181,13 +181,13 @@ def test_patch_user_by_email_with_disabled_test_api(
 @pytest.mark.django_db
 def test_delete_test_users(client):
     AutomatedTestUserFactory.create_batch(3)
-    response = client.delete(reverse('testapi:delete_test_users'))
+    response = client.delete(reverse('testapi:test_users'))
     assert response.status_code == status.HTTP_204_NO_CONTENT
 
 
 @pytest.mark.django_db
 def test_delete_test_users_returns_404_when_no_test_users(client):
-    response = client.delete(reverse('testapi:delete_test_users'))
+    response = client.delete(reverse('testapi:test_users'))
     assert response.status_code == status.HTTP_404_NOT_FOUND
 
 
@@ -195,5 +195,5 @@ def test_delete_test_users_returns_404_when_no_test_users(client):
 def test_delete_test_users_returns_404_with_disabled_testapi(client, settings):
     settings.FEATURE_FLAGS = {**settings.FEATURE_FLAGS, 'TEST_API_ON': False}
     AutomatedTestUserFactory.create()
-    response = client.delete(reverse('testapi:delete_test_users'))
+    response = client.delete(reverse('testapi:test_users'))
     assert response.status_code == status.HTTP_404_NOT_FOUND
