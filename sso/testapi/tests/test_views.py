@@ -237,3 +237,12 @@ def test_create_test_user_with_custom_properties(client):
     assert response.data['last_name'] == data['last_name']
     assert response.data['job_title'] == data['job_title']
     assert response.data['mobile_phone_number'] == data['mobile_phone_number']
+
+
+@pytest.mark.django_db
+def test_create_test_user_should_return_400_on_duplicated_users(client):
+    email = 'automated@tests.com'
+    AutomatedTestUserFactory.create(email=email)
+    data = {'email': email}
+    response = client.post(reverse('testapi:test_users'), data=data)
+    assert response.status_code == status.HTTP_400_BAD_REQUEST
