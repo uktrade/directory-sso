@@ -1,8 +1,5 @@
 # Changelog
 
-### Hotfix
-- No ticket - CVE-2020-5236 & CVE-2020-7471: Potential SQL injection via StringAgg(delimiter)
-
 ## Pre release
 
 ### Fixed bugs
@@ -11,6 +8,19 @@
 ### Implemented enhancements
 
 ### Fixed bugs 
+
+## [2020.02.11](https://github.com/uktrade/great-domestic-ui/releases/tag/2020.02.11)
+[Full Changelog](https://github.com/uktrade/great-domestic-ui/compare/2020.01.14_2...2020.02.11)
+
+### Hotfix
+- No ticket - Replace cookie banner with modal
+
+## [2020.01.14_2](https://github.com/uktrade/great-domestic-ui/releases/tag/2020.01.14_2)
+[Full Changelog](https://github.com/uktrade/great-domestic-ui/compare/2020.01.14...2020.01.14_2)
+
+### Hotfix
+- No ticket - CVE-2020-5236 & CVE-2020-7471: Potential SQL injection via StringAgg(delimiter)
+
 
 ## [2020.01.14](https://github.com/uktrade/directory-sso/releases/tag/2020.01.14)
 [Full Changelog](https://github.com/uktrade/directory-sso/compare/2019.12.18_1...2020.01.14)
