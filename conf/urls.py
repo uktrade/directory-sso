@@ -91,7 +91,7 @@ api_urlpatterns = [
 
 testapi_urls = [
     url(r'^user-by-email/(?P<email>.*)/$', sso.testapi.views.UserByEmailAPIView.as_view(), name='user_by_email'),
-    url(r'^test-users/$', sso.testapi.views.TestUsersAPIView.as_view(), name='delete_test_users'),
+    url(r'^test-users/$', sso.testapi.views.TestUsersAPIView.as_view(), name='test_users'),
 ]
 
 urlpatterns = [

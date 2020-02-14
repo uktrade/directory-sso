@@ -6,6 +6,7 @@
 - TT-2254 - Cleaned up obsolete settings
 
 ### Implemented enhancements
+- TT-2285 - Add an option to create test users via testapi
 
 ### Fixed bugs 
 
