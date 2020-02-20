@@ -1,5 +1,6 @@
 import urllib.parse
 
+from allauth.socialaccount.adapter import DefaultSocialAccountAdapter
 from allauth.account.adapter import DefaultAccountAdapter
 from allauth.account.utils import get_request_param
 from directory_constants.urls import domestic
@@ -11,6 +12,7 @@ from django.shortcuts import redirect
 
 from sso.user.utils import get_url_with_redirect, is_valid_redirect
 from sso.verification.models import VerificationCode
+from sso.user.models import UserProfile
 
 
 EMAIL_TEMPLATES = {
@@ -124,3 +126,14 @@ class AccountAdapter(DefaultAccountAdapter):
     def is_safe_url(self, url):
         if url:
             return is_valid_redirect(urllib.parse.unquote(url))
+
+
+class SocialAccountAdapter(DefaultSocialAccountAdapter):
+    def save_user(self, *args, **kwargs):
+        user = super().save_user(*args, **kwargs)
+        UserProfile.objects.create(
+            user=user,
+            first_name=user.first_name,
+            last_name=user.last_name,
+        )
+        return user

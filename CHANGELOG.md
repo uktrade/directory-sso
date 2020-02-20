@@ -7,6 +7,7 @@
 
 ### Implemented enhancements
 - TT-2285 - Add an option to create test users via testapi
+- no ticket - Create user profile on social signup
 
 ### Fixed bugs 
 
