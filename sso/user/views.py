@@ -72,7 +72,7 @@ class LoginView(RedirectToNextMixin, allauth_views.LoginView):
         response = super().form_valid(form)
         if response.status_code == 302 and response.url == reverse("account_email_verification_sent"):
             return response
-        elif settings.FEATURE_FLAGS['NEW_ENROLMENT_ON']:
+        else:
             self.request.session.save()
             has_profile = utils.user_has_profile(form.user)
             if not has_profile:
@@ -136,3 +136,13 @@ class PasswordChangeView(DisableRegistrationMixin,
 
 class SSOLandingPage(RedirectView):
     url = reverse_lazy('account_login')
+
+
+class LoginViaLinkedinView(RedirectView):
+    def get_redirect_url(self):
+        return utils.get_login_provider_url(request=self.request, provider_id='linkedin_oauth2')
+
+
+class LoginViaGoogleView(RedirectView):
+    def get_redirect_url(self):
+        return utils.get_login_provider_url(request=self.request, provider_id='google')

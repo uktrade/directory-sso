@@ -179,21 +179,6 @@ def test_login_redirect_no_business_unverified(mock_notification, client, user, 
 
 
 @pytest.mark.django_db
-def test_login_redirect_feature_off(client, verified_user, settings, mock_retrieve_company):
-    settings.FEATURE_FLAGS['NEW_ENROLMENT_ON'] = False
-    verified_user.user_profile.delete()
-    mock_retrieve_company.return_value = create_response(status_code=404)
-
-    response = client.post(
-        reverse('account_login'),
-        {'login': verified_user.email, 'password': 'password'}
-    )
-
-    assert response.status_code == 302
-    assert response.url == settings.DEFAULT_REDIRECT_URL
-
-
-@pytest.mark.django_db
 def test_login_redirect_default_param_if_no_next_param(client, verified_user, settings, mock_retrieve_supplier):
     mock_retrieve_supplier.return_value = create_response({'company': 12})
 
@@ -1144,3 +1129,21 @@ def test_disabled_registration_account_change_password_view(authed_client, setti
     response = authed_client.get(reverse('account_change_password'))
     assert response.status_code == 302
     assert response.url == 'https://sorry.great.gov.uk/'
+
+
+def test_login_via_linkedin(client, settings):
+    url = reverse('login-via-linkedin')
+
+    response = client.get(url)
+
+    assert response.status_code == 302
+    assert response.url == '/login-providers/linkedin_oauth2/login/'
+
+
+def test_login_via_google(client, settings):
+    url = reverse('login-via-google')
+
+    response = client.get(url)
+
+    assert response.status_code == 302
+    assert response.url == '/login-providers/google/login/'

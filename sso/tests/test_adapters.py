@@ -1,11 +1,13 @@
 from unittest.mock import patch, Mock
 
-from sso.adapters import is_valid_redirect, AccountAdapter
+import pytest
+
+from sso.adapters import is_valid_redirect, AccountAdapter, SocialAccountAdapter
+from sso.user.tests.factories import UserFactory
 
 
 def test_next_validation_returns_true_if_in_allowed_domains(settings):
-    settings.ALLOWED_REDIRECT_DOMAINS = [
-        'iloveexporting.com', 'ilovecats.com']
+    settings.ALLOWED_REDIRECT_DOMAINS = ['iloveexporting.com', 'ilovecats.com']
     valid = is_valid_redirect('http://iloveexporting.com/love/')
     assert valid is True
 
@@ -18,8 +20,7 @@ def test_next_validation_returns_true_if_in_allowed_suffixes(settings):
     assert valid is True
 
     # Should work with a mix of domains and suffixes
-    settings.ALLOWED_REDIRECT_DOMAINS = [
-        'iloveexporting.com', 'iloveexporting.gov.uk', 'gov.uk']
+    settings.ALLOWED_REDIRECT_DOMAINS = ['iloveexporting.com', 'iloveexporting.gov.uk', 'gov.uk']
     valid = is_valid_redirect('http://iloveexporting.com/')
     assert valid is True
     valid = is_valid_redirect('http://iloveexporting.gov.uk/')
@@ -29,8 +30,7 @@ def test_next_validation_returns_true_if_in_allowed_suffixes(settings):
 
 
 def test_next_validation_returns_false_if_not_in_allowed_domains(settings):
-    settings.ALLOWED_REDIRECT_DOMAINS = [
-        'iloveexporting.com', 'ilovecats.com']
+    settings.ALLOWED_REDIRECT_DOMAINS = ['iloveexporting.com', 'ilovecats.com']
     valid = is_valid_redirect('http://ihateexporting.com/hate/')
     assert valid is False
 
@@ -41,8 +41,7 @@ def test_next_validation_returns_false_if_not_in_allowed_suffixes(settings):
     assert valid is False
 
     # Should work with a mix of domains and suffixes
-    settings.ALLOWED_REDIRECT_DOMAINS = [
-        'iloveexporting.com', 'iloveexporting.gov.uk', 'gov.uk']
+    settings.ALLOWED_REDIRECT_DOMAINS = ['iloveexporting.com', 'iloveexporting.gov.uk', 'gov.uk']
     valid = is_valid_redirect('http://iloveexporting.net')
     assert valid is False
 
@@ -62,8 +61,7 @@ def test_next_validation_copes_with_subdomains(settings):
 
 
 def test_next_validation_copes_with_long_suffixes(settings):
-    settings.ALLOWED_REDIRECT_DOMAINS = [
-        'iloveexporting.co.uk', 'iloveexporting.gov.uk']
+    settings.ALLOWED_REDIRECT_DOMAINS = ['iloveexporting.co.uk', 'iloveexporting.gov.uk']
     valid = is_valid_redirect('http://www.iloveexporting.co.uk/love')
     assert valid is True
 
@@ -72,8 +70,7 @@ def test_next_validation_copes_with_long_suffixes(settings):
 
 
 def test_next_validation_copes_when_no_protocol_given(settings):
-    settings.ALLOWED_REDIRECT_DOMAINS = [
-        'iloveexporting.co.uk', 'iloveexporting.gov.uk']
+    settings.ALLOWED_REDIRECT_DOMAINS = ['iloveexporting.co.uk', 'iloveexporting.gov.uk']
     valid = is_valid_redirect('iloveexporting.co.uk/love')
     assert valid is True
 
@@ -89,12 +86,9 @@ def test_next_validation_doesnt_accept_urls_starting_with_slash(settings):
     assert valid is False
 
 
-@patch('allauth.account.adapter.DefaultAccountAdapter.'
-       'send_mail', Mock())
-@patch('allauth.account.adapter.DefaultAccountAdapter.'
-       'get_email_confirmation_url', Mock(return_value='default_url'))
-def test_account_adapter_returns_default_url_if_no_next_param(
-        rf, settings):
+@patch('allauth.account.adapter.DefaultAccountAdapter.send_mail', Mock())
+@patch('allauth.account.adapter.DefaultAccountAdapter.get_email_confirmation_url', Mock(return_value='default_url'))
+def test_account_adapter_returns_default_url_if_no_next_param(rf, settings):
     settings.ALLOWED_REDIRECT_DOMAINS = ['iloveexporting.com']
     adapter = AccountAdapter()
     request = rf.get('/exporting')
@@ -104,12 +98,9 @@ def test_account_adapter_returns_default_url_if_no_next_param(
     assert url == 'default_url'
 
 
-@patch('allauth.account.adapter.DefaultAccountAdapter.'
-       'send_mail', Mock())
-@patch('allauth.account.adapter.DefaultAccountAdapter.'
-       'get_email_confirmation_url', Mock(return_value='default_url'))
-def test_account_adapter_returns_default_url_if_next_param_invalid(
-        rf, settings):
+@patch('allauth.account.adapter.DefaultAccountAdapter.send_mail', Mock())
+@patch('allauth.account.adapter.DefaultAccountAdapter.get_email_confirmation_url', Mock(return_value='default_url'))
+def test_account_adapter_returns_default_url_if_next_param_invalid(rf, settings):
     settings.ALLOWED_REDIRECT_DOMAINS = ['iloveexporting.com']
     adapter = AccountAdapter()
     request = rf.get('/export?next=http://hateexporting.com')
@@ -119,37 +110,38 @@ def test_account_adapter_returns_default_url_if_next_param_invalid(
     assert url == 'default_url'
 
 
-@patch('allauth.account.adapter.DefaultAccountAdapter.'
-       'send_mail', Mock())
-@patch('allauth.account.adapter.DefaultAccountAdapter.'
-       'get_email_confirmation_url', Mock(return_value='default_url'))
-def test_account_adapter_returns_modified_url_if_next_param_valid(
-        rf, settings):
+@patch('allauth.account.adapter.DefaultAccountAdapter.send_mail', Mock())
+@patch('allauth.account.adapter.DefaultAccountAdapter.get_email_confirmation_url', Mock(return_value='default_url'))
+def test_account_adapter_returns_modified_url_if_next_param_valid(rf, settings):
     settings.ALLOWED_REDIRECT_DOMAINS = ['iloveexporting.com']
     adapter = AccountAdapter()
     request = rf.get('/export?next=http://iloveexporting.com')
 
     url = adapter.get_email_confirmation_url(request, None)
 
-    assert url == (
-        'default_url?next=%2Faccounts%2Flogin%2F%3F'
-        'next%3Dhttp%253A%252F%252Filoveexporting.com'
-    )
+    assert url == 'default_url?next=%2Faccounts%2Flogin%2F%3Fnext%3Dhttp%253A%252F%252Filoveexporting.com'
 
 
-@patch('allauth.account.adapter.DefaultAccountAdapter.'
-       'send_mail', Mock())
-@patch('allauth.account.adapter.DefaultAccountAdapter.'
-       'get_email_confirmation_url', Mock(return_value='default_url'))
-def test_account_adapter_returns_modified_url_if_next_param_internal(
-        rf, settings):
+@patch('allauth.account.adapter.DefaultAccountAdapter.send_mail', Mock())
+@patch('allauth.account.adapter.DefaultAccountAdapter.get_email_confirmation_url', Mock(return_value='default_url'))
+def test_account_adapter_returns_modified_url_if_next_param_internal(rf, settings):
     settings.ALLOWED_REDIRECT_DOMAINS = []
     adapter = AccountAdapter()
     request = rf.get('/export?next=/exportingismytruelove/')
 
     url = adapter.get_email_confirmation_url(request, None)
 
-    assert url == (
-        'default_url?next=%2Faccounts%2Flogin%2F%3F'
-        'next%3D%252Fexportingismytruelove%252F'
-    )
+    assert url == 'default_url?next=%2Faccounts%2Flogin%2F%3Fnext%3D%252Fexportingismytruelove%252F'
+
+
+@pytest.mark.django_db
+@patch('allauth.socialaccount.adapter.DefaultSocialAccountAdapter.save_user')
+def test_social_adapter_creates_profile(mock_save_user):
+    user = UserFactory()
+    mock_save_user.return_value = user
+
+    adapter = SocialAccountAdapter()
+    adapter.save_user()
+
+    assert user.user_profile.first_name == user.first_name
+    assert user.user_profile.last_name == user.last_name
