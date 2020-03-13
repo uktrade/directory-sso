@@ -1,6 +1,6 @@
+from random import randint
 from uuid import uuid4
 
-import factory
 from django.conf import settings
 from django.http import HttpResponseNotFound
 from django.shortcuts import get_list_or_404
@@ -16,7 +16,6 @@ from rest_framework.response import Response
 import core.mixins
 from conf.signature import SignatureCheckPermission
 from sso.user import models
-from sso.user.tests.factories import UserProfileFactory
 
 
 class UserByEmailAPIView(
@@ -85,16 +84,19 @@ class TestUsersAPIView(core.mixins.NoIndexMixin, DestroyAPIView):
 
     def post(self, request, **kwargs):
         try:
-            profile = UserProfileFactory.create(
-                user__email=request.data.get(
-                    'email', f'test+{uuid4()}@directory.uktrade.digital'),
-                first_name=request.data.get(
-                    'first_name', factory.Faker('first_name')),
-                last_name=request.data.get(
-                    'last_name', factory.Faker('last_name')),
+            user = models.User.objects.create(
+                email=request.data.get(
+                    'email',
+                    f'test+{str(uuid4()).replace("-", "")}@directory.uktrade.digital'),
+            )
+            user.save()
+            profile = models.UserProfile.objects.create(
+                user=user,
+                first_name=request.data.get('first_name', 'Automated'),
+                last_name=request.data.get('last_name', 'Test'),
                 job_title=request.data.get('job_title', 'AUTOMATED TESTS'),
                 mobile_phone_number=request.data.get(
-                    'mobile_phone_number', factory.Faker('msisdn')),
+                    'mobile_phone_number', randint(1000000000000, 9999999999999)),
             )
             profile.save()
             user = profile.user
