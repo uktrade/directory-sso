@@ -4,6 +4,7 @@
 
 ### Fixed bugs
 - TT-2254 - Cleaned up obsolete settings
+- no ticket - replace test Factories in TestAPI views with regular models
 
 ### Implemented enhancements
 - TT-2285 - Add an option to create test users via testapi
