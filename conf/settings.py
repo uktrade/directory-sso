@@ -455,7 +455,18 @@ SOCIALACCOUNT_PROVIDERS = {
             'client_id': env.str('SOCIAL_LINKEDIN_ID'),
             'secret': env.str('SOCIAL_LINKEDIN_SECRET'),
             'key': env.str('SOCIAL_LINKEDIN_KEY')
-        }
+        },
+        'SCOPE': [
+            'r_liteprofile',
+            'r_emailaddress'
+        ],
+        'PROFILE_FIELDS': [
+            'id',
+            'firstName',
+            'lastName',
+            'email-address',
+            'profilePicture(displayImage~:playableStreams)',
+        ]
     },
     'google': {
         'APP': {
