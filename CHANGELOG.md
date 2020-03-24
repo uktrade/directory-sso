@@ -2,6 +2,9 @@
 
 ## Pre release
 
+## Hotfix
+- No ticket - v3-cipipeline manifest.yml file fix
+
 ### Fixed bugs
 - TT-2254 - Cleaned up obsolete settings
 - no ticket - replace test Factories in TestAPI views with regular models
