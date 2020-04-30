@@ -2,6 +2,10 @@
 
 ## Pre release
 
+### Fixed bugs:
+- No ticket - Prevent embedding in an iframe
+- No ticket - upgrade Pillow to fix security vulnerability
+
 ## Hotfix
 - No ticket - v3-cipipeline manifest.yml file fix
 
