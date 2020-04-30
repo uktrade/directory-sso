@@ -3,22 +3,22 @@
 ## Pre release
 
 ### Fixed bugs:
-- No ticket - Prevent embedding in an iframe
-- No ticket - upgrade Pillow to fix security vulnerability
+### Implemented enhancements
 
-## Hotfix
-- No ticket - v3-cipipeline manifest.yml file fix
-
-### Fixed bugs
-- TT-2254 - Cleaned up obsolete settings
-- no ticket - replace test Factories in TestAPI views with regular models
+## [2020.04.30](https://github.com/uktrade/great-domestic-ui/releases/tag/2020.04.30)
+[Full Changelog](https://github.com/uktrade/great-domestic-ui/compare/2020.02.11...2020.04.30)
 
 ### Implemented enhancements
 - TT-2285 - Add an option to create test users via testapi
 - no ticket - Create user profile on social signup
 - MVP-295 - Expose social profile image
+- no ticket - replace test Factories in TestAPI views with regular models
 
-### Fixed bugs 
+### Fixed bugs:
+- No ticket - Prevent embedding in an iframe
+- No ticket - upgrade Pillow to fix security vulnerability
+- No ticket - v3-cipipeline manifest.yml file fix
+- TT-2254 - Cleaned up obsolete settings
 
 ## [2020.02.11](https://github.com/uktrade/great-domestic-ui/releases/tag/2020.02.11)
 [Full Changelog](https://github.com/uktrade/great-domestic-ui/compare/2020.01.14_2...2020.02.11)
