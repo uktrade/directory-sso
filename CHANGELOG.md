@@ -2,6 +2,9 @@
 
 ## Pre release
 
+### Fixed bugs:
+- No ticket - Prevent embedding in an iframe 
+
 ## Hotfix
 - No ticket - v3-cipipeline manifest.yml file fix
 
