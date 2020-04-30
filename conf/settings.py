@@ -42,6 +42,8 @@ INSTALLED_APPS = [
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
+    'allauth.socialaccount.providers.linkedin_oauth2',
+    'allauth.socialaccount.providers.google',
     'oauth2_provider',
     'rest_framework',
     'django_filters',
@@ -68,6 +70,7 @@ MIDDLEWARE = [
     'whitenoise.middleware.WhiteNoiseMiddleware',
     'conf.signature.SignatureCheckMiddleware',
     'django.middleware.common.CommonMiddleware',
+    'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -277,6 +280,8 @@ ACCOUNT_SIGNUP_PASSWORD_ENTER_TWICE = True
 ACCOUNT_ADAPTER = 'sso.adapters.AccountAdapter'
 ACCOUNT_LOGIN_ON_EMAIL_CONFIRMATION = True
 ACCOUNT_LOGIN_ON_PASSWORD_RESET = True
+SOCIALACCOUNT_ADAPTER = 'sso.adapters.SocialAccountAdapter'
+SOCIALACCOUNT_EMAIL_VERIFICATION = "none"
 
 VERIFICATION_EXPIRY_DAYS = env.int('VERIFICATION_EXPIRY_DAYS', 3)
 
@@ -328,6 +333,7 @@ SIGAUTH_URL_NAMES_WHITELIST = [
 # Use proxy host name when generating links (e.g. in emails)
 USE_X_FORWARDED_HOST = True
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+X_FRAME_OPTIONS = 'DENY'
 
 # Google tag manager
 UTM_COOKIE_DOMAIN = env.str('UTM_COOKIE_DOMAIN')
@@ -403,7 +409,6 @@ FEATURE_FLAGS = {
     'DISABLE_REGISTRATION_ON': env.bool('FEATURE_DISABLE_REGISTRATION', False),
     'TEST_API_ON': env.bool('FEATURE_TEST_API_ENABLED', False),
     'MAINTENANCE_MODE_ON': env.bool('FEATURE_MAINTENANCE_MODE_ENABLED', False),  # used by directory-components
-    'NEW_ENROLMENT_ON': env.bool('FEATURE_NEW_ENROLMENT_ENABLED', False),
 }
 
 
@@ -444,3 +449,32 @@ if env.bool('FEATURE_SETTINGS_JANITOR_ENABLED', False):
     DIRECTORY_COMPONENTS_VAULT_DOMAIN = env.str('DIRECTORY_COMPONENTS_VAULT_DOMAIN')
     DIRECTORY_COMPONENTS_VAULT_ROOT_PATH = env.str('DIRECTORY_COMPONENTS_VAULT_ROOT_PATH')
     DIRECTORY_COMPONENTS_VAULT_PROJECT = env.str('DIRECTORY_COMPONENTS_VAULT_PROJECT')
+
+# Provider specific settings
+SOCIALACCOUNT_PROVIDERS = {
+    'linkedin_oauth2': {
+        'APP': {
+            'client_id': env.str('SOCIAL_LINKEDIN_ID'),
+            'secret': env.str('SOCIAL_LINKEDIN_SECRET'),
+            'key': env.str('SOCIAL_LINKEDIN_KEY')
+        },
+        'SCOPE': [
+            'r_liteprofile',
+            'r_emailaddress'
+        ],
+        'PROFILE_FIELDS': [
+            'id',
+            'firstName',
+            'lastName',
+            'email-address',
+            'profilePicture(displayImage~:playableStreams)',
+        ]
+    },
+    'google': {
+        'APP': {
+            'client_id': env.str('SOCIAL_GOOGLE_ID'),
+            'secret': env.str('SOCIAL_GOOGLE_SECRET'),
+            'key': env.str('SOCIAL_GOOGLE_KEY')
+        }
+    }
+}

@@ -1,6 +1,7 @@
 import urllib.parse
 
 from allauth.account.utils import get_request_param
+from allauth.socialaccount.templatetags.socialaccount import ProviderLoginURLNode
 from directory_api_client import api_client
 import tldextract
 
@@ -63,3 +64,17 @@ def user_has_profile(user):
         return False
     else:
         return True
+
+
+def get_login_provider_url(request, provider_id):
+    node = ProviderLoginURLNode(provider_id=f"'{provider_id}'", params={})
+    return node.render({'request': request})
+
+
+def get_social_account_image(account):
+    if account.provider == 'linkedin_oauth2':
+        for size_variant in account.extra_data['profilePicture']['displayImage~']['elements']:
+            for image in size_variant['identifiers']:
+                return image['identifier']
+    elif account.provider == 'google':
+        return account.extra_data['picture']

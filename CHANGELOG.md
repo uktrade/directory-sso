@@ -1,14 +1,39 @@
 # Changelog
 
-### Hotfix
-- No ticket - CVE-2020-5236 & CVE-2020-7471: Potential SQL injection via StringAgg(delimiter)
-
 ## Pre release
+
+### Fixed bugs:
+- No ticket - Prevent embedding in an iframe
+- No ticket - upgrade Pillow to fix security vulnerability
+
+## Hotfix
+- No ticket - v3-cipipeline manifest.yml file fix
+
+### Fixed bugs
+- TT-2254 - Cleaned up obsolete settings
+- no ticket - replace test Factories in TestAPI views with regular models
+
+### Implemented enhancements
+- TT-2285 - Add an option to create test users via testapi
+- no ticket - Create user profile on social signup
+- MVP-295 - Expose social profile image
+
+### Fixed bugs 
+
+## [2020.02.11](https://github.com/uktrade/great-domestic-ui/releases/tag/2020.02.11)
+[Full Changelog](https://github.com/uktrade/great-domestic-ui/compare/2020.01.14_2...2020.02.11)
 
 ### Hotfix
 - XOT-1296 - replace cookie banner with cookie modal
 
-### Fixed bugs
+## [2020.01.14_2](https://github.com/uktrade/great-domestic-ui/releases/tag/2020.01.14_2)
+[Full Changelog](https://github.com/uktrade/great-domestic-ui/compare/2020.01.14...2020.01.14_2)
+
+### Hotfix
+- No ticket - CVE-2020-5236 & CVE-2020-7471: Potential SQL injection via StringAgg(delimiter)
+
+## [2020.01.14](https://github.com/uktrade/directory-sso/releases/tag/2020.01.14)
+[Full Changelog](https://github.com/uktrade/directory-sso/compare/2019.12.18_1...2020.01.14)
 
 ### Implemented enhancements
 - TT-2234 - upgrade staff sso foruser id
