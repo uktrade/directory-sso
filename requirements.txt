@@ -72,5 +72,6 @@ urllib3==1.24.2           # via -r requirements.in, botocore, directory-validato
 w3lib==1.21.0             # via directory-client-core
 whitenoise==4.1.4         # via -r requirements.in
 
+
 # The following packages are considered to be unsafe in a requirements file:
 # setuptools
