@@ -70,6 +70,7 @@ MIDDLEWARE = [
     'whitenoise.middleware.WhiteNoiseMiddleware',
     'conf.signature.SignatureCheckMiddleware',
     'django.middleware.common.CommonMiddleware',
+    'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -332,6 +333,7 @@ SIGAUTH_URL_NAMES_WHITELIST = [
 # Use proxy host name when generating links (e.g. in emails)
 USE_X_FORWARDED_HOST = True
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+X_FRAME_OPTIONS = 'DENY'
 
 # Google tag manager
 UTM_COOKIE_DOMAIN = env.str('UTM_COOKIE_DOMAIN')
@@ -455,7 +457,18 @@ SOCIALACCOUNT_PROVIDERS = {
             'client_id': env.str('SOCIAL_LINKEDIN_ID'),
             'secret': env.str('SOCIAL_LINKEDIN_SECRET'),
             'key': env.str('SOCIAL_LINKEDIN_KEY')
-        }
+        },
+        'SCOPE': [
+            'r_liteprofile',
+            'r_emailaddress'
+        ],
+        'PROFILE_FIELDS': [
+            'id',
+            'firstName',
+            'lastName',
+            'email-address',
+            'profilePicture(displayImage~:playableStreams)',
+        ]
     },
     'google': {
         'APP': {

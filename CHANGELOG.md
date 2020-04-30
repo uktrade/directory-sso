@@ -2,6 +2,13 @@
 
 ## Pre release
 
+### Fixed bugs:
+- No ticket - Prevent embedding in an iframe
+- No ticket - upgrade Pillow to fix security vulnerability
+
+## Hotfix
+- No ticket - v3-cipipeline manifest.yml file fix
+
 ### Fixed bugs
 - TT-2254 - Cleaned up obsolete settings
 - no ticket - replace test Factories in TestAPI views with regular models
@@ -9,6 +16,7 @@
 ### Implemented enhancements
 - TT-2285 - Add an option to create test users via testapi
 - no ticket - Create user profile on social signup
+- MVP-295 - Expose social profile image
 
 ### Fixed bugs 
 

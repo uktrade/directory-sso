@@ -69,3 +69,12 @@ def user_has_profile(user):
 def get_login_provider_url(request, provider_id):
     node = ProviderLoginURLNode(provider_id=f"'{provider_id}'", params={})
     return node.render({'request': request})
+
+
+def get_social_account_image(account):
+    if account.provider == 'linkedin_oauth2':
+        for size_variant in account.extra_data['profilePicture']['displayImage~']['elements']:
+            for image in size_variant['identifiers']:
+                return image['identifier']
+    elif account.provider == 'google':
+        return account.extra_data['picture']
