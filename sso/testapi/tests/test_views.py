@@ -6,6 +6,10 @@ from rest_framework import status
 
 from sso.testapi.conftest import AutomatedTestUserFactory
 
+pytestmark = [
+    pytest.mark.testapi,
+]
+
 
 @pytest.mark.django_db
 def test_get_user_by_email_with_enabled_test_api(client, active_user):
@@ -200,10 +204,10 @@ def test_delete_test_users_returns_404_with_disabled_testapi(client, settings):
 
 
 @pytest.mark.django_db
-def test_create_test_user_with_enabled_test_api(client):
+def test_create_test_user_with_enabled_test_api(client, settings):
     response = client.post(reverse('testapi:test_users'))
     assert response.status_code == status.HTTP_200_OK
-    assert response.data['email'].endswith('@directory.uktrade.digital')
+    assert response.data['email'].endswith(settings.FEATURE_FLAGS['TEST_API_EMAIL_DOMAIN'])
     assert response.data['password'] == 'password'
     assert response.data['id']
     assert response.data['first_name']
