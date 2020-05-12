@@ -13,6 +13,7 @@
 - no ticket - Create user profile on social signup
 - MVP-295 - Expose social profile image
 - no ticket - replace test Factories in TestAPI views with regular models
+- AA-115 - Update tests to use correct test email domain
 
 ### Fixed bugs:
 - No ticket - Prevent embedding in an iframe
