@@ -408,6 +408,7 @@ FEATURE_FLAGS = {
     'SKIP_MIGRATE_ON': env.bool('FEATURE_SKIP_MIGRATE', False),
     'DISABLE_REGISTRATION_ON': env.bool('FEATURE_DISABLE_REGISTRATION', False),
     'TEST_API_ON': env.bool('FEATURE_TEST_API_ENABLED', False),
+    'TEST_API_EMAIL_DOMAIN': env.str('TEST_API_EMAIL_DOMAIN', 'ci.uktrade.io'),
     'MAINTENANCE_MODE_ON': env.bool('FEATURE_MAINTENANCE_MODE_ENABLED', False),  # used by directory-components
 }
 
