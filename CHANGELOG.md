@@ -4,6 +4,7 @@
 
 ### Fixed bugs:
 ### Implemented enhancements
+- GP2-94 - Send welcome email on social login
 
 ## [2020.04.30](https://github.com/uktrade/great-domestic-ui/releases/tag/2020.04.30)
 [Full Changelog](https://github.com/uktrade/great-domestic-ui/compare/2020.02.11...2020.04.30)
