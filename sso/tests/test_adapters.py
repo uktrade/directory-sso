@@ -1,4 +1,4 @@
-from unittest.mock import patch, Mock
+from unittest.mock import call, patch, Mock
 
 import pytest
 
@@ -135,9 +135,10 @@ def test_account_adapter_returns_modified_url_if_next_param_internal(rf, setting
 
 
 @pytest.mark.django_db
+@patch('sso.adapters.NotificationsAPIClient')
 @patch('allauth.socialaccount.adapter.DefaultSocialAccountAdapter.save_user')
-def test_social_adapter_creates_profile(mock_save_user):
-    user = UserFactory()
+def test_social_adapter_creates_profile(mock_save_user, mocked_notifications, settings):
+    user = UserFactory(email='foo@example.com')
     mock_save_user.return_value = user
 
     adapter = SocialAccountAdapter()
@@ -145,3 +146,10 @@ def test_social_adapter_creates_profile(mock_save_user):
 
     assert user.user_profile.first_name == user.first_name
     assert user.user_profile.last_name == user.last_name
+
+    stub = mocked_notifications().send_email_notification
+    assert stub.call_count == 1
+    assert stub.call_args == call(
+        email_address='foo@example.com',
+        template_id=settings.GOV_NOTIFY_WELCOME_TEMPLATE_ID
+    )
