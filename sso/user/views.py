@@ -40,7 +40,7 @@ class RedirectToProfileSignUp(RedirectView):
     def get_redirect_url(self):
         return urls.domestic.SINGLE_SIGN_ON_PROFILE / 'enrol/'
 
-       
+
 class LoginView(RedirectToNextMixin, allauth_views.LoginView):
     def form_valid(self, form):
         response = super().form_valid(form)
