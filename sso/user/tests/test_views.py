@@ -93,7 +93,7 @@ def test_account_login_views(client):
 def test_account_signup_views(client):
     response = client.get(reverse('account_signup'))
     assert response.status_code == 302
-    assert response.url ==  urls.domestic.SINGLE_SIGN_ON_PROFILE / 'enrol/'
+    assert response.url == urls.domestic.SINGLE_SIGN_ON_PROFILE / 'enrol/'
 
 
 @pytest.mark.django_db
