@@ -1,6 +1,5 @@
 import urllib
 
-from django.db import IntegrityError
 from django.conf import settings
 from django.urls import reverse
 from django.shortcuts import redirect
@@ -9,8 +8,6 @@ from django.urls import reverse_lazy
 
 from allauth.account import views as allauth_views
 from allauth.account.views import INTERNAL_RESET_URL_KEY, INTERNAL_RESET_SESSION_KEY
-from allauth.account.utils import complete_signup
-import allauth.exceptions
 from directory_constants import urls
 
 import core.mixins
@@ -38,33 +35,10 @@ class DisableRegistrationMixin:
         return super().dispatch(request, *args, **kwargs)
 
 
-class SignupView(DisableRegistrationMixin, RedirectToNextMixin, allauth_views.SignupView):
+class RedirectToProfileSignUp(RedirectView):
 
-    @staticmethod
-    def is_email_not_unique_error(integrity_error):
-        email_not_unique_message = 'duplicate key value violates unique constraint "user_user_email_key"'
-
-        return any((email_not_unique_message in arg for arg in integrity_error.args))
-
-    def form_valid(self, form):
-        try:
-            self.user = form.save(self.request)
-        except IntegrityError as exc:
-            # To prevent enumeration of users we return a fake success response
-            if self.is_email_not_unique_error(exc):
-                return redirect(reverse('account_email_verification_sent'))
-            else:
-                raise
-        else:
-            try:
-                return complete_signup(
-                    request=self.request,
-                    user=self.user,
-                    email_verification=settings.ACCOUNT_EMAIL_VERIFICATION,
-                    success_url=self.get_success_url()
-                )
-            except allauth.exceptions.ImmediateHttpResponse as exc:
-                return exc.response
+    def get_redirect_url(self):
+        return settings.PROFILE_SIGNUP_URL
 
 
 class LoginView(RedirectToNextMixin, allauth_views.LoginView):

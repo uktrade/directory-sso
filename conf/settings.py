@@ -395,6 +395,7 @@ GOV_NOTIFY_ALREADY_REGISTERED_TEMPLATE_ID = env.str(
 GOV_NOTIFY_WELCOME_TEMPLATE_ID = env.str('GOV_NOTIFY_WELCOME_TEMPLATE_ID', '0a4ae7a9-7f67-4f5d-a536-54df2dee42df')
 
 SSO_BASE_URL = env.str('SSO_BASE_URL', 'https://sso.trade.great.gov.uk')
+PROFILE_SIGNUP_URL = env.str('PROFILE_SIGNUP_URL', 'https://great.gov.uk/profile/enrol/')
 
 # Activity Stream
 ACTIVITY_STREAM_IP_WHITELIST = env.str('ACTIVITY_STREAM_IP_WHITELIST', '')
