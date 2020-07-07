@@ -6,6 +6,6 @@ pytest-django>=3.5.1,<4.0.0
 pytest-sugar
 flake8>=3.7.8,<4.0.0
 factory-boy
-codecov
+codecov==2.1.7
 freezegun
 pytest-xdist
