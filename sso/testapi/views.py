@@ -74,9 +74,10 @@ class TestUsersAPIView(core.mixins.NoIndexMixin, DestroyAPIView):
         return super().dispatch(*args, **kwargs)
 
     def delete(self, request, **kwargs):
+        domain_pattern = str.replace(settings.FEATURE_FLAGS["TEST_API_EMAIL_DOMAIN"], ".", "\\.")
         test_users = get_list_or_404(
             models.User,
-            email__regex=r'^test\+(.*)@directory\.uktrade\.digital',
+            email__regex=rf'^test\+(.*)@{domain_pattern}',
         )
         for user in test_users:
             user.delete()
@@ -84,10 +85,11 @@ class TestUsersAPIView(core.mixins.NoIndexMixin, DestroyAPIView):
 
     def post(self, request, **kwargs):
         try:
+            domain = settings.FEATURE_FLAGS["TEST_API_EMAIL_DOMAIN"]
             user = models.User.objects.create(
                 email=request.data.get(
                     'email',
-                    f'test+{str(uuid4()).replace("-", "")}@directory.uktrade.digital'),
+                    f'test+{str(uuid4()).replace("-", "")}@{domain}'),
             )
             user.save()
             profile = models.UserProfile.objects.create(

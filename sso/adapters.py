@@ -136,4 +136,13 @@ class SocialAccountAdapter(DefaultSocialAccountAdapter):
             first_name=user.first_name,
             last_name=user.last_name,
         )
+        self.send_welcome_email(user.email)
         return user
+
+    @staticmethod
+    def send_welcome_email(email):
+        client = NotificationsAPIClient(settings.GOV_NOTIFY_API_KEY)
+        client.send_email_notification(
+            email_address=email,
+            template_id=settings.GOV_NOTIFY_WELCOME_TEMPLATE_ID,
+        )

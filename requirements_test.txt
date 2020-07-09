@@ -14,7 +14,7 @@ botocore==1.13.28         # via boto3, s3transfer
 certifi==2018.4.16        # via requests, sentry-sdk
 cffi==1.11.5              # via cryptography
 chardet==3.0.4            # via requests
-codecov==2.0.15           # via -r requirements_test.in
+codecov==2.1.7            # via -r requirements_test.in
 coverage==4.5.1           # via codecov, pytest-cov
 cryptography==2.4.1       # via django-cryptography, pyopenssl, requests
 defusedxml==0.5.0         # via python3-openid
@@ -38,7 +38,7 @@ django-oauth-toolkit==1.2.0  # via -r requirements.in
 django-pglocks==1.0.3     # via -r requirements.in
 django-redis==4.10.0      # via -r requirements.in
 django-staff-sso-client==1.0.0  # via -r requirements.in
-django==2.2.10            # via -r requirements.in, directory-api-client, directory-client-core, directory-components, directory-constants, directory-healthcheck, directory-validators, django-admin-ip-restrictor, django-allauth, django-filter, django-oauth-toolkit, django-redis, django-staff-sso-client, sigauth
+django==2.2.13            # via -r requirements.in, directory-api-client, directory-client-core, directory-components, directory-constants, directory-healthcheck, directory-validators, django-admin-ip-restrictor, django-allauth, django-filter, django-oauth-toolkit, django-redis, django-staff-sso-client, sigauth
 djangorestframework==3.10.3  # via -r requirements.in, sigauth
 docopt==0.6.2             # via notifications-python-client
 docutils==0.14            # via botocore
