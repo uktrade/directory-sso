@@ -3,6 +3,7 @@ from datetime import datetime
 import pytest
 from allauth.account.models import EmailAddress
 from django.utils.timezone import make_aware
+from django.conf import settings
 from factory import Sequence, django, fuzzy
 
 from sso.user import models
@@ -48,7 +49,7 @@ def inactive_user():
 
 
 class AutomatedTestUserFactory(django.DjangoModelFactory):
-    email = Sequence(lambda n: f'test+{n}@directory.uktrade.digital')
+    email = Sequence(lambda n: f'test+{n}@{settings.FEATURE_FLAGS["TEST_API_EMAIL_DOMAIN"]}')
     last_login = fuzzy.FuzzyDateTime(
         make_aware(datetime(2016, 11, 16)))
 

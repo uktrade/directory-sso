@@ -31,7 +31,7 @@ admin.autodiscover()
 
 
 allauth_urlpatterns = [
-    url(r"^signup/$", sso.user.views.SignupView.as_view(), name="account_signup"),
+    url(r"^signup/$", sso.user.views.RedirectToProfileSignUp.as_view(), name="account_signup"),
     url(r"^login/$", sso.user.views.LoginView.as_view(), name="account_login"),
     url(r"^logout/$", sso.user.views.LogoutView.as_view(), name="account_logout"),
     url(r"^inactive/$", allauth.account.views.account_inactive, name="account_inactive"),

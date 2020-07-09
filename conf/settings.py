@@ -392,6 +392,7 @@ GOV_NOTIFY_ALREADY_REGISTERED_TEMPLATE_ID = env.str(
     'GOV_NOTIFY_ALREADY_REGISTERED_TEMPLATE_ID',
     '5c8cc5aa-a4f5-48ae-89e6-df5572c317ec'
 )
+GOV_NOTIFY_WELCOME_TEMPLATE_ID = env.str('GOV_NOTIFY_WELCOME_TEMPLATE_ID', '0a4ae7a9-7f67-4f5d-a536-54df2dee42df')
 
 SSO_BASE_URL = env.str('SSO_BASE_URL', 'https://sso.trade.great.gov.uk')
 
@@ -408,6 +409,7 @@ FEATURE_FLAGS = {
     'SKIP_MIGRATE_ON': env.bool('FEATURE_SKIP_MIGRATE', False),
     'DISABLE_REGISTRATION_ON': env.bool('FEATURE_DISABLE_REGISTRATION', False),
     'TEST_API_ON': env.bool('FEATURE_TEST_API_ENABLED', False),
+    'TEST_API_EMAIL_DOMAIN': env.str('TEST_API_EMAIL_DOMAIN', 'ci.uktrade.io'),
     'MAINTENANCE_MODE_ON': env.bool('FEATURE_MAINTENANCE_MODE_ENABLED', False),  # used by directory-components
 }
 
