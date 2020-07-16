@@ -8,6 +8,7 @@ import tldextract
 from django.core.exceptions import ObjectDoesNotExist
 from django.conf import settings
 from django.utils.http import urlencode
+from sso.user.models import Service, ServicePage, UserPageView
 
 
 def get_url_with_redirect(url, redirect_url):
@@ -78,3 +79,30 @@ def get_social_account_image(account):
                 return image['identifier']
     elif account.provider == 'google':
         return account.extra_data['picture']
+
+
+def set_page_view(user, service_name, page_name):
+    service, created = Service.objects.get_or_create(name=service_name)
+    service_page, created = ServicePage.objects.get_or_create(service=service, page_name=page_name)
+    user_page_view, created = UserPageView.objects.get_or_create(service_page=service_page, user=user)
+    return user_page_view
+
+
+def get_page_views(user, service_name, page_name):
+
+    try:
+        service = Service.objects.get(name=service_name)
+        service_page = ServicePage.objects.get(service=service, page_name=page_name)
+        user_page_view = UserPageView.objects.get(service_page=service_page, user=user)
+        return user_page_view
+    except:
+        pass
+    return
+
+
+def get_page_view(user, service_name, page_name=None):
+
+    service = Service.objects.get(name=service_name)
+    if page_name:
+        return UserPageView.objects.filter(user=user, service_page__service=service, service_page__page_name=page_name)
+    return UserPageView.objects.filter(user=user, service_page__service=service)

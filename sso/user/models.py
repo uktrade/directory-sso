@@ -11,6 +11,7 @@ from allauth.account.forms import default_token_generator, user_pk_to_url_str
 from allauth.account.models import EmailConfirmation
 
 from sso.api.model_utils import TimeStampedModel
+from sso.constants import API_DATETIME_FORMAT
 
 
 class UserManager(BaseUserManager):
@@ -172,6 +173,46 @@ class UserProfile(TimeStampedModel):
     last_name = models.CharField(max_length=128)
     job_title = models.CharField(max_length=128, blank=True, null=True)
     mobile_phone_number = models.CharField(max_length=128, blank=True, null=True)
+    data = JSONField(blank=True, null=True)
 
     def __str__(self):
         return str(self.user)
+
+
+class Service(TimeStampedModel):
+    # a service name e.g. great-cms
+    name = models.CharField(max_length=128)
+
+    def __str__(self):
+        return str(self.name)
+
+
+class ServicePage(TimeStampedModel):
+    service = models.ForeignKey(Service, on_delete=models.CASCADE, related_name='service_pages')
+    page_name = models.CharField(max_length=128)
+
+    class Meta:
+        indexes = [
+            models.Index(fields=['service'])
+        ]
+        unique_together = unique_together = [['service', 'page_name']]
+
+    def __str__(self):
+        return str(f'{self.service.name}:{self.page_name}')
+
+
+class UserPageView(TimeStampedModel):
+    # Records an instance of a user reading a page ONCE. Subsequent reads will add extra records
+    service_page = models.ForeignKey(ServicePage, on_delete=models.CASCADE, related_name='page_views')
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='page_views')
+
+    class Meta:
+        unique_together = [['user', 'service_page']]
+
+    def to_dict(self):
+        return {
+            'service': self.service_page.service.name,
+            'page': self.service_page.page_name,
+            'modified': self.modified.strftime(API_DATETIME_FORMAT),
+            'created': self.created.strftime(API_DATETIME_FORMAT),
+        }

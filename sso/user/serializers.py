@@ -67,7 +67,8 @@ class UserProfileSerializer(serializers.ModelSerializer):
             'last_name',
             'job_title',
             'mobile_phone_number',
-            'profile_image'
+            'profile_image',
+            'data',
         )
 
     def get_profile_image(self, obj):
