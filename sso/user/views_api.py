@@ -43,7 +43,7 @@ class UserProfileUpdateAPIView(UpdateAPIView):
         return self.request.user.user_profile
 
 
-class UserSetPageViewAPIView(GenericAPIView):
+class UserPageViewAPIView(GenericAPIView):
     permission_classes = [IsAuthenticated, SignatureCheckPermission]
     authentication_classes = [SessionAuthentication]
 
@@ -51,16 +51,16 @@ class UserSetPageViewAPIView(GenericAPIView):
         service = request.data.get('service')
         page = request.data.get('page')
         page_view = set_page_view(self.request.user, service, page)
-        return Response(status=200, data={'result': 'ok', 'page_view': model_to_dict(page_view)})
+        return Response(status=200, data={'result': 'ok', 'page_view': page_view.to_dict()})
 
     def get(self, request):
         service = request.query_params.get('service')
         page = request.query_params.get('page')
         page_views = get_page_view(self.request.user, service, page)
         data = {'result': 'ok'}
-        if page_views.count():
+        if page_views and page_views.count():
             page_views_dict = {}
             for page_view in page_views:
                 page_views_dict[page_view.service_page.page_name] = page_view.to_dict()
-            data['page_view'] = page_views_dict
+            data['page_views'] = page_views_dict
         return Response(status=200, data=data)

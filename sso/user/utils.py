@@ -88,21 +88,12 @@ def set_page_view(user, service_name, page_name):
     return user_page_view
 
 
-def get_page_views(user, service_name, page_name):
-
+def get_page_view(user, service_name, page_name=None):
     try:
         service = Service.objects.get(name=service_name)
-        service_page = ServicePage.objects.get(service=service, page_name=page_name)
-        user_page_view = UserPageView.objects.get(service_page=service_page, user=user)
-        return user_page_view
+        if page_name:
+            return UserPageView.objects.filter(user=user, service_page__service=service, service_page__page_name=page_name)
+        return UserPageView.objects.filter(user=user, service_page__service=service)
     except:
         pass
     return
-
-
-def get_page_view(user, service_name, page_name=None):
-
-    service = Service.objects.get(name=service_name)
-    if page_name:
-        return UserPageView.objects.filter(user=user, service_page__service=service, service_page__page_name=page_name)
-    return UserPageView.objects.filter(user=user, service_page__service=service)
