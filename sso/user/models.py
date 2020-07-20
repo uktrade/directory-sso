@@ -183,9 +183,6 @@ class Service(TimeStampedModel):
     # a service name e.g. great-cms
     name = models.CharField(max_length=128)
 
-    def __str__(self):
-        return str(self.name)
-
 
 class ServicePage(TimeStampedModel):
     service = models.ForeignKey(Service, on_delete=models.CASCADE, related_name='service_pages')
@@ -196,9 +193,6 @@ class ServicePage(TimeStampedModel):
             models.Index(fields=['service'])
         ]
         unique_together = unique_together = [['service', 'page_name']]
-
-    def __str__(self):
-        return str(f'{self.service.name}:{self.page_name}')
 
 
 class UserPageView(TimeStampedModel):
