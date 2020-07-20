@@ -100,4 +100,3 @@ def get_page_view(user, service_name, page_name=None):
         return UserPageView.objects.filter(user=user, service_page__service=service)
     except ObjectDoesNotExist:
         pass
-    return
