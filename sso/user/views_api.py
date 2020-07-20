@@ -8,7 +8,6 @@ from conf.signature import SignatureCheckPermission
 from core.authentication import SessionAuthentication
 from sso.user import serializers
 from sso.user.utils import get_page_view, set_page_view
-from django.forms.models import model_to_dict
 
 
 class UserCreateAPIView(CreateAPIView):

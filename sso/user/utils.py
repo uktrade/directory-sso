@@ -92,8 +92,12 @@ def get_page_view(user, service_name, page_name=None):
     try:
         service = Service.objects.get(name=service_name)
         if page_name:
-            return UserPageView.objects.filter(user=user, service_page__service=service, service_page__page_name=page_name)
+            return UserPageView.objects.filter(
+                user=user,
+                service_page__service=service,
+                service_page__page_name=page_name
+            )
         return UserPageView.objects.filter(user=user, service_page__service=service)
-    except:
+    except ObjectDoesNotExist:
         pass
     return

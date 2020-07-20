@@ -230,11 +230,11 @@ def test_set_page_view(api_client, page_view_data):
 
     # Page not viewed
     page_views = get_view(page_view_data['page1'])
-    assert page_views == None
+    assert page_views is None
 
     # Set a different to viewed - check our first page is not affected
     set_view(page_view_data['page2'])
-    assert get_view(page_view_data['page1']) == None
+    assert get_view(page_view_data['page1']) is None
 
     # Set first page to viewed and check
     set_view(page_view_data['page1'])
@@ -246,5 +246,5 @@ def test_set_page_view(api_client, page_view_data):
     # get all page_views for service
     page_views = get_view(page_view_data['service_only'])
     assert len(page_views) == 2
-    assert page_views[page_view_data['page1']['page']] != None
-    assert page_views[page_view_data['page2']['page']] != None
+    assert page_views[page_view_data['page1']['page']] is not None
+    assert page_views[page_view_data['page2']['page']] is not None
