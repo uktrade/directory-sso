@@ -4,6 +4,8 @@
 ### Fixed bugs:
 ### Implemented enhancements
 
+### Implemented enhancements
+- GP2-238 - page visit model
 
 ## [2020.07.09](https://github.com/uktrade/directory-sso/releases/tag/2020.07.39)
 [Full Changelog](https://github.com/uktrade/directory-sso/compare/2020.04.30...2020.07.09)
