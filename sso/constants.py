@@ -7,4 +7,5 @@ EMAIL_HEADER_IMAGE = (
     'eig-logo-stacked.png'
 )
 
+# ISO 8601
 API_DATETIME_FORMAT = '%Y-%m-%dT%H:%M:%S%z'
