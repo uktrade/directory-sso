@@ -38,11 +38,6 @@ class Migration(migrations.Migration):
                 ('service', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='service_pages', to='user.Service')),
             ],
         ),
-        migrations.AddField(
-            model_name='userprofile',
-            name='data',
-            field=django.contrib.postgres.fields.jsonb.JSONField(blank=True, null=True),
-        ),
         migrations.CreateModel(
             name='UserPageView',
             fields=[

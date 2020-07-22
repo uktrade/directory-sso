@@ -173,7 +173,6 @@ class UserProfile(TimeStampedModel):
     last_name = models.CharField(max_length=128)
     job_title = models.CharField(max_length=128, blank=True, null=True)
     mobile_phone_number = models.CharField(max_length=128, blank=True, null=True)
-    data = JSONField(blank=True, null=True)
 
     def __str__(self):
         return str(self.user)
