@@ -3,6 +3,8 @@ import urllib.parse
 from allauth.socialaccount.adapter import DefaultSocialAccountAdapter
 from allauth.account.adapter import DefaultAccountAdapter
 from allauth.account.utils import get_request_param
+from allauth.account.utils import user_email
+from allauth.utils import email_address_exists
 from directory_constants.urls import domestic
 from notifications_python_client import NotificationsAPIClient
 
@@ -146,3 +148,16 @@ class SocialAccountAdapter(DefaultSocialAccountAdapter):
             email_address=email,
             template_id=settings.GOV_NOTIFY_WELCOME_TEMPLATE_ID,
         )
+
+    def is_auto_signup_allowed(self, request, sociallogin):
+        # Disable auto signup if f email is present and duplicate.
+        auto_signup = settings.ACCOUNT_AUTO_SIGNUP
+        if auto_signup:
+            email = user_email(sociallogin.user)
+            if email:
+                if settings.ACCOUNT_UNIQUE_EMAIL:
+                    if email_address_exists(email):
+                        auto_signup = False
+            elif settings.ACCOUNT_EMAIL_REQUIRED:
+                auto_signup = False
+        return auto_signup
