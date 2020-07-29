@@ -5,6 +5,8 @@ from allauth.account.adapter import DefaultAccountAdapter
 from allauth.account.models import EmailAddress
 from allauth.exceptions import ImmediateHttpResponse
 from allauth.account.utils import get_request_param
+from allauth.account.utils import user_email
+from allauth.utils import email_address_exists
 from directory_constants.urls import domestic
 from notifications_python_client import NotificationsAPIClient
 
