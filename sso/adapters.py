@@ -5,18 +5,18 @@ from allauth.account.adapter import DefaultAccountAdapter
 from allauth.account.models import EmailAddress
 from allauth.exceptions import ImmediateHttpResponse
 from allauth.account.utils import get_request_param
-from allauth.account.utils import user_email
-from allauth.utils import email_address_exists
 from directory_constants.urls import domestic
 from notifications_python_client import NotificationsAPIClient
 
 from django.conf import settings
+from django.contrib import messages
 from django.urls import reverse
 from django.shortcuts import redirect
 
 from sso.user.utils import get_url_with_redirect, is_valid_redirect
 from sso.verification.models import VerificationCode
 from sso.user.models import UserProfile
+from sso.user.models import User
 
 
 EMAIL_TEMPLATES = {
