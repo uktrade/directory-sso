@@ -2,19 +2,21 @@ import urllib.parse
 
 from allauth.socialaccount.adapter import DefaultSocialAccountAdapter
 from allauth.account.adapter import DefaultAccountAdapter
+from allauth.account.models import EmailAddress
+from allauth.exceptions import ImmediateHttpResponse
 from allauth.account.utils import get_request_param
-from allauth.account.utils import user_email
-from allauth.utils import email_address_exists
 from directory_constants.urls import domestic
 from notifications_python_client import NotificationsAPIClient
 
 from django.conf import settings
+from django.contrib import messages
 from django.urls import reverse
 from django.shortcuts import redirect
 
 from sso.user.utils import get_url_with_redirect, is_valid_redirect
 from sso.verification.models import VerificationCode
 from sso.user.models import UserProfile
+from sso.user.models import User
 
 
 EMAIL_TEMPLATES = {
@@ -149,15 +151,31 @@ class SocialAccountAdapter(DefaultSocialAccountAdapter):
             template_id=settings.GOV_NOTIFY_WELCOME_TEMPLATE_ID,
         )
 
-    def is_auto_signup_allowed(self, request, sociallogin):
-        # Disable auto signup if f email is present and duplicate.
-        auto_signup = settings.ACCOUNT_AUTO_SIGNUP
-        if auto_signup:
-            email = user_email(sociallogin.user)
-            if email:
-                if settings.ACCOUNT_UNIQUE_EMAIL:
-                    if email_address_exists(email):
-                        auto_signup = False
-            elif settings.ACCOUNT_EMAIL_REQUIRED:
-                auto_signup = False
-        return auto_signup
+    def pre_social_login(self, request, sociallogin):
+        """
+        Invoked just after a user successfully authenticates via a
+        social provider, but before the login is actually processed
+        (and before the pre_social_login signal is emitted).
+        """
+
+        # Ignore existing social accounts
+        if sociallogin.is_existing:
+            return
+
+        # Check if given email address already exists
+        try:
+            social_email = sociallogin.account.extra_data['email'].lower()
+            email_address = EmailAddress.objects.get(email=social_email)
+
+        # Email does not exist, allauth will handle a new social account
+        except EmailAddress.DoesNotExist:
+            return
+
+        # Email exists, redirect to login page
+        account = User.objects.get(email=social_email).socialaccount_set.first()
+        login_url = reverse('account_login')
+        messages.error(
+            request, "A " + account.provider + " account already exists associated to " + email_address.email
+        )
+
+        raise ImmediateHttpResponse(redirect(login_url))
