@@ -8,8 +8,12 @@ from sso.user.tests.factories import UserFactory
 from allauth.socialaccount.adapter import get_adapter
 from allauth.exceptions import ImmediateHttpResponse
 from django.contrib.auth import get_user_model
+<<<<<<< HEAD
 from django.contrib.messages.middleware import MessageMiddleware
 from django.contrib.sessions.middleware import SessionMiddleware
+=======
+from django.test.utils import override_settings
+>>>>>>> WIP test social adapter
 
 
 def test_next_validation_returns_true_if_in_allowed_domains(settings):
