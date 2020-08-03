@@ -5,6 +5,11 @@ import pytest
 from sso.adapters import is_valid_redirect, AccountAdapter, SocialAccountAdapter
 from sso.user.tests.factories import UserFactory
 
+from allauth.socialaccount.adapter import get_adapter
+from allauth.exceptions import ImmediateHttpResponse
+from django.contrib.auth import get_user_model
+from django.test.utils import override_settings
+
 
 def test_next_validation_returns_true_if_in_allowed_domains(settings):
     settings.ALLOWED_REDIRECT_DOMAINS = ['iloveexporting.com', 'ilovecats.com']
@@ -153,3 +158,28 @@ def test_social_adapter_creates_profile(mock_save_user, mocked_notifications, se
         email_address='foo@example.com',
         template_id=settings.GOV_NOTIFY_WELCOME_TEMPLATE_ID
     )
+
+
+class FakeSocialLogin():
+    def __init__(self, email):
+        self.email = email
+
+    @property
+    def user(self):
+        return get_user_model()(
+            email=self.email
+        )
+
+    def is_existing(self):
+        return True
+
+
+@pytest.mark.django_db
+def test_social_adapter_pre_social_login_handles_email_dupes():
+    user = UserFactory(email='foo@example.com')
+    adpater = get_adapter()
+
+    adpater.pre_social_login(None, FakeSocialLogin('foo@example.com'))
+    print(user)
+    with pytest.raises(ImmediateHttpResponse):
+        adpater.pre_social_login(None, FakeSocialLogin('foo@example.com'))

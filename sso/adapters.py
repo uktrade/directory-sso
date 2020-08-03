@@ -164,7 +164,7 @@ class SocialAccountAdapter(DefaultSocialAccountAdapter):
 
         # Check if given email address already exists
         try:
-            social_email = sociallogin.account.extra_data['email'].lower()
+            social_email = sociallogin.account.extra_data['email-address'].lower()
             email_address = EmailAddress.objects.get(email=social_email)
 
         # Email does not exist, allauth will handle a new social account
