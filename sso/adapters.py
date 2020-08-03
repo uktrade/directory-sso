@@ -174,5 +174,10 @@ class SocialAccountAdapter(DefaultSocialAccountAdapter):
 
         # Email exists, redirect to login page
         login_url = reverse('account_login')
+        messages.add_message(
+            request,
+            messages.ERROR,
+            social_email + ' is already taken'
+        )
 
         raise ImmediateHttpResponse(redirect(login_url))
