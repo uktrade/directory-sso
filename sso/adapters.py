@@ -164,18 +164,15 @@ class SocialAccountAdapter(DefaultSocialAccountAdapter):
 
         # Check if given email address already exists
         try:
-            social_email = sociallogin.account.extra_data['email-address'].lower()
-            email_address = EmailAddress.objects.get(email=social_email)
+            social_user = sociallogin.user
+            social_email = social_user.email
+            EmailAddress.objects.get(email=social_email)
 
         # Email does not exist, allauth will handle a new social account
         except EmailAddress.DoesNotExist:
             return
 
         # Email exists, redirect to login page
-        account = User.objects.get(email=social_email).socialaccount_set.first()
         login_url = reverse('account_login')
-        messages.error(
-            request, "A " + account.provider + " account already exists associated to " + email_address.email
-        )
 
         raise ImmediateHttpResponse(redirect(login_url))
