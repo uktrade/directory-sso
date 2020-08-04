@@ -16,7 +16,6 @@ from django.shortcuts import redirect
 from sso.user.utils import get_url_with_redirect, is_valid_redirect
 from sso.verification.models import VerificationCode
 from sso.user.models import UserProfile
-from sso.user.models import User
 
 
 EMAIL_TEMPLATES = {

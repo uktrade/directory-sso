@@ -8,7 +8,8 @@ from sso.user.tests.factories import UserFactory
 from allauth.socialaccount.adapter import get_adapter
 from allauth.exceptions import ImmediateHttpResponse
 from django.contrib.auth import get_user_model
-from django.test.utils import override_settings
+from django.contrib.messages.middleware import MessageMiddleware
+from django.contrib.sessions.middleware import SessionMiddleware
 
 
 def test_next_validation_returns_true_if_in_allowed_domains(settings):
@@ -170,16 +171,25 @@ class FakeSocialLogin():
             email=self.email
         )
 
+    @property
     def is_existing(self):
-        return True
+        return False
 
 
 @pytest.mark.django_db
-def test_social_adapter_pre_social_login_handles_email_dupes():
+@patch('allauth.account.models.EmailAddress.objects')
+def test_social_adapter_pre_social_login_handles_email_dupes(mock_email, rf):
     user = UserFactory(email='foo@example.com')
-    adpater = get_adapter()
+    adapter = get_adapter()
+    mock_email.get.return_value = user.email
 
-    adpater.pre_social_login(None, FakeSocialLogin('foo@example.com'))
-    print(user)
+    request = rf.get('/signup')
+    middleware = SessionMiddleware()
+    middleware.process_request(request)
+
+    middleware = MessageMiddleware()
+    middleware.process_request(request)
+    request.session.save()
+
     with pytest.raises(ImmediateHttpResponse):
-        adpater.pre_social_login(None, FakeSocialLogin('foo@example.com'))
+        adapter.pre_social_login(request, FakeSocialLogin('foo@example.com'))
