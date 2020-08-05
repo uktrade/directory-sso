@@ -191,7 +191,7 @@ class ServicePage(TimeStampedModel):
         indexes = [
             models.Index(fields=['service'])
         ]
-        unique_together = unique_together = [['service', 'page_name']]
+        unique_together = [['service', 'page_name']]
 
 
 class UserPageView(TimeStampedModel):
