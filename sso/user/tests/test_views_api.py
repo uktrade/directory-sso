@@ -248,3 +248,131 @@ def test_set_page_view(api_client, page_view_data):
     assert len(page_views) == 2
     assert page_views[page_view_data['page1']['page']] is not None
     assert page_views[page_view_data['page2']['page']] is not None
+
+
+@pytest.mark.django_db
+def test_set_lesson_completed(api_client):
+    profile = factories.UserProfileFactory()
+    api_client.force_authenticate(user=profile.user)
+    data = {
+        'user': profile.user.pk,
+        'lesson_page': 'my-new-lesson',
+        'lesson': 99,
+        'module': 1,
+        'topic': 123,
+        'service': 'great'
+    }
+    set_response = api_client.post(
+        reverse('api:user-lesson-completed'),
+        data,
+        format='json'
+    )
+    assert set_response.status_code == 200
+    lesson_completed = set_response.json().get('lesson_completed')
+    assert lesson_completed['lesson_page'] == data['lesson_page']
+    assert lesson_completed['service'] == data['service']
+    return lesson_completed
+
+
+@pytest.mark.django_db
+def test_get_lesson_completed(api_client):
+
+    profile = factories.UserProfileFactory()
+    api_client.force_authenticate(user=profile.user)
+
+    data = {
+        'user': profile.user.pk,
+        'lesson_page': 'my-new-lesson',
+        'lesson': 99,
+        'module': 1,
+        'topic': 123,
+        'service': 'great'
+    }
+    set_response = api_client.post(
+        reverse('api:user-lesson-completed'),
+        data,
+        format='json'
+    )
+    assert set_response.status_code == 200
+
+    data = {
+        'service': 'great',
+        'user': profile.user.pk,
+        'lesson_page': 'my-new-lesson',
+    }
+    response = api_client.get(
+        reverse('api:user-lesson-completed'),
+        data,
+        format='json'
+    )
+    assert response.status_code == 200
+    return response.json().get('lessson_completed')
+
+
+@pytest.mark.django_db
+def test_get_multiple_lesson_completed(api_client):
+
+    profile = factories.UserProfileFactory()
+    api_client.force_authenticate(user=profile.user)
+
+    data = {
+        'user': profile.user.pk,
+        'lesson_page': 'my-lesson',
+        'lesson': 99,
+        'module': 1,
+        'topic': 13,
+        'service': 'great'
+    }
+    api_client.post(
+        reverse('api:user-lesson-completed'),
+        data,
+        format='json'
+    )
+    data = {
+        'user': profile.user.pk,
+        'lesson_page': 'my-new-lesson',
+        'lesson': 9,
+        'module': 1,
+        'topic': 123,
+        'service': 'great'
+    }
+    set_response = api_client.post(
+        reverse('api:user-lesson-completed'),
+        data,
+        format='json'
+    )
+    assert set_response.status_code == 200
+
+    data = {
+        'service': 'great',
+        'user': profile.user.pk,
+        'module': '1',
+    }
+    response = api_client.get(
+        reverse('api:user-lesson-completed'),
+        data,
+        format='json'
+    )
+    assert response.status_code == 200
+    return response.json().get('lessson_completed')
+
+
+@pytest.mark.django_db
+def test_get_not_existing_lesson(api_client):
+
+    profile = factories.UserProfileFactory()
+    api_client.force_authenticate(user=profile.user)
+
+    data = {
+        'service': 'great',
+        'user': profile.user.pk,
+        'lesson_page': 'dummy-page',
+    }
+    response = api_client.get(
+        reverse('api:user-lesson-completed'),
+        data,
+        format='json'
+    )
+
+    assert response.status_code == 200
+    assert response.json().get('lessson_completed') is None

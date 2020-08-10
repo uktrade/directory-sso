@@ -8,7 +8,7 @@ import tldextract
 from django.core.exceptions import ObjectDoesNotExist
 from django.conf import settings
 from django.utils.http import urlencode
-from sso.user.models import Service, ServicePage, UserPageView
+from sso.user.models import Service, ServicePage, UserPageView, LessonCompleted
 
 
 def get_url_with_redirect(url, redirect_url):
@@ -100,3 +100,27 @@ def get_page_view(user, service_name, page_name=None):
         return UserPageView.objects.filter(user=user, service_page__service=service)
     except ObjectDoesNotExist:
         pass
+
+
+def set_lesson_completed(user, service_name, lesson_name, lesson, module, topic):
+    service, created = Service.objects.get_or_create(name=service_name)
+    lesson_completed, created = LessonCompleted.objects.get_or_create(
+        user=user, service=service,
+        lesson_page=lesson_name,
+        lesson=lesson,
+        module=module,
+        topic=topic
+    )
+    return lesson_completed
+
+
+def get_lesson_completed(user, service, **filter_dict):
+    try:
+        service = Service.objects.get(name=service)
+        return LessonCompleted.objects.filter(
+                user=user,
+                service=service,
+                **filter_dict
+            )
+    except ObjectDoesNotExist:
+        return None

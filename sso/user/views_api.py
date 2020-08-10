@@ -7,7 +7,7 @@ from django.db import IntegrityError
 from conf.signature import SignatureCheckPermission
 from core.authentication import SessionAuthentication
 from sso.user import serializers
-from sso.user.utils import get_page_view, set_page_view
+from sso.user.utils import get_page_view, set_page_view, set_lesson_completed, get_lesson_completed
 
 
 class UserCreateAPIView(CreateAPIView):
@@ -62,4 +62,34 @@ class UserPageViewAPIView(GenericAPIView):
             for page_view in page_views:
                 page_views_dict[page_view.service_page.page_name] = page_view.to_dict()
             data['page_views'] = page_views_dict
+        return Response(status=200, data=data)
+
+
+class LessonCompletedAPIView(GenericAPIView):
+    permission_classes = [IsAuthenticated, SignatureCheckPermission]
+    authentication_classes = [SessionAuthentication]
+
+    def post(self, request, query=None, *args, **kwargs):
+        service = request.data.get('service')
+        lesson_page = request.data.get('lesson_page')
+        lesson = request.data.get('lesson')
+        module = request.data.get('module')
+        topic = request.data.get('topic')
+        lesson_completed = set_lesson_completed(self.request.user, service, lesson_page, lesson, module, topic)
+        return Response(status=200, data={'result': 'ok', 'lesson_completed': lesson_completed.to_dict()})
+
+    def get(self, request):
+        service = request.query_params.get('service')
+        filter_dict = dict()
+        for item in request.query_params:
+            if item not in ('user', 'service'):
+                filter_dict[item] = request.query_params.get(item)
+
+        lesson_completed = get_lesson_completed(self.request.user, service, **filter_dict)
+        data = {'result': 'ok'}
+        if lesson_completed and lesson_completed.count():
+            lesson_completed_lst = []
+            for lesson in lesson_completed:
+                lesson_completed_lst.append(lesson.to_dict())
+            data['lesson_completed'] = lesson_completed_lst
         return Response(status=200, data=data)
