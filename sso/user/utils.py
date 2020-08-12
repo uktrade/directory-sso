@@ -102,14 +102,13 @@ def get_page_view(user, service_name, page_name=None):
         pass
 
 
-def set_lesson_completed(user, service_name, lesson_name, lesson, module, topic):
+def set_lesson_completed(user, service_name, lesson_name, lesson, module):
     service, created = Service.objects.get_or_create(name=service_name)
     lesson_completed, created = LessonCompleted.objects.get_or_create(
         user=user, service=service,
         lesson_page=lesson_name,
         lesson=lesson,
         module=module,
-        topic=topic
     )
     return lesson_completed
 
