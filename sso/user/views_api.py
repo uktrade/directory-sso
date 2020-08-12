@@ -26,8 +26,6 @@ class UserProfileCreateAPIView(CreateAPIView):
         except IntegrityError as error:
             if 'already exists' in str(error):
                 return Response(status=200)
-            else:
-                raise
         else:
             return Response(status=201)
 

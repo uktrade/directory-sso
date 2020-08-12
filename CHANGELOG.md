@@ -4,7 +4,7 @@
 ### Fixed bugs:
 
 ### Implemented enhancements
-- GP2-36 - removed topic from lessoncompleted model
+- GP2-36 - removed topic from lesson completed model
 - GP2-36 - Lesson completed model
 - GP2-238 - page visit model
 
