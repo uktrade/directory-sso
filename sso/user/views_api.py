@@ -26,8 +26,6 @@ class UserProfileCreateAPIView(CreateAPIView):
         except IntegrityError as error:
             if 'already exists' in str(error):
                 return Response(status=200)
-            else:
-                raise
         else:
             return Response(status=201)
 
@@ -74,8 +72,7 @@ class LessonCompletedAPIView(GenericAPIView):
         lesson_page = request.data.get('lesson_page')
         lesson = request.data.get('lesson')
         module = request.data.get('module')
-        topic = request.data.get('topic')
-        lesson_completed = set_lesson_completed(self.request.user, service, lesson_page, lesson, module, topic)
+        lesson_completed = set_lesson_completed(self.request.user, service, lesson_page, lesson, module)
         return Response(status=200, data={'result': 'ok', 'lesson_completed': lesson_completed.to_dict()})
 
     def get(self, request):

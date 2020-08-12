@@ -259,7 +259,6 @@ def test_set_lesson_completed(api_client):
         'lesson_page': 'my-new-lesson',
         'lesson': 99,
         'module': 1,
-        'topic': 123,
         'service': 'great'
     }
     set_response = api_client.post(
@@ -285,7 +284,6 @@ def test_get_lesson_completed(api_client):
         'lesson_page': 'my-new-lesson',
         'lesson': 99,
         'module': 1,
-        'topic': 123,
         'service': 'great'
     }
     set_response = api_client.post(
@@ -320,7 +318,6 @@ def test_get_multiple_lesson_completed(api_client):
         'lesson_page': 'my-lesson',
         'lesson': 99,
         'module': 1,
-        'topic': 13,
         'service': 'great'
     }
     api_client.post(
@@ -333,7 +330,6 @@ def test_get_multiple_lesson_completed(api_client):
         'lesson_page': 'my-new-lesson',
         'lesson': 9,
         'module': 1,
-        'topic': 123,
         'service': 'great'
     }
     set_response = api_client.post(

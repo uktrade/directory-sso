@@ -215,7 +215,6 @@ class LessonCompleted(TimeStampedModel):
     service = models.ForeignKey(Service, on_delete=models.CASCADE)
     lesson_page = models.CharField(max_length=255)
     lesson = models.IntegerField()
-    topic = models.IntegerField()  # Saving PK so it can be queried
     module = models.IntegerField()  # Saving PK so it can be queried
     user = models.ForeignKey(User, on_delete=models.CASCADE)
 
@@ -228,7 +227,6 @@ class LessonCompleted(TimeStampedModel):
             'lesson_page': self.lesson_page,
             'lesson': self.lesson,
             'module': self.module,
-            'topic': self.topic,
             'modified': self.modified.strftime(API_DATETIME_FORMAT),
             'created': self.created.strftime(API_DATETIME_FORMAT),
 
