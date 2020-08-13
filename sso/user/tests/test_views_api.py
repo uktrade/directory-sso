@@ -395,4 +395,3 @@ def test_delete_endpoint_for_lesson_completed_for_non_owner(api_client, set_less
         format='json'
     )
     assert response.status_code == 502
-
