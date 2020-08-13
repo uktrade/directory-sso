@@ -1,6 +1,7 @@
 from rest_framework.generics import CreateAPIView, UpdateAPIView, GenericAPIView
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
+from rest_framework import status
 
 from django.db import IntegrityError
 
@@ -90,3 +91,10 @@ class LessonCompletedAPIView(GenericAPIView):
                 lesson_completed_lst.append(lesson.to_dict())
             data['lesson_completed'] = lesson_completed_lst
         return Response(status=200, data=data)
+
+    def delete(self, request, format=None):
+        lesson = get_lesson_completed(self.request.user, **request.data).first()
+        if not lesson or lesson.user_id != request.data.get('user_id'):
+            return Response(status=status.HTTP_502_BAD_GATEWAY)
+        lesson.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
