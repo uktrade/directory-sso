@@ -3,11 +3,13 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework import status
 
+from django.core.exceptions import ObjectDoesNotExist
 from django.db import IntegrityError
 
 from conf.signature import SignatureCheckPermission
 from core.authentication import SessionAuthentication
 from sso.user import serializers
+from sso.user.models import LessonCompleted, Service
 from sso.user.utils import get_page_view, set_page_view, set_lesson_completed, get_lesson_completed
 
 
@@ -93,8 +95,15 @@ class LessonCompletedAPIView(GenericAPIView):
         return Response(status=200, data=data)
 
     def delete(self, request, format=None):
-        lesson = get_lesson_completed(self.request.user, **request.data).first()
-        if not lesson or lesson.user_id != request.data.get('user_id'):
+        service = Service.objects.get(name=request.data.get('service'))
+        lesson_id = request.data.get('lesson')
+
+        try:
+            lesson = LessonCompleted.objects.get(service=service, lesson=lesson_id)
+        except ObjectDoesNotExist:
+            lesson = None
+
+        if not lesson or lesson.user_id != request.user.id:
             return Response(status=status.HTTP_502_BAD_GATEWAY)
-        lesson.delete()
-        return Response(status=status.HTTP_204_NO_CONTENT)
+        response = lesson.delete()
+        return Response(response)

@@ -373,7 +373,26 @@ def test_delete_endpoint_for_lesson_completed(api_client, set_lesson_completed):
         data=data,
         format='json'
     )
-    assert response.status_code == 204
+    assert response.status_code == 200
+
+
+@pytest.mark.django_db
+def test_delete_endpoint_no_existing_lesson_completed(api_client, set_lesson_completed):
+
+    data = json.loads(set_lesson_completed.content)
+    assert set_lesson_completed.status_code == 200
+
+    data = {
+        'service': 'great',
+        'user_id': data['lesson_completed']['user'],
+        'lesson': 9999,  # non existing lesson
+    }
+    response = api_client.delete(
+        reverse('api:user-lesson-completed',),
+        data=data,
+        format='json'
+    )
+    assert response.status_code == 502
 
 
 @pytest.mark.django_db
@@ -394,4 +413,4 @@ def test_delete_endpoint_for_lesson_completed_for_non_owner(api_client, set_less
         data=data,
         format='json'
     )
-    assert response.status_code == 502
+    assert response.status_code == 200
