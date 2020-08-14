@@ -227,6 +227,7 @@ class LessonCompleted(TimeStampedModel):
             'lesson_page': self.lesson_page,
             'lesson': self.lesson,
             'module': self.module,
+            'user': self.user.id,
             'modified': self.modified.strftime(API_DATETIME_FORMAT),
             'created': self.created.strftime(API_DATETIME_FORMAT),
 
