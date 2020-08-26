@@ -2,9 +2,10 @@
 
 ## Pre release
 ### Fixed bugs:
-### Implemented enhancements
+- No ticket - Lesson completed delete fix
 
 ### Implemented enhancements
+- GP2-36 - Lesson completed model
 - GP2-238 - page visit model
 
 ## [2020.07.09](https://github.com/uktrade/directory-sso/releases/tag/2020.07.39)

@@ -1,4 +1,5 @@
 import pytest
+import json
 from unittest import mock
 
 from django.urls import reverse
@@ -248,3 +249,206 @@ def test_set_page_view(api_client, page_view_data):
     assert len(page_views) == 2
     assert page_views[page_view_data['page1']['page']] is not None
     assert page_views[page_view_data['page2']['page']] is not None
+
+
+@pytest.fixture()
+def set_lesson_completed(api_client):
+    profile = factories.UserProfileFactory()
+    api_client.force_authenticate(user=profile.user)
+
+    set_data = {
+        'user': profile.user.pk,
+        'lesson_page': 'my-new-lesson',
+        'lesson': 99,
+        'module': 1,
+        'service': 'great'
+    }
+    return api_client.post(
+        reverse('api:user-lesson-completed'),
+        set_data,
+        format='json'
+    )
+
+
+@pytest.mark.django_db
+def test_set_lesson_completed(set_lesson_completed):
+    set_response = set_lesson_completed
+    assert set_response.status_code == 200
+    lesson_completed = set_response.json().get('lesson_completed')
+    assert lesson_completed['lesson_page'] == lesson_completed['lesson_page']
+    assert lesson_completed['service'] == lesson_completed['service']
+    return lesson_completed
+
+
+@pytest.mark.django_db
+def test_get_lesson_completed(api_client, set_lesson_completed):
+
+    set_response = set_lesson_completed
+    assert set_response.status_code == 200
+    lesson_completed = set_response.json().get('lesson_completed')
+
+    data = {
+        'service': 'great',
+        'user': lesson_completed['user'],
+        'lesson_page': 'my-new-lesson',
+    }
+    response = api_client.get(
+        reverse('api:user-lesson-completed'),
+        data,
+        format='json'
+    )
+    assert response.status_code == 200
+    return response.json().get('lessson_completed')
+
+
+@pytest.mark.django_db
+def test_get_multiple_lesson_completed(api_client, set_lesson_completed):
+    set_response = set_lesson_completed
+    assert set_response.status_code == 200
+    lesson_completed = set_response.json().get('lesson_completed')
+
+    data = {
+        'user': lesson_completed['user'],
+        'lesson_page': 'my-new-lesson',
+        'lesson': 9,
+        'module': 1,
+        'service': 'great'
+    }
+    set_response = api_client.post(
+        reverse('api:user-lesson-completed'),
+        data,
+        format='json'
+    )
+    assert set_response.status_code == 200
+
+    data = {
+        'service': 'great',
+        'user': lesson_completed['user'],
+        'module': '1',
+    }
+    response = api_client.get(
+        reverse('api:user-lesson-completed'),
+        data,
+        format='json'
+    )
+    assert response.status_code == 200
+    return response.json().get('lessson_completed')
+
+
+@pytest.mark.django_db
+def test_get_not_existing_lesson(api_client):
+
+    profile = factories.UserProfileFactory()
+    api_client.force_authenticate(user=profile.user)
+
+    data = {
+        'service': 'great',
+        'user': profile.user.pk,
+        'lesson_page': 'dummy-page',
+    }
+    response = api_client.get(
+        reverse('api:user-lesson-completed'),
+        data,
+        format='json'
+    )
+
+    assert response.status_code == 200
+    assert response.json().get('lessson_completed') is None
+
+
+@pytest.mark.django_db
+def test_delete_endpoint_for_lesson_completed(api_client, set_lesson_completed):
+
+    data = json.loads(set_lesson_completed.content)
+    assert set_lesson_completed.status_code == 200
+
+    data = {
+        'service': 'great',
+        'user_id': data['lesson_completed']['user'],
+        'lesson': data['lesson_completed']['lesson'],
+    }
+
+    response = api_client.delete(
+        reverse('api:user-lesson-completed',),
+        data=data,
+        format='json'
+    )
+    assert response.status_code == 200
+
+
+@pytest.mark.django_db
+def test_delete_for_mutliple_lesson_completed(api_client, set_lesson_completed):
+    """
+    This test where multiple user completed same lesson and delete should delete user specific lesson
+    """
+
+    data = json.loads(set_lesson_completed.content)
+    assert set_lesson_completed.status_code == 200
+
+    profile = factories.UserProfileFactory()
+    api_client.force_authenticate(user=profile.user)
+
+    set_data = {
+        'user': profile.user.pk,
+        'lesson_page': 'my-new-lesson',
+        'lesson': 99,
+        'module': 1,
+        'service': 'great'
+    }
+    api_client.post(
+        reverse('api:user-lesson-completed'),
+        set_data,
+        format='json'
+    )
+    data = {
+        'service': 'great',
+        'user_id': data['lesson_completed']['user'],
+        'lesson': data['lesson_completed']['lesson'],
+    }
+
+    response = api_client.delete(
+        reverse('api:user-lesson-completed',),
+        data=data,
+        format='json'
+    )
+    assert response.status_code == 200
+
+
+@pytest.mark.django_db
+def test_delete_endpoint_no_existing_lesson_completed(api_client, set_lesson_completed):
+
+    data = json.loads(set_lesson_completed.content)
+    assert set_lesson_completed.status_code == 200
+
+    data = {
+        'service': 'great',
+        'user_id': data['lesson_completed']['user'],
+        'lesson': 9999,  # non existing lesson
+    }
+    response = api_client.delete(
+        reverse('api:user-lesson-completed',),
+        data=data,
+        format='json'
+    )
+    assert response.status_code == 502
+
+
+@pytest.mark.django_db
+def test_delete_endpoint_for_lesson_completed_for_non_owner(api_client, set_lesson_completed):
+    other_user = factories.UserProfileFactory()
+
+    data = json.loads(set_lesson_completed.content)
+    assert set_lesson_completed.status_code == 200
+
+    data = {
+        'service': 'great',
+        'user_id': other_user.id,
+        'lesson': data['lesson_completed']['lesson'],
+    }
+
+    response = api_client.delete(
+        reverse('api:user-lesson-completed',),
+        data=data,
+        format='json'
+    )
+    assert response.status_code == 200
