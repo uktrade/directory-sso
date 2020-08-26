@@ -8,6 +8,7 @@ import tldextract
 from django.core.exceptions import ObjectDoesNotExist
 from django.conf import settings
 from django.utils.http import urlencode
+from sso.user.models import Service, ServicePage, UserPageView, LessonCompleted
 
 
 def get_url_with_redirect(url, redirect_url):
@@ -78,3 +79,47 @@ def get_social_account_image(account):
                 return image['identifier']
     elif account.provider == 'google':
         return account.extra_data['picture']
+
+
+def set_page_view(user, service_name, page_name):
+    service, created = Service.objects.get_or_create(name=service_name)
+    service_page, created = ServicePage.objects.get_or_create(service=service, page_name=page_name)
+    user_page_view, created = UserPageView.objects.get_or_create(service_page=service_page, user=user)
+    return user_page_view
+
+
+def get_page_view(user, service_name, page_name=None):
+    try:
+        service = Service.objects.get(name=service_name)
+        if page_name:
+            return UserPageView.objects.filter(
+                user=user,
+                service_page__service=service,
+                service_page__page_name=page_name
+            )
+        return UserPageView.objects.filter(user=user, service_page__service=service)
+    except ObjectDoesNotExist:
+        pass
+
+
+def set_lesson_completed(user, service_name, lesson_name, lesson, module):
+    service, created = Service.objects.get_or_create(name=service_name)
+    lesson_completed, created = LessonCompleted.objects.get_or_create(
+        user=user, service=service,
+        lesson_page=lesson_name,
+        lesson=lesson,
+        module=module,
+    )
+    return lesson_completed
+
+
+def get_lesson_completed(user, service, **filter_dict):
+    try:
+        service = Service.objects.get(name=service)
+        return LessonCompleted.objects.filter(
+                user=user,
+                service=service,
+                **filter_dict
+            )
+    except ObjectDoesNotExist:
+        return None
