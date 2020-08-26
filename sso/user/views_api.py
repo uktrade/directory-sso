@@ -97,9 +97,8 @@ class LessonCompletedAPIView(GenericAPIView):
     def delete(self, request, format=None):
         service = Service.objects.get(name=request.data.get('service'))
         lesson_id = request.data.get('lesson')
-
         try:
-            lesson = LessonCompleted.objects.get(service=service, lesson=lesson_id)
+            lesson = LessonCompleted.objects.get(service=service, lesson=lesson_id, user=request.user)
         except ObjectDoesNotExist:
             lesson = None
 
