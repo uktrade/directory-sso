@@ -377,6 +377,44 @@ def test_delete_endpoint_for_lesson_completed(api_client, set_lesson_completed):
 
 
 @pytest.mark.django_db
+def test_delete_for_mutliple_lesson_completed(api_client, set_lesson_completed):
+    """
+    This test where multiple user completed same lesson and delete should delete user specific lesson
+    """
+
+    data = json.loads(set_lesson_completed.content)
+    assert set_lesson_completed.status_code == 200
+
+    profile = factories.UserProfileFactory()
+    api_client.force_authenticate(user=profile.user)
+
+    set_data = {
+        'user': profile.user.pk,
+        'lesson_page': 'my-new-lesson',
+        'lesson': 99,
+        'module': 1,
+        'service': 'great'
+    }
+    api_client.post(
+        reverse('api:user-lesson-completed'),
+        set_data,
+        format='json'
+    )
+    data = {
+        'service': 'great',
+        'user_id': data['lesson_completed']['user'],
+        'lesson': data['lesson_completed']['lesson'],
+    }
+
+    response = api_client.delete(
+        reverse('api:user-lesson-completed',),
+        data=data,
+        format='json'
+    )
+    assert response.status_code == 200
+
+
+@pytest.mark.django_db
 def test_delete_endpoint_no_existing_lesson_completed(api_client, set_lesson_completed):
 
     data = json.loads(set_lesson_completed.content)

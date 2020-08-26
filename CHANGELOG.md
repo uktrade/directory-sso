@@ -2,6 +2,7 @@
 
 ## Pre release
 ### Fixed bugs:
+- No ticket - Lesson completed delete fix
 
 ### Implemented enhancements
 - GP2-36 - Lesson completed model
