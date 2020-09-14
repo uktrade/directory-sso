@@ -171,6 +171,6 @@ class SocialAccountAdapter(DefaultSocialAccountAdapter):
             return
 
         # Email exists, redirect to login page
-        client_url = settings.MAGNA_URL + '/login?matched-email=true'
+        client_url = settings.MAGNA_URL + '/login?email={social_email}'
 
         raise ImmediateHttpResponse(redirect(client_url))
