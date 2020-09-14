@@ -9,7 +9,6 @@ from directory_constants.urls import domestic
 from notifications_python_client import NotificationsAPIClient
 
 from django.conf import settings
-from django.contrib import messages
 from django.urls import reverse
 from django.shortcuts import redirect
 
@@ -172,11 +171,6 @@ class SocialAccountAdapter(DefaultSocialAccountAdapter):
             return
 
         # Email exists, redirect to login page
-        login_url = reverse('account_login')
-        messages.add_message(
-            request,
-            messages.ERROR,
-            social_email + ' is already taken'
-        )
+        client_url = settings.MAGNA_URL + '/login?matched-email=true'
 
-        raise ImmediateHttpResponse(redirect(login_url))
+        raise ImmediateHttpResponse(redirect(client_url))
