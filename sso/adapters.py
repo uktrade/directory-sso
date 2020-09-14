@@ -9,7 +9,6 @@ from directory_constants.urls import domestic
 from notifications_python_client import NotificationsAPIClient
 
 from django.conf import settings
-from django.contrib import messages
 from django.urls import reverse
 from django.shortcuts import redirect
 
