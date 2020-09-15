@@ -319,9 +319,6 @@ SESSION_COOKIE_SECURE = env.bool('SESSION_COOKIE_SECURE', True)
 CSRF_COOKIE_SECURE = env.bool('CSRF_COOKIE_SECURE', True)
 CSRF_COOKIE_HTTPONLY = True
 
-# Messages
-MESSAGE_STORAGE = 'django.contrib.messages.storage.session.SessionStorage'
-
 # Set with comma separated values in env
 ALLOWED_REDIRECT_DOMAINS = env.list('ALLOWED_REDIRECT_DOMAINS', default=[])
 for domain in ALLOWED_REDIRECT_DOMAINS:
