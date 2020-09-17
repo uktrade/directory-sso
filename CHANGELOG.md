@@ -3,6 +3,7 @@
 ## Pre release
 ### Fixed bugs:
 - No ticket - Lesson completed delete fix
+- GAA-27 - directory-components version bump
 
 ### Implemented enhancements
 - GP2-36 - Lesson completed model
