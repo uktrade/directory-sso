@@ -10,7 +10,9 @@ from allauth.exceptions import ImmediateHttpResponse
 from django.contrib.auth import get_user_model
 from django.contrib.messages.middleware import MessageMiddleware
 from django.contrib.sessions.middleware import SessionMiddleware
-from django.test.utils import override_settings
+
+from sso.tests.test_utils import not_raises
+
 
 def test_next_validation_returns_true_if_in_allowed_domains(settings):
     settings.ALLOWED_REDIRECT_DOMAINS = ['iloveexporting.com', 'ilovecats.com']
@@ -176,6 +178,12 @@ class FakeSocialLogin():
         return False
 
 
+class FakeSocialLoginIsExisting(FakeSocialLogin):
+    @property
+    def is_existing(self):
+        return True
+
+
 @pytest.mark.django_db
 @patch('allauth.account.models.EmailAddress.objects')
 def test_social_adapter_pre_social_login_handles_email_dupes(mock_email, rf):
@@ -193,3 +201,39 @@ def test_social_adapter_pre_social_login_handles_email_dupes(mock_email, rf):
 
     with pytest.raises(ImmediateHttpResponse):
         adapter.pre_social_login(request, FakeSocialLogin('foo@example.com'))
+
+
+@pytest.mark.django_db
+def test_social_adapter_pre_social_login_handles_non_existing_email(rf):
+    UserFactory(email='foo@example.com')
+    adapter = get_adapter()
+
+    request = rf.get('/signup')
+    middleware = SessionMiddleware()
+    middleware.process_request(request)
+
+    middleware = MessageMiddleware()
+    middleware.process_request(request)
+    request.session.save()
+
+    with not_raises(ImmediateHttpResponse):
+        adapter.pre_social_login(request, FakeSocialLogin('foo1@example.com'))
+
+
+@pytest.mark.django_db
+def test_social_adapter_pre_social_login_handles_for_existing_email(rf):
+    UserFactory(email='foo@example.com')
+    adapter = get_adapter()
+
+    request = rf.get('/signup')
+    middleware = SessionMiddleware()
+    middleware.process_request(request)
+
+    middleware = MessageMiddleware()
+    middleware.process_request(request)
+    request.session.save()
+
+    fake_social = FakeSocialLoginIsExisting('foo1@example.com')
+
+    with not_raises(ImmediateHttpResponse):
+        adapter.pre_social_login(request, fake_social)
