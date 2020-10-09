@@ -151,9 +151,14 @@ class SocialAccountAdapter(DefaultSocialAccountAdapter):
 
     def pre_social_login(self, request, sociallogin):
         """
-        Invoked just after a user successfully authenticates via a
+        This hook is invoked just after a user successfully authenticates via a
         social provider, but before the login is actually processed
         (and before the pre_social_login signal is emitted).
+
+        TODO: This code is unfortunately tied to a specific client for the edge
+        case of a duplication of social email. In this event, the service will
+        respond with a 302 to the client's login page until REST endpoints for
+        authentication are enabled.
         """
 
         # Ignore existing social accounts
