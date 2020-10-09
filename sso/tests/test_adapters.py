@@ -5,6 +5,14 @@ import pytest
 from sso.adapters import is_valid_redirect, AccountAdapter, SocialAccountAdapter
 from sso.user.tests.factories import UserFactory
 
+from allauth.socialaccount.adapter import get_adapter
+from allauth.exceptions import ImmediateHttpResponse
+from django.contrib.auth import get_user_model
+from django.contrib.messages.middleware import MessageMiddleware
+from django.contrib.sessions.middleware import SessionMiddleware
+
+from sso.tests.test_utils import not_raises
+
 
 def test_next_validation_returns_true_if_in_allowed_domains(settings):
     settings.ALLOWED_REDIRECT_DOMAINS = ['iloveexporting.com', 'ilovecats.com']
@@ -153,3 +161,79 @@ def test_social_adapter_creates_profile(mock_save_user, mocked_notifications, se
         email_address='foo@example.com',
         template_id=settings.GOV_NOTIFY_WELCOME_TEMPLATE_ID
     )
+
+
+class FakeSocialLogin():
+    def __init__(self, email):
+        self.email = email
+
+    @property
+    def user(self):
+        return get_user_model()(
+            email=self.email
+        )
+
+    @property
+    def is_existing(self):
+        return False
+
+
+class FakeSocialLoginIsExisting(FakeSocialLogin):
+    @property
+    def is_existing(self):
+        return True
+
+
+@pytest.mark.django_db
+@patch('allauth.account.models.EmailAddress.objects')
+def test_social_adapter_pre_social_login_handles_email_dupes(mock_email, rf):
+    user = UserFactory(email='foo@example.com')
+    adapter = get_adapter()
+    mock_email.get.return_value = user.email
+
+    request = rf.get('/signup')
+    middleware = SessionMiddleware()
+    middleware.process_request(request)
+
+    middleware = MessageMiddleware()
+    middleware.process_request(request)
+    request.session.save()
+
+    with pytest.raises(ImmediateHttpResponse):
+        adapter.pre_social_login(request, FakeSocialLogin('foo@example.com'))
+
+
+@pytest.mark.django_db
+def test_social_adapter_pre_social_login_handles_non_existing_email(rf):
+    UserFactory(email='foo@example.com')
+    adapter = get_adapter()
+
+    request = rf.get('/signup')
+    middleware = SessionMiddleware()
+    middleware.process_request(request)
+
+    middleware = MessageMiddleware()
+    middleware.process_request(request)
+    request.session.save()
+
+    with not_raises(ImmediateHttpResponse):
+        adapter.pre_social_login(request, FakeSocialLogin('foo1@example.com'))
+
+
+@pytest.mark.django_db
+def test_social_adapter_pre_social_login_handles_for_existing_email(rf):
+    UserFactory(email='foo@example.com')
+    adapter = get_adapter()
+
+    request = rf.get('/signup')
+    middleware = SessionMiddleware()
+    middleware.process_request(request)
+
+    middleware = MessageMiddleware()
+    middleware.process_request(request)
+    request.session.save()
+
+    fake_social = FakeSocialLoginIsExisting('foo1@example.com')
+
+    with not_raises(ImmediateHttpResponse):
+        adapter.pre_social_login(request, fake_social)
