@@ -2,6 +2,8 @@ import urllib.parse
 
 from allauth.socialaccount.adapter import DefaultSocialAccountAdapter
 from allauth.account.adapter import DefaultAccountAdapter
+from allauth.account.models import EmailAddress
+from allauth.exceptions import ImmediateHttpResponse
 from allauth.account.utils import get_request_param
 from directory_constants.urls import domestic
 from notifications_python_client import NotificationsAPIClient
@@ -146,3 +148,34 @@ class SocialAccountAdapter(DefaultSocialAccountAdapter):
             email_address=email,
             template_id=settings.GOV_NOTIFY_WELCOME_TEMPLATE_ID,
         )
+
+    def pre_social_login(self, request, sociallogin):
+        """
+        This hook is invoked just after a user successfully authenticates via a
+        social provider, but before the login is actually processed
+        (and before the pre_social_login signal is emitted).
+
+        TODO: This code is unfortunately tied to a specific client for the edge
+        case of a duplication of social email. In this event, the service will
+        respond with a 302 to the client's login page until REST endpoints for
+        authentication are enabled.
+        """
+
+        # Ignore existing social accounts
+        if sociallogin.is_existing:
+            return
+
+        # Check if given email address already exists
+        try:
+            social_user = sociallogin.user
+            social_email = social_user.email
+            EmailAddress.objects.get(email=social_email)
+
+        # Email does not exist, allauth will handle a new social account
+        except EmailAddress.DoesNotExist:
+            return
+
+        # Email exists, redirect to login page
+        client_url = settings.MAGNA_URL + '/login?email=' + social_email
+
+        raise ImmediateHttpResponse(redirect(client_url))
