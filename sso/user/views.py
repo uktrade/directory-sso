@@ -56,6 +56,10 @@ class LoginView(RedirectToNextMixin, allauth_views.LoginView):
 
 
 class LogoutView(RedirectToNextMixin, allauth_views.LogoutView):
+
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request, *args, **kwargs)
+
     pass
 
 
