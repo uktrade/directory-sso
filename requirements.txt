@@ -4,7 +4,6 @@
 #
 #    pip-compile requirements.in
 #
-asn1crypto==0.24.0        # via cryptography
 attrs==19.1.0             # via jsonschema
 beautifulsoup4==4.6.0     # via directory-components
 boto3==1.10.23            # via -r requirements.in
@@ -12,7 +11,7 @@ botocore==1.13.28         # via boto3, s3transfer
 certifi==2018.4.16        # via requests, sentry-sdk
 cffi==1.11.5              # via cryptography
 chardet==3.0.4            # via requests
-cryptography==2.4.1       # via django-cryptography, pyopenssl, requests
+cryptography==3.2         # via django-cryptography, pyopenssl, requests
 defusedxml==0.5.0         # via python3-openid
 directory-api-client==21.0.0  # via -r requirements.in
 directory-client-core==6.1.0  # via directory-api-client
@@ -40,7 +39,7 @@ docopt==0.6.2             # via notifications-python-client
 docutils==0.14            # via botocore
 future==0.16.0            # via notifications-python-client
 gunicorn==20.0.4          # via -r requirements.in
-idna==2.6                 # via cryptography, requests, tldextract
+idna==2.6                 # via requests, tldextract
 jmespath==0.9.3           # via boto3, botocore
 jsonschema==3.0.1         # via directory-components
 mohawk==0.3.4             # via sigauth
@@ -71,7 +70,6 @@ tldextract==2.2.2         # via -r requirements.in
 urllib3==1.24.2           # via -r requirements.in, botocore, directory-validators, requests, sentry-sdk
 w3lib==1.21.0             # via directory-client-core
 whitenoise==4.1.4         # via -r requirements.in
-
 
 # The following packages are considered to be unsafe in a requirements file:
 # setuptools
