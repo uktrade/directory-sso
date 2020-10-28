@@ -6,6 +6,7 @@
 - No ticket - Lesson completed delete fix
 
 ### Implemented enhancements
+- GP2-763 - Add social auth to profile
 - GP2-36 - Lesson completed model
 - GP2-238 - page visit model
 
