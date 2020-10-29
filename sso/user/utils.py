@@ -74,11 +74,11 @@ def get_login_provider_url(request, provider_id):
 
 def get_social_account_image(account):
     if account.provider == 'linkedin_oauth2':
-        for size_variant in account.extra_data['profilePicture']['displayImage~']['elements']:
+        for size_variant in account.extra_data.get('profilePicture', {}).get('displayImage~', {}).get('elements', {}):
             for image in size_variant['identifiers']:
                 return image['identifier']
     elif account.provider == 'google':
-        return account.extra_data['picture']
+        return account.extra_data.get('picture')
 
 
 def set_page_view(user, service_name, page_name):
