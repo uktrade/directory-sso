@@ -4,8 +4,10 @@
 ### Fixed bugs:
 - GAA-27 - directory-components version bump
 - No ticket - Lesson completed delete fix
+- No ticket - no profile linked in pic key error
 
 ### Implemented enhancements
+- GP2-763 - Add social auth to profile
 - GP2-36 - Lesson completed model
 - GP2-238 - page visit model
 
