@@ -78,7 +78,7 @@ def get_social_account_image(account):
             for image in size_variant['identifiers']:
                 return image['identifier']
     elif account.provider == 'google':
-        return account.extra_data['picture']
+        return account.extra_data.get('picture')
 
 
 def set_page_view(user, service_name, page_name):

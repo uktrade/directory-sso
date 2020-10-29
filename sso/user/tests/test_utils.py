@@ -21,6 +21,23 @@ def test_get_social_account_image_google():
     assert utils.get_social_account_image(account) == 'https://image.com/image.png'
 
 
+def test_get_social_account_no_image_google():
+    account = SocialAccount(
+        extra_data={
+            'id': '123',
+            'email': 'jim@example.com',
+            'verified_email': True,
+            'name': 'Jim Example',
+            'given_name': 'Jim',
+            'family_name': 'Example',
+            'locale': 'en'
+        },
+        provider='google',
+    )
+
+    assert utils.get_social_account_image(account) is None
+
+
 def test_get_social_account_image_linkedin():
     account = SocialAccount(
         extra_data={
