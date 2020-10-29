@@ -48,3 +48,46 @@ def test_get_social_account_image_linkedin():
     )
 
     assert utils.get_social_account_image(account) == 'https://image.com/image.png'
+
+
+def test_get_social_account_image_linkedin_no_profile_pic():
+    account = SocialAccount(
+        extra_data={
+            'id': 's27gBbCPyF'
+        },
+        provider='linkedin_oauth2',
+    )
+
+    assert utils.get_social_account_image(account) is None
+
+
+def test_get_social_account_image_linkedin_no_display_image():
+    account = SocialAccount(
+        extra_data={
+            'profilePicture': {
+            },
+            'id': 's27gBbCPyF'
+        },
+        provider='linkedin_oauth2',
+    )
+    assert utils.get_social_account_image(account) is None
+
+
+def test_get_social_account_image_linkedin_no_elements():
+    account = SocialAccount(
+        extra_data={
+            'profilePicture': {
+                'displayImage~': {
+                    'paging': {
+                        'count': 10,
+                        'start': 0,
+                        'links': []
+                    },
+                    'elements': []
+                }
+            },
+            'id': 's27gBbCPyF'
+        },
+        provider='linkedin_oauth2',
+    )
+    assert utils.get_social_account_image(account) is None
