@@ -8,6 +8,7 @@
 
 ### Implemented enhancements
 - GP2-763 - Add social auth to profile
+- GBAU-217 - data retention: added management command to archive users
 - GP2-36 - Lesson completed model
 - GP2-238 - page visit model
 
