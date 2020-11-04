@@ -37,7 +37,7 @@ class Command(MigrateCommand):
         for user in old_users:
             response = api_client.company.delete_company_by_sso_id(
                 sso_id=user.id,
-                request_key=settings.SIGNATURE_SECRET
+                request_key=settings.DIRECTORY_API_SECRET
             )
             if response.status_code != 204:
                 self.stdout.write(
