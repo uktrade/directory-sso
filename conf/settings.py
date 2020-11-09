@@ -331,6 +331,9 @@ SIGAUTH_URL_NAMES_WHITELIST = [
     'healthcheck-ping',
 ]
 
+# api request key
+DIRECTORY_API_SECRET = env.str('DIRECTORY_API_SECRET', '')
+
 # Use proxy host name when generating links (e.g. in emails)
 USE_X_FORWARDED_HOST = True
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
