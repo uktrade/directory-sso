@@ -281,6 +281,7 @@ ACCOUNT_ADAPTER = 'sso.adapters.AccountAdapter'
 ACCOUNT_LOGIN_ON_EMAIL_CONFIRMATION = True
 ACCOUNT_LOGIN_ON_PASSWORD_RESET = True
 SOCIALACCOUNT_ADAPTER = 'sso.adapters.SocialAccountAdapter'
+SOCIALACCOUNT_AUTO_SIGNUP = True
 SOCIALACCOUNT_EMAIL_VERIFICATION = "none"
 
 VERIFICATION_EXPIRY_DAYS = env.int('VERIFICATION_EXPIRY_DAYS', 3)
@@ -330,6 +331,9 @@ SIGAUTH_URL_NAMES_WHITELIST = [
     'healthcheck-ping',
 ]
 
+# api request key
+DIRECTORY_API_SECRET = env.str('DIRECTORY_API_SECRET', '')
+
 # Use proxy host name when generating links (e.g. in emails)
 USE_X_FORWARDED_HOST = True
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
@@ -342,6 +346,9 @@ GOOGLE_TAG_MANAGER_ENV = env.str('GOOGLE_TAG_MANAGER_ENV', '')
 
 # sso profile
 SSO_PROFILE_URL = env.str('SSO_PROFILE_URL')
+
+# magna
+MAGNA_URL = env.str('MAGNA_URL')
 
 # directory-api
 DIRECTORY_API_CLIENT_BASE_URL = env.str('DIRECTORY_API_CLIENT_BASE_URL')

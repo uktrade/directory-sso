@@ -59,6 +59,7 @@ class CreateUserSerializer(serializers.ModelSerializer):
 
 class UserProfileSerializer(serializers.ModelSerializer):
     profile_image = serializers.SerializerMethodField()
+    social_account = serializers.SerializerMethodField()
 
     class Meta:
         model = UserProfile
@@ -67,13 +68,18 @@ class UserProfileSerializer(serializers.ModelSerializer):
             'last_name',
             'job_title',
             'mobile_phone_number',
-            'profile_image'
+            'profile_image',
+            'social_account',
         )
 
     def get_profile_image(self, obj):
         account = obj.user.socialaccount_set.first()
         if account:
             return utils.get_social_account_image(account)
+
+    def get_social_account(self, obj):
+        account = obj.user.socialaccount_set.first()
+        return account.provider if account else 'email'
 
     def to_internal_value(self, data):
         return {**data, 'user_id': self.context['request'].user.pk}
