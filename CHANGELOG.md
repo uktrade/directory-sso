@@ -6,7 +6,7 @@
 ### Implemented enhancements
 
 
-## [2020.11.12](https://github.com/uktrade/directory-sso/releases/tag/v6.0.0)
+## [v6.0.0](https://github.com/uktrade/directory-sso/releases/tag/v6.0.0)
 [Full Changelog](https://github.com/uktrade/directory-sso/compare/v6.0.0)
 
 ### Fixed bugs:
