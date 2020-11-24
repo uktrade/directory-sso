@@ -3,6 +3,7 @@
 ## Pre release
 
 ### Fixed bugs:
+- GBAU-869 - Terminate session on logout from outside SSO
 ### Implemented enhancements
 
 

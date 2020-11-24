@@ -8,6 +8,7 @@ import pytest
 
 from django.conf import settings
 from django.urls import reverse
+from django.contrib.sessions.models import Session
 
 from core.tests.helpers import create_response
 from sso.user import models
@@ -648,6 +649,19 @@ def test_logout_response_with_sso_display_logged_in_cookie(authed_client):
     response = authed_client.post(reverse('account_logout'))
 
     assert response.cookies['sso_display_logged_in'].value == 'false'
+
+
+@pytest.mark.django_db
+def test_logout_flush_session_if_cookie_with_session_key(client):
+    session_key = client.session.session_key
+
+    assert Session.objects.get(session_key=session_key)
+
+    client.cookies['session_key'] = session_key
+    client.post(reverse('account_logout'))
+
+    with pytest.raises(Session.DoesNotExist):
+        Session.objects.get(session_key=session_key)
 
 
 def test_email_verification_sent_view_feedback_url(client, settings):
