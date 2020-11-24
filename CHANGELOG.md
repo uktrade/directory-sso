@@ -1,6 +1,14 @@
 # Changelog
 
 ## Pre release
+
+### Fixed bugs:
+### Implemented enhancements
+
+
+## [v6.0.0](https://github.com/uktrade/directory-sso/releases/tag/v6.0.0)
+[Full Changelog](https://github.com/uktrade/directory-sso/compare/v6.0.0)
+
 ### Fixed bugs:
 - GAA-27 - directory-components version bump
 - No ticket - Lesson completed delete fix
@@ -12,7 +20,7 @@
 - GP2-36 - Lesson completed model
 - GP2-238 - page visit model
 
-## [2020.07.09](https://github.com/uktrade/directory-sso/releases/tag/2020.07.39)
+## [2020.07.09](https://github.com/uktrade/directory-sso/releases/tag/2020.07.09)
 [Full Changelog](https://github.com/uktrade/directory-sso/compare/2020.04.30...2020.07.09)
 ### Implemented enhancements
 - GP2-94 - Send welcome email on social login
