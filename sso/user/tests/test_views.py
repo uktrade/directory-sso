@@ -5,7 +5,6 @@ from allauth.account.models import EmailAddress, EmailConfirmationHMAC
 from directory_constants import urls
 from directory_api_client import api_client
 import pytest
-import requests
 
 from django.conf import settings
 from django.urls import reverse
