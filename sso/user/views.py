@@ -5,6 +5,7 @@ from django.urls import reverse
 from django.shortcuts import redirect
 from django.views.generic import RedirectView
 from django.urls import reverse_lazy
+from django.contrib.sessions.backends.db import SessionStore
 
 from allauth.account import views as allauth_views
 from allauth.account.views import INTERNAL_RESET_URL_KEY, INTERNAL_RESET_SESSION_KEY
@@ -56,7 +57,14 @@ class LoginView(RedirectToNextMixin, allauth_views.LoginView):
 
 
 class LogoutView(RedirectToNextMixin, allauth_views.LogoutView):
-    pass
+    def post(self, request, *args, **kwargs):
+        # Flushing the session if the POST request comes from outside the service
+        session_key = request.COOKIES.get('session_key')
+        if session_key:
+            session_store = SessionStore(session_key=session_key)
+            session_store.flush()
+
+        return super().post(request, *args, **kwargs)
 
 
 class ConfirmEmailView(
