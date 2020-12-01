@@ -1,3 +1,5 @@
+from allauth.account.forms import default_token_generator, user_pk_to_url_str
+from allauth.account.models import EmailConfirmation
 from django.conf import settings
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin
 from django.contrib.postgres.fields import JSONField
@@ -6,9 +8,6 @@ from django.db import models
 from django.urls import reverse
 from django.utils import timezone
 from django.utils.translation import ugettext_lazy as _
-
-from allauth.account.forms import default_token_generator, user_pk_to_url_str
-from allauth.account.models import EmailConfirmation
 
 from sso.api.model_utils import TimeStampedModel
 from sso.constants import API_DATETIME_FORMAT
@@ -51,51 +50,24 @@ class UserManager(BaseUserManager):
 
 class User(AbstractBaseUser, PermissionsMixin, TimeStampedModel):
 
-    email = models.EmailField(
-        _('email'),
-        unique=True
-    )
+    email = models.EmailField(_('email'), unique=True)
     is_staff = models.BooleanField(
-        _('staff status'),
-        default=False,
-        help_text=_(
-            'Designates whether the user can log into this admin site.'
-        ),
+        _('staff status'), default=False, help_text=_('Designates whether the user can log into this admin site.')
     )
     is_active = models.BooleanField(
         _('active'),
         default=True,
         help_text=_(
-            'Designates whether this user should be treated as active. '
-            'Unselect this instead of deleting accounts.'
+            'Designates whether this user should be treated as active. Unselect this instead of deleting accounts.'
         ),
     )
-    date_joined = models.DateTimeField(
-        _('date joined'),
-        default=timezone.now,
-    )
-    utm = JSONField(
-        blank=True,
-        default=dict,
-        help_text=_(
-            'Urchin Tracking Module query parameters passed in the URL'
-        ),
-    )
-    hashed_uuid = models.CharField(
-        max_length=200,
-        help_text='a hash representation of the object\'s id',
-        default='',
-    )
+    date_joined = models.DateTimeField(_('date joined'), default=timezone.now)
+    utm = JSONField(blank=True, default=dict, help_text=_('Urchin Tracking Module query parameters passed in the URL'))
+    hashed_uuid = models.CharField(max_length=200, help_text='a hash representation of the object\'s id', default='')
 
-    first_name = models.CharField(
-        max_length=30,
-        blank=True,
-    )
+    first_name = models.CharField(max_length=30, blank=True)
 
-    last_name = models.CharField(
-        max_length=30,
-        blank=True,
-    )
+    last_name = models.CharField(max_length=30, blank=True)
 
     failed_login_attempts = models.PositiveSmallIntegerField(default=0)
 
@@ -129,28 +101,21 @@ class User(AbstractBaseUser, PermissionsMixin, TimeStampedModel):
 
     def notify_suspicious_login_activity(self):
         notification_threshold = settings.SSO_SUSPICIOUS_LOGIN_MAX_ATTEMPTS
-        if (self.failed_login_attempts == notification_threshold and
-                settings.SSO_SUSPICIOUS_ACTIVITY_NOTIFICATION_EMAIL):
+        if self.failed_login_attempts == notification_threshold and settings.SSO_SUSPICIOUS_ACTIVITY_NOTIFICATION_EMAIL:
             body_message = "{user} tried to login {attempts} times".format(
-                user=self.email,
-                attempts=self.failed_login_attempts
+                user=self.email, attempts=self.failed_login_attempts
             )
             send_mail(
                 subject='Suspicious activity on SSO',
                 message=body_message,
                 from_email=settings.DEFAULT_FROM_EMAIL,
-                recipient_list=[
-                    settings.SSO_SUSPICIOUS_ACTIVITY_NOTIFICATION_EMAIL
-                ]
+                recipient_list=[settings.SSO_SUSPICIOUS_ACTIVITY_NOTIFICATION_EMAIL],
             )
 
     def get_password_reset_link(self):
         return reverse(
             "account_reset_password_from_key",
-            kwargs={
-                'uidb36': user_pk_to_url_str(self),
-                'key': default_token_generator.make_token(self)
-            }
+            kwargs={'uidb36': user_pk_to_url_str(self), 'key': default_token_generator.make_token(self)},
         )
 
     def get_email_verification_link(self):
@@ -159,9 +124,7 @@ class User(AbstractBaseUser, PermissionsMixin, TimeStampedModel):
         email_confirmation.sent = timezone.now()
         email_confirmation.save()
 
-        return reverse(
-            "account_confirm_email", args=[email_confirmation.key]
-        )
+        return reverse("account_confirm_email", args=[email_confirmation.key])
 
 
 class UserProfile(TimeStampedModel):
@@ -188,9 +151,7 @@ class ServicePage(TimeStampedModel):
     page_name = models.CharField(max_length=128)
 
     class Meta:
-        indexes = [
-            models.Index(fields=['service'])
-        ]
+        indexes = [models.Index(fields=['service'])]
         unique_together = [['service', 'page_name']]
 
 
@@ -230,5 +191,4 @@ class LessonCompleted(TimeStampedModel):
             'user': self.user.id,
             'modified': self.modified.strftime(API_DATETIME_FORMAT),
             'created': self.created.strftime(API_DATETIME_FORMAT),
-
         }

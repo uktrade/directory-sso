@@ -1,7 +1,6 @@
-from rest_framework import authentication, exceptions
-
 from django.contrib.sessions.models import Session
 from django.utils import timezone
+from rest_framework import authentication, exceptions
 
 from sso.user.models import User
 
@@ -37,10 +36,7 @@ class SessionAuthentication(authentication.BaseAuthentication):
 
     def get_user(self, session_key):
         try:
-            session = Session.objects.get(
-                session_key=session_key,
-                expire_date__gt=timezone.now()
-            )
+            session = Session.objects.get(session_key=session_key, expire_date__gt=timezone.now())
         except Session.DoesNotExist:
             return None
         else:

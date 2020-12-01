@@ -1,15 +1,14 @@
-from django.conf import settings
-from django.urls import reverse
-from django.forms import TextInput
-from django.utils.safestring import mark_safe
-
 import allauth.account.forms
 from allauth.account.adapter import get_adapter
 from allauth.account.models import EmailAddress
 from allauth.account.utils import filter_users_by_email
 from allauth.utils import set_form_field_order
-from directory_constants import urls
 from directory_components import forms
+from directory_constants import urls
+from django.conf import settings
+from django.forms import TextInput
+from django.urls import reverse
+from django.utils.safestring import mark_safe
 from notifications_python_client import NotificationsAPIClient
 
 from sso.user.fields import PasswordField
@@ -51,7 +50,7 @@ class SignupForm(forms.DirectoryComponentsFormMixin, allauth.account.forms.Signu
                     'autofocus': 'autofocus',
                     'autocomplete': 'new-password',
                 }
-            )
+            ),
         )
 
         self.fields['email2'] = forms.EmailField(
@@ -63,7 +62,7 @@ class SignupForm(forms.DirectoryComponentsFormMixin, allauth.account.forms.Signu
                     'autofocus': 'autofocus',
                     'autocomplete': 'new-password',
                 }
-            )
+            ),
         )
         self.fields['password1'] = PasswordField(
             label="Password",
@@ -85,24 +84,16 @@ class SignupForm(forms.DirectoryComponentsFormMixin, allauth.account.forms.Signu
         user if the email is already registered (security requirement), instead
         we send a notification with a link to password reset.
         """
-        notifications_client = NotificationsAPIClient(
-            settings.GOV_NOTIFY_API_KEY
-        )
+        notifications_client = NotificationsAPIClient(settings.GOV_NOTIFY_API_KEY)
 
         notifications_client.send_email_notification(
             email_address=email,
             template_id=settings.GOV_NOTIFY_ALREADY_REGISTERED_TEMPLATE_ID,
             personalisation={
-                'login_url': (
-                    settings.SSO_BASE_URL +
-                    reverse('account_login')
-                ),
-                'password_reset_url': (
-                    settings.SSO_BASE_URL +
-                    reverse('account_reset_password')
-                ),
-                'contact_us_url': urls.domestic.CONTACT_US
-            }
+                'login_url': (settings.SSO_BASE_URL + reverse('account_login')),
+                'password_reset_url': (settings.SSO_BASE_URL + reverse('account_reset_password')),
+                'contact_us_url': urls.domestic.CONTACT_US,
+            },
         )
 
     def clean_email(self):
@@ -131,7 +122,7 @@ class LoginForm(forms.DirectoryComponentsFormMixin, allauth.account.forms.LoginF
                     'autofocus': 'autofocus',
                     'autocomplete': 'new-password',
                 }
-            )
+            ),
         )
 
 
@@ -176,7 +167,7 @@ class ResetPasswordForm(forms.DirectoryComponentsFormMixin, allauth.account.form
                     'autofocus': 'autofocus',
                     'autocomplete': 'new-password',
                 }
-            )
+            ),
         )
 
     def clean_email(self):
@@ -196,7 +187,6 @@ class ResetPasswordForm(forms.DirectoryComponentsFormMixin, allauth.account.form
 
 
 class ResetPasswordKeyForm(forms.DirectoryComponentsFormMixin, allauth.account.forms.ResetPasswordKeyForm):
-
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.fields['password1'] = PasswordField(

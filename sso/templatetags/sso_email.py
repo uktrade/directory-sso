@@ -1,4 +1,5 @@
 from django import template
+
 from sso import constants
 
 register = template.Library()

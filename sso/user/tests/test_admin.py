@@ -3,22 +3,20 @@ from datetime import timedelta
 from unittest import TestCase
 from unittest.mock import patch
 
-from django.test import Client
-from django.contrib.admin import site
-from django.urls import reverse
-from django.conf import settings
-from django.utils import timezone
-
-from freezegun import freeze_time
 import pytest
 from allauth.account.models import EmailAddress
+from django.conf import settings
+from django.contrib.admin import site
+from django.test import Client
+from django.urls import reverse
+from django.utils import timezone
+from freezegun import freeze_time
 
+from core.tests.test_helpers import reload_urlconf
+from sso.oauth2.tests.factories import AccessTokenFactory, ApplicationFactory
 from sso.user import admin
 from sso.user.models import User
 from sso.user.tests.factories import UserFactory
-from sso.oauth2.tests.factories import AccessTokenFactory, ApplicationFactory
-
-from core.tests.test_helpers import reload_urlconf
 
 
 @pytest.mark.django_db
@@ -32,25 +30,14 @@ class DownloadCaseStudyCSVTestCase(TestCase):
     )
 
     def setUp(self):
-        self.superuser = User.objects.create_superuser(
-            email='admin@example.com', password='test'
-        )
+        self.superuser = User.objects.create_superuser(email='admin@example.com', password='test')
         self.client = Client()
         self.client.force_login(self.superuser)
 
     def test_download_csv_single_user(self):
-        data = {
-            'action': 'download_csv',
-            '_selected_action': User.objects.all().values_list(
-                'pk', flat=True
-            )
-        }
+        data = {'action': 'download_csv', '_selected_action': User.objects.all().values_list('pk', flat=True)}
 
-        response = self.client.post(
-            reverse('admin:user_user_changelist'),
-            data,
-            follow=True
-        )
+        response = self.client.post(reverse('admin:user_user_changelist'), data, follow=True)
 
         user = User.objects.first()
         row_one = (
@@ -75,23 +62,15 @@ class DownloadCaseStudyCSVTestCase(TestCase):
         for x in range(2):
             User.objects.create(email=x)
 
-        data = {
-            'action': 'download_csv',
-            '_selected_action': User.objects.all().values_list(
-                'pk', flat=True
-            )
-        }
-        response = self.client.post(
-            reverse('admin:user_user_changelist'),
-            data,
-            follow=True
-        )
+        data = {'action': 'download_csv', '_selected_action': User.objects.all().values_list('pk', flat=True)}
+        response = self.client.post(reverse('admin:user_user_changelist'), data, follow=True)
 
         user_one = User.objects.all()[2]
         row_one = (
             '{created},{date_joined},{email},,{hashed_uuid},'
             '{id},{is_active},{is_staff},'
-            '{is_superuser},,,,{modified},,,{user_profile},''{utm},'
+            '{is_superuser},,,,{modified},,,{user_profile},'
+            '{utm},'
             '{verification_code}'
         ).format(
             created=user_one.created,
@@ -173,53 +152,40 @@ def superuser_client(superuser):
 
 @pytest.mark.django_db
 @patch('sso.user.admin.UserAdmin.get_fab_user_ids')
-def test_download_csv_exops_not_fab(
-    mock_get_fab_user_ids, settings, superuser_client
-):
+def test_download_csv_exops_not_fab(mock_get_fab_user_ids, settings, superuser_client):
 
     settings.EXOPS_APPLICATION_CLIENT_ID = 'debug'
     application = ApplicationFactory(client_id='debug')
-    user_one = AccessTokenFactory.create(
-        application=application
-    ).user  # should be in the csv
-    user_two = AccessTokenFactory.create(
-        application=application
-    ).user  # should not be in the csv
+    user_one = AccessTokenFactory.create(application=application).user  # should be in the csv
+    user_two = AccessTokenFactory.create(application=application).user  # should not be in the csv
     AccessTokenFactory.create().user  # should not be in the csv
 
     mock_get_fab_user_ids.return_value = [user_two.pk]
-    data = {
-        'action': 'download_csv_exops_not_fab',
-        '_selected_action': User.objects.all().values_list(
-            'pk', flat=True
-        )
-    }
-    response = superuser_client.post(
-        reverse('admin:user_user_changelist'),
-        data,
-        follow=True
-    )
+    data = {'action': 'download_csv_exops_not_fab', '_selected_action': User.objects.all().values_list('pk', flat=True)}
+    response = superuser_client.post(reverse('admin:user_user_changelist'), data, follow=True)
 
-    expected_row = OrderedDict([
-        ('created', user_one.created),
-        ('date_joined', user_one.date_joined),
-        ('email', user_one.email),
-        ('first_name', ''),
-        ('hashed_uuid', user_one.hashed_uuid),
-        ('id', user_one.id),
-        ('is_active', user_one.is_active),
-        ('is_staff', user_one.is_staff),
-        ('is_superuser', user_one.is_superuser),
-        ('last_login', user_one.last_login),
-        ('last_name', ''),
-        ('lessoncompleted', ''),
-        ('modified', user_one.modified),
-        ('oauth2_provider_application', ''),
-        ('page_views', ''),
-        ('user_profile', ''),
-        ('utm', user_one.utm),
-        ('verification_code', ''),
-    ])
+    expected_row = OrderedDict(
+        [
+            ('created', user_one.created),
+            ('date_joined', user_one.date_joined),
+            ('email', user_one.email),
+            ('first_name', ''),
+            ('hashed_uuid', user_one.hashed_uuid),
+            ('id', user_one.id),
+            ('is_active', user_one.is_active),
+            ('is_staff', user_one.is_staff),
+            ('is_superuser', user_one.is_superuser),
+            ('last_login', user_one.last_login),
+            ('last_name', ''),
+            ('lessoncompleted', ''),
+            ('modified', user_one.modified),
+            ('oauth2_provider_application', ''),
+            ('page_views', ''),
+            ('user_profile', ''),
+            ('utm', user_one.utm),
+            ('verification_code', ''),
+        ]
+    )
 
     actual = str(response.content, 'utf-8').split('\r\n')
     assert actual[0] == ','.join(expected_row.keys())
@@ -228,9 +194,7 @@ def test_download_csv_exops_not_fab(
 
 @pytest.mark.django_db
 @patch('sso.user.admin.UserAdmin.get_fab_user_ids')
-def test_download_csv_exops_not_fab_distinct(
-    mock_get_fab_user_ids, settings, superuser_client
-):
+def test_download_csv_exops_not_fab_distinct(mock_get_fab_user_ids, settings, superuser_client):
 
     settings.EXOPS_APPLICATION_CLIENT_ID = 'debug'
     application = ApplicationFactory(client_id='debug')
@@ -244,18 +208,9 @@ def test_download_csv_exops_not_fab_distinct(
     )
 
     mock_get_fab_user_ids.return_value = []
-    data = {
-        'action': 'download_csv_exops_not_fab',
-        '_selected_action': User.objects.all().values_list(
-            'pk', flat=True
-        )
-    }
+    data = {'action': 'download_csv_exops_not_fab', '_selected_action': User.objects.all().values_list('pk', flat=True)}
     # when the export csv is created
-    response = superuser_client.post(
-        reverse('admin:user_user_changelist'),
-        data,
-        follow=True
-    )
+    response = superuser_client.post(reverse('admin:user_user_changelist'), data, follow=True)
 
     rows = str(response.content, 'utf-8').strip().split('\r\n')
     # then the user is listed only once, not once per token created
@@ -268,15 +223,9 @@ def test_download_password_reset_links(settings, superuser_client):
 
     data = {
         'action': 'download_password_reset_links',
-        '_selected_action': User.objects.all().values_list(
-            'pk', flat=True
-        )
+        '_selected_action': User.objects.all().values_list('pk', flat=True),
     }
-    response = superuser_client.post(
-        reverse('admin:user_user_changelist'),
-        data,
-        follow=True
-    )
+    response = superuser_client.post(reverse('admin:user_user_changelist'), data, follow=True)
 
     assert '/accounts/password/reset/key/' in str(response.content)
 
@@ -288,22 +237,15 @@ def test_download_email_verification_links(settings, superuser_client):
 
     data = {
         'action': 'download_email_verification_links',
-        '_selected_action': User.objects.all().values_list(
-            'pk', flat=True
-        )
+        '_selected_action': User.objects.all().values_list('pk', flat=True),
     }
-    response = superuser_client.post(
-        reverse('admin:user_user_changelist'),
-        data,
-        follow=True
-    )
+    response = superuser_client.post(reverse('admin:user_user_changelist'), data, follow=True)
 
     assert '/accounts/confirm-email/' in str(response.content)
 
 
 @pytest.mark.django_db
 class CompanyAdminAuthTestCase(TestCase):
-
     def setUp(self):
         self.client = Client()
 
@@ -311,7 +253,7 @@ class CompanyAdminAuthTestCase(TestCase):
         'authbroker_client.backends.AuthbrokerBackend',
         'oauth2_provider.backends.OAuth2Backend',
         'django.contrib.auth.backends.ModelBackend',
-        'allauth.account.auth_backends.AuthenticationBackend'
+        'allauth.account.auth_backends.AuthenticationBackend',
     )
 
     @pytest.mark.django_db

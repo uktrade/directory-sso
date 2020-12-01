@@ -1,5 +1,6 @@
-import pytest
 from contextlib import contextmanager
+
+import pytest
 
 
 @contextmanager

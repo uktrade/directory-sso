@@ -2,15 +2,10 @@ from random import randint
 from uuid import uuid4
 
 from django.conf import settings
+from django.db.utils import IntegrityError
 from django.http import HttpResponseNotFound
 from django.shortcuts import get_list_or_404
-from django.db.utils import IntegrityError
-from rest_framework.generics import (
-    DestroyAPIView,
-    RetrieveAPIView,
-    UpdateAPIView,
-    get_object_or_404,
-)
+from rest_framework.generics import DestroyAPIView, RetrieveAPIView, UpdateAPIView, get_object_or_404
 from rest_framework.response import Response
 
 import core.mixins
@@ -18,9 +13,7 @@ from conf.signature import SignatureCheckPermission
 from sso.user import models
 
 
-class UserByEmailAPIView(
-    core.mixins.NoIndexMixin, RetrieveAPIView, DestroyAPIView, UpdateAPIView
-):
+class UserByEmailAPIView(core.mixins.NoIndexMixin, RetrieveAPIView, DestroyAPIView, UpdateAPIView):
     permission_classes = [SignatureCheckPermission]
     authentication_classes = []
     queryset = models.User.objects.all()
@@ -38,10 +31,7 @@ class UserByEmailAPIView(
 
     def get(self, request, **kwargs):
         user = self.get_user(**kwargs)
-        response_data = {
-            'sso_id': user.id,
-            'is_verified': user.is_active
-        }
+        response_data = {'sso_id': user.id, 'is_verified': user.is_active}
         return Response(response_data)
 
     def delete(self, request, **kwargs):
@@ -52,12 +42,7 @@ class UserByEmailAPIView(
         user = self.get_user(**kwargs)
         is_verified = request.data['is_verified']
         user.emailaddress_set.update_or_create(
-            email=user.email,
-            defaults={
-                'verified': is_verified,
-                'user_id': user.id,
-                'primary': True
-            }
+            email=user.email, defaults={'verified': is_verified, 'user_id': user.id, 'primary': True}
         )
         return Response(status=204)
 
@@ -87,9 +72,7 @@ class TestUsersAPIView(core.mixins.NoIndexMixin, DestroyAPIView):
         try:
             domain = settings.FEATURE_FLAGS["TEST_API_EMAIL_DOMAIN"]
             user = models.User.objects.create(
-                email=request.data.get(
-                    'email',
-                    f'test+{str(uuid4()).replace("-", "")}@{domain}'),
+                email=request.data.get('email', f'test+{str(uuid4()).replace("-", "")}@{domain}'),
             )
             user.save()
             profile = models.UserProfile.objects.create(
@@ -97,8 +80,7 @@ class TestUsersAPIView(core.mixins.NoIndexMixin, DestroyAPIView):
                 first_name=request.data.get('first_name', 'Automated'),
                 last_name=request.data.get('last_name', 'Test'),
                 job_title=request.data.get('job_title', 'AUTOMATED TESTS'),
-                mobile_phone_number=request.data.get(
-                    'mobile_phone_number', randint(1000000000000, 9999999999999)),
+                mobile_phone_number=request.data.get('mobile_phone_number', randint(1000000000000, 9999999999999)),
             )
             profile.save()
             user = profile.user

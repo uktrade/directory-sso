@@ -1,9 +1,8 @@
 from datetime import timedelta
 
 import factory
-from oauth2_provider.models import AccessToken, Application
-
 from django.utils import timezone
+from oauth2_provider.models import AccessToken, Application
 
 from sso.user.tests.factories import UserFactory
 
@@ -11,6 +10,7 @@ from sso.user.tests.factories import UserFactory
 class ApplicationFactory(factory.django.DjangoModelFactory):
     class Meta:
         model = Application
+
     user = factory.SubFactory(UserFactory)
 
 
@@ -26,7 +26,6 @@ class AccessTokenFactory(factory.django.DjangoModelFactory):
 
 
 def build_historic_access_token_factory(apps):
-
     class HistoricUserFactory(UserFactory):
         class Meta:
             model = apps.get_model('user', 'User')
@@ -34,11 +33,13 @@ def build_historic_access_token_factory(apps):
     class HistoricApplicationFactory(ApplicationFactory):
         class Meta:
             model = apps.get_model('oauth2_provider', 'Application')
+
         user = factory.SubFactory(HistoricUserFactory)
 
     class HistoricAccessTokenFactory(AccessTokenFactory):
         class Meta:
             model = apps.get_model('oauth2_provider', 'AccessToken')
+
         user = factory.SubFactory(HistoricUserFactory)
         application = factory.SubFactory(HistoricApplicationFactory)
 

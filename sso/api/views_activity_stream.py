@@ -10,7 +10,6 @@ from rest_framework.exceptions import AuthenticationFailed
 from rest_framework.response import Response
 from rest_framework.viewsets import ViewSet
 
-
 logger = logging.getLogger(__name__)
 
 NO_CREDENTIALS_MESSAGE = 'Authentication credentials were not provided.'
@@ -20,9 +19,9 @@ ADDED_IPS_BY_DIRECTORY_SSO_PROXY_PAAS_ROUTER = 2
 ADDED_IPS_BY_DIRECTORY_SSO_PROXY = 1
 ADDED_IPS_BY_DIRECTORY_SSO_PAAS_ROUTER = 2
 ADDED_IPS = (
-    ADDED_IPS_BY_DIRECTORY_SSO_PROXY_PAAS_ROUTER +
-    ADDED_IPS_BY_DIRECTORY_SSO_PROXY +
-    ADDED_IPS_BY_DIRECTORY_SSO_PAAS_ROUTER
+    ADDED_IPS_BY_DIRECTORY_SSO_PROXY_PAAS_ROUTER
+    + ADDED_IPS_BY_DIRECTORY_SSO_PROXY
+    + ADDED_IPS_BY_DIRECTORY_SSO_PAAS_ROUTER
 )
 
 
@@ -30,11 +29,8 @@ def _lookup_credentials(access_key_id):
     """Raises a HawkFail if the passed ID is not equal to
     settings.ACTIVITY_STREAM_ACCESS_KEY_ID
     """
-    if not constant_time_compare(access_key_id,
-                                 settings.ACTIVITY_STREAM_ACCESS_KEY_ID):
-        raise HawkFail('No Hawk ID of {access_key_id}'.format(
-            access_key_id=access_key_id,
-        ))
+    if not constant_time_compare(access_key_id, settings.ACTIVITY_STREAM_ACCESS_KEY_ID):
+        raise HawkFail('No Hawk ID of {access_key_id}'.format(access_key_id=access_key_id))
 
     return {
         'id': settings.ACTIVITY_STREAM_ACCESS_KEY_ID,
@@ -56,7 +52,6 @@ def _authorise(request):
 
 
 class _ActivityStreamAuthentication(BaseAuthentication):
-
     def authenticate_header(self, request):
         """This is returned as the WWW-Authenticate header when
         AuthenticationFailed is raised. DRF also requires this
@@ -78,29 +73,21 @@ class _ActivityStreamAuthentication(BaseAuthentication):
 
     def _authenticate_by_ip(self, request):
         if 'HTTP_X_FORWARDED_FOR' not in request.META:
-            logger.warning(
-                'Failed authentication: no X-Forwarded-For header passed'
-            )
+            logger.warning('Failed authentication: no X-Forwarded-For header passed')
             raise AuthenticationFailed(INCORRECT_CREDENTIALS_MESSAGE)
 
         x_forwarded_for = request.META['HTTP_X_FORWARDED_FOR']
         ip_addesses = x_forwarded_for.split(',')
 
         if len(ip_addesses) < ADDED_IPS:
-            logger.warning(
-                'Failed authentication: the X-Forwarded-For header does not '
-                'contain enough IP addresses'
-            )
+            logger.warning('Failed authentication: the X-Forwarded-For header does not contain enough IP addresses')
             raise AuthenticationFailed(INCORRECT_CREDENTIALS_MESSAGE)
 
         # PaaS appends 2 IPs, where the IP connected from is the first
         remote_address = ip_addesses[-ADDED_IPS].strip()
 
         if remote_address not in settings.ACTIVITY_STREAM_IP_WHITELIST:
-            logger.warning(
-                'Failed authentication: the X-Forwarded-For header was not '
-                'produced by a whitelisted IP'
-            )
+            logger.warning('Failed authentication: the X-Forwarded-For header was not produced by a whitelisted IP')
             raise AuthenticationFailed(INCORRECT_CREDENTIALS_MESSAGE)
 
     def _authenticate_by_hawk(self, request):
@@ -110,9 +97,7 @@ class _ActivityStreamAuthentication(BaseAuthentication):
         try:
             hawk_receiver = _authorise(request)
         except HawkFail as e:
-            logger.warning('Failed authentication {e}'.format(
-                e=e,
-            ))
+            logger.warning('Failed authentication {e}'.format(e=e))
             raise AuthenticationFailed(INCORRECT_CREDENTIALS_MESSAGE)
 
         return (None, hawk_receiver)
@@ -128,8 +113,7 @@ class _ActivityStreamHawkResponseMiddleware:
         of the request can authenticate the response
         """
         response['Server-Authorization'] = viewset.request.auth.respond(
-            content=response.content,
-            content_type=response['Content-Type'],
+            content=response.content, content_type=response['Content-Type']
         )
         return response
 

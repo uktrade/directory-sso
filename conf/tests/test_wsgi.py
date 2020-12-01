@@ -1,16 +1,13 @@
 from unittest import mock
 
-from bs4 import BeautifulSoup
 import pytest
+from bs4 import BeautifulSoup
 
 from conf import wsgi
 
 
 @pytest.mark.django_db
-@pytest.mark.parametrize('script_name,prefix', (
-    ('/sso', '/sso/accounts/'),
-    ('', '/accounts/')
-))
+@pytest.mark.parametrize('script_name,prefix', (('/sso', '/sso/accounts/'), ('', '/accounts/')))
 def test_set_script_name(rf, script_name, prefix):
     environ = rf._base_environ(
         PATH_INFO='/accounts/password/reset/',

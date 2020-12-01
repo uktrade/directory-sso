@@ -1,17 +1,16 @@
-from django.http import HttpResponse
-
 import pytest
-from core.tests.test_helpers import reload_urlconf
-from django.urls import reverse
+from django.http import HttpResponse
 from django.test.client import Client
-from sso.user.tests import factories
+from django.urls import reverse
 
+from core.tests.test_helpers import reload_urlconf
+from sso.user.tests import factories
 
 AUTHENTICATION_BACKENDS_CLASSES = (
     'authbroker_client.backends.AuthbrokerBackend',
     'oauth2_provider.backends.OAuth2Backend',
     'django.contrib.auth.backends.ModelBackend',
-    'allauth.account.auth_backends.AuthenticationBackend'
+    'allauth.account.auth_backends.AuthenticationBackend',
 )
 
 

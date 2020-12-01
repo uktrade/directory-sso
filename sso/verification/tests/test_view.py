@@ -1,18 +1,17 @@
-from datetime import timedelta, date, datetime
-from pytz import UTC
+from datetime import date, datetime, timedelta
 
-from allauth.account.models import EmailAddress
 import dateutil.parser
-from freezegun import freeze_time
 import pytest
-from rest_framework.test import APIClient
-
+from allauth.account.models import EmailAddress
 from django.urls import reverse
 from django.utils.timezone import now
+from freezegun import freeze_time
+from pytz import UTC
+from rest_framework.test import APIClient
 
 from sso.user.tests.factories import UserFactory
-from sso.verification.tests.factories import VerificationCodeFactory
 from sso.verification import models
+from sso.verification.tests.factories import VerificationCodeFactory
 
 
 @pytest.fixture
@@ -28,16 +27,14 @@ def test_regenerate_code(api_client):
 
     response = api_client.post(
         reverse('api:verification-code-regenerate'),
-        {'email': verification_code.user.email,
-         },
-        format='json'
+        {
+            'email': verification_code.user.email,
+        },
+        format='json',
     )
     assert response.status_code == 200
     verification_code.refresh_from_db()
-    assert verification_code.created == datetime(
-        2018, 1, 14, 12, 0, 1,
-        tzinfo=UTC
-    )
+    assert verification_code.created == datetime(2018, 1, 14, 12, 0, 1, tzinfo=UTC)
     assert verification_code.code != old_code
     new_code = response.json()
     assert new_code['code'] == verification_code.code
@@ -57,8 +54,8 @@ def test_regenerate_code_verified_code(api_client):
         reverse('api:verification-code-regenerate'),
         {
             'email': verification_code.user.email,
-         },
-        format='json'
+        },
+        format='json',
     )
     assert response.status_code == 400
     verification_code.refresh_from_db()
@@ -75,8 +72,8 @@ def test_regenerate_code_no_user(api_client):
         reverse('api:verification-code-regenerate'),
         {
             'email': 'donot@exist.com',
-         },
-        format='json'
+        },
+        format='json',
     )
 
     assert response.status_code == 404
@@ -97,7 +94,7 @@ def test_verify_verification_code(api_client):
             'code': verification_code.code,
             'email': verification_code.user.email,
         },
-        format='json'
+        format='json',
     )
 
     verification_code.refresh_from_db()
@@ -107,12 +104,15 @@ def test_verify_verification_code(api_client):
     assert response.cookies['sso_display_logged_in'].value == 'true'
     assert verification_code.date_verified == date(2018, 1, 14)
 
-    assert EmailAddress.objects.filter(
-        user=verification_code.user,
-        verified=True,
-        email=verification_code.user.email,
-        primary=True,
-    ).count() == 1
+    assert (
+        EmailAddress.objects.filter(
+            user=verification_code.user,
+            verified=True,
+            email=verification_code.user.email,
+            primary=True,
+        ).count()
+        == 1
+    )
 
 
 @pytest.mark.django_db
@@ -128,7 +128,7 @@ def test_verify_verification_code_invalid(api_client):
             'code': '12345',
             'email': verification_code.user.email,
         },
-        format='json'
+        format='json',
     )
 
     assert response.status_code == 400
@@ -141,14 +141,7 @@ def test_verify_verification_code_expired(api_client):
         verification_code = VerificationCodeFactory()
 
     url = reverse('api:verification-code-verify')
-    response = api_client.post(
-        url,
-        {
-            'code': '12345',
-            'email': verification_code.user.email
-        },
-        format='json'
-    )
+    response = api_client.post(url, {'code': '12345', 'email': verification_code.user.email}, format='json')
 
     assert response.status_code == 400
     assert verification_code.date_verified is None
@@ -166,7 +159,7 @@ def test_verify_no_verification_code(api_client):
             'code': 'my-name-is-jeff',
             'email': user.email,
         },
-        format='json'
+        format='json',
     )
 
     assert response.status_code == 404
