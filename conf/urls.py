@@ -103,6 +103,7 @@ urlpatterns = [
     url(r'^oauth2/', include((oauth2_provider_patterns, 'oauth2_provider'), namespace='oauth2_provider')),
     url(r'^api/v1/', include((api_urlpatterns, 'api'), namespace='api')),
     url(r'^testapi/', include((testapi_urls, 'testapi'), namespace='testapi')),
+    url(r'^rest-auth/', include('rest_auth.urls')),
     url(r'^login-providers/', include(allauth.urls.provider_urlpatterns)),
     url(r'^social/', include(allauth.socialaccount.urls)),
     url(r'^accounts/login/via-linkedin/', sso.user.views.LoginViaLinkedinView.as_view(), name='login-via-linkedin'),

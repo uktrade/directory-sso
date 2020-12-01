@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'allauth.socialaccount.providers.google',
     'oauth2_provider',
     'rest_framework',
+    'rest_framework.authtoken',
     'django_filters',
     'core',
     'sso',
@@ -56,6 +57,7 @@ INSTALLED_APPS = [
     'directory_healthcheck',
     'directory_components',
     'authbroker_client',
+    'rest_auth'
 ]
 
 SITE_ID = 1
