@@ -32,9 +32,10 @@ django-ipware==2.1.0      # via django-admin-ip-restrictor
 django-oauth-toolkit==1.2.0  # via -r requirements.in
 django-pglocks==1.0.3     # via -r requirements.in
 django-redis==4.10.0      # via -r requirements.in
+django-rest-auth==0.9.5   # via -r requirements.in
 django-staff-sso-client==1.0.0  # via -r requirements.in
-django==2.2.15            # via -r requirements.in, directory-api-client, directory-client-core, directory-components, directory-constants, directory-healthcheck, directory-validators, django-admin-ip-restrictor, django-allauth, django-filter, django-oauth-toolkit, django-redis, django-staff-sso-client, sigauth
-djangorestframework==3.10.3  # via -r requirements.in, sigauth
+django==2.2.15            # via -r requirements.in, directory-api-client, directory-client-core, directory-components, directory-constants, directory-healthcheck, directory-validators, django-admin-ip-restrictor, django-allauth, django-filter, django-oauth-toolkit, django-redis, django-rest-auth, django-staff-sso-client, sigauth
+djangorestframework==3.10.3  # via -r requirements.in, django-rest-auth, sigauth
 docopt==0.6.2             # via notifications-python-client
 docutils==0.14            # via botocore
 future==0.16.0            # via notifications-python-client
@@ -64,7 +65,7 @@ requests[security]==2.22.0  # via -r requirements.in, directory-api-client, dire
 s3transfer==0.2.1         # via boto3
 sentry-sdk==0.13.4        # via -r requirements.in
 sigauth==4.1.1            # via -r requirements.in, directory-client-core
-six==1.11.0               # via cryptography, django-extensions, jsonschema, mohawk, pyopenssl, pyrsistent, python-dateutil, requests-file, w3lib
+six==1.11.0               # via cryptography, django-extensions, django-rest-auth, jsonschema, mohawk, pyopenssl, pyrsistent, python-dateutil, requests-file, w3lib
 sqlparse==0.3.0           # via django
 tldextract==2.2.2         # via -r requirements.in
 urllib3==1.24.2           # via -r requirements.in, botocore, directory-validators, requests, sentry-sdk
