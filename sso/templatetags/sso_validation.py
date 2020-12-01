@@ -3,7 +3,6 @@ from django.template.defaultfilters import stringfilter
 
 from ..adapters import is_valid_redirect
 
-
 register = template.Library()
 
 

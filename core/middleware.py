@@ -1,10 +1,9 @@
 from django.conf import settings
-from django.utils.deprecation import MiddlewareMixin
 from django.http import HttpResponse
+from django.utils.deprecation import MiddlewareMixin
 
 
 class SSODisplayLoggedInCookieMiddleware(MiddlewareMixin):
-
     def process_response(self, request, response):
         cookie_value = 'false'
         user = getattr(request, 'user', None)
@@ -16,7 +15,7 @@ class SSODisplayLoggedInCookieMiddleware(MiddlewareMixin):
             domain=settings.SESSION_COOKIE_DOMAIN,
             max_age=settings.SESSION_COOKIE_AGE,
             secure=settings.SESSION_COOKIE_SECURE,
-            httponly=False
+            httponly=False,
         )
         return response
 

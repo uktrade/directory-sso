@@ -7,7 +7,5 @@ class UserConfig(AppConfig):
 
     def ready(self):
         from sso.user import signals
-        pre_save.connect(
-            receiver=signals.create_uuid,
-            sender='user.User'
-        )
+
+        pre_save.connect(receiver=signals.create_uuid, sender='user.User')

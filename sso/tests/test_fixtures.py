@@ -1,8 +1,6 @@
 import pytest
-
-from django.core.management import call_command
-
 from allauth.account.models import EmailAddress
+from django.core.management import call_command
 
 from sso.user.models import User
 

@@ -1,16 +1,16 @@
-from freezegun import freeze_time
-import pytest
-
-from django.conf import settings
 from datetime import timedelta
+
+import pytest
+from django.conf import settings
 from django.utils.timezone import now
+from freezegun import freeze_time
 
 from sso.verification.tests import factories
 
 
 @pytest.mark.django_db
 def test_verification_expired():
-    created = now() - timedelta(days=settings.VERIFICATION_EXPIRY_DAYS+1)
+    created = now() - timedelta(days=settings.VERIFICATION_EXPIRY_DAYS + 1)
     with freeze_time(created):
         verification_code = factories.VerificationCodeFactory()
 
@@ -19,7 +19,7 @@ def test_verification_expired():
 
 @pytest.mark.django_db
 def test_verification_not_expired():
-    created = now() - timedelta(days=settings.VERIFICATION_EXPIRY_DAYS-1)
+    created = now() - timedelta(days=settings.VERIFICATION_EXPIRY_DAYS - 1)
     with freeze_time(created):
         verification_code = factories.VerificationCodeFactory()
 

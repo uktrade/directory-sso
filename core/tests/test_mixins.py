@@ -1,5 +1,5 @@
-from django.views import View
 from django.http.response import HttpResponse
+from django.views import View
 
 import core.mixins
 

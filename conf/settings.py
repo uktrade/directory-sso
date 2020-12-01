@@ -1,14 +1,12 @@
 import os
 
-from django.urls import reverse_lazy
-
 import dj_database_url
 import environ
 import sentry_sdk
+from django.urls import reverse_lazy
 from sentry_sdk.integrations.django import DjangoIntegration
 
 from core.helpers import is_valid_domain
-
 
 env = environ.Env()
 for env_file in env.list('ENV_FILES', default=[]):
@@ -112,9 +110,7 @@ VCAP_SERVICES = env.json('VCAP_SERVICES', {})
 
 # Database
 # https://docs.djangoproject.com/en/1.9/ref/settings/#databases
-DATABASES = {
-    'default': dj_database_url.config()
-}
+DATABASES = {'default': dj_database_url.config()}
 
 # Internationalization
 # https://docs.djangoproject.com/en/1.9/topics/i18n/
@@ -137,14 +133,9 @@ if not os.path.exists(STATIC_ROOT):
 
 STATIC_HOST = env.str('STATIC_HOST', '')
 STATIC_URL = STATIC_HOST + '/static/'
-STATICFILES_STORAGE = env.str(
-    'STATICFILES_STORAGE',
-    'whitenoise.storage.CompressedManifestStaticFilesStorage'
-)
+STATICFILES_STORAGE = env.str('STATICFILES_STORAGE', 'whitenoise.storage.CompressedManifestStaticFilesStorage')
 # Extra places for collectstatic to find static files.
-STATICFILES_DIRS = (
-    os.path.join(BASE_DIR, 'static'),
-)
+STATICFILES_DIRS = (os.path.join(BASE_DIR, 'static'),)
 for static_dir in STATICFILES_DIRS:
     if not os.path.exists(static_dir):
         os.makedirs(static_dir)
@@ -158,11 +149,7 @@ if DEBUG:
     LOGGING = {
         'version': 1,
         'disable_existing_loggers': False,
-        'filters': {
-            'require_debug_false': {
-                '()': 'django.utils.log.RequireDebugFalse'
-            }
-        },
+        'filters': {'require_debug_false': {'()': 'django.utils.log.RequireDebugFalse'}},
         'handlers': {
             'console': {
                 'level': 'DEBUG',
@@ -190,15 +177,13 @@ if DEBUG:
                 'level': 'DEBUG',
                 'propagate': False,
             },
-        }
+        },
     }
 
 # Sentry
 if env.str('SENTRY_DSN', ''):
     sentry_sdk.init(
-        dsn=env.str('SENTRY_DSN'),
-        environment=env.str('SENTRY_ENVIRONMENT'),
-        integrations=[DjangoIntegration()]
+        dsn=env.str('SENTRY_DSN'), environment=env.str('SENTRY_ENVIRONMENT'), integrations=[DjangoIntegration()]
     )
 
 
@@ -209,7 +194,7 @@ AUTH_PASSWORD_VALIDATORS = [
     {'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator'},
     {'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator'},
     {'NAME': 'directory_validators.password.AlphabeticPasswordValidator'},
-    {'NAME': 'directory_validators.password.PasswordWordPasswordValidator'}
+    {'NAME': 'directory_validators.password.PasswordWordPasswordValidator'},
 ]
 
 AUTHENTICATION_BACKENDS = [
@@ -235,24 +220,14 @@ AUTHBROKER_CLIENT_SECRET = env.str('AUTHBROKER_CLIENT_SECRET')
 
 # DRF
 REST_FRAMEWORK = {
-    'DEFAULT_AUTHENTICATION_CLASSES': (
-        'oauth2_provider.contrib.rest_framework.OAuth2Authentication',
-    ),
-    'DEFAULT_FILTER_BACKENDS': (
-        'django_filters.rest_framework.DjangoFilterBackend',
-    ),
-    'DEFAULT_PERMISSION_CLASSES': (
-        'rest_framework.permissions.IsAuthenticated',
-    ),
+    'DEFAULT_AUTHENTICATION_CLASSES': ('oauth2_provider.contrib.rest_framework.OAuth2Authentication',),
+    'DEFAULT_FILTER_BACKENDS': ('django_filters.rest_framework.DjangoFilterBackend',),
+    'DEFAULT_PERMISSION_CLASSES': ('rest_framework.permissions.IsAuthenticated',),
     'UNAUTHENTICATED_USER': None,
 }
 
 # django-oauth2-toolkit
-OAUTH2_PROVIDER = {
-    'SCOPES': {
-        'profile': 'Access to your profile'
-    }
-}
+OAUTH2_PROVIDER = {'SCOPES': {'profile': 'Access to your profile'}}
 # https://github.com/jazzband/django-oauth-toolkit/issues/240
 OAUTH2_PROVIDER_ACCESS_TOKEN_MODEL = 'oauth2_provider.AccessToken'
 OAUTH2_PROVIDER_APPLICATION_MODEL = 'oauth2_provider.Application'
@@ -289,7 +264,7 @@ VERIFICATION_EXPIRY_DAYS = env.int('VERIFICATION_EXPIRY_DAYS', 3)
 # Email
 EMAIL_BACKED_CLASSES = {
     'default': 'django.core.mail.backends.smtp.EmailBackend',
-    'console': 'django.core.mail.backends.console.EmailBackend'
+    'console': 'django.core.mail.backends.console.EmailBackend',
 }
 EMAIL_BACKED_CLASS_NAME = env.str('EMAIL_BACKEND_CLASS_NAME', 'default')
 EMAIL_BACKEND = EMAIL_BACKED_CLASSES[EMAIL_BACKED_CLASS_NAME]
@@ -392,12 +367,10 @@ GOV_NOTIFY_SIGNUP_CONFIRMATION_TEMPLATE_ID = env.str(
     '0c76b730-ac37-4b08-a8ba-7b34e4492853',
 )
 GOV_NOTIFY_PASSWORD_RESET_TEMPLATE_ID = env.str(
-    'GOV_NOTIFY_PASSWORD_RESET_TEMPLATE_ID',
-    '9ef82687-4bc0-4278-b15c-a49bc9325b28'
+    'GOV_NOTIFY_PASSWORD_RESET_TEMPLATE_ID', '9ef82687-4bc0-4278-b15c-a49bc9325b28'
 )
 GOV_NOTIFY_ALREADY_REGISTERED_TEMPLATE_ID = env.str(
-    'GOV_NOTIFY_ALREADY_REGISTERED_TEMPLATE_ID',
-    '5c8cc5aa-a4f5-48ae-89e6-df5572c317ec'
+    'GOV_NOTIFY_ALREADY_REGISTERED_TEMPLATE_ID', '5c8cc5aa-a4f5-48ae-89e6-df5572c317ec'
 )
 GOV_NOTIFY_WELCOME_TEMPLATE_ID = env.str('GOV_NOTIFY_WELCOME_TEMPLATE_ID', '0a4ae7a9-7f67-4f5d-a536-54df2dee42df')
 
@@ -433,7 +406,7 @@ cache = {
     'LOCATION': REDIS_URL,
     'OPTIONS': {
         'CLIENT_CLASS': "django_redis.client.DefaultClient",
-    }
+    },
 }
 
 CACHES = {
@@ -465,25 +438,22 @@ SOCIALACCOUNT_PROVIDERS = {
         'APP': {
             'client_id': env.str('SOCIAL_LINKEDIN_ID'),
             'secret': env.str('SOCIAL_LINKEDIN_SECRET'),
-            'key': env.str('SOCIAL_LINKEDIN_KEY')
+            'key': env.str('SOCIAL_LINKEDIN_KEY'),
         },
-        'SCOPE': [
-            'r_liteprofile',
-            'r_emailaddress'
-        ],
+        'SCOPE': ['r_liteprofile', 'r_emailaddress'],
         'PROFILE_FIELDS': [
             'id',
             'firstName',
             'lastName',
             'email-address',
             'profilePicture(displayImage~:playableStreams)',
-        ]
+        ],
     },
     'google': {
         'APP': {
             'client_id': env.str('SOCIAL_GOOGLE_ID'),
             'secret': env.str('SOCIAL_GOOGLE_SECRET'),
-            'key': env.str('SOCIAL_GOOGLE_KEY')
+            'key': env.str('SOCIAL_GOOGLE_KEY'),
         }
-    }
+    },
 }

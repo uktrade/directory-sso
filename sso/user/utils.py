@@ -1,22 +1,20 @@
 import urllib.parse
 
+import tldextract
 from allauth.account.utils import get_request_param
 from allauth.socialaccount.templatetags.socialaccount import ProviderLoginURLNode
 from directory_api_client import api_client
-import tldextract
-
-from django.core.exceptions import ObjectDoesNotExist
 from django.conf import settings
+from django.core.exceptions import ObjectDoesNotExist
 from django.utils.http import urlencode
-from sso.user.models import Service, ServicePage, UserPageView, LessonCompleted
+
+from sso.user.models import LessonCompleted, Service, ServicePage, UserPageView
 
 
 def get_url_with_redirect(url, redirect_url):
     """Adds redirect param to url"""
     if redirect_url:
-        url = url + '?' + urlencode(
-            {settings.REDIRECT_FIELD_NAME: redirect_url}
-        )
+        url = url + '?' + urlencode({settings.REDIRECT_FIELD_NAME: redirect_url})
 
     return url
 
@@ -38,7 +36,8 @@ def is_valid_redirect(next_param):
     # Otherwise check we allow that domain/suffix
     domain = '.'.join([extracted_domain.domain, extracted_domain.suffix])
     return (domain in settings.ALLOWED_REDIRECT_DOMAINS) or (
-        extracted_domain.suffix in settings.ALLOWED_REDIRECT_DOMAINS)
+        extracted_domain.suffix in settings.ALLOWED_REDIRECT_DOMAINS
+    )
 
 
 def get_redirect_url(request, redirect_field_name):
@@ -93,9 +92,7 @@ def get_page_view(user, service_name, page_name=None):
         service = Service.objects.get(name=service_name)
         if page_name:
             return UserPageView.objects.filter(
-                user=user,
-                service_page__service=service,
-                service_page__page_name=page_name
+                user=user, service_page__service=service, service_page__page_name=page_name
             )
         return UserPageView.objects.filter(user=user, service_page__service=service)
     except ObjectDoesNotExist:
@@ -105,7 +102,8 @@ def get_page_view(user, service_name, page_name=None):
 def set_lesson_completed(user, service_name, lesson_name, lesson, module):
     service, created = Service.objects.get_or_create(name=service_name)
     lesson_completed, created = LessonCompleted.objects.get_or_create(
-        user=user, service=service,
+        user=user,
+        service=service,
         lesson_page=lesson_name,
         lesson=lesson,
         module=module,
@@ -116,10 +114,6 @@ def set_lesson_completed(user, service_name, lesson_name, lesson, module):
 def get_lesson_completed(user, service, **filter_dict):
     try:
         service = Service.objects.get(name=service)
-        return LessonCompleted.objects.filter(
-                user=user,
-                service=service,
-                **filter_dict
-            )
+        return LessonCompleted.objects.filter(user=user, service=service, **filter_dict)
     except ObjectDoesNotExist:
         return None

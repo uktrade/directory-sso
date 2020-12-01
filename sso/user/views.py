@@ -1,15 +1,13 @@
 import urllib
 
-from django.conf import settings
-from django.urls import reverse
-from django.shortcuts import redirect
-from django.views.generic import RedirectView
-from django.urls import reverse_lazy
-from django.contrib.sessions.backends.db import SessionStore
-
 from allauth.account import views as allauth_views
-from allauth.account.views import INTERNAL_RESET_URL_KEY, INTERNAL_RESET_SESSION_KEY
+from allauth.account.views import INTERNAL_RESET_SESSION_KEY, INTERNAL_RESET_URL_KEY
 from directory_constants import urls
+from django.conf import settings
+from django.contrib.sessions.backends.db import SessionStore
+from django.shortcuts import redirect
+from django.urls import reverse, reverse_lazy
+from django.views.generic import RedirectView
 
 import core.mixins
 from sso.user import utils
@@ -20,16 +18,12 @@ class RedirectToNextMixin:
     redirect_field_name = settings.REDIRECT_FIELD_NAME
 
     def get_redirect_url(self):
-        return utils.get_redirect_url(
-            request=self.request,
-            redirect_field_name=self.redirect_field_name
-        )
+        return utils.get_redirect_url(request=self.request, redirect_field_name=self.redirect_field_name)
 
     get_success_url = get_redirect_url
 
 
 class DisableRegistrationMixin:
-
     def dispatch(self, request, *args, **kwargs):
         if settings.FEATURE_FLAGS['DISABLE_REGISTRATION_ON']:
             return redirect('https://sorry.great.gov.uk/')
@@ -37,7 +31,6 @@ class DisableRegistrationMixin:
 
 
 class RedirectToProfileSignUp(RedirectView):
-
     def get_redirect_url(self):
         return urls.domestic.SINGLE_SIGN_ON_PROFILE / 'enrol/'
 
@@ -68,10 +61,8 @@ class LogoutView(RedirectToNextMixin, allauth_views.LogoutView):
 
 
 class ConfirmEmailView(
-    DisableRegistrationMixin, RedirectToNextMixin, core.mixins.NoIndexMixin,
-    allauth_views.ConfirmEmailView
+    DisableRegistrationMixin, RedirectToNextMixin, core.mixins.NoIndexMixin, allauth_views.ConfirmEmailView
 ):
-
     def get_context_data(self, **kwargs):
         if self.object:
             kwargs['form_url'] = utils.get_url_with_redirect(
@@ -82,10 +73,7 @@ class ConfirmEmailView(
         return super().get_context_data(**kwargs)
 
 
-class PasswordResetFromKeyView(
-    RedirectToNextMixin, core.mixins.NoIndexMixin,
-    allauth_views.PasswordResetFromKeyView
-):
+class PasswordResetFromKeyView(RedirectToNextMixin, core.mixins.NoIndexMixin, allauth_views.PasswordResetFromKeyView):
     def dispatch(self, request, uidb36, key, **kwargs):
         if settings.FEATURE_FLAGS['DISABLE_REGISTRATION_ON']:
             return redirect('https://sorry.great.gov.uk/')
@@ -99,20 +87,19 @@ class PasswordResetFromKeyView(
         response = super().dispatch(request, uidb36, key, **kwargs)
 
         if key != INTERNAL_RESET_URL_KEY and response.status_code == 302:
-            return redirect(urllib.parse.unquote(utils.get_url_with_redirect(
-                url=response.url,
-                redirect_url=self.get_redirect_url()
-            )))
+            return redirect(
+                urllib.parse.unquote(
+                    utils.get_url_with_redirect(url=response.url, redirect_url=self.get_redirect_url())
+                )
+            )
         return response
 
 
-class PasswordResetView(DisableRegistrationMixin,
-                        allauth_views.PasswordResetView):
+class PasswordResetView(DisableRegistrationMixin, allauth_views.PasswordResetView):
     pass
 
 
-class PasswordChangeView(DisableRegistrationMixin,
-                         allauth_views.PasswordChangeView):
+class PasswordChangeView(DisableRegistrationMixin, allauth_views.PasswordChangeView):
     pass
 
 

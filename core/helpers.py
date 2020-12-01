@@ -1,6 +1,7 @@
-import tldextract
-from urllib.parse import urlparse
 import hashlib
+from urllib.parse import urlparse
+
+import tldextract
 
 
 def createHash(id):
@@ -22,8 +23,7 @@ def is_valid_domain(domain):
 
     is_domain = tld_result.domain and tld_result.suffix
     has_subdomain = bool(tld_result.subdomain)
-    is_suffix = (tld_result.suffix and not tld_result.domain
-                 and not tld_result.subdomain)
+    is_suffix = tld_result.suffix and not tld_result.domain and not tld_result.subdomain
     has_scheme = bool(urlparse_result.scheme)
 
     if is_domain and not has_subdomain:

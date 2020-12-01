@@ -1,6 +1,6 @@
-from core.helpers import createHash
-
 import uuid
+
+from core.helpers import createHash
 
 
 def create_uuid(sender, instance, *args, **kwargs):

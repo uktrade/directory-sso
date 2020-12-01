@@ -1,6 +1,5 @@
-from rest_framework import serializers
-
 from django.utils.crypto import constant_time_compare
+from rest_framework import serializers
 
 from sso.verification.models import VerificationCode
 

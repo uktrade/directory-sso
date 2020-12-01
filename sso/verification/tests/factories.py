@@ -1,7 +1,7 @@
 import factory.fuzzy
 
-from sso.verification.models import VerificationCode
 from sso.user.tests.factories import UserFactory
+from sso.verification.models import VerificationCode
 
 
 class VerificationCodeFactory(factory.django.DjangoModelFactory):

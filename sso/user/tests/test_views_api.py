@@ -1,12 +1,12 @@
-import pytest
 import json
 from unittest import mock
 
+import pytest
 from django.urls import reverse
 from rest_framework.test import APIClient
 
-from sso.user.tests import factories
 from sso.user import models
+from sso.user.tests import factories
 from sso.verification.models import VerificationCode
 
 
@@ -28,17 +28,9 @@ def user_profile_data():
 @pytest.fixture
 def page_view_data():
     return {
-        'page1': {
-            'service': 'service-name',
-            'page': 'page/url'
-        },
-        'page2': {
-            'service': 'service-name',
-            'page': 'page2/url'
-        },
-        'service_only': {
-            'service': 'service-name'
-        }
+        'page1': {'service': 'service-name', 'page': 'page/url'},
+        'page2': {'service': 'service-name', 'page': 'page2/url'},
+        'service_only': {'service': 'service-name'},
     }
 
 
@@ -47,16 +39,9 @@ def test_create_user_api_valid(api_client):
     new_email = 'test@test123.com'
     password = 'Abh129Jk392Hj2'
 
-    response = api_client.post(
-        reverse('api:user'),
-        {'email': new_email, 'password': password},
-        format='json'
-    )
+    response = api_client.post(reverse('api:user'), {'email': new_email, 'password': password}, format='json')
     assert response.status_code == 201
-    assert response.json() == {
-        'email': new_email,
-        'verification_code': mock.ANY
-    }
+    assert response.json() == {'email': new_email, 'verification_code': mock.ANY}
 
     assert models.User.objects.filter(email=new_email).count() == 1
 
@@ -66,11 +51,7 @@ def test_create_user_api_invalid_password(api_client):
     new_email = 'test@test123.com'
     password = 'mypassword'
 
-    response = api_client.post(
-        reverse('api:user'),
-        {'email': new_email, 'password': password},
-        format='json'
-    )
+    response = api_client.post(reverse('api:user'), {'email': new_email, 'password': password}, format='json')
     assert response.status_code == 400
 
     assert models.User.objects.filter(email=new_email).count() == 0
@@ -85,11 +66,7 @@ def test_create_user_api_exception_rollback(mock_create, api_client):
     mock_create.side_effect = Exception('!')
 
     with pytest.raises(Exception):
-        response = api_client.post(
-            reverse('api:user'),
-            {'email': new_email, 'password': password},
-            format='json'
-        )
+        response = api_client.post(reverse('api:user'), {'email': new_email, 'password': password}, format='json')
         assert response.status_code == 500
     assert models.User.objects.count() == 0
     assert VerificationCode.objects.count() == 0
@@ -97,19 +74,14 @@ def test_create_user_api_exception_rollback(mock_create, api_client):
 
 @pytest.mark.django_db
 @mock.patch('sso.verification.models.VerificationCode.objects.create')
-def test_create_user_api_verification_exception_rollback(
-        mock_create, api_client):
+def test_create_user_api_verification_exception_rollback(mock_create, api_client):
     new_email = 'test@test123.com'
     password = 'mypassword'
 
     mock_create.side_effect = Exception('!')
 
     with pytest.raises(Exception):
-        response = api_client.post(
-            reverse('api:user'),
-            {'email': new_email, 'password': password},
-            format='json'
-        )
+        response = api_client.post(reverse('api:user'), {'email': new_email, 'password': password}, format='json')
         assert response.status_code == 500
     assert models.User.objects.count() == 0
     assert VerificationCode.objects.count() == 0
@@ -127,11 +99,7 @@ def test_create_user_profile(api_client):
 
     assert models.UserProfile.objects.filter(user=user).count() == 0
     api_client.force_authenticate(user=user)
-    response = api_client.post(
-        reverse('api:user-create-profile'),
-        data,
-        format='json'
-    )
+    response = api_client.post(reverse('api:user-create-profile'), data, format='json')
 
     instance = models.UserProfile.objects.last()
     assert response.status_code == 201
@@ -152,22 +120,14 @@ def test_create_user_profile_already_exists(api_client):
     }
 
     api_client.force_authenticate(user=profile.user)
-    response = api_client.post(
-        reverse('api:user-create-profile'),
-        data,
-        format='json'
-    )
+    response = api_client.post(reverse('api:user-create-profile'), data, format='json')
 
     assert response.status_code == 200
 
 
 @pytest.mark.django_db
 def test_create_user_profile_no_auth(api_client):
-    response = api_client.post(
-        reverse('api:user-create-profile'),
-        {},
-        format='json'
-    )
+    response = api_client.post(reverse('api:user-create-profile'), {}, format='json')
     assert response.status_code == 401
 
 
@@ -177,11 +137,7 @@ def test_update_user_profile(api_client, user_profile_data):
     profile = factories.UserProfileFactory()
     api_client.force_authenticate(user=profile.user)
 
-    response = api_client.patch(
-        reverse('api:user-update-profile'),
-        user_profile_data,
-        format='json'
-    )
+    response = api_client.patch(reverse('api:user-update-profile'), user_profile_data, format='json')
     profile.refresh_from_db()
     assert response.status_code == 200
     assert profile.first_name == user_profile_data['first_name']
@@ -193,24 +149,15 @@ def test_update_user_profile(api_client, user_profile_data):
 @pytest.mark.django_db
 def test_update_user_profile_no_auth(api_client, user_profile_data):
 
-    response = api_client.patch(
-        reverse('api:user-update-profile'),
-        user_profile_data,
-        format='json'
-    )
+    response = api_client.patch(reverse('api:user-update-profile'), user_profile_data, format='json')
 
     assert response.status_code == 401
 
 
 @pytest.mark.django_db
 def test_set_page_view(api_client, page_view_data):
-
     def set_view(data):
-        set_response = api_client.post(
-            reverse('api:user-page-views'),
-            data,
-            format='json'
-        )
+        set_response = api_client.post(reverse('api:user-page-views'), data, format='json')
         assert set_response.status_code == 200
         page_view = set_response.json().get('page_view')
         assert page_view['page'] == data['page']
@@ -218,11 +165,7 @@ def test_set_page_view(api_client, page_view_data):
         return page_view
 
     def get_view(data):
-        response = api_client.get(
-            reverse('api:user-page-views'),
-            data,
-            format='json'
-        )
+        response = api_client.get(reverse('api:user-page-views'), data, format='json')
         assert response.status_code == 200
         return response.json().get('page_views')
 
@@ -256,18 +199,8 @@ def set_lesson_completed(api_client):
     profile = factories.UserProfileFactory()
     api_client.force_authenticate(user=profile.user)
 
-    set_data = {
-        'user': profile.user.pk,
-        'lesson_page': 'my-new-lesson',
-        'lesson': 99,
-        'module': 1,
-        'service': 'great'
-    }
-    return api_client.post(
-        reverse('api:user-lesson-completed'),
-        set_data,
-        format='json'
-    )
+    set_data = {'user': profile.user.pk, 'lesson_page': 'my-new-lesson', 'lesson': 99, 'module': 1, 'service': 'great'}
+    return api_client.post(reverse('api:user-lesson-completed'), set_data, format='json')
 
 
 @pytest.mark.django_db
@@ -292,11 +225,7 @@ def test_get_lesson_completed(api_client, set_lesson_completed):
         'user': lesson_completed['user'],
         'lesson_page': 'my-new-lesson',
     }
-    response = api_client.get(
-        reverse('api:user-lesson-completed'),
-        data,
-        format='json'
-    )
+    response = api_client.get(reverse('api:user-lesson-completed'), data, format='json')
     assert response.status_code == 200
     return response.json().get('lessson_completed')
 
@@ -312,13 +241,9 @@ def test_get_multiple_lesson_completed(api_client, set_lesson_completed):
         'lesson_page': 'my-new-lesson',
         'lesson': 9,
         'module': 1,
-        'service': 'great'
+        'service': 'great',
     }
-    set_response = api_client.post(
-        reverse('api:user-lesson-completed'),
-        data,
-        format='json'
-    )
+    set_response = api_client.post(reverse('api:user-lesson-completed'), data, format='json')
     assert set_response.status_code == 200
 
     data = {
@@ -326,11 +251,7 @@ def test_get_multiple_lesson_completed(api_client, set_lesson_completed):
         'user': lesson_completed['user'],
         'module': '1',
     }
-    response = api_client.get(
-        reverse('api:user-lesson-completed'),
-        data,
-        format='json'
-    )
+    response = api_client.get(reverse('api:user-lesson-completed'), data, format='json')
     assert response.status_code == 200
     return response.json().get('lessson_completed')
 
@@ -346,11 +267,7 @@ def test_get_not_existing_lesson(api_client):
         'user': profile.user.pk,
         'lesson_page': 'dummy-page',
     }
-    response = api_client.get(
-        reverse('api:user-lesson-completed'),
-        data,
-        format='json'
-    )
+    response = api_client.get(reverse('api:user-lesson-completed'), data, format='json')
 
     assert response.status_code == 200
     assert response.json().get('lessson_completed') is None
@@ -369,9 +286,11 @@ def test_delete_endpoint_for_lesson_completed(api_client, set_lesson_completed):
     }
 
     response = api_client.delete(
-        reverse('api:user-lesson-completed',),
+        reverse(
+            'api:user-lesson-completed',
+        ),
         data=data,
-        format='json'
+        format='json',
     )
     assert response.status_code == 200
 
@@ -388,18 +307,8 @@ def test_delete_for_mutliple_lesson_completed(api_client, set_lesson_completed):
     profile = factories.UserProfileFactory()
     api_client.force_authenticate(user=profile.user)
 
-    set_data = {
-        'user': profile.user.pk,
-        'lesson_page': 'my-new-lesson',
-        'lesson': 99,
-        'module': 1,
-        'service': 'great'
-    }
-    api_client.post(
-        reverse('api:user-lesson-completed'),
-        set_data,
-        format='json'
-    )
+    set_data = {'user': profile.user.pk, 'lesson_page': 'my-new-lesson', 'lesson': 99, 'module': 1, 'service': 'great'}
+    api_client.post(reverse('api:user-lesson-completed'), set_data, format='json')
     data = {
         'service': 'great',
         'user_id': data['lesson_completed']['user'],
@@ -407,9 +316,11 @@ def test_delete_for_mutliple_lesson_completed(api_client, set_lesson_completed):
     }
 
     response = api_client.delete(
-        reverse('api:user-lesson-completed',),
+        reverse(
+            'api:user-lesson-completed',
+        ),
         data=data,
-        format='json'
+        format='json',
     )
     assert response.status_code == 200
 
@@ -426,9 +337,11 @@ def test_delete_endpoint_no_existing_lesson_completed(api_client, set_lesson_com
         'lesson': 9999,  # non existing lesson
     }
     response = api_client.delete(
-        reverse('api:user-lesson-completed',),
+        reverse(
+            'api:user-lesson-completed',
+        ),
         data=data,
-        format='json'
+        format='json',
     )
     assert response.status_code == 502
 
@@ -447,8 +360,10 @@ def test_delete_endpoint_for_lesson_completed_for_non_owner(api_client, set_less
     }
 
     response = api_client.delete(
-        reverse('api:user-lesson-completed',),
+        reverse(
+            'api:user-lesson-completed',
+        ),
         data=data,
-        format='json'
+        format='json',
     )
     assert response.status_code == 200

@@ -14,9 +14,7 @@ def test_user_profile_serializer_deserialization(rf):
     }
     request = rf.get('/')
     request.user = factories.UserFactory.create()
-    serializer = serializers.UserProfileSerializer(
-        data=data, context={'request': request}
-    )
+    serializer = serializers.UserProfileSerializer(data=data, context={'request': request})
     assert serializer.is_valid()
     instance = serializer.save()
     assert instance.first_name == data['first_name']
