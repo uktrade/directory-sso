@@ -1,9 +1,8 @@
+import pytest
 from django.contrib.auth import get_user_model
 from django.core.management import call_command
 from django.db import connection
 from django.db.migrations.executor import MigrationExecutor
-
-import pytest
 
 
 @pytest.fixture()
@@ -29,17 +28,21 @@ def migration(transactional_db):
             assert Foo.objects.filter(bar=True).count() == Foo.objects.count()
     From: https://gist.github.com/asfaltboy/b3e6f9b5d95af8ba2cc46f2ba6eae5e2
     """
+
     class Migrator:
-        def before(self, app, migrate_from, ):
-            """ Specify app and starting migration name as in:
-                before('app', '0001_before') => app/migrations/0001_before.py
+        def before(
+            self,
+            app,
+            migrate_from,
+        ):
+            """Specify app and starting migration name as in:
+            before('app', '0001_before') => app/migrations/0001_before.py
             """
             self.app = app
             self.migrate_from = [(app, migrate_from)]
             self.executor = MigrationExecutor(connection)
             self.executor.migrate(self.migrate_from)
-            self._old_apps = self.executor.loader.project_state(
-                self.migrate_from).apps
+            self._old_apps = self.executor.loader.project_state(self.migrate_from).apps
             return self._old_apps
 
         def apply(self, app, migrate_to):
@@ -47,8 +50,7 @@ def migration(transactional_db):
             self.migrate_to = [(app, migrate_to)]
             self.executor.loader.build_graph()  # reload.
             self.executor.migrate(self.migrate_to)
-            self._new_apps = self.executor.loader.project_state(
-                self.migrate_to).apps
+            self._new_apps = self.executor.loader.project_state(self.migrate_to).apps
             return self._new_apps
 
     yield Migrator()
@@ -58,7 +60,4 @@ def migration(transactional_db):
 @pytest.fixture()
 def adminsuperuser():
     User = get_user_model()
-    return User.objects.create_superuser(
-        email='foo@bar.com',
-        password='3whitehallplace'
-    )
+    return User.objects.create_superuser(email='foo@bar.com', password='3whitehallplace')

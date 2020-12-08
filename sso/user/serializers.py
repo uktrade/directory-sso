@@ -1,15 +1,13 @@
+from django.contrib.auth import password_validation
 from django.db import transaction
 from rest_framework import serializers
 
-from django.contrib.auth import password_validation
-
+from sso.user import utils
 from sso.user.models import User, UserProfile
 from sso.verification.models import VerificationCode
-from sso.user import utils
 
 
 class VerificationCodeSerializer(serializers.ModelSerializer):
-
     class Meta:
         model = VerificationCode
         fields = (

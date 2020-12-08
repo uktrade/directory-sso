@@ -1,9 +1,8 @@
 from functools import partial
 
+from directory_constants import urls
 from django.conf import settings
 from django.urls import reverse
-
-from directory_constants import urls
 
 from sso.user.utils import get_redirect_url, get_url_with_redirect
 
@@ -11,10 +10,7 @@ redirect_field_name = settings.REDIRECT_FIELD_NAME
 
 
 def redirect_next_processor(request):
-    redirect_url = get_redirect_url(
-        request=request,
-        redirect_field_name=redirect_field_name
-    )
+    redirect_url = get_redirect_url(request=request, redirect_field_name=redirect_field_name)
 
     add_next = partial(get_url_with_redirect, redirect_url=redirect_url)
     return {

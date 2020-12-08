@@ -1,31 +1,28 @@
 import urllib.parse
 
-from allauth.socialaccount.adapter import DefaultSocialAccountAdapter
 from allauth.account.adapter import DefaultAccountAdapter
 from allauth.account.models import EmailAddress
-from allauth.exceptions import ImmediateHttpResponse
 from allauth.account.utils import get_request_param
+from allauth.exceptions import ImmediateHttpResponse
+from allauth.socialaccount.adapter import DefaultSocialAccountAdapter
 from directory_constants.urls import domestic
+from django.conf import settings
+from django.shortcuts import redirect
+from django.urls import reverse
 from notifications_python_client import NotificationsAPIClient
 
-from django.conf import settings
-from django.urls import reverse
-from django.shortcuts import redirect
-
+from sso.user.models import UserProfile
 from sso.user.utils import get_url_with_redirect, is_valid_redirect
 from sso.verification.models import VerificationCode
-from sso.user.models import UserProfile
-
 
 EMAIL_TEMPLATES = {
     'account/email/email_confirmation_signup': settings.GOV_NOTIFY_SIGNUP_CONFIRMATION_TEMPLATE_ID,
     'account/email/email_confirmation': settings.GOV_NOTIFY_SIGNUP_CONFIRMATION_TEMPLATE_ID,
-    'account/email/password_reset_key': settings.GOV_NOTIFY_PASSWORD_RESET_TEMPLATE_ID
+    'account/email/password_reset_key': settings.GOV_NOTIFY_PASSWORD_RESET_TEMPLATE_ID,
 }
 
 
 class AccountAdapter(DefaultAccountAdapter):
-
     def get_email_confirmation_url(self, request, emailconfirmation):
         """
         Constructs the email confirmation (activation) url.
@@ -47,13 +44,9 @@ class AccountAdapter(DefaultAccountAdapter):
                 # login view will redirect to 'next', if not (when switching
                 # browsers), user will have to log in and then will be
                 # redirected
-                login_url_with_next = get_url_with_redirect(
-                    url=reverse('account_login'),
-                    redirect_url=redirect_url
-                )
+                login_url_with_next = get_url_with_redirect(url=reverse('account_login'), redirect_url=redirect_url)
                 email_confirmation_url = get_url_with_redirect(
-                    url=email_confirmation_url,
-                    redirect_url=login_url_with_next
+                    url=email_confirmation_url, redirect_url=login_url_with_next
                 )
         return email_confirmation_url
 
@@ -90,17 +83,11 @@ class AccountAdapter(DefaultAccountAdapter):
 
         #  build personalisation dict from context
         if template_id == settings.GOV_NOTIFY_PASSWORD_RESET_TEMPLATE_ID:
-            personalisation = {
-                'password_reset': self.build_password_reset_url(context)
-            }
+            personalisation = {'password_reset': self.build_password_reset_url(context)}
         else:
-            personalisation = {
-                'confirmation_link': context['activate_url']
-            }
+            personalisation = {'confirmation_link': context['activate_url']}
 
-        notifications_client = NotificationsAPIClient(
-            settings.GOV_NOTIFY_API_KEY
-        )
+        notifications_client = NotificationsAPIClient(settings.GOV_NOTIFY_API_KEY)
         notifications_client.send_email_notification(
             email_address=email,
             template_id=template_id,

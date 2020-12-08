@@ -1,26 +1,24 @@
 import allauth.account.views
-import allauth.urls
 import allauth.socialaccount
+import allauth.urls
 import directory_components.views
 import directory_healthcheck.views
-
-from django.conf.urls import url, include
+from django.conf import settings
+from django.conf.urls import include, url
 from django.contrib import admin
 from django.contrib.auth.decorators import login_required
 from django.contrib.sitemaps.views import sitemap
-from django.views.generic import RedirectView
 from django.urls import reverse_lazy
-from django.conf import settings
+from django.views.generic import RedirectView
 
 import conf.sitemaps
 import sso.api.views_activity_stream
 import sso.api.views_user
 import sso.oauth2.views_user
 import sso.testapi.views
-import sso.verification.views
 import sso.user.views
 import sso.user.views_api
-
+import sso.verification.views
 
 sitemaps = {
     'static': conf.sitemaps.StaticViewSitemap,
@@ -38,7 +36,7 @@ allauth_urlpatterns = [
     url(
         r"^confirm-email/$",
         allauth.account.views.EmailVerificationSentView.as_view(),
-        name="account_email_verification_sent"
+        name="account_email_verification_sent",
     ),
     url(r"^confirm-email/(?P<key>[-:\w]+)/$", sso.user.views.ConfirmEmailView.as_view(), name="account_confirm_email"),
     url(r"^password/set/$", allauth.account.views.password_set, name="account_set_password"),
@@ -46,13 +44,13 @@ allauth_urlpatterns = [
     url(
         r"^password/change/$",
         login_required(sso.user.views.PasswordChangeView.as_view()),
-        name="account_change_password"
+        name="account_change_password",
     ),
     url(r"^password/reset/done/$", allauth.account.views.password_reset_done, name="account_reset_password_done"),
     url(
         r"^password/reset/key/(?P<uidb36>[0-9A-Za-z]+)-(?P<key>.+)/$",
         sso.user.views.PasswordResetFromKeyView.as_view(),
-        name="account_reset_password_from_key"
+        name="account_reset_password_from_key",
     ),
 ]
 
@@ -72,24 +70,23 @@ api_urlpatterns = [
     url(
         r'^activity-stream/$',
         sso.api.views_activity_stream.ActivityStreamViewSet.as_view({'get': 'list'}),
-        name='activity-stream'
+        name='activity-stream',
     ),
     url(
         r'^verification-code/regenerate/$',
         sso.verification.views.RegenerateCodeCreateAPIView.as_view(),
-        name='verification-code-regenerate'
+        name='verification-code-regenerate',
     ),
     url(
         r'^verification-code/verify/$',
         sso.verification.views.VerifyVerificationCodeAPIView.as_view(),
-        name='verification-code-verify'
+        name='verification-code-verify',
     ),
     url(r'^user/$', sso.user.views_api.UserCreateAPIView.as_view(), name='user'),
     url(r'^user/profile/$', sso.user.views_api.UserProfileCreateAPIView.as_view(), name='user-create-profile'),
     url(r'^user/profile/update/$', sso.user.views_api.UserProfileUpdateAPIView.as_view(), name='user-update-profile'),
     url(r'^user/page-view/$', sso.user.views_api.UserPageViewAPIView.as_view(), name='user-page-views'),
     url(r'^user/lesson-completed/$', sso.user.views_api.LessonCompletedAPIView.as_view(), name='user-lesson-completed'),
-
 ]
 
 testapi_urls = [
@@ -108,7 +105,6 @@ urlpatterns = [
     url(r'^testapi/', include((testapi_urls, 'testapi'), namespace='testapi')),
     url(r'^login-providers/', include(allauth.urls.provider_urlpatterns)),
     url(r'^social/', include(allauth.socialaccount.urls)),
-
     url(r'^accounts/login/via-linkedin/', sso.user.views.LoginViaLinkedinView.as_view(), name='login-via-linkedin'),
     url(r'^accounts/login/via-google/', sso.user.views.LoginViaGoogleView.as_view(), name='login-via-google'),
 ]

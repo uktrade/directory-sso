@@ -1,16 +1,15 @@
-from rest_framework.generics import CreateAPIView, UpdateAPIView, GenericAPIView
-from rest_framework.permissions import IsAuthenticated
-from rest_framework.response import Response
-from rest_framework import status
-
 from django.core.exceptions import ObjectDoesNotExist
 from django.db import IntegrityError
+from rest_framework import status
+from rest_framework.generics import CreateAPIView, GenericAPIView, UpdateAPIView
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.response import Response
 
 from conf.signature import SignatureCheckPermission
 from core.authentication import SessionAuthentication
 from sso.user import serializers
 from sso.user.models import LessonCompleted, Service
-from sso.user.utils import get_page_view, set_page_view, set_lesson_completed, get_lesson_completed
+from sso.user.utils import get_lesson_completed, get_page_view, set_lesson_completed, set_page_view
 
 
 class UserCreateAPIView(CreateAPIView):

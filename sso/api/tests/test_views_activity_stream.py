@@ -7,11 +7,7 @@ from rest_framework import status
 from rest_framework.reverse import reverse
 from rest_framework.test import APIClient
 
-WHITELISTED_X_FORWARDED_FOR_HEADER = '1.2.3.4, ' + \
-                                     '4.5.5.5, ' + \
-                                     '3.5.5.5, ' + \
-                                     '2.5.5.5, ' + \
-                                     '1.5.5.5'
+WHITELISTED_X_FORWARDED_FOR_HEADER = '1.2.3.4, ' + '4.5.5.5, ' + '3.5.5.5, ' + '2.5.5.5, ' + '1.5.5.5'
 
 
 @pytest.fixture
@@ -31,8 +27,7 @@ def _url_incorrect_path():
     return 'http://testserver' + reverse('api:activity-stream') + 'incorrect/'
 
 
-def _auth_sender(key_id='some-id', secret_key='some-secret', url=_url,
-                 method='GET', content='', content_type=''):
+def _auth_sender(key_id='some-id', secret_key='some-secret', url=_url, method='GET', content='', content_type=''):
     credentials = {
         'id': key_id,
         'key': secret_key,
@@ -63,11 +58,7 @@ def _auth_sender(key_id='some-id', secret_key='some-secret', url=_url,
             dict(
                 content_type='',
                 HTTP_AUTHORIZATION=_auth_sender().request_header,
-                HTTP_X_FORWARDED_FOR='6.6.6.6, ' + \
-                                     '7.7.7.7, ' + \
-                                     '8.8.8.8, ' + \
-                                     '9.9.9.9, ' + \
-                                     '123.123.123.123',
+                HTTP_X_FORWARDED_FOR='6.6.6.6, ' + '7.7.7.7, ' + '8.8.8.8, ' + '9.9.9.9, ' + '123.123.123.123',
             ),
             {'detail': 'Incorrect authentication credentials.'},
         ),
@@ -94,12 +85,12 @@ def _auth_sender(key_id='some-id', secret_key='some-secret', url=_url,
             dict(
                 content_type='',
                 HTTP_AUTHORIZATION=_auth_sender().request_header,
-                HTTP_X_FORWARDED_FOR='1.2.3.4, ' + \
-                                     '2.2.2.2, ' + \
-                                     '7.7.7.7, ' + \
-                                     '8.8.8.8, ' + \
-                                     '9.9.9.9, ' + \
-                                     '123.123.123.123',
+                HTTP_X_FORWARDED_FOR='1.2.3.4, '
+                + '2.2.2.2, '
+                + '7.7.7.7, '
+                + '8.8.8.8, '
+                + '9.9.9.9, '
+                + '123.123.123.123',
             ),
             {'detail': 'Incorrect authentication credentials.'},
         ),
@@ -108,11 +99,7 @@ def _auth_sender(key_id='some-id', secret_key='some-secret', url=_url,
             dict(
                 content_type='',
                 HTTP_AUTHORIZATION=_auth_sender().request_header,
-                HTTP_X_FORWARDED_FOR='6.6.6.6, ' + \
-                                     '7.7.7.7, ' + \
-                                     '8.8.8.8, ' + \
-                                     '9.9.9.9, ' + \
-                                     '1.2.3.4',
+                HTTP_X_FORWARDED_FOR='6.6.6.6, ' + '7.7.7.7, ' + '8.8.8.8, ' + '9.9.9.9, ' + '1.2.3.4',
             ),
             {'detail': 'Incorrect authentication credentials.'},
         ),
@@ -139,9 +126,7 @@ def _auth_sender(key_id='some-id', secret_key='some-secret', url=_url,
             # If the Authorization header generated from an incorrect secret
             dict(
                 content_type='',
-                HTTP_AUTHORIZATION=_auth_sender(
-                    secret_key='incorrect'
-                ).request_header,
+                HTTP_AUTHORIZATION=_auth_sender(secret_key='incorrect').request_header,
                 HTTP_X_FORWARDED_FOR=WHITELISTED_X_FORWARDED_FOR_HEADER,
             ),
             {'detail': 'Incorrect authentication credentials.'},
