@@ -57,10 +57,23 @@ jobs:
             . venv/bin/activate
             pip install flake8
             flake8
+  black:
+    docker:
+      - image: circleci/python:3.6.6
+    steps:
+      - checkout
+      - run:
+          name: Run Black in check mode
+          command: |
+            python3 -m venv .venv
+            . .venv/bin/activate
+            pip install black
+            black ./ --check
 
 workflows:
   version: 2
-  test:
+  test_and_code_checks:
     jobs:
       - test
       - flake8
+      - black

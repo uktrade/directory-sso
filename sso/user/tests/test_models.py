@@ -1,8 +1,5 @@
 import pytest
-
-from django_extensions.db.fields import (
-    ModificationDateTimeField, CreationDateTimeField
-)
+from django_extensions.db.fields import CreationDateTimeField, ModificationDateTimeField
 
 from sso.user.models import User, UserProfile
 from sso.user.tests.factories import UserFactory
@@ -45,9 +42,7 @@ def test_user_manager_has_natural_key_method():
 def test_user_manager_has_create_superuser_method():
     # NOTE: create_superuser needs to exist for
     # `manage.py createsuperuser` to work
-    user = User.objects.create_superuser(
-        email='superuser@example.com', password='pass'
-    )
+    user = User.objects.create_superuser(email='superuser@example.com', password='pass')
 
     assert user.email == 'superuser@example.com'
     assert user.is_staff is True
@@ -75,9 +70,7 @@ def test_create_user_doesnt_save_plaintext_password():
 
 @pytest.mark.django_db
 def test_create_superuser_doesnt_save_plaintext_password():
-    user = User.objects.create_superuser(
-        email='superuser@example.com', password='pass'
-    )
+    user = User.objects.create_superuser(email='superuser@example.com', password='pass')
 
     assert user.password != 'pass'
     assert user.check_password('pass') is True
@@ -103,26 +96,31 @@ def test_create_user():
 def test_create_superuser_not_staff():
     with pytest.raises(ValueError):
         User.objects.create_superuser(
-            is_staff=False, email=None, password=None,
+            is_staff=False,
+            email=None,
+            password=None,
         )
 
 
 def test_create_superuser_not_superuser():
     with pytest.raises(ValueError):
         User.objects.create_superuser(
-            is_superuser=False, email=None, password=None,
+            is_superuser=False,
+            email=None,
+            password=None,
         )
 
 
 @pytest.mark.django_db
 def test_create_user_profile():
     user = UserFactory()
-    data = {'first_name': 'john',
-            'last_name': 'smith',
-            'mobile_phone_number': '0203044213',
-            'job_title': 'Director',
-            'user': user
-            }
+    data = {
+        'first_name': 'john',
+        'last_name': 'smith',
+        'mobile_phone_number': '0203044213',
+        'job_title': 'Director',
+        'user': user,
+    }
 
     expected = UserProfile.objects.create(**data)
     assert expected.first_name == data['first_name']

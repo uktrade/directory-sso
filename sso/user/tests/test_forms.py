@@ -1,17 +1,15 @@
 from unittest import mock
 from unittest.mock import patch
 
+import pytest
 from allauth.account.models import EmailAddress
 from directory_constants import urls
-import pytest
-
-from django.core.validators import EmailValidator
 from django.conf import settings
+from django.core.validators import EmailValidator
 from django.forms.fields import Field
 
 from sso.user import forms
 from sso.user.models import User
-
 
 REQUIRED_MESSAGE = Field.default_error_messages['required']
 INVALID_EMAIL_MESSAGE = EmailValidator.message
@@ -23,12 +21,7 @@ def verified_user():
         email='verified@example.com',
         password='password',
     )
-    EmailAddress.objects.create(
-        user=user,
-        email=user.email,
-        verified=True,
-        primary=True
-    )
+    EmailAddress.objects.create(user=user, email=user.email, verified=True, primary=True)
     return user
 
 
@@ -54,12 +47,8 @@ def test_account_change_password_form_customization():
 
 @patch('sso.adapters.NotificationsAPIClient')
 @pytest.mark.django_db
-def test_password_reset_form_accepts_nonexisting_email_without_sending(
-        mocked_notification_client, rf
-):
-    form = forms.ResetPasswordForm(
-        data={'email': 'nonexistingemail@example.com'}
-    )
+def test_password_reset_form_accepts_nonexisting_email_without_sending(mocked_notification_client, rf):
+    form = forms.ResetPasswordForm(data={'email': 'nonexistingemail@example.com'})
     request = rf.get('/')
 
     assert form.is_valid() is True
@@ -69,12 +58,8 @@ def test_password_reset_form_accepts_nonexisting_email_without_sending(
 
 @patch('sso.adapters.NotificationsAPIClient')
 @pytest.mark.django_db
-def test_password_reset_form_accepts_existing_email_and_sends(
-    mocked_notification_client, rf, verified_user
-):
-    form = forms.ResetPasswordForm(
-        data={'email': verified_user.email}
-    )
+def test_password_reset_form_accepts_existing_email_and_sends(mocked_notification_client, rf, verified_user):
+    form = forms.ResetPasswordForm(data={'email': verified_user.email})
     request = rf.get('/')
 
     assert form.is_valid() is True
@@ -84,23 +69,19 @@ def test_password_reset_form_accepts_existing_email_and_sends(
     assert call == mock.call(
         email_address='verified@example.com',
         personalisation={'password_reset': mock.ANY},
-        template_id=settings.GOV_NOTIFY_PASSWORD_RESET_TEMPLATE_ID
+        template_id=settings.GOV_NOTIFY_PASSWORD_RESET_TEMPLATE_ID,
     )
 
 
 def test_password_reset_form_invalid_email():
-    form = forms.ResetPasswordForm(
-        data={'email': 'this is not an email'}
-    )
+    form = forms.ResetPasswordForm(data={'email': 'this is not an email'})
 
     assert form.is_valid() is False
     assert INVALID_EMAIL_MESSAGE in form.errors['email']
 
 
 def test_password_reset_form_email_required():
-    form = forms.ResetPasswordForm(
-        data={'email': ''}
-    )
+    form = forms.ResetPasswordForm(data={'email': ''})
 
     assert form.is_valid() is False
     assert REQUIRED_MESSAGE in form.errors['email']
@@ -133,13 +114,8 @@ def test_signup_field_order():
 
 def test_signup_rejects_password_length_less_than_ten():
     for i in range(1, 10):
-        form = forms.SignupForm(data={
-            'password1': '*' * i
-        })
-        expected = (
-            'This password is too short. It must contain at least 10 '
-            'characters.'
-        )
+        form = forms.SignupForm(data={'password1': '*' * i})
+        expected = 'This password is too short. It must contain at least 10 characters.'
 
         assert form.is_valid() is False
         assert expected in form.errors['password1']
@@ -181,10 +157,8 @@ def test_notify_already_registered(mocked_notifications):
         email_address='test@example.com',
         personalisation={
             'login_url': 'http://sso.trade.great:8003/accounts/login/',
-            'password_reset_url': (
-                'http://sso.trade.great:8003/accounts/password/reset/'
-            ),
-            'contact_us_url': urls.domestic.CONTACT_US
+            'password_reset_url': ('http://sso.trade.great:8003/accounts/password/reset/'),
+            'contact_us_url': urls.domestic.CONTACT_US,
         },
-        template_id='5c8cc5aa-a4f5-48ae-89e6-df5572c317ec'
+        template_id='5c8cc5aa-a4f5-48ae-89e6-df5572c317ec',
     )

@@ -1,6 +1,6 @@
-from sso.templatetags.sso_validation import is_valid_redirect_domain
-from sso.templatetags.sso_email import header_image
 from sso import constants
+from sso.templatetags.sso_email import header_image
+from sso.templatetags.sso_validation import is_valid_redirect_domain
 
 
 def test_header_image_returns_constant_image():

@@ -1,46 +1,38 @@
 import datetime
 
-from oauth2_provider.models import AccessToken, Application
 import pytest
-from rest_framework import status
-from rest_framework.test import APIClient
-
 from django.urls import reverse
 from django.utils import timezone
+from oauth2_provider.models import AccessToken, Application
+from rest_framework import status
+from rest_framework.test import APIClient
 
 from sso.user.models import User, UserProfile
 
 
 def setup_data():
-    superuser = User.objects.create_user(
-        email='superuser@example.com',
-        password='pass',
-        is_superuser=True
-    )
+    superuser = User.objects.create_user(email='superuser@example.com', password='pass', is_superuser=True)
     application = Application.objects.create(
         client_id='test',
         user=superuser,
         client_type='Confidential',
         authorization_grant_type='Authorization code',
-        skip_authorization=True
+        skip_authorization=True,
     )
-    user = User.objects.create(
-        email='test@example.com',
-        password='pass'
-    )
+    user = User.objects.create(email='test@example.com', password='pass')
     user_profile = UserProfile.objects.create(
         first_name='alexander',
         last_name='thegreatdotgovdotuk',
         mobile_phone_number='0203044213',
         job_title='Director',
-        user=user
+        user=user,
     )
     access_token = AccessToken.objects.create(
         user=user,
         token='test',
         application=application,
         expires=timezone.now() + datetime.timedelta(days=1),
-        scope='profile'
+        scope='profile',
     )
 
     return superuser, application, user, user_profile, access_token
@@ -51,9 +43,7 @@ def test_user_retrieve_view_authorised():
     _, _, user, user_profile, access_token = setup_data()
 
     client = APIClient()
-    client.credentials(
-        HTTP_AUTHORIZATION='Bearer {}'.format(access_token.token)
-    )
+    client.credentials(HTTP_AUTHORIZATION='Bearer {}'.format(access_token.token))
 
     response = client.get(reverse('oauth2_provider:user-profile'))
 
@@ -68,9 +58,7 @@ def test_user_retrieve_view_no_token():
     setup_data()
 
     client = APIClient()
-    client.credentials(
-        HTTP_AUTHORIZATION='Bearer '
-    )
+    client.credentials(HTTP_AUTHORIZATION='Bearer ')
 
     response = client.get(reverse('oauth2_provider:user-profile'))
 
@@ -82,9 +70,7 @@ def test_user_retrieve_view_invalid_token():
     setup_data()
 
     client = APIClient()
-    client.credentials(
-        HTTP_AUTHORIZATION='Bearer invalid_token'
-    )
+    client.credentials(HTTP_AUTHORIZATION='Bearer invalid_token')
 
     response = client.get(reverse('oauth2_provider:user-profile'))
 

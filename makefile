@@ -4,6 +4,16 @@ clean:
 	-find . -type f -name "*.pyc" -delete
 	-find . -type d -name "__pycache__" -delete
 
+# configuration for black and isort is in pyproject.toml
+autoformat:
+	isort $(PWD)
+	black $(PWD)
+
+checks:
+	isort $(PWD) --check
+	black $(PWD) --check --verbose
+	flake8 .
+
 pytest:
 	ENV_FILES='test,dev' pytest $(ARGUMENTS)
 
@@ -32,4 +42,4 @@ secrets:
 	cp conf/env/secrets-template conf/env/secrets-do-not-commit; \
 	sed -i -e 's/#DO NOT ADD SECRETS TO THIS FILE//g' conf/env/secrets-do-not-commit
 
-.PHONY: clean pytest manage webserver requirements install_requirements css secrets
+.PHONY: clean autoformat checks pytest manage webserver requirements install_requirements css secrets

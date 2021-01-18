@@ -1,6 +1,5 @@
 from django.conf import settings
 from django.core.management.commands.migrate import Command as MigrateCommand
-
 from django_pglocks import advisory_lock
 
 

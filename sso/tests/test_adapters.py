@@ -1,17 +1,15 @@
-from unittest.mock import call, patch, Mock
+from unittest.mock import Mock, call, patch
 
 import pytest
-
-from sso.adapters import is_valid_redirect, AccountAdapter, SocialAccountAdapter
-from sso.user.tests.factories import UserFactory
-
-from allauth.socialaccount.adapter import get_adapter
 from allauth.exceptions import ImmediateHttpResponse
+from allauth.socialaccount.adapter import get_adapter
 from django.contrib.auth import get_user_model
 from django.contrib.messages.middleware import MessageMiddleware
 from django.contrib.sessions.middleware import SessionMiddleware
 
+from sso.adapters import AccountAdapter, SocialAccountAdapter, is_valid_redirect
 from sso.tests.test_utils import not_raises
+from sso.user.tests.factories import UserFactory
 
 
 def test_next_validation_returns_true_if_in_allowed_domains(settings):
@@ -157,21 +155,16 @@ def test_social_adapter_creates_profile(mock_save_user, mocked_notifications, se
 
     stub = mocked_notifications().send_email_notification
     assert stub.call_count == 1
-    assert stub.call_args == call(
-        email_address='foo@example.com',
-        template_id=settings.GOV_NOTIFY_WELCOME_TEMPLATE_ID
-    )
+    assert stub.call_args == call(email_address='foo@example.com', template_id=settings.GOV_NOTIFY_WELCOME_TEMPLATE_ID)
 
 
-class FakeSocialLogin():
+class FakeSocialLogin:
     def __init__(self, email):
         self.email = email
 
     @property
     def user(self):
-        return get_user_model()(
-            email=self.email
-        )
+        return get_user_model()(email=self.email)
 
     @property
     def is_existing(self):

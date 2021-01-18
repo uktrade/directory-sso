@@ -14,6 +14,8 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='user',
             name='utm',
-            field=django.contrib.postgres.fields.jsonb.JSONField(blank=True, default=dict, help_text='Urchin Tracking Module query parameters passed in the URL'),
+            field=django.contrib.postgres.fields.jsonb.JSONField(
+                blank=True, default=dict, help_text='Urchin Tracking Module query parameters passed in the URL'
+            ),
         ),
     ]

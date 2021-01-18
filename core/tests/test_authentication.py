@@ -1,9 +1,8 @@
 import pytest
+from django.test.client import Client
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
-
-from django.test.client import Client
 
 from core import authentication
 from sso.user.tests.factories import UserFactory
@@ -47,16 +46,12 @@ def test_sso_session_authentication_invalid_header(rf):
     response = TestView.as_view()(request)
 
     assert response.status_code == 401
-    assert response.render().content == (
-        b'{"detail":"Invalid SSO_SESSION_ID header."}'
-    )
+    assert response.render().content == (b'{"detail":"Invalid SSO_SESSION_ID header."}')
 
 
 @pytest.mark.django_db
 def test_sso_session_authentication_valid_session_key(valid_session, rf):
-    request = rf.get(
-        '/', HTTP_AUTHORIZATION=f'SSO_SESSION_ID {valid_session._session_key}'
-    )
+    request = rf.get('/', HTTP_AUTHORIZATION=f'SSO_SESSION_ID {valid_session._session_key}')
     response = TestView.as_view()(request)
 
     assert response.status_code == 200
@@ -64,10 +59,7 @@ def test_sso_session_authentication_valid_session_key(valid_session, rf):
 
 @pytest.mark.django_db
 def test_sso_session_authentication_expired_session(expired_session, rf):
-    request = rf.get(
-        '/',
-        HTTP_AUTHORIZATION=f'SSO_SESSION_ID {expired_session._session_key}'
-    )
+    request = rf.get('/', HTTP_AUTHORIZATION=f'SSO_SESSION_ID {expired_session._session_key}')
     response = TestView.as_view()(request)
 
     assert response.status_code == 401

@@ -52,6 +52,9 @@ Secrets such as API keys and environment specific configurations are placed in `
 | make install_requirements     | Installed the compile requirements file |
 | make css                      | Compile scss to css |
 | make secrets                  | Create your secret env var file |
+| make flake8                   | Run flake8 linting |
+| make checks                   | Run black, isort, flake8 in check mode |
+| make autoformat               | Run black and isort in file-writing mode |
 
 ### CSS development
 
