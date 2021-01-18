@@ -5,6 +5,7 @@ import pytest
 from allauth.account.models import EmailAddress
 from directory_constants import urls
 from django.conf import settings
+from django.core.cache import cache
 from django.core.validators import EmailValidator
 from django.forms.fields import Field
 
@@ -51,6 +52,8 @@ def test_password_reset_form_accepts_nonexisting_email_without_sending(mocked_no
     form = forms.ResetPasswordForm(data={'email': 'nonexistingemail@example.com'})
     request = rf.get('/')
 
+    cache.clear()
+
     assert form.is_valid() is True
     form.save(request)
     assert mocked_notification_client().send_email_notification.called is False
@@ -62,6 +65,8 @@ def test_password_reset_form_accepts_existing_email_and_sends(mocked_notificatio
     form = forms.ResetPasswordForm(data={'email': verified_user.email})
     request = rf.get('/')
 
+    cache.clear()
+
     assert form.is_valid() is True
     form.save(request)
     assert mocked_notification_client().send_email_notification.called is True
@@ -71,6 +76,32 @@ def test_password_reset_form_accepts_existing_email_and_sends(mocked_notificatio
         personalisation={'password_reset': mock.ANY},
         template_id=settings.GOV_NOTIFY_PASSWORD_RESET_TEMPLATE_ID,
     )
+
+
+@patch('sso.adapters.NotificationsAPIClient')
+@pytest.mark.django_db
+def test_password_reset_form_rate_limiting(mocked_notification_client, rf, verified_user):
+    form = forms.ResetPasswordForm(data={'email': verified_user.email})
+    request = rf.get('/')
+
+    cache.clear()
+
+    assert form.is_valid() is True
+    form.save(request)
+    assert mocked_notification_client().send_email_notification.called is True
+    call = mocked_notification_client().send_email_notification.call_args
+    assert call == mock.call(
+        email_address='verified@example.com',
+        personalisation={'password_reset': mock.ANY},
+        template_id=settings.GOV_NOTIFY_PASSWORD_RESET_TEMPLATE_ID,
+    )
+
+    form = forms.ResetPasswordForm(data={'email': verified_user.email})
+    error = 'Please wait before trying again.'
+
+    assert form.is_valid() is False
+    assert error in form.errors['email']
+    assert mocked_notification_client().send_email_notification.call_count == 1
 
 
 def test_password_reset_form_invalid_email():

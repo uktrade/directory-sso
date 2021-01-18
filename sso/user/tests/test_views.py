@@ -6,6 +6,7 @@ from allauth.account.models import EmailAddress, EmailConfirmationHMAC
 from directory_api_client import api_client
 from directory_constants import urls
 from django.conf import settings
+from django.core.cache import cache
 from django.contrib.sessions.models import Session
 from django.urls import reverse
 
@@ -308,6 +309,9 @@ def test_password_reset_redirect_default_param_if_no_next_param(mocked_notificat
 
     settings.ALLOWED_REDIRECT_DOMAINS = ['example.com', 'other.com']
     new_password = 'ZaronZ0xos'
+
+    cache.clear()
+
     # submit form and send 'password reset link' email without a 'next' param
     client.post(reverse('account_reset_password'), data={'email': user.email})
     assert mocked_notification_client().send_email_notification.called is True
@@ -336,6 +340,8 @@ def test_password_reset_invalid_key(client, user):
 @patch('sso.adapters.NotificationsAPIClient')
 @pytest.mark.django_db
 def test_password_reset_no_internal_session(mocked_notification_client, client, user):
+    cache.clear()
+
     client.post(reverse('account_reset_password'), data={'email': user.email})
     assert mocked_notification_client().send_email_notification.called is True
     call = mocked_notification_client().send_email_notification.call_args
@@ -364,6 +370,8 @@ def test_password_reset_redirect_next_param_if_next_param_valid(mocked_notificat
     new_password = 'ZaronZ0xos'
     password_reset_url = reverse('account_reset_password')
     expected = reverse('account_email_verification_sent')
+
+    cache.clear()
 
     # submit form and send 'password reset link' email with a 'next' param
     client.post('{url}?next={next}'.format(url=password_reset_url, next=expected), data={'email': user.email})
@@ -397,6 +405,8 @@ def test_password_reset_redirect_next_param_if_next_param_invalid(mocked_notific
     password_reset_url = reverse('account_reset_password')
     next_param = 'http://www.example.com'
 
+    cache.clear()
+
     # submit form and send 'password reset link' email with a 'next' param
     client.post('{url}?next={next}'.format(url=password_reset_url, next=next_param), data={'email': user.email})
     assert mocked_notification_client().send_email_notification.called is True
@@ -424,6 +434,8 @@ def test_password_reset_redirect_next_param_if_next_param_internal(mocked_notifi
     new_password = 'ZaronZ0xos'
     password_reset_url = reverse('account_reset_password')
     expected = reverse('account_email_verification_sent')
+
+    cache.clear()
 
     # submit form and send 'password reset link' email with a 'next' param
     client.post(
@@ -462,6 +474,21 @@ def test_password_reset_doesnt_allow_email_enumeration(mocked_notification_clien
     # but redirect anyway so attackers dont find out if it exists
     assert response.status_code == 302
     assert response.url == reverse('account_reset_password_done')
+
+
+@patch('sso.adapters.NotificationsAPIClient')
+@pytest.mark.django_db
+def test_password_reset_rate_limiting(mocked_notification_client, client, user):
+    url = reverse('account_reset_password')
+    data = {'email': user.email}
+
+    client.post(url, data=data)
+    assert mocked_notification_client().send_email_notification.called is False
+
+    cache.clear()
+
+    client.post(url, data=data)
+    assert mocked_notification_client().send_email_notification.called is True
 
 
 @pytest.mark.django_db

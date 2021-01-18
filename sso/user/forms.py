@@ -1,3 +1,5 @@
+import hashlib
+
 import allauth.account.forms
 from allauth.account.adapter import get_adapter
 from allauth.account.models import EmailAddress
@@ -6,8 +8,10 @@ from allauth.utils import set_form_field_order
 from directory_components import forms
 from directory_constants import urls
 from django.conf import settings
-from django.forms import TextInput
+from django.core.cache import cache
+from django.forms import TextInput, ValidationError
 from django.urls import reverse
+from django.utils import timezone
 from django.utils.safestring import mark_safe
 from notifications_python_client import NotificationsAPIClient
 
@@ -156,6 +160,14 @@ class SetPasswordForm(forms.DirectoryComponentsFormMixin, allauth.account.forms.
 
 
 class ResetPasswordForm(forms.DirectoryComponentsFormMixin, allauth.account.forms.ResetPasswordForm):
+    """A temporary rate limiting mechanism is implemented until the featurue is present in a
+    future release of django-allauth.
+
+    https://github.com/pennersr/django-allauth/pull/2631
+    """
+
+    TIMEOUT = 60 * 5  # restrict to only allow sending one email every 5 minutes
+
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.fields['email'] = forms.EmailField(
@@ -168,6 +180,21 @@ class ResetPasswordForm(forms.DirectoryComponentsFormMixin, allauth.account.form
                     'autocomplete': 'new-password',
                 }
             ),
+        )
+
+    def _get_timeout_cache_key(self, value):
+        key = hashlib.sha256(value.encode('utf8')).hexdigest()
+        return 'allauth/{action}:{email}'.format(action=self.__class__.__name__, email=key)
+
+    def timeout_status(self, value):
+        return cache.get(self._get_timeout_cache_key(value))
+
+    def timeout_apply(self, value):
+        duration = self.TIMEOUT
+        cache.set(
+            self._get_timeout_cache_key(value),
+            (timezone.now() + timezone.timedelta(seconds=duration)),
+            duration,
         )
 
     def clean_email(self):
@@ -183,7 +210,15 @@ class ResetPasswordForm(forms.DirectoryComponentsFormMixin, allauth.account.form
         # allauth sends reset emails to all users in self.users.
         # If there are none it will not send any emails
         self.users = filter_users_by_email(email)
+        # form is not valid if sent within duration set on TIMEOUT
+        if self.timeout_status(email):
+            raise ValidationError('Please wait before trying again.')
         return self.cleaned_data["email"]
+
+    def save(self, request, **kwargs):
+        ret = super().save(request=request, **kwargs)
+        self.timeout_apply(self.cleaned_data['email'])
+        return ret
 
 
 class ResetPasswordKeyForm(forms.DirectoryComponentsFormMixin, allauth.account.forms.ResetPasswordKeyForm):

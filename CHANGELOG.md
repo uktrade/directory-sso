@@ -4,6 +4,7 @@
 
 ### Implemented enhancements
 
+-   GBAU-905 - Implement rate limiting on reset password form
 -   GP2-1068 - adopt Black auto-formatting + provide optional pre-commit config
 
 ### Fixed bugs:
