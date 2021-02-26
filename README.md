@@ -29,7 +29,7 @@
     $ make webserver  
 
 ### Requirements
-[Python 3.6](https://www.python.org/downloads/release/python-366/)
+[Python 3.6.12](https://www.python.org/downloads/release/python-3612/)
 
 [Postgres](https://www.postgresql.org/)
 
