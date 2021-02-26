@@ -13,6 +13,7 @@
 ## Development
 
 ### Installing
+* [Using pyenv and virtualenv](https://uktrade.atlassian.net/wiki/spaces/ED/pages/2225930260/Getting+up+running+with+pyenv+virtualenv+-+Front+end+dev+survival+guide)
 
     $ git clone https://github.com/uktrade/directory-sso
     $ cd directory-sso
