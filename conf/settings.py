@@ -224,6 +224,7 @@ REST_FRAMEWORK = {
     'DEFAULT_FILTER_BACKENDS': ('django_filters.rest_framework.DjangoFilterBackend',),
     'DEFAULT_PERMISSION_CLASSES': ('rest_framework.permissions.IsAuthenticated',),
     'UNAUTHENTICATED_USER': None,
+    'PAGE_SIZE': env.int('REST_FRAMEWORK_PAGE_SIZE', 1000),
 }
 
 # django-oauth2-toolkit
@@ -457,3 +458,7 @@ SOCIALACCOUNT_PROVIDERS = {
         }
     },
 }
+
+# Silence DRF's system check about having a global page size set without setting a global paginator. This is fine if we
+# want case-by-case pagination but with a default page size.
+SILENCED_SYSTEM_CHECKS = ["rest_framework.W001"]
