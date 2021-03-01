@@ -156,7 +156,6 @@ class ActivityStreamDirectorySSOUsers(ListAPIView):
         page = {
             '@context': [
                 'https://www.w3.org/ns/activitystreams',
-                {'dit': 'https://www.trade.gov.uk/ns/activitystreams/v1'},
             ],
             'type': 'Collection',
             'orderedItems': [
