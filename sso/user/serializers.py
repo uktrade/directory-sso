@@ -95,3 +95,9 @@ class UserSerializer(serializers.ModelSerializer):
             'hashed_uuid',
             'user_profile',
         )
+
+
+class ActivityStreamUsersSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ('id', 'email', 'date_joined', 'modified')

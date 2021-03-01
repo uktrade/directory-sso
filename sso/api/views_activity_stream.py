@@ -7,8 +7,13 @@ from mohawk import Receiver
 from mohawk.exc import HawkFail
 from rest_framework.authentication import BaseAuthentication
 from rest_framework.exceptions import AuthenticationFailed
+from rest_framework.generics import ListAPIView
+from rest_framework.pagination import CursorPagination
 from rest_framework.response import Response
 from rest_framework.viewsets import ViewSet
+
+from sso.user import serializers
+from sso.user.models import User
 
 logger = logging.getLogger(__name__)
 
@@ -128,3 +133,48 @@ class ActivityStreamViewSet(ViewSet):
     def list(self, request):
         """A single page of activities"""
         return Response({'secret': 'content-for-pen-test'})
+
+
+class ActivityStreamDirectorySSOUsersPagination(CursorPagination):
+    ordering = ('modified', 'id')
+
+
+class ActivityStreamDirectorySSOUsers(ListAPIView):
+    authentication_classes = [_ActivityStreamAuthentication]
+    permission_classes = []
+
+    pagination_class = ActivityStreamDirectorySSOUsersPagination
+    queryset = User.objects.all()
+    serializer_class = serializers.ActivityStreamUsersSerializer
+
+    def get(self, request, *args, **kwargs):
+        queryset = self.filter_queryset(self.get_queryset())
+
+        queryset_page = self.paginate_queryset(queryset)
+        serializer = self.get_serializer(queryset_page, many=True)
+
+        page = {
+            '@context': [
+                'https://www.w3.org/ns/activitystreams',
+            ],
+            'type': 'Collection',
+            'orderedItems': [
+                {
+                    'dit:application': 'DirectorySSO',
+                    'id': f'dit:DirectorySSO:User:{user["id"]}:Update',
+                    'published': user["modified"],
+                    'type': 'Update',
+                    'object': {
+                        'id': f'dit:DirectorySSO:User:{user["id"]}',
+                        'type': 'dit:DirectorySSO:User',
+                        'dit:DirectorySSO:User:email': user['email'],
+                        'dit:DirectorySSO:User:dateJoined': user['date_joined'],
+                    },
+                }
+                for user in serializer.data
+            ],
+            'next': self.paginator.get_next_link(),
+            'previous': self.paginator.get_previous_link(),
+        }
+
+        return Response(data=page)
