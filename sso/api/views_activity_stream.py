@@ -52,7 +52,7 @@ def _authorise(request):
         request.build_absolute_uri(),
         request.method,
         content=request.body,
-        content_type=request.content_type,
+        content_type=b'',
     )
 
 
