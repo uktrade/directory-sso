@@ -92,7 +92,7 @@ class _ActivityStreamAuthentication(BaseAuthentication):
         remote_address = ip_addesses[-ADDED_IPS].strip()
 
         if remote_address not in settings.ACTIVITY_STREAM_IP_WHITELIST:
-            logger.warning('Failed authentication: the X-Forwarded-For header was not produced by a whitelisted IP')
+            logger.warning('Failed authentication: the X-Forwarded-For header was not produced by a whitelisted IP: %s (%s)', remote_address, x_forwarded_for)
             raise AuthenticationFailed(INCORRECT_CREDENTIALS_MESSAGE)
 
     def _authenticate_by_hawk(self, request):
