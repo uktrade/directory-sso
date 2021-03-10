@@ -11,6 +11,9 @@
 
 ### Implemented enhancements
 - No ticket - added Activity Stream endpoint to list users
+-   GP2-1068 - adopt Black auto-formatting + provide optional pre-commit config
+-   No ticket - added Activity Stream endpoint to list users
+-   No ticket - update Activity Steam endpoint to deny requests from public network
 
 ## [v6.1.0](https://github.com/uktrade/directory-sso/releases/tag/v6.1.0)
 ### Fixed bugs:

@@ -67,33 +67,17 @@ class _ActivityStreamAuthentication(BaseAuthentication):
     def authenticate(self, request):
         """Authenticates a request using two mechanisms:
 
-        1. The X-Forwarded-For-Header, compared against a whitelist
+        1. Ensure the request does not contain the X-Forwarded-For header
+           (disallow access via public network)
         2. A Hawk signature in the Authorization header
 
         If either of these suggest we cannot authenticate, AuthenticationFailed
         is raised, as required in the DRF authentication flow
         """
-        self._authenticate_by_ip(request)
+        if 'HTTP_X_FORWARDED_FOR' in request.META:
+            logger.warning('Failed authentication: accessed from public network')
+            raise AuthenticationFailed('Public network access denied')
         return self._authenticate_by_hawk(request)
-
-    def _authenticate_by_ip(self, request):
-        if 'HTTP_X_FORWARDED_FOR' not in request.META:
-            logger.warning('Failed authentication: no X-Forwarded-For header passed')
-            raise AuthenticationFailed(INCORRECT_CREDENTIALS_MESSAGE)
-
-        x_forwarded_for = request.META['HTTP_X_FORWARDED_FOR']
-        ip_addesses = x_forwarded_for.split(',')
-
-        if len(ip_addesses) < ADDED_IPS:
-            logger.warning('Failed authentication: the X-Forwarded-For header does not contain enough IP addresses')
-            raise AuthenticationFailed(INCORRECT_CREDENTIALS_MESSAGE)
-
-        # PaaS appends 2 IPs, where the IP connected from is the first
-        remote_address = ip_addesses[-ADDED_IPS].strip()
-
-        if remote_address not in settings.ACTIVITY_STREAM_IP_WHITELIST:
-            logger.warning('Failed authentication: the X-Forwarded-For header was not produced by a whitelisted IP')
-            raise AuthenticationFailed(INCORRECT_CREDENTIALS_MESSAGE)
 
     def _authenticate_by_hawk(self, request):
         if 'HTTP_AUTHORIZATION' not in request.META:
