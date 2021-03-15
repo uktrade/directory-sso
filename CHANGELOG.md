@@ -12,6 +12,9 @@
 ### Implemented enhancements
 - No ticket - added Activity Stream endpoint to list users
 - GP2-1719 - Add segmentation to profile
+-   GP2-1721 - Added script to notifying user for deletion as per data retention policy 
+-   GP2-1068 - adopt Black auto-formatting + provide optional pre-commit config
+-   No ticket - added Activity Stream endpoint to list users
 
 ## [v6.1.0](https://github.com/uktrade/directory-sso/releases/tag/v6.1.0)
 ### Fixed bugs:
