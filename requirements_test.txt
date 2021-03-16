@@ -32,7 +32,7 @@ dj-database-url==0.5.0    # via -r requirements.in
 django-admin-ip-restrictor==2.1.0  # via -r requirements.in
 django-allauth==0.40.0    # via -r requirements.in
 django-appconf==1.0.2     # via django-cryptography
-django-cryptography==0.3.0  # via -r requirements.in
+django-cryptography==1.0  # via -r requirements.in
 django-environ==0.4.5     # via -r requirements.in
 django-extensions==2.2.5  # via -r requirements.in
 django-filter==2.2.0      # via -r requirements.in
@@ -94,7 +94,7 @@ redis==2.10.5             # via django-redis
 regex==2020.11.13         # via black
 requests-file==1.4.3      # via tldextract
 requests-oauthlib==1.0.0  # via django-allauth, django-staff-sso-client
-requests[security]==2.22.0  # via -r requirements.in, codecov, directory-api-client, directory-client-core, django-allauth, django-oauth-toolkit, notifications-python-client, requests-file, requests-oauthlib, tldextract
+requests[security]==2.25.1  # via -r requirements.in, codecov, directory-api-client, directory-client-core, django-allauth, django-oauth-toolkit, notifications-python-client, requests-file, requests-oauthlib, tldextract
 ruamel.yaml.clib==0.2.2   # via ruamel.yaml
 ruamel.yaml==0.16.12      # via pre-commit-hooks
 s3transfer==0.2.1         # via boto3
