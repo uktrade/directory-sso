@@ -61,6 +61,15 @@ def _auth_sender(key_id='some-id', secret_key='some-secret', url=_url, method='G
             {'detail': 'Public network access denied'},
         ),
         (
+            # Multiple X-Forwarded-For present
+            dict(
+                content_type='',
+                HTTP_AUTHORIZATION=_auth_sender().request_header,
+                HTTP_X_FORWARDED_FOR='1.2.3.4,5.6.7.8',
+            ),
+            {'detail': 'Public network access denied'},
+        ),
+        (
             # If the Authorization header isn't passed
             dict(
                 content_type='',
