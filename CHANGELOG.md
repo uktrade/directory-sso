@@ -11,11 +11,12 @@
 
 ### Implemented enhancements
 - No ticket - added Activity Stream endpoint to list users
+- GP2-1719 - Add segmentation to profile
 
 ## [v6.1.0](https://github.com/uktrade/directory-sso/releases/tag/v6.1.0)
 ### Fixed bugs:
 
--   GBAU-869 - Terminate session on logout from outside SSO
+- GBAU-869 - Terminate session on logout from outside SSO
 
 ### Implemented enhancements
 - GP2-1068 - adopt Black auto-formatting + provide optional pre-commit config
