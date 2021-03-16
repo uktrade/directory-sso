@@ -21,8 +21,8 @@ directory-api-client==22.5.0
 directory-validators==6.0.3
 directory-healthcheck==2.0.0
 directory-components==35.26.0
-requests[security]==2.22.0
+requests[security]==2.25.1
 urllib3>=1.24.2<2.0.0
-django-cryptography==0.3.0
+django-cryptography==1.0
 django-admin-ip-restrictor==2.1.0
 django-staff-sso-client==1.0.0

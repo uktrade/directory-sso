@@ -4,8 +4,9 @@
 
 ### Implemented enhancements
 
--   GP2-1068 - adopt Black auto-formatting + provide optional pre-commit config
--   No ticket - added Activity Stream endpoint to list users
+- No ticket - Upgraded cryptography package
+- GP2-1068 - adopt Black auto-formatting + provide optional pre-commit config
+- No ticket - added Activity Stream endpoint to list users
 
 ### Fixed bugs:
 
