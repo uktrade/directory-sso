@@ -13,6 +13,7 @@
 ## Development
 
 ### Installing
+* [Using pyenv and virtualenv](https://uktrade.atlassian.net/wiki/spaces/ED/pages/2225930260/Getting+up+running+with+pyenv+virtualenv+-+Front+end+dev+survival+guide)
 
     $ git clone https://github.com/uktrade/directory-sso
     $ cd directory-sso
@@ -28,7 +29,7 @@
     $ make webserver  
 
 ### Requirements
-[Python 3.6](https://www.python.org/downloads/release/python-366/)
+[Python 3.6.12](https://www.python.org/downloads/release/python-3612/)
 
 [Postgres](https://www.postgresql.org/)
 
