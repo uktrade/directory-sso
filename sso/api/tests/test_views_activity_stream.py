@@ -7,6 +7,8 @@ from rest_framework import status
 from rest_framework.reverse import reverse
 from rest_framework.test import APIClient
 
+from sso.user.tests.factories import UserFactory
+
 WHITELISTED_X_FORWARDED_FOR_HEADER = '1.2.3.4, ' + '4.5.5.5, ' + '3.5.5.5, ' + '2.5.5.5, ' + '1.5.5.5'
 
 
@@ -25,6 +27,10 @@ def _url_incorrect_domain():
 
 def _url_incorrect_path():
     return 'http://testserver' + reverse('api:activity-stream') + 'incorrect/'
+
+
+def _url_activity_stream_users():
+    return 'http://testserver' + reverse('api:activity-stream-users')
 
 
 def _auth_sender(key_id='some-id', secret_key='some-secret', url=_url, method='GET', content='', content_type=''):
@@ -189,13 +195,14 @@ def _auth_sender(key_id='some-id', secret_key='some-secret', url=_url, method='G
         ),
     ),
 )
+@pytest.mark.parametrize('url', (_url(), _url_activity_stream_users()))
 @pytest.mark.django_db
-def test_401_returned(api_client, get_kwargs, expected_json):
+def test_401_returned(api_client, url, get_kwargs, expected_json):
     """If the request isn't properly Hawk-authenticated, then a 401 is
     returned
     """
     response = api_client.get(
-        _url(),
+        url,
         **get_kwargs,
     )
 
@@ -285,3 +292,58 @@ def test_empty_object_returned_with_authentication(api_client):
             content=response.content,
             content_type='incorrect',
         )
+
+
+@pytest.mark.django_db
+def test_activity_stream_list_users_endpoint(api_client):
+    """If the Authorization and X-Forwarded-For headers are correct, then
+    the correct, and authentic, data is returned
+    """
+    UserFactory.create_batch(5)
+    sender = _auth_sender(url=_url_activity_stream_users)
+    response = api_client.get(
+        _url_activity_stream_users(),
+        content_type='',
+        HTTP_AUTHORIZATION=sender.request_header,
+        HTTP_X_FORWARDED_FOR=WHITELISTED_X_FORWARDED_FOR_HEADER,
+    )
+    data = response.json()
+
+    assert response.status_code == status.HTTP_200_OK
+    assert len(data['orderedItems']) == 2
+    assert set(data['orderedItems'][0]['object'].keys()) == {
+        'id',
+        'type',
+        'dit:DirectorySSO:User:email',
+        'dit:DirectorySSO:User:dateJoined',
+    }
+    assert data['next'] is not None
+    assert data['previous'] is None
+
+    sender = _auth_sender(url=lambda: data['next'])
+    response = api_client.get(
+        data['next'],
+        content_type='',
+        HTTP_AUTHORIZATION=sender.request_header,
+        HTTP_X_FORWARDED_FOR=WHITELISTED_X_FORWARDED_FOR_HEADER,
+    )
+    data = response.json()
+
+    assert response.status_code == status.HTTP_200_OK
+    assert len(data['orderedItems']) == 2
+    assert data['next'] is not None
+    assert data['previous'] is not None
+
+    sender = _auth_sender(url=lambda: data['next'])
+    response = api_client.get(
+        data['next'],
+        content_type='',
+        HTTP_AUTHORIZATION=sender.request_header,
+        HTTP_X_FORWARDED_FOR=WHITELISTED_X_FORWARDED_FOR_HEADER,
+    )
+    data = response.json()
+
+    assert response.status_code == status.HTTP_200_OK
+    assert len(data['orderedItems']) == 1
+    assert data['next'] is None
+    assert data['previous'] is not None
