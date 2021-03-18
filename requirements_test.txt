@@ -4,115 +4,316 @@
 #
 #    pip-compile requirements_test.in
 #
-apipkg==1.5               # via execnet
-appdirs==1.4.4            # via black
-atomicwrites==1.1.5       # via pytest
-attrs==18.1.0             # via jsonschema, packaging, pytest
-beautifulsoup4==4.6.0     # via directory-components
-black==20.8b1             # via -r requirements_test.in, blacken-docs
-blacken-docs==1.6.0       # via -r requirements_test.in
-boto3==1.10.23            # via -r requirements.in
-botocore==1.13.28         # via boto3, s3transfer
-certifi==2018.4.16        # via requests, sentry-sdk
-cffi==1.11.5              # via cryptography
-chardet==3.0.4            # via requests
-click==7.1.2              # via black
-codecov==2.1.7            # via -r requirements_test.in
-coverage==4.5.1           # via codecov, pytest-cov
-cryptography==3.2         # via django-cryptography, pyopenssl, requests
-dataclasses==0.8          # via black
-defusedxml==0.5.0         # via python3-openid
-directory-api-client==22.5.0  # via -r requirements.in
-directory-client-core==6.1.0  # via directory-api-client
-directory-components==35.26.0  # via -r requirements.in
-directory-constants==20.11.0  # via -r requirements.in, directory-components
-directory-healthcheck==2.0.0  # via -r requirements.in
-directory-validators==6.0.3  # via -r requirements.in
-dj-database-url==0.5.0    # via -r requirements.in
-django-admin-ip-restrictor==2.1.0  # via -r requirements.in
-django-allauth==0.40.0    # via -r requirements.in
-django-appconf==1.0.2     # via django-cryptography
-django-cryptography==1.0  # via -r requirements.in
-django-environ==0.4.5     # via -r requirements.in
-django-extensions==2.2.5  # via -r requirements.in
-django-filter==2.2.0      # via -r requirements.in
-django-health-check==3.8.0  # via directory-healthcheck
-django-ipware==2.1.0      # via django-admin-ip-restrictor
-django-oauth-toolkit==1.2.0  # via -r requirements.in
-django-pglocks==1.0.3     # via -r requirements.in
-django-redis==4.10.0      # via -r requirements.in
-django-staff-sso-client==1.0.0  # via -r requirements.in
-django==2.2.15            # via -r requirements.in, directory-api-client, directory-client-core, directory-components, directory-constants, directory-healthcheck, directory-validators, django-admin-ip-restrictor, django-allauth, django-filter, django-oauth-toolkit, django-redis, django-staff-sso-client, sigauth
-djangorestframework==3.10.3  # via -r requirements.in, sigauth
-docopt==0.6.2             # via notifications-python-client
-docutils==0.14            # via botocore
-execnet==1.7.1            # via pytest-xdist
-factory-boy==2.11.1       # via -r requirements_test.in
-faker==0.8.15             # via factory-boy
-flake8==3.8.4             # via -r requirements_test.in
-freezegun==0.3.10         # via -r requirements_test.in
-future==0.16.0            # via notifications-python-client
-gunicorn==20.0.4          # via -r requirements.in
-idna==2.6                 # via requests, tldextract
-importlib-metadata==0.20  # via flake8, pluggy, pytest
-isort==5.6.4              # via -r requirements_test.in
-jmespath==0.9.3           # via boto3, botocore
-jsonschema==3.0.1         # via directory-components
-mccabe==0.6.1             # via flake8
-mohawk==0.3.4             # via sigauth
-monotonic==1.5            # via directory-client-core, notifications-python-client
-more-itertools==4.2.0     # via pytest, zipp
-mypy-extensions==0.4.3    # via black
-notifications-python-client==5.4.0  # via -r requirements.in
-oauthlib==2.1.0           # via django-oauth-toolkit, requests-oauthlib
-olefile==0.44             # via directory-validators
-packaging==19.1           # via pytest
-pathspec==0.8.1           # via black
-pillow==7.2.0             # via directory-validators
-pluggy==0.12.0            # via pytest
-pre-commit-hooks==3.3.0   # via -r requirements_test.in
-psycopg2-binary==2.8.4    # via -r requirements.in
-py==1.5.3                 # via pytest
-pycodestyle==2.6.0        # via flake8
-pycparser==2.19           # via cffi
-pyflakes==2.2.0           # via flake8
-pyjwt==1.6.4              # via notifications-python-client
-pyopenssl==18.0.0         # via requests
-pyparsing==2.4.2          # via packaging
-pyrsistent==0.15.3        # via jsonschema
-pytest-cov==2.5.1         # via -r requirements_test.in
-pytest-django==3.5.1      # via -r requirements_test.in
-pytest-forked==1.0.2      # via pytest-xdist
-pytest-sugar==0.9.1       # via -r requirements_test.in
-pytest-xdist==1.29.0      # via -r requirements_test.in
-pytest==4.6.5             # via -r requirements_test.in, pytest-cov, pytest-django, pytest-forked, pytest-sugar, pytest-xdist
-python-dateutil==2.7.3    # via botocore, faker, freezegun
-python3-openid==3.1.0     # via django-allauth
-pytz==2017.2              # via directory-validators, django
-raven==6.10.0             # via django-staff-sso-client
-redis==2.10.5             # via django-redis
-regex==2020.11.13         # via black
-requests-file==1.4.3      # via tldextract
-requests-oauthlib==1.0.0  # via django-allauth, django-staff-sso-client
-requests[security]==2.25.1  # via -r requirements.in, codecov, directory-api-client, directory-client-core, django-allauth, django-oauth-toolkit, notifications-python-client, requests-file, requests-oauthlib, tldextract
-ruamel.yaml.clib==0.2.2   # via ruamel.yaml
-ruamel.yaml==0.16.12      # via pre-commit-hooks
-s3transfer==0.2.1         # via boto3
-sentry-sdk==0.13.4        # via -r requirements.in
-sigauth==4.1.1            # via -r requirements.in, directory-client-core
-six==1.11.0               # via cryptography, django-extensions, faker, freezegun, jsonschema, mohawk, more-itertools, packaging, pyopenssl, pyrsistent, pytest, pytest-xdist, python-dateutil, requests-file, w3lib
-sqlparse==0.3.0           # via django
-termcolor==1.1.0          # via pytest-sugar
-text-unidecode==1.2       # via faker
-tldextract==2.2.2         # via -r requirements.in
-toml==0.10.2              # via black, pre-commit-hooks
-typed-ast==1.4.1          # via black
-typing-extensions==3.7.4.3  # via black
-urllib3==1.24.2           # via -r requirements.in, botocore, directory-validators, requests, sentry-sdk
-w3lib==1.21.0             # via directory-client-core
-wcwidth==0.1.7            # via pytest
-whitenoise==4.1.4         # via -r requirements.in
-zipp==0.6.0               # via importlib-metadata
+apipkg==1.5
+    # via execnet
+appdirs==1.4.4
+    # via black
+atomicwrites==1.1.5
+    # via pytest
+attrs==18.1.0
+    # via
+    #   jsonschema
+    #   packaging
+    #   pytest
+beautifulsoup4==4.6.0
+    # via directory-components
+black==20.8b1
+    # via
+    #   -r requirements_test.in
+    #   blacken-docs
+blacken-docs==1.6.0
+    # via -r requirements_test.in
+boto3==1.10.23
+    # via -r requirements.in
+botocore==1.13.28
+    # via
+    #   boto3
+    #   s3transfer
+certifi==2018.4.16
+    # via
+    #   requests
+    #   sentry-sdk
+cffi==1.11.5
+    # via cryptography
+chardet==3.0.4
+    # via requests
+click==7.1.2
+    # via black
+codecov==2.1.7
+    # via -r requirements_test.in
+coverage==4.5.1
+    # via
+    #   codecov
+    #   pytest-cov
+cryptography==3.2
+    # via
+    #   django-cryptography
+    #   pyopenssl
+    #   requests
+dataclasses==0.8
+    # via black
+defusedxml==0.5.0
+    # via python3-openid
+directory-api-client==22.5.0
+    # via -r requirements.in
+directory-client-core==6.1.0
+    # via directory-api-client
+directory-components==35.26.0
+    # via -r requirements.in
+directory-constants==20.11.0
+    # via
+    #   -r requirements.in
+    #   directory-components
+directory-healthcheck==2.0.0
+    # via -r requirements.in
+directory-validators==6.0.3
+    # via -r requirements.in
+dj-database-url==0.5.0
+    # via -r requirements.in
+django-admin-ip-restrictor==2.1.0
+    # via -r requirements.in
+django-allauth==0.40.0
+    # via -r requirements.in
+django-appconf==1.0.2
+    # via django-cryptography
+django-cryptography==1.0
+    # via -r requirements.in
+django-environ==0.4.5
+    # via -r requirements.in
+django-extensions==2.2.5
+    # via -r requirements.in
+django-filter==2.2.0
+    # via -r requirements.in
+django-health-check==3.8.0
+    # via directory-healthcheck
+django-ipware==2.1.0
+    # via django-admin-ip-restrictor
+django-oauth-toolkit==1.2.0
+    # via -r requirements.in
+django-pglocks==1.0.3
+    # via -r requirements.in
+django-redis==4.10.0
+    # via -r requirements.in
+django-staff-sso-client==1.0.0
+    # via -r requirements.in
+django==2.2.18
+    # via
+    #   -r requirements.in
+    #   directory-api-client
+    #   directory-client-core
+    #   directory-components
+    #   directory-constants
+    #   directory-healthcheck
+    #   directory-validators
+    #   django-admin-ip-restrictor
+    #   django-allauth
+    #   django-filter
+    #   django-oauth-toolkit
+    #   django-redis
+    #   django-staff-sso-client
+    #   sigauth
+djangorestframework==3.10.3
+    # via
+    #   -r requirements.in
+    #   sigauth
+docopt==0.6.2
+    # via notifications-python-client
+docutils==0.14
+    # via botocore
+execnet==1.7.1
+    # via pytest-xdist
+factory-boy==2.11.1
+    # via -r requirements_test.in
+faker==0.8.15
+    # via factory-boy
+flake8==3.8.4
+    # via -r requirements_test.in
+freezegun==0.3.10
+    # via -r requirements_test.in
+future==0.16.0
+    # via notifications-python-client
+gunicorn==20.0.4
+    # via -r requirements.in
+idna==2.6
+    # via
+    #   requests
+    #   tldextract
+importlib-metadata==0.20
+    # via
+    #   flake8
+    #   pluggy
+    #   pytest
+isort==5.6.4
+    # via -r requirements_test.in
+jmespath==0.9.3
+    # via
+    #   boto3
+    #   botocore
+jsonschema==3.0.1
+    # via directory-components
+mccabe==0.6.1
+    # via flake8
+mohawk==0.3.4
+    # via sigauth
+monotonic==1.5
+    # via
+    #   directory-client-core
+    #   notifications-python-client
+more-itertools==4.2.0
+    # via
+    #   pytest
+    #   zipp
+mypy-extensions==0.4.3
+    # via black
+notifications-python-client==5.4.0
+    # via -r requirements.in
+oauthlib==2.1.0
+    # via
+    #   django-oauth-toolkit
+    #   requests-oauthlib
+olefile==0.44
+    # via directory-validators
+packaging==19.1
+    # via pytest
+pathspec==0.8.1
+    # via black
+pillow==7.2.0
+    # via directory-validators
+pluggy==0.12.0
+    # via pytest
+pre-commit-hooks==3.3.0
+    # via -r requirements_test.in
+psycopg2-binary==2.8.4
+    # via -r requirements.in
+py==1.5.3
+    # via pytest
+pycodestyle==2.6.0
+    # via flake8
+pycparser==2.19
+    # via cffi
+pyflakes==2.2.0
+    # via flake8
+pyjwt==1.6.4
+    # via notifications-python-client
+pyopenssl==18.0.0
+    # via requests
+pyparsing==2.4.2
+    # via packaging
+pyrsistent==0.15.3
+    # via jsonschema
+pytest-cov==2.5.1
+    # via -r requirements_test.in
+pytest-django==3.5.1
+    # via -r requirements_test.in
+pytest-forked==1.0.2
+    # via pytest-xdist
+pytest-sugar==0.9.1
+    # via -r requirements_test.in
+pytest-xdist==1.29.0
+    # via -r requirements_test.in
+pytest==4.6.5
+    # via
+    #   -r requirements_test.in
+    #   pytest-cov
+    #   pytest-django
+    #   pytest-forked
+    #   pytest-sugar
+    #   pytest-xdist
+python-dateutil==2.7.3
+    # via
+    #   botocore
+    #   faker
+    #   freezegun
+python3-openid==3.1.0
+    # via django-allauth
+pytz==2017.2
+    # via
+    #   directory-validators
+    #   django
+raven==6.10.0
+    # via django-staff-sso-client
+redis==2.10.5
+    # via django-redis
+regex==2020.11.13
+    # via black
+requests-file==1.4.3
+    # via tldextract
+requests-oauthlib==1.0.0
+    # via
+    #   django-allauth
+    #   django-staff-sso-client
+requests[security]==2.25.1
+    # via
+    #   -r requirements.in
+    #   codecov
+    #   directory-api-client
+    #   directory-client-core
+    #   django-allauth
+    #   django-oauth-toolkit
+    #   notifications-python-client
+    #   requests-file
+    #   requests-oauthlib
+    #   tldextract
+ruamel.yaml.clib==0.2.2
+    # via ruamel.yaml
+ruamel.yaml==0.16.12
+    # via pre-commit-hooks
+s3transfer==0.2.1
+    # via boto3
+sentry-sdk==0.13.4
+    # via -r requirements.in
+sigauth==4.1.1
+    # via
+    #   -r requirements.in
+    #   directory-client-core
+six==1.11.0
+    # via
+    #   cryptography
+    #   django-extensions
+    #   faker
+    #   freezegun
+    #   jsonschema
+    #   mohawk
+    #   more-itertools
+    #   packaging
+    #   pyopenssl
+    #   pyrsistent
+    #   pytest
+    #   pytest-xdist
+    #   python-dateutil
+    #   requests-file
+    #   w3lib
+sqlparse==0.3.0
+    # via django
+termcolor==1.1.0
+    # via pytest-sugar
+text-unidecode==1.2
+    # via faker
+tldextract==2.2.2
+    # via -r requirements.in
+toml==0.10.2
+    # via
+    #   black
+    #   pre-commit-hooks
+typed-ast==1.4.1
+    # via black
+typing-extensions==3.7.4.3
+    # via black
+urllib3==1.24.2
+    # via
+    #   -r requirements.in
+    #   botocore
+    #   directory-validators
+    #   requests
+    #   sentry-sdk
+w3lib==1.21.0
+    # via directory-client-core
+wcwidth==0.1.7
+    # via pytest
+whitenoise==4.1.4
+    # via -r requirements.in
+zipp==0.6.0
+    # via importlib-metadata
 
 # The following packages are considered to be unsafe in a requirements file:
 # setuptools
