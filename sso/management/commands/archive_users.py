@@ -20,11 +20,12 @@ class Command(MigrateCommand):
         three_year_old = datetime.now() - timedelta(days=3 * 365)
 
         old_users = queryset.filter(
-            # last login 3 years old
-            Q(last_login__lt=three_year_old, created__lt=three_year_old)
+            # last login 3 years old and inactivity_notification=4 means we have sent final notification to user
+            Q(last_login__lt=three_year_old, created__lt=three_year_old, inactivity_notification=4)
             |
-            # account created 3 years ago but never logged in
-            Q(last_login__isnull=True, created__lt=three_year_old)
+            # account created 3 years ago but never logged in and inactivity_notification=4
+            # means we have sent final notification to user
+            Q(last_login__isnull=True, created__lt=three_year_old, inactivity_notification=4)
         )
         total_old_users = old_users.count()
 
