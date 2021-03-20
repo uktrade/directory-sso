@@ -6,13 +6,13 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('user', '0016_remove_lessoncompleted_topic'),
+        ('user', '0017_userprofile_segment'),
     ]
 
     operations = [
         migrations.AddField(
             model_name='user',
             name='inactivity_notification',
-            field=models.PositiveSmallIntegerField(default=0, max_length=1),
+            field=models.PositiveSmallIntegerField(default=0),
         ),
     ]
