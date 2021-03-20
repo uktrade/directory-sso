@@ -26,3 +26,5 @@ urllib3>=1.24.2<2.0.0
 django-cryptography==1.0
 django-admin-ip-restrictor==2.1.0
 django-staff-sso-client==1.0.0
+celery[redis]
+django-celery-beat
