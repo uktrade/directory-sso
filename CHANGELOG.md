@@ -4,6 +4,7 @@
 
 ### Fixed bugs
 ### Enhancements
+- GP2-1720 -  Added final check for notification before archive users
 - No ticket - Upgraded cryptography package
 - No ticket - update Activity Steam endpoint to deny requests from public network
 
@@ -12,7 +13,7 @@
 
 ### Implemented enhancements
 -   GP2-1719 - Add segmentation to profile
--   GP2-1721 - Added script to notifying user for deletion as per data retention policy 
+-   GP2-1721 - Added script to notifying user for deletion as per data retention policy
 -   GP2-1068 - adopt Black auto-formatting + provide optional pre-commit config
 -   No ticket - added Activity Stream endpoint to list users
 

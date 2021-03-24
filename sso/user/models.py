@@ -71,7 +71,7 @@ class User(AbstractBaseUser, PermissionsMixin, TimeStampedModel):
 
     failed_login_attempts = models.PositiveSmallIntegerField(default=0)
 
-    inactivity_notification = models.PositiveSmallIntegerField(default=0, max_length=1)
+    inactivity_notification = models.PositiveSmallIntegerField(default=0)
 
     objects = UserManager()
 
