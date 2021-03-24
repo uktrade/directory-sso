@@ -66,6 +66,7 @@ class UserProfileSerializer(serializers.ModelSerializer):
             'last_name',
             'job_title',
             'mobile_phone_number',
+            'segment',
             'profile_image',
             'social_account',
         )
