@@ -71,6 +71,8 @@ class User(AbstractBaseUser, PermissionsMixin, TimeStampedModel):
 
     failed_login_attempts = models.PositiveSmallIntegerField(default=0)
 
+    inactivity_notification = models.PositiveSmallIntegerField(default=0, max_length=1)
+
     objects = UserManager()
 
     USERNAME_FIELD = 'email'
@@ -92,6 +94,8 @@ class User(AbstractBaseUser, PermissionsMixin, TimeStampedModel):
         is_correct = super().check_password(raw_password)
         if is_correct:
             self.failed_login_attempts = 0
+            # if user is logged in then set inactivity to default (0)
+            self.inactivity_notification = 0
             self.save()
         else:
             self.failed_login_attempts += 1
@@ -128,6 +132,14 @@ class User(AbstractBaseUser, PermissionsMixin, TimeStampedModel):
 
 
 class UserProfile(TimeStampedModel):
+    # TODO: move these over to directory-constants
+    CORE_SEGMENTS = [
+        ('SUSTAIN', 'Sustain'),
+        ('REASSURE', 'Reassure'),
+        ('PROMOTE', 'Promote'),
+        ('CHALLENGE', 'Challenge'),
+    ]
+
     class Meta:
         ordering = ['-created']
 
@@ -136,6 +148,7 @@ class UserProfile(TimeStampedModel):
     last_name = models.CharField(max_length=128)
     job_title = models.CharField(max_length=128, blank=True, null=True)
     mobile_phone_number = models.CharField(max_length=128, blank=True, null=True)
+    segment = models.CharField(max_length=15, choices=CORE_SEGMENTS, blank=True, null=True)
 
     def __str__(self):
         return str(self.user)
