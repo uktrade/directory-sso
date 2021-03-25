@@ -4,7 +4,7 @@
 #
 #    pip-compile requirements_test.in
 #
-amqp==5.0.5
+amqp==2.6.1
     # via kombu
 apipkg==1.5
     # via execnet
@@ -30,10 +30,8 @@ botocore==1.13.50
     # via
     #   boto3
     #   s3transfer
-celery[redis]==5.0.5
-    # via
-    #   -r requirements.in
-    #   django-celery-beat
+celery[redis]==4.3.0
+    # via -r requirements.in
 certifi==2020.12.5
     # via
     #   requests
@@ -42,19 +40,8 @@ cffi==1.14.5
     # via cryptography
 chardet==4.0.0
     # via requests
-click-didyoumean==0.0.3
-    # via celery
-click-plugins==1.1.1
-    # via celery
-click-repl==0.1.6
-    # via celery
 click==7.1.2
-    # via
-    #   black
-    #   celery
-    #   click-didyoumean
-    #   click-plugins
-    #   click-repl
+    # via black
 codecov==2.1.7
     # via -r requirements_test.in
 coverage==5.5
@@ -92,7 +79,7 @@ django-allauth==0.40.0
     # via -r requirements.in
 django-appconf==1.0.4
     # via django-cryptography
-django-celery-beat==2.2.0
+django-celery-beat==1.5.0
     # via -r requirements.in
 django-cryptography==1.0
     # via -r requirements.in
@@ -128,7 +115,6 @@ django==2.2.19
     #   django-admin-ip-restrictor
     #   django-allauth
     #   django-appconf
-    #   django-celery-beat
     #   django-filter
     #   django-oauth-toolkit
     #   django-redis
@@ -179,7 +165,7 @@ jmespath==0.10.0
     #   botocore
 jsonschema==3.2.0
     # via directory-components
-kombu==5.0.2
+kombu==4.6.11
     # via celery
 mccabe==0.6.1
     # via flake8
@@ -211,8 +197,6 @@ pluggy==0.13.1
     # via pytest
 pre-commit-hooks==3.3.0
     # via -r requirements_test.in
-prompt-toolkit==3.0.18
-    # via click-repl
 psycopg2-binary==2.8.4
     # via -r requirements.in
 py==1.10.0
@@ -307,7 +291,6 @@ sigauth==4.1.1
     #   directory-client-core
 six==1.15.0
     # via
-    #   click-repl
     #   django-extensions
     #   jsonschema
     #   mohawk
@@ -343,14 +326,12 @@ urllib3==1.25.11
     #   directory-validators
     #   requests
     #   sentry-sdk
-vine==5.0.0
+vine==1.3.0
     # via
     #   amqp
     #   celery
 w3lib==1.22.0
     # via directory-client-core
-wcwidth==0.2.5
-    # via prompt-toolkit
 whitenoise==4.1.4
     # via -r requirements.in
 zipp==3.4.1
