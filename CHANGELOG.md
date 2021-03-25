@@ -4,6 +4,7 @@
 
 ### Fixed bugs
 ### Enhancements
+- GP2-1722 - Data retention statistics model
 - GP2-1720 -  Added final check for notification before archive users
 - No ticket - Upgraded cryptography package
 - No ticket - update Activity Steam endpoint to deny requests from public network
