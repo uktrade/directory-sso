@@ -154,6 +154,19 @@ class UserProfile(TimeStampedModel):
         return str(self.user)
 
 
+class DataRetentionStatistics(TimeStampedModel):
+    sso_user = models.IntegerField(blank=True, null=True)
+    company_user = models.IntegerField(blank=True, null=True)
+    company = models.IntegerField(blank=True, null=True)
+
+    class Meta:
+        verbose_name = _('DataRetentionStatatics')
+        verbose_name_plural = _('DataRetentionStatatics')
+
+    def __str__(self):
+        return str(self.sso_user)
+
+
 class Service(TimeStampedModel):
     # a service name e.g. great-cms
     name = models.CharField(max_length=128)

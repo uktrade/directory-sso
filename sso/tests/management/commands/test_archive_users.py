@@ -4,9 +4,12 @@ import pytest
 from django.contrib.auth import get_user_model
 from django.core.management import call_command
 
+from sso.user.models import DataRetentionStatistics
+
 
 class MockResponse:
-    status_code = 204
+    status_code = 200
+    content = b'{"deleted_company": 1, "deleted_company_user": 1}'
 
 
 class MockInvalidResponse:
@@ -27,6 +30,7 @@ def test_archive_command_users(active_user, old_user):
 
     total_users = User.objects.count()
 
+    assert DataRetentionStatistics.objects.count() == 1
     assert total_users == 1
     assert mock_call.called
     assert mock_call.call_count == 1
@@ -47,6 +51,7 @@ def test_archive_command_users_for_old_user_without_notification(active_user, ol
 
     total_users = User.objects.count()
 
+    assert DataRetentionStatistics.objects.count() == 1
     assert total_users == 2
     assert mock_call.called is False
     assert mock_call.call_count == 0
@@ -66,6 +71,8 @@ def test_archive_command_for_recent_users(active_user):
 
     total_users = User.objects.count()
 
+    assert DataRetentionStatistics.objects.count() == 1
+
     assert total_users == 1
     assert mock_call.not_called
     assert mock_call.call_count == 0
@@ -83,3 +90,5 @@ def test_archive_command_for_invalid_api_response(active_user, old_user):
             mock_call.return_value = MockInvalidResponse
             # no users should be deleted
             call_command('archive_users')
+
+    assert DataRetentionStatistics.objects.count() == 0
