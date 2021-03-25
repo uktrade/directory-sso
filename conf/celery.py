@@ -18,14 +18,14 @@ app = Celery('api')
 app.config_from_object('django.conf:settings', namespace='CELERY')
 
 if settings.FEATURE_REDIS_USE_SSL:
-    ssl_conf = {'ssl_cert_reqs': CERT_NONE, 'ssl_ca_certs': None, 'ssl_certfile': None, 'ssl_keyfile': None}
-    app.conf.broker_use_ssl = ssl_conf
-    app.conf.redis_backend_use_ssl = ssl_conf
+    ssl_conf = {
+        'ssl_cert_reqs': CERT_NONE,
+        'ssl_ca_certs': None,
+        'ssl_certfile': None,
+        'ssl_keyfile': None,
+    }  # pragma: no cover
+    app.conf.broker_use_ssl = ssl_conf  # pragma: no cover
+    app.conf.redis_backend_use_ssl = ssl_conf  # pragma: no cover
 
 # Load task modules from all registered Django app configs.
 app.autodiscover_tasks()
-
-
-@app.task(bind=True)
-def debug_task(self):
-    print('Request: {0!r}'.format(self.request))
