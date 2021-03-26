@@ -48,8 +48,9 @@ coverage==5.5
     # via
     #   codecov
     #   pytest-cov
-cryptography==3.4.6
+cryptography==3.2
     # via
+    #   -r requirements.in
     #   django-cryptography
     #   pyopenssl
     #   requests
@@ -291,6 +292,7 @@ sigauth==4.1.1
     #   directory-client-core
 six==1.15.0
     # via
+    #   cryptography
     #   django-extensions
     #   jsonschema
     #   mohawk
@@ -338,5 +340,4 @@ zipp==3.4.1
     # via importlib-metadata
 
 # The following packages are considered to be unsafe in a requirements file:
-# pip
 # setuptools
