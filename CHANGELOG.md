@@ -3,6 +3,7 @@
 ## Pre release
 
 ### Fixed bugs
+- GBAU-945 - Password reset validation fix
 ### Enhancements
 - GP2-1722 - Data retention statistics model
 - GP2-1720 -  Added final check for notification before archive users
