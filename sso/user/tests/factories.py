@@ -23,3 +23,12 @@ class UserProfileFactory(factory.django.DjangoModelFactory):
 
     class Meta:
         model = models.UserProfile
+
+
+class DataRetentionStatisticsFactory(factory.django.DjangoModelFactory):
+    sso_user = factory.fuzzy.FuzzyInteger(low=1)
+    company_user = factory.fuzzy.FuzzyInteger(low=1)
+    company = factory.fuzzy.FuzzyInteger(low=1)
+
+    class Meta:
+        model = models.DataRetentionStatistics

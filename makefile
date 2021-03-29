@@ -42,4 +42,11 @@ secrets:
 	cp conf/env/secrets-template conf/env/secrets-do-not-commit; \
 	sed -i -e 's/#DO NOT ADD SECRETS TO THIS FILE//g' conf/env/secrets-do-not-commit
 
-.PHONY: clean autoformat checks pytest manage webserver requirements install_requirements css secrets
+worker:
+	ENV_FILES='secrets-do-not-commit,dev' celery -A conf worker -B -l debug
+
+beat:
+	ENV_FILES='secrets-do-not-commit,dev' celery -A conf beat -l info -S django
+
+
+.PHONY: clean autoformat checks pytest manage webserver requirements install_requirements css secrets worker beat

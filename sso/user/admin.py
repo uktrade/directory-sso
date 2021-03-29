@@ -7,7 +7,7 @@ from django.contrib import admin
 from django.http import HttpResponse
 from django.utils import timezone
 
-from sso.user.models import User, UserProfile
+from sso.user.models import DataRetentionStatistics, User, UserProfile
 
 
 class GDPRComplianceFilter(admin.SimpleListFilter):
@@ -28,6 +28,11 @@ class GDPRComplianceFilter(admin.SimpleListFilter):
 @admin.register(UserProfile)
 class UserProfileAdmin(admin.ModelAdmin):
     readonly_fields = ('created', 'modified')
+
+
+@admin.register(DataRetentionStatistics)
+class DataRetentionStatistics(admin.ModelAdmin):
+    pass
 
 
 @admin.register(User)

@@ -37,6 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django.contrib.admin',
     'django.contrib.messages',
+    'django_celery_beat',
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
@@ -466,3 +467,17 @@ SOCIALACCOUNT_PROVIDERS = {
 # Silence DRF's system check about having a global page size set without setting a global paginator. This is fine if we
 # want case-by-case pagination but with a default page size.
 SILENCED_SYSTEM_CHECKS = ["rest_framework.W001"]
+
+# Celery
+# is in api/celery.py
+FEATURE_REDIS_USE_SSL = env.bool('FEATURE_REDIS_USE_SSL', False)
+CELERY_BROKER_URL = REDIS_URL
+CELERY_RESULT_BACKEND = REDIS_URL
+CELERY_ACCEPT_CONTENT = ['application/json']
+CELERY_TASK_SERIALIZER = 'json'
+CELERY_TASK_ALWAYS_EAGER = env.bool('CELERY_TASK_ALWAYS_EAGER', False)
+CELERY_RESULT_SERIALIZER = 'json'
+CELERY_TIMEZONE = 'UTC'
+CELERY_BROKER_POOL_LIMIT = None
+
+CELERY_IMPORTS = ('sso.tasks',)
