@@ -160,8 +160,8 @@ class DataRetentionStatistics(TimeStampedModel):
     company = models.IntegerField(blank=True, null=True)
 
     class Meta:
-        verbose_name = _('DataRetentionStatatics')
-        verbose_name_plural = _('DataRetentionStatatics')
+        verbose_name = _('Data Retention Statistics')
+        verbose_name_plural = _('Data Retention Statistics')
 
     def __str__(self):
         return str(self.sso_user)
