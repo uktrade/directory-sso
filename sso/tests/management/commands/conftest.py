@@ -115,3 +115,40 @@ def inactive_user_2():
     user.save()
     yield user
     user.delete()
+
+
+@pytest.fixture
+def active_user():
+    User = get_user_model()  # noqa
+    user = User.objects.create(email='active_user@xyz.com')
+    yield user
+    user.delete()
+
+
+@pytest.fixture
+def old_user():
+    """Fixture for old user who's last login and created three years ago"""
+    User = get_user_model()  # noqa
+    user = User.objects.create(email='old_user@xyz.com')
+    # user last_login around 4 years ago
+    user.last_login = datetime.now() - timedelta(days=4 * 365)
+    # user created 5 years ago
+    user.created = datetime.now() - timedelta(days=5 * 365)
+    user.inactivity_notification = 4
+    user.save()
+    yield user
+    user.delete()
+
+
+@pytest.fixture
+def old_user_with_no_notification():
+    """Fixture for old user who's last login and created three years ago"""
+    User = get_user_model()  # noqa
+    user = User.objects.create(email='old_user@xyz.com')
+    # user last_login around 4 years ago
+    user.last_login = datetime.now() - timedelta(days=4 * 365)
+    # user created 5 years ago
+    user.created = datetime.now() - timedelta(days=5 * 365)
+    user.save()
+    yield user
+    user.delete()

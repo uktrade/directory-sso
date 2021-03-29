@@ -2,7 +2,7 @@ import pytest
 from django_extensions.db.fields import CreationDateTimeField, ModificationDateTimeField
 
 from sso.user.models import User, UserProfile
-from sso.user.tests.factories import UserFactory
+from sso.user.tests.factories import DataRetentionStatisticsFactory, UserFactory
 
 
 @pytest.mark.django_db
@@ -128,3 +128,10 @@ def test_create_user_profile():
     assert expected.job_title == data['job_title']
     assert expected.mobile_phone_number == data['mobile_phone_number']
     assert str(expected) == str(user)
+
+
+@pytest.mark.django_db
+def test_datastastics_object():
+    data = DataRetentionStatisticsFactory(sso_user=123)
+
+    assert str(data) == '123'

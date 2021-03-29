@@ -71,7 +71,7 @@ class User(AbstractBaseUser, PermissionsMixin, TimeStampedModel):
 
     failed_login_attempts = models.PositiveSmallIntegerField(default=0)
 
-    inactivity_notification = models.PositiveSmallIntegerField(default=0, max_length=1)
+    inactivity_notification = models.PositiveSmallIntegerField(default=0)
 
     objects = UserManager()
 
@@ -152,6 +152,19 @@ class UserProfile(TimeStampedModel):
 
     def __str__(self):
         return str(self.user)
+
+
+class DataRetentionStatistics(TimeStampedModel):
+    sso_user = models.IntegerField(blank=True, null=True)
+    company_user = models.IntegerField(blank=True, null=True)
+    company = models.IntegerField(blank=True, null=True)
+
+    class Meta:
+        verbose_name = _('Data Retention Statistics')
+        verbose_name_plural = _('Data Retention Statistics')
+
+    def __str__(self):
+        return str(self.sso_user)
 
 
 class Service(TimeStampedModel):
