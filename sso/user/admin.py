@@ -56,6 +56,7 @@ class UserAdmin(admin.ModelAdmin):
         'emailaddress',
         'user_permissions',
         'failed_login_attempts',
+        'inactivity_notification',
     )
 
     @staticmethod
