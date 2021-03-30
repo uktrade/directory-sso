@@ -1,8 +1,10 @@
 # Changelog
 
 ## Pre release
-
 ### Fixed bugs
+
+## [v6.3.0](https://github.com/uktrade/directory-sso/releases/tag/v6.3.0)
+[Compare](https://github.com/uktrade/directory-sso/compare/6.2.0...6.3.0)
 ### Enhancements
 - GP2-1722 - Data retention statistics model
 - GP2-1720 -  Added final check for notification before archive users
