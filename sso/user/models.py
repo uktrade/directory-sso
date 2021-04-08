@@ -218,3 +218,50 @@ class LessonCompleted(TimeStampedModel):
             'modified': self.modified.strftime(API_DATETIME_FORMAT),
             'created': self.created.strftime(API_DATETIME_FORMAT),
         }
+
+
+QUESTION_TYPES = [
+    ('RADIO', 'radio'),
+    ('SELECTION', 'Selection'),
+    ('MULTIPLE_SELECTOR', 'Multiple selection'),
+    ('TEXT', 'text'),
+    ('COMPANY_LOOKUP', 'Company lookup'),
+]
+
+
+class Question(TimeStampedModel):
+    service = models.ForeignKey(Service, on_delete=models.CASCADE)
+    name = models.CharField(max_length=128)
+    title = models.CharField(max_length=256)
+    question_type = models.CharField(max_length=5, choices=QUESTION_TYPES)
+    question_choices = JSONField(blank=True, default=dict, help_text=_('Array of choices'))
+    is_active = models.BooleanField(default=True)
+    order = models.PositiveSmallIntegerField(default=0)
+
+    class Meta:
+        ordering = ['-order']
+
+    def __str__(self):
+        return str(self.name)
+
+    def to_dict(self):
+        return {
+            'id': self.id,
+            'name': self.name,
+            'title': self.title,
+            'type': self.question_type,
+            'choices': self.question_choices,
+            'order': self.order,
+        }
+
+
+class UserAnswer(TimeStampedModel):
+    question = models.ForeignKey(Question, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    answer = JSONField(blank=True, default=dict)
+
+    def to_dict(self):
+        return {'question_id': self.question.id, 'answer': self.answer}
+
+    def __str__(self):
+        return str(f'{self.user}:{self.question.name}')

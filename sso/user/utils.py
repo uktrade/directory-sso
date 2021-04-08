@@ -8,7 +8,7 @@ from django.conf import settings
 from django.core.exceptions import ObjectDoesNotExist
 from django.utils.http import urlencode
 
-from sso.user.models import LessonCompleted, Service, ServicePage, UserPageView
+from sso.user.models import LessonCompleted, Question, Service, ServicePage, UserAnswer, UserPageView
 
 
 def get_url_with_redirect(url, redirect_url):
@@ -117,3 +117,21 @@ def get_lesson_completed(user, service, **filter_dict):
         return LessonCompleted.objects.filter(user=user, service=service, **filter_dict)
     except ObjectDoesNotExist:
         return None
+
+
+def get_questionnaire(user, service):
+    try:
+        in_progress = False
+        service = Service.objects.get(name=service)
+        questions = Question.objects.filter(service=service, is_active=True)
+        for question in questions:
+            answer = UserAnswer.objects.filter(user=user, question=question)
+            if not answer:
+                in_progress = True
+        if in_progress:
+            return {
+                'questions': [question.to_dict() for question in questions],
+                'answers': [answer.to_dict() for answer in UserAnswer.objects.filter(user=user)],
+            }
+    except ObjectDoesNotExist:
+        pass
