@@ -1,5 +1,4 @@
 from datetime import datetime
-from unittest.mock import Mock, patch
 
 import pytest
 from django.test.client import Client
@@ -46,7 +45,6 @@ def test_get_session_user_valid_session_key(api_client):
 
 
 @pytest.mark.django_db
-@patch('conf.signature.SignatureCheckPermission.has_permission', Mock)
 def test_get_session_user_expired(api_client):
     user, user_session = setup_data()
     user_session.set_expiry(-1)
