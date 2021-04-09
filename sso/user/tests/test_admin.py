@@ -25,7 +25,7 @@ class DownloadCaseStudyCSVTestCase(TestCase):
     header = (
         'created,date_joined,email,first_name,hashed_uuid,'
         'id,is_active,is_staff,is_superuser,'
-        'last_login,last_name,lessoncompleted,modified,oauth2_provider_application,page_views,user_profile,'
+        'last_login,last_name,lessoncompleted,modified,oauth2_provider_application,page_views,user_profile,useranswer,'
         'utm,verification_code'
     )
 
@@ -69,7 +69,7 @@ class DownloadCaseStudyCSVTestCase(TestCase):
         row_one = (
             '{created},{date_joined},{email},,{hashed_uuid},'
             '{id},{is_active},{is_staff},'
-            '{is_superuser},,,,{modified},,,{user_profile},'
+            '{is_superuser},,,,{modified},,,{user_profile},,'
             '{utm},'
             '{verification_code}'
         ).format(
@@ -182,6 +182,7 @@ def test_download_csv_exops_not_fab(mock_get_fab_user_ids, settings, superuser_c
             ('oauth2_provider_application', ''),
             ('page_views', ''),
             ('user_profile', ''),
+            ('useranswer', ''),
             ('utm', user_one.utm),
             ('verification_code', ''),
         ]
