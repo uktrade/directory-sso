@@ -135,3 +135,15 @@ def get_questionnaire(user, service):
             }
     except ObjectDoesNotExist:
         pass
+
+
+def set_questionnaire_answer(user, service, question_id, user_answer):
+    try:
+        service = Service.objects.get(name=service)
+        question = Question.objects.get(service=service, id=question_id)
+        answer = UserAnswer.objects.filter(user=user, question=question)
+        answer = (answer and answer[0]) or UserAnswer(user=user, question=question)
+        answer.answer = user_answer
+        answer.save()
+    except ObjectDoesNotExist:
+        pass

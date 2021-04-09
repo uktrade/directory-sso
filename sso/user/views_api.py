@@ -9,7 +9,14 @@ from conf.signature import SignatureCheckPermission
 from core.authentication import SessionAuthentication
 from sso.user import serializers
 from sso.user.models import LessonCompleted, Service
-from sso.user.utils import get_lesson_completed, get_page_view, get_questionnaire, set_lesson_completed, set_page_view
+from sso.user.utils import (
+    get_lesson_completed,
+    get_page_view,
+    get_questionnaire,
+    set_lesson_completed,
+    set_page_view,
+    set_questionnaire_answer,
+)
 
 
 class UserCreateAPIView(CreateAPIView):
@@ -115,5 +122,13 @@ class userQuestionnaireView(GenericAPIView):
         service = request.query_params.get('service')
         data = {'result': 'ok'}
         data.update(get_questionnaire(self.request.user, service) or {})
-        print('Sending data', data)
+        return Response(status=200, data=data)
+
+    def post(self, request, *args, **kwargs):
+        service = request.data.get('service')
+        question_id = request.data.get('question_id')
+        user_answer = request.data.get('answer')
+        set_questionnaire_answer(self.request.user, service, question_id, user_answer)
+        data = {'result': 'ok'}
+        data.update(get_questionnaire(self.request.user, service) or {})
         return Response(status=200, data=data)
