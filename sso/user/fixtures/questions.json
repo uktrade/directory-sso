@@ -28,7 +28,7 @@
       "value": "CHALLENGE"
     }],
     "is_active": true,
-    "order": 1
+    "sort_order": 1
   }
 },
 {
@@ -60,7 +60,7 @@
       "value": "non-uk"
     }],
     "is_active": true,
-    "order": 2
+    "sort_order": 2
   }
 },
 {
@@ -121,7 +121,7 @@
     }
 ],
     "is_active": true,
-    "order": 3
+    "sort_order": 3
   }
 },
 {
@@ -157,7 +157,7 @@
       "value": "1"
     }],
     "is_active": true,
-    "order": 4
+    "sort_order": 4
   }
 },
 {
@@ -193,7 +193,7 @@
       "value": "1"
     }],
     "is_active": true,
-    "order": 5
+    "sort_order": 5
   }
 },
 {
@@ -229,7 +229,7 @@
       "value": "1"
     }],
     "is_active": true,
-    "order": 6
+    "sort_order": 6
   }
 },
 {
@@ -257,7 +257,7 @@
       "value": "1"
     }],
     "is_active": true,
-    "order": 7
+    "sort_order": 7
   }
 }
 
