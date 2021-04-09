@@ -43,7 +43,7 @@ class DownloadCaseStudyCSVTestCase(TestCase):
         row_one = (
             "{created},{date_joined},admin@example.com,,{hashed_uuid},"
             "{id},True,True,True,"
-            "{last_login},,,{modified},,,,{utm},"
+            "{last_login},,,{modified},,,,,{utm},"
         ).format(
             created=user.created,
             date_joined=user.date_joined,
@@ -91,7 +91,7 @@ class DownloadCaseStudyCSVTestCase(TestCase):
         row_two = (
             '{created},{date_joined},{email},,{hashed_uuid},'
             '{id},{is_active},{is_staff},'
-            '{is_superuser},,,,{modified},,,{user_profile},{utm},'
+            '{is_superuser},,,,{modified},,,{user_profile},,{utm},'
             '{verification_code}'
         ).format(
             created=user_two.created,
@@ -112,7 +112,7 @@ class DownloadCaseStudyCSVTestCase(TestCase):
         row_three = (
             '{created},{date_joined},{email},,{hashed_uuid},'
             '{id},{is_active},{is_staff},'
-            '{is_superuser},{last_login},,,{modified},,,{user_profile},{utm},'
+            '{is_superuser},{last_login},,,{modified},,,{user_profile},,{utm},'
             '{verification_code}'
         ).format(
             created=user_three.created,
