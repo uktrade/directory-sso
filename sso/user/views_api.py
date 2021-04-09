@@ -112,7 +112,6 @@ class userQuestionnaireView(GenericAPIView):
     authentication_classes = [SessionAuthentication]
 
     def get(self, request):
-        question_dict = {}
         service = request.query_params.get('service')
         data = {'result': 'ok'}
         data.update(get_questionnaire(self.request.user, service) or {})

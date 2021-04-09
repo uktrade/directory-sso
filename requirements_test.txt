@@ -54,8 +54,6 @@ cryptography==3.3.2
     #   django-cryptography
     #   pyopenssl
     #   requests
-dataclasses==0.8
-    # via black
 defusedxml==0.7.1
     # via python3-openid
 directory-api-client==22.5.0
@@ -99,6 +97,8 @@ django-oauth-toolkit==1.2.0
 django-pglocks==1.0.3
     # via -r requirements.in
 django-redis==4.10.0
+    # via -r requirements.in
+django-sort-order-field==1.2
     # via -r requirements.in
 django-staff-sso-client==1.0.0
     # via -r requirements.in
@@ -149,13 +149,6 @@ idna==2.10
     # via
     #   requests
     #   tldextract
-importlib-metadata==3.7.3
-    # via
-    #   flake8
-    #   jsonschema
-    #   kombu
-    #   pluggy
-    #   pytest
 iniconfig==1.1.1
     # via pytest
 isort==5.6.4
@@ -318,9 +311,7 @@ toml==0.10.2
 typed-ast==1.4.2
     # via black
 typing-extensions==3.7.4.3
-    # via
-    #   black
-    #   importlib-metadata
+    # via black
 urllib3==1.25.11
     # via
     #   -r requirements.in
@@ -336,8 +327,6 @@ w3lib==1.22.0
     # via directory-client-core
 whitenoise==4.1.4
     # via -r requirements.in
-zipp==3.4.1
-    # via importlib-metadata
 
 # The following packages are considered to be unsafe in a requirements file:
 # setuptools

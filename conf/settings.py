@@ -57,6 +57,7 @@ INSTALLED_APPS = [
     'directory_healthcheck',
     'directory_components',
     'authbroker_client',
+    'sort_order_field',
 ]
 
 SITE_ID = 1

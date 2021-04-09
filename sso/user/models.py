@@ -8,6 +8,7 @@ from django.db import models
 from django.urls import reverse
 from django.utils import timezone
 from django.utils.translation import ugettext_lazy as _
+from sort_order_field import SortOrderField
 
 from sso.api.model_utils import TimeStampedModel
 from sso.constants import API_DATETIME_FORMAT
@@ -236,10 +237,10 @@ class Question(TimeStampedModel):
     question_type = models.CharField(max_length=5, choices=QUESTION_TYPES)
     question_choices = JSONField(blank=True, default=dict, help_text=_('Array of choices'))
     is_active = models.BooleanField(default=True)
-    order = models.PositiveSmallIntegerField(default=0)
+    sort_order = SortOrderField(_("Sort"))
 
     class Meta:
-        ordering = ['-order']
+        ordering = ('sort_order',)
 
     def __str__(self):
         return str(self.name)
@@ -251,7 +252,7 @@ class Question(TimeStampedModel):
             'title': self.title,
             'type': self.question_type,
             'choices': self.question_choices,
-            'order': self.order,
+            'order': self.sort_order,
         }
 
 
