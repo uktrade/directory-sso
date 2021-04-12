@@ -1,6 +1,8 @@
+import pytest
 from allauth.socialaccount.models import SocialAccount
 
 from sso.user import utils
+from sso.user.tests.factories import QuestionFactory, ServiceFactory, UserFactory
 
 
 def test_get_social_account_image_google():
@@ -89,3 +91,43 @@ def test_get_social_account_image_linkedin_no_elements():
         provider='linkedin_oauth2',
     )
     assert utils.get_social_account_image(account) is None
+
+
+@pytest.mark.django_db
+def test_get_questionnaire_inactive():
+    user = UserFactory()
+    service = ServiceFactory()
+
+    questionnaire = utils.get_questionnaire(user, service.name)
+
+    assert questionnaire is None
+
+
+@pytest.mark.django_db
+def test_get_questionnaire():
+    user = UserFactory()
+    service = ServiceFactory()
+
+    QuestionFactory(service=service, is_active=True)
+
+    questionnaire = utils.get_questionnaire(user, service.name)
+
+    assert len(questionnaire['answers']) == 0
+    assert len(questionnaire['questions']) == 1
+
+
+@pytest.mark.django_db
+def test_set_questionnaire_answer_invalid():
+    user = UserFactory()
+    question = QuestionFactory()
+
+    assert utils.set_questionnaire_answer(user, 'service', question.id, 'user_answer') is None
+
+
+@pytest.mark.django_db
+def test_set_questionnaire_answer():
+    user = UserFactory()
+    service = ServiceFactory()
+    question = QuestionFactory(service=service, is_active=True)
+
+    assert utils.set_questionnaire_answer(user, service.name, question.id, 'user_answer') is None
