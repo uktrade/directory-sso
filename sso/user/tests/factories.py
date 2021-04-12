@@ -32,3 +32,18 @@ class DataRetentionStatisticsFactory(factory.django.DjangoModelFactory):
 
     class Meta:
         model = models.DataRetentionStatistics
+
+
+class ServiceFactory(factory.django.DjangoModelFactory):
+    name = factory.fuzzy.FuzzyText()
+
+    class Meta:
+        model = models.Service
+
+
+class QuestionFactory(factory.django.DjangoModelFactory):
+    service = factory.SubFactory(ServiceFactory)
+    name = factory.fuzzy.FuzzyText()
+
+    class Meta:
+        model = models.Question
