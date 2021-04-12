@@ -94,11 +94,9 @@ def test_get_social_account_image_linkedin_no_elements():
 
 
 @pytest.mark.django_db
-def test_get_questionnaire_inactive():
+def test_get_questionnaire_no_questions():
     user = UserFactory()
-    service = ServiceFactory()
-
-    questionnaire = utils.get_questionnaire(user, service.name)
+    questionnaire = utils.get_questionnaire(user, 'service')
 
     assert questionnaire is None
 
@@ -108,7 +106,7 @@ def test_get_questionnaire():
     user = UserFactory()
     service = ServiceFactory()
 
-    QuestionFactory(service=service, is_active=True)
+    QuestionFactory(service=service)
 
     questionnaire = utils.get_questionnaire(user, service.name)
 
@@ -119,9 +117,8 @@ def test_get_questionnaire():
 @pytest.mark.django_db
 def test_set_questionnaire_answer_invalid():
     user = UserFactory()
-    question = QuestionFactory()
 
-    assert utils.set_questionnaire_answer(user, 'service', question.id, 'user_answer') is None
+    assert utils.set_questionnaire_answer(user, 'service', 999, 'user_answer') is None
 
 
 @pytest.mark.django_db
