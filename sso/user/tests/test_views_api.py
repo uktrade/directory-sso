@@ -367,3 +367,27 @@ def test_delete_endpoint_for_lesson_completed_for_non_owner(api_client, set_less
         format='json',
     )
     assert response.status_code == 200
+
+
+@pytest.mark.django_db
+def test_get_user_questionnaire(api_client):
+    user = factories.UserFactory()
+    api_client.force_authenticate(user=user)
+
+    data = {'service': 'great'}
+
+    response = api_client.get(reverse('api:user-questionnaire'), data, format='json')
+
+    assert response.status_code == 200
+
+
+@pytest.mark.django_db
+def test_set_user_questionnaire_answer(api_client):
+    user = factories.UserFactory()
+    api_client.force_authenticate(user=user)
+
+    set_data = {'service': 'great', 'question_id': 99, 'answer': 'answer'}
+
+    response = api_client.post(reverse('api:user-questionnaire'), set_data, format='json')
+
+    assert response.status_code == 200
