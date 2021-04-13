@@ -106,12 +106,12 @@ def test_get_questionnaire():
     user = UserFactory()
     service = ServiceFactory()
 
-    QuestionFactory(service=service)
+    QuestionFactory(service=service, predefined_choices='TURNOVER_CHOICES')
 
     questionnaire = utils.get_questionnaire(user, service.name)
-
     assert len(questionnaire['answers']) == 0
     assert len(questionnaire['questions']) == 1
+    assert len(questionnaire['questions'][0]['choices']['options']) == 8
 
 
 @pytest.mark.django_db
