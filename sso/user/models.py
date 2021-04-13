@@ -1,5 +1,6 @@
 from allauth.account.forms import default_token_generator, user_pk_to_url_str
 from allauth.account.models import EmailConfirmation
+from directory_constants import choices
 from django.conf import settings
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin
 from django.contrib.postgres.fields import JSONField
@@ -230,12 +231,19 @@ QUESTION_TYPES = [
 ]
 
 
+PREDEFINED_CHOICES = [
+    ('EXPERTISE_REGION_CHOICES', 'EXPERTISE_REGION_CHOICES'),
+    ('TURNOVER_CHOICES', 'TURNOVER_CHOICES'),
+]
+
+
 class Question(TimeStampedModel):
     service = models.ForeignKey(Service, on_delete=models.CASCADE)
     name = models.CharField(max_length=128)
     title = models.CharField(max_length=256)
-    question_type = models.CharField(max_length=5, choices=QUESTION_TYPES)
-    question_choices = JSONField(blank=True, default=dict, help_text=_('Array of choices'))
+    question_type = models.CharField(max_length=20, choices=QUESTION_TYPES)
+    question_choices = JSONField(blank=True, default=dict, help_text=_('Question parameters'))
+    predefined_choices = models.CharField(blank=True, null=True, max_length=128, choices=PREDEFINED_CHOICES)
     is_active = models.BooleanField(default=True)
     sort_order = SortOrderField(_("Sort"))
 
@@ -246,12 +254,20 @@ class Question(TimeStampedModel):
         return str(self.name)
 
     def to_dict(self):
+        question_options = (
+            [{'label': label, 'value': value} for value, label in choices.__dict__.get(self.predefined_choices, [])]
+            if self.predefined_choices
+            else []
+        )
+        question_choices = self.question_choices or {'options': []}
+        if question_options:
+            question_choices['options'] = question_choices.get('options', []) + question_options
         return {
             'id': self.id,
             'name': self.name,
             'title': self.title,
             'type': self.question_type,
-            'choices': self.question_choices,
+            'choices': question_choices,
             'order': self.sort_order,
         }
 
