@@ -134,7 +134,12 @@ def get_questionnaire(user, service_name):
             if in_progress:
                 return {
                     'questions': [question.to_dict() for question in questions],
-                    'answers': [answer.to_dict() for answer in UserAnswer.objects.filter(user=user)],
+                    'answers': [
+                        answer.to_dict()
+                        for answer in UserAnswer.objects.filter(
+                            user=user, question__service=service, question__is_active=True
+                        )
+                    ],
                 }
             else:
                 # We're done - so set the in-progress to complete

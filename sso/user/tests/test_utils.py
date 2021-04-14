@@ -105,6 +105,8 @@ def test_get_questionnaire_no_questions():
 def test_get_questionnaire():
     user = UserFactory()
     service = ServiceFactory()
+    QuestionFactory(service=service, id=0, name='in-progress', is_active=False)
+    utils.set_questionnaire_answer(user, service.name, 0, 'in-progress')
 
     QuestionFactory(service=service, predefined_choices='TURNOVER_CHOICES')
 
