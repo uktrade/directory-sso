@@ -119,20 +119,27 @@ def get_lesson_completed(user, service, **filter_dict):
         return None
 
 
-def get_questionnaire(user, service):
+def get_questionnaire(user, service_name):
     try:
-        in_progress = False
-        service = Service.objects.get(name=service)
-        questions = Question.objects.filter(service=service, is_active=True)
-        for question in questions:
-            answer = UserAnswer.objects.filter(user=user, question=question)
-            if not answer:
-                in_progress = True
-        if in_progress:
-            return {
-                'questions': [question.to_dict() for question in questions],
-                'answers': [answer.to_dict() for answer in UserAnswer.objects.filter(user=user)],
-            }
+        service = Service.objects.get(name=service_name)
+        # check for the 'in-progress' answer
+        in_progress_answer = UserAnswer.objects.get(user=user, question=Question.objects.get(service=service, pk=0))
+        if in_progress_answer.answer == 'in-progress':
+            in_progress = False
+            questions = Question.objects.filter(service=service, is_active=True)
+            for question in questions:
+                answer = UserAnswer.objects.filter(user=user, question=question)
+                if not answer:
+                    in_progress = True
+            if in_progress:
+                return {
+                    'questions': [question.to_dict() for question in questions],
+                    'answers': [answer.to_dict() for answer in UserAnswer.objects.filter(user=user)],
+                }
+            else:
+                # We're done - so set the in-progress to complete
+                in_progress_answer.answer = 'complete'
+                in_progress_answer.save()
     except ObjectDoesNotExist:
         pass
 
@@ -142,8 +149,31 @@ def set_questionnaire_answer(user, service, question_id, user_answer):
         service = Service.objects.get(name=service)
         question = Question.objects.get(service=service, id=question_id)
         answer = UserAnswer.objects.filter(user=user, question=question)
+
+        if question.name == 'in-progress' and answer and answer[0]:
+            # This is trying to start the survey. - if already complete/in-progress - ignore
+            return
         answer = (answer and answer[0]) or UserAnswer(user=user, question=question)
         answer.answer = user_answer
         answer.save()
+        # Find the option from the question
+        options = (
+            question.question_choices.get('options', [])
+            if isinstance(question.question_choices, dict)
+            else question.question_choices
+        )
+        for option in options or []:
+            if option.get('value') == user_answer:
+                # found it
+                if option.get('jump'):
+                    jump = option.get('jump')
+                    if jump == 'end':
+                        # remove the 'in-progress' answer to close down the questionnaire
+                        in_progress_answer = UserAnswer.objects.get(
+                            user=user, question=Question.objects.get(service=service, pk=0)
+                        )
+                        in_progress_answer.answer = 'complete'
+                        in_progress_answer.save()
+
     except ObjectDoesNotExist:
         pass

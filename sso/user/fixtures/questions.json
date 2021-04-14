@@ -1,6 +1,17 @@
 [
   {
     "model": "user.question",
+    "pk": 0,
+    "fields": {
+      "service": 1,
+      "name": "in-progress",
+      "title": "MARK PROGRESS",
+      "question_type": "",
+      "is_active": false
+    }
+  },
+  {
+    "model": "user.question",
     "pk": 2,
     "fields": {
       "service": 1,
