@@ -47,3 +47,11 @@ class QuestionFactory(factory.django.DjangoModelFactory):
 
     class Meta:
         model = models.Question
+
+
+class UserAnswerFactory(factory.django.DjangoModelFactory):
+    question = factory.SubFactory(QuestionFactory)
+    user = factory.SubFactory(UserFactory)
+
+    class Meta:
+        model = models.UserAnswer
