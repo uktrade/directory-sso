@@ -1,5 +1,6 @@
 from allauth.account.forms import default_token_generator, user_pk_to_url_str
 from allauth.account.models import EmailConfirmation
+from directory_constants import choices
 from django.conf import settings
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin
 from django.contrib.postgres.fields import JSONField
@@ -8,6 +9,7 @@ from django.db import models
 from django.urls import reverse
 from django.utils import timezone
 from django.utils.translation import ugettext_lazy as _
+from sort_order_field import SortOrderField
 
 from sso.api.model_utils import TimeStampedModel
 from sso.constants import API_DATETIME_FORMAT
@@ -218,3 +220,65 @@ class LessonCompleted(TimeStampedModel):
             'modified': self.modified.strftime(API_DATETIME_FORMAT),
             'created': self.created.strftime(API_DATETIME_FORMAT),
         }
+
+
+QUESTION_TYPES = [
+    ('RADIO', 'radio'),
+    ('SELECTION', 'Selection'),
+    ('MULTIPLE_SELECTOR', 'Multiple selection'),
+    ('TEXT', 'text'),
+    ('COMPANY_LOOKUP', 'Company lookup'),
+]
+
+
+PREDEFINED_CHOICES = [
+    ('EXPERTISE_REGION_CHOICES', 'EXPERTISE_REGION_CHOICES'),
+    ('TURNOVER_CHOICES', 'TURNOVER_CHOICES'),
+]
+
+
+class Question(TimeStampedModel):
+    service = models.ForeignKey(Service, on_delete=models.CASCADE)
+    name = models.CharField(max_length=128)
+    title = models.CharField(max_length=256)
+    question_type = models.CharField(max_length=20, choices=QUESTION_TYPES)
+    question_choices = JSONField(blank=True, default=dict, help_text=_('Question parameters'))
+    predefined_choices = models.CharField(blank=True, null=True, max_length=128, choices=PREDEFINED_CHOICES)
+    is_active = models.BooleanField(default=True)
+    sort_order = SortOrderField(_("Sort"))
+
+    class Meta:
+        ordering = ('sort_order',)
+
+    def __str__(self):
+        return str(self.name)
+
+    def to_dict(self):
+        question_options = (
+            [{'label': label, 'value': value} for value, label in choices.__dict__.get(self.predefined_choices, [])]
+            if self.predefined_choices
+            else []
+        )
+        question_choices = self.question_choices or {'options': []}
+        if question_options:
+            question_choices['options'] = question_choices.get('options', []) + question_options
+        return {
+            'id': self.id,
+            'name': self.name,
+            'title': self.title,
+            'type': self.question_type,
+            'choices': question_choices,
+            'order': self.sort_order,
+        }
+
+
+class UserAnswer(TimeStampedModel):
+    question = models.ForeignKey(Question, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    answer = JSONField(blank=True, default=dict)
+
+    def to_dict(self):
+        return {'question_id': self.question.id, 'answer': self.answer}
+
+    def __str__(self):
+        return str(f'{self.user}:{self.question.name}')

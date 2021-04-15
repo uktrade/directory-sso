@@ -1,8 +1,8 @@
 import pytest
 from django_extensions.db.fields import CreationDateTimeField, ModificationDateTimeField
 
-from sso.user.models import User, UserProfile
-from sso.user.tests.factories import DataRetentionStatisticsFactory, UserFactory
+from sso.user.models import Question, User, UserAnswer, UserProfile
+from sso.user.tests.factories import DataRetentionStatisticsFactory, QuestionFactory, ServiceFactory, UserFactory
 
 
 @pytest.mark.django_db
@@ -135,3 +135,26 @@ def test_datastastics_object():
     data = DataRetentionStatisticsFactory(sso_user=123)
 
     assert str(data) == '123'
+
+
+@pytest.mark.django_db
+def test_question_object():
+    service = ServiceFactory()
+    data = {'service': service, 'name': 'question'}
+
+    expected = Question.objects.create(**data)
+
+    assert str(expected) == data['name']
+    assert expected.to_dict()['name'] == data['name']
+
+
+@pytest.mark.django_db
+def test_user_answer_object():
+    user = UserFactory()
+    question = QuestionFactory()
+    data = {'user': user, 'question': question}
+
+    expected = UserAnswer.objects.create(**data)
+
+    assert str(expected) == str(f'{user}:{question}')
+    assert expected.to_dict()['question_id'] == question.id
