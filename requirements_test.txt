@@ -123,6 +123,8 @@ django==2.2.19
     #   django-timezone-field
     #   djangorestframework
     #   sigauth
+django_json_widget==1.1.1
+    # via -r requirements.in
 djangorestframework==3.12.2
     # via
     #   -r requirements.in
@@ -142,7 +144,9 @@ flake8==3.8.4
 freezegun==1.1.0
     # via -r requirements_test.in
 future==0.18.2
-    # via notifications-python-client
+    # via
+    #   django-json-widget
+    #   notifications-python-client
 gunicorn==20.0.4
     # via -r requirements.in
 idna==2.10
