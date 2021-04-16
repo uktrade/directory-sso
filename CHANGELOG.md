@@ -1,6 +1,10 @@
 # Changelog
 
 ## Pre release
+
+### Enhancements
+
+- GP2-2176 - Value for Money Questions
 ### Fixed bugs
 
 ## [v6.4.0](https://github.com/uktrade/directory-sso/releases/tag/v6.4.0)

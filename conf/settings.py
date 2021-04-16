@@ -58,6 +58,7 @@ INSTALLED_APPS = [
     'directory_components',
     'authbroker_client',
     'sort_order_field',
+    'django_json_widget',
 ]
 
 SITE_ID = 1

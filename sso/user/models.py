@@ -223,10 +223,10 @@ class LessonCompleted(TimeStampedModel):
 
 
 QUESTION_TYPES = [
-    ('RADIO', 'radio'),
-    ('SELECTION', 'Selection'),
-    ('MULTIPLE_SELECTOR', 'Multiple selection'),
-    ('TEXT', 'text'),
+    ('RADIO', 'Radio'),
+    ('SELECT', 'Select'),
+    ('MULTI_SELECT', 'Multi select'),
+    ('TEXT', 'Text'),
     ('COMPANY_LOOKUP', 'Company lookup'),
 ]
 
@@ -251,7 +251,8 @@ class Question(TimeStampedModel):
         ordering = ('sort_order',)
 
     def __str__(self):
-        return str(self.name)
+        inactive = '(inactive) ' if not self.is_active else ''
+        return f'{inactive}{str(self.name)}'
 
     def to_dict(self):
         question_options = (
@@ -277,8 +278,11 @@ class UserAnswer(TimeStampedModel):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     answer = JSONField(blank=True, default=dict)
 
+    class Meta:
+        ordering = ('user', 'question__sort_order')
+
     def to_dict(self):
         return {'question_id': self.question.id, 'answer': self.answer}
 
     def __str__(self):
-        return str(f'{self.user}:{self.question.name}')
+        return str(f'{self.user} : {self.question.name}')

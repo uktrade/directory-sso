@@ -4,10 +4,12 @@ import datetime
 from directory_api_client import api_client
 from django.conf import settings
 from django.contrib import admin
+from django.contrib.postgres import fields
 from django.http import HttpResponse
 from django.utils import timezone
+from django_json_widget.widgets import JSONEditorWidget
 
-from sso.user.models import DataRetentionStatistics, User, UserProfile
+from sso.user.models import DataRetentionStatistics, Question, User, UserAnswer, UserProfile
 
 
 class GDPRComplianceFilter(admin.SimpleListFilter):
@@ -157,3 +159,15 @@ class UserAdmin(admin.ModelAdmin):
         )
 
     download_password_reset_links.short_description = "Download password reset links for selected users"
+
+
+@admin.register(Question)
+class QuestionAdmin(admin.ModelAdmin):
+    formfield_overrides = {
+        fields.JSONField: {'widget': JSONEditorWidget},
+    }
+
+
+@admin.register(UserAnswer)
+class AnswerAdmin(admin.ModelAdmin):
+    pass
