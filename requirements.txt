@@ -10,7 +10,7 @@ attrs==20.3.0
     # via jsonschema
 beautifulsoup4==4.9.3
     # via directory-components
-billiard==3.6.3.0
+billiard==3.6.4.0
     # via celery
 boto3==1.10.23
     # via -r requirements.in
@@ -42,7 +42,7 @@ directory-client-core==6.3.0
     # via directory-api-client
 directory-components==35.26.0
     # via -r requirements.in
-directory-constants==20.24.0
+directory-constants==20.25.0
     # via
     #   -r requirements.in
     #   directory-components
@@ -78,6 +78,8 @@ django-pglocks==1.0.3
     # via -r requirements.in
 django-redis==4.10.0
     # via -r requirements.in
+django-sort-order-field==1.2
+    # via -r requirements.in
 django-staff-sso-client==1.0.0
     # via -r requirements.in
 django-timezone-field==4.1.2
@@ -101,6 +103,8 @@ django==2.2.19
     #   django-timezone-field
     #   djangorestframework
     #   sigauth
+django_json_widget==1.1.1
+    # via -r requirements.in
 djangorestframework==3.12.2
     # via
     #   -r requirements.in
@@ -110,7 +114,9 @@ docopt==0.6.2
 docutils==0.15.2
     # via botocore
 future==0.18.2
-    # via notifications-python-client
+    # via
+    #   django-json-widget
+    #   notifications-python-client
 gunicorn==20.0.4
     # via -r requirements.in
 idna==2.10
@@ -127,11 +133,11 @@ kombu==4.6.11
     # via celery
 mohawk==0.3.4
     # via sigauth
-monotonic==1.5
+monotonic==1.6
     # via
     #   directory-client-core
     #   notifications-python-client
-notifications-python-client==5.4.0
+notifications-python-client==5.4.1
     # via -r requirements.in
 oauthlib==3.1.0
     # via
@@ -139,14 +145,16 @@ oauthlib==3.1.0
     #   requests-oauthlib
 olefile==0.46
     # via directory-validators
-pillow==8.1.2
+pillow==8.2.0
     # via directory-validators
 psycopg2-binary==2.8.4
     # via -r requirements.in
 pycparser==2.20
     # via cffi
-pyjwt==2.0.1
-    # via notifications-python-client
+pyjwt==1.7.0
+    # via
+    #   -r requirements.in
+    #   notifications-python-client
 pyopenssl==20.0.1
     # via requests
 pyrsistent==0.17.3
