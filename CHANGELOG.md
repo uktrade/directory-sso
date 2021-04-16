@@ -1,6 +1,10 @@
 # Changelog
 
 ## Pre release
+
+### Enhancements
+
+- GP2-2176 - Value for Money Questions
 ### Fixed bugs
 - GBAU-949 - Password reset page failing
 

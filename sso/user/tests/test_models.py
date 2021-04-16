@@ -156,5 +156,5 @@ def test_user_answer_object():
 
     expected = UserAnswer.objects.create(**data)
 
-    assert str(expected) == str(f'{user}:{question}')
+    assert str(expected) == str(f'{user} : {question}')
     assert expected.to_dict()['question_id'] == question.id
