@@ -59,12 +59,12 @@
           "value": "sole-trader"
         },
         {
-          "label": "My business or organisation is not registered in the UK",
+          "label": "I pay taxes in the UK but do not represent a business",
           "value": "no-business",
           "jump": "end"
         },
         {
-          "label": "I do not have a product or service for export",
+          "label": "My business or organisation is not registered in the UK",
           "value": "non-uk",
           "jump": "end"
         }
@@ -207,7 +207,7 @@
     "pk": 7,
     "fields": {
       "service": 1,
-      "name": "sufficient_demand",
+      "name": "sufficient-demand",
       "title": "To what extent do you agree or disagree there would not be enough demand for my business overseas to make it worthwhile?",
       "question_type": "RADIO",
       "question_choices": {
@@ -243,7 +243,7 @@
     "pk": 8,
     "fields": {
       "service": 1,
-      "name": "interested in support",
+      "name": "interested-in-support",
       "title": "How interested would your business be in information and business support services that can assist you with exporting?",
       "question_type": "RADIO",
       "question_choices": [
@@ -269,7 +269,7 @@
     "pk": 9,
     "fields": {
       "service": 1,
-      "name": "business unit location",
+      "name": "business-unit-location",
       "title": "Where is the business unit that you regularly work in located?",
       "question_type": "SELECT",
       "predefined_choices": "EXPERTISE_REGION_CHOICES",
@@ -291,7 +291,7 @@
     "pk": 10,
     "fields": {
       "service": 1,
-      "name": "business location",
+      "name": "business-location",
       "title": "Where is the business located?",
       "question_type": "SELECT",
       "predefined_choices": "EXPERTISE_REGION_CHOICES",
@@ -307,7 +307,7 @@
     "pk": 11,
     "fields": {
       "service": 1,
-      "name": "Company turnover",
+      "name": "company-turnover",
       "title": "What is your organisation’s annual turnover?",
       "question_type": "RADIO",
       "predefined_choices": "TURNOVER_CHOICES",
@@ -320,7 +320,7 @@
     "pk": 12,
     "fields": {
       "service": 1,
-      "name": "Company turnover",
+      "name": "employee-count",
       "title": "How many employees are on your organisation’s payroll?",
       "question_type": "RADIO",
       "question_choices": [
