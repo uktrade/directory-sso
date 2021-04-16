@@ -2,6 +2,7 @@
 
 ## Pre release
 ### Fixed bugs
+- GBAU-949 - Password reset page failing
 
 ## [v6.4.0](https://github.com/uktrade/directory-sso/releases/tag/v6.4.0)
 [Compare](https://github.com/uktrade/directory-sso/compare/6.3.0...6.4.0)
