@@ -92,6 +92,7 @@ api_urlpatterns = [
     url(r'^user/profile/update/$', sso.user.views_api.UserProfileUpdateAPIView.as_view(), name='user-update-profile'),
     url(r'^user/page-view/$', sso.user.views_api.UserPageViewAPIView.as_view(), name='user-page-views'),
     url(r'^user/lesson-completed/$', sso.user.views_api.LessonCompletedAPIView.as_view(), name='user-lesson-completed'),
+    url(r'^user/questionnaire/$', sso.user.views_api.userQuestionnaireView.as_view(), name='user-questionnaire'),
 ]
 
 testapi_urls = [

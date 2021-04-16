@@ -8,7 +8,7 @@ from django.conf import settings
 from django.core.exceptions import ObjectDoesNotExist
 from django.utils.http import urlencode
 
-from sso.user.models import LessonCompleted, Service, ServicePage, UserPageView
+from sso.user.models import LessonCompleted, Question, Service, ServicePage, UserAnswer, UserPageView
 
 
 def get_url_with_redirect(url, redirect_url):
@@ -117,3 +117,68 @@ def get_lesson_completed(user, service, **filter_dict):
         return LessonCompleted.objects.filter(user=user, service=service, **filter_dict)
     except ObjectDoesNotExist:
         return None
+
+
+def get_questionnaire(user, service_name):
+    try:
+        service = Service.objects.get(name=service_name)
+        # check for the 'in-progress' answer
+        in_progress_answer = UserAnswer.objects.get(user=user, question=Question.objects.get(service=service, pk=0))
+        if in_progress_answer.answer == 'in-progress':
+            in_progress = False
+            questions = Question.objects.filter(service=service, is_active=True)
+            for question in questions:
+                answer = UserAnswer.objects.filter(user=user, question=question)
+                if not answer:
+                    in_progress = True
+            if in_progress:
+                return {
+                    'questions': [question.to_dict() for question in questions],
+                    'answers': [
+                        answer.to_dict()
+                        for answer in UserAnswer.objects.filter(
+                            user=user, question__service=service, question__is_active=True
+                        )
+                    ],
+                }
+            else:
+                # We're done - so set the in-progress to complete
+                in_progress_answer.answer = 'complete'
+                in_progress_answer.save()
+    except ObjectDoesNotExist:
+        pass
+
+
+def set_questionnaire_answer(user, service, question_id, user_answer):
+    try:
+        service = Service.objects.get(name=service)
+        question = Question.objects.get(service=service, id=question_id)
+        answer = UserAnswer.objects.filter(user=user, question=question)
+
+        if question.name == 'in-progress' and answer and answer[0]:
+            # This is trying to start the survey. - if already complete/in-progress - ignore
+            return
+        answer = (answer and answer[0]) or UserAnswer(user=user, question=question)
+        answer.answer = user_answer
+        answer.save()
+        # Find the option from the question
+        options = (
+            question.question_choices.get('options', [])
+            if isinstance(question.question_choices, dict)
+            else question.question_choices
+        )
+        for option in options or []:
+            if option.get('value') == user_answer:
+                # found it
+                if option.get('jump'):
+                    jump = option.get('jump')
+                    if jump == 'end':
+                        # remove the 'in-progress' answer to close down the questionnaire
+                        in_progress_answer = UserAnswer.objects.get(
+                            user=user, question=Question.objects.get(service=service, pk=0)
+                        )
+                        in_progress_answer.answer = 'complete'
+                        in_progress_answer.save()
+
+    except ObjectDoesNotExist:
+        pass

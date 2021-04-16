@@ -14,7 +14,8 @@ sentry-sdk==0.13.4
 boto3==1.10.23
 tldextract==2.2.2
 django-redis==4.10.0
-notifications-python-client==5.4.0
+notifications-python-client==5.4.1
+pyjwt==1.7.0
 sigauth==4.1.1
 directory-constants>=20.9.0,<21.0.0
 directory-api-client==22.5.0
@@ -29,3 +30,5 @@ django-staff-sso-client==1.0.0
 celery[redis]==4.3.0
 django-celery-beat==1.5.0
 cryptography==3.3.2
+django-sort-order-field==1.2
+django_json_widget==1.1.1
