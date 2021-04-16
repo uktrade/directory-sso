@@ -60,9 +60,9 @@ directory-api-client==22.5.0
     # via -r requirements.in
 directory-client-core==6.3.0
     # via directory-api-client
-directory-components==35.26.0
+directory-components==36.0.0
     # via -r requirements.in
-directory-constants==20.24.0
+directory-constants==20.26.0
     # via
     #   -r requirements.in
     #   directory-components
@@ -175,7 +175,7 @@ monotonic==1.5
     #   notifications-python-client
 mypy-extensions==0.4.3
     # via black
-notifications-python-client==5.4.0
+notifications-python-client==5.4.1
     # via -r requirements.in
 oauthlib==3.1.0
     # via
@@ -208,7 +208,9 @@ pycparser==2.20
 pyflakes==2.2.0
     # via flake8
 pyjwt==1.7.0
-    # via notifications-python-client
+    # via
+    #   -r requirements.in
+    #   notifications-python-client
 pyopenssl==20.0.1
     # via requests
 pyparsing==2.4.7

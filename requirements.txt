@@ -40,9 +40,9 @@ directory-api-client==22.5.0
     # via -r requirements.in
 directory-client-core==6.3.0
     # via directory-api-client
-directory-components==35.26.0
+directory-components==36.0.0
     # via -r requirements.in
-directory-constants==20.25.0
+directory-constants==20.26.0
     # via
     #   -r requirements.in
     #   directory-components
