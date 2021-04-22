@@ -4,6 +4,7 @@
 
 ### Enhancements
 
+- GP2-2256 - magna header for BAU pages
 ### Fixed bugs
 
 ## [v6.5.0](https://github.com/uktrade/directory-sso/releases/tag/v6.5.0)
