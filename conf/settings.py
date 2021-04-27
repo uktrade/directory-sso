@@ -483,3 +483,6 @@ CELERY_TIMEZONE = 'UTC'
 CELERY_BROKER_POOL_LIMIT = None
 
 CELERY_IMPORTS = ('sso.tasks',)
+# Flag for loading magna header
+MAGNA_HEADER = env.bool('MAGNA_HEADER', False)
+DIRECTORY_CONSTANTS_URL_GREAT_MAGNA = env.str('DIRECTORY_CONSTANTS_URL_GREAT_MAGNA', 'https://great.gov.uk/')
