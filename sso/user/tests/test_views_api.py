@@ -391,3 +391,14 @@ def test_set_user_questionnaire_answer(api_client):
     response = api_client.post(reverse('api:user-questionnaire'), set_data, format='json')
 
     assert response.status_code == 200
+
+
+@pytest.mark.django_db
+def test_set_user_questionnaire_answer_invalid(api_client):
+    user = factories.UserFactory()
+    api_client.force_authenticate(user=user)
+
+    set_data = {'service': 'great', 'question_id': 99, 'answer': ''}
+
+    response = api_client.post(reverse('api:user-questionnaire'), set_data, format='json')
+    assert response.status_code == 200
