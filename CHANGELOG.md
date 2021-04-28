@@ -4,6 +4,7 @@
 
 ### Enhancements
 
+- GP2-2353 - VFM final page back button
 - GP2-2256 - magna header for BAU pages
 - GP2-2332 - upgraded directory-components package
 ### Fixed bugs
