@@ -25,8 +25,8 @@ class DownloadCaseStudyCSVTestCase(TestCase):
     header = (
         'created,date_joined,email,first_name,hashed_uuid,'
         'id,is_active,is_staff,is_superuser,'
-        'last_login,last_name,lessoncompleted,modified,oauth2_provider_application,page_views,user_profile,useranswer,userdata,'
-        'utm,verification_code'
+        'last_login,last_name,lessoncompleted,modified,oauth2_provider_application,page_views,user_profile,useranswer'
+        ',userdata,utm,verification_code'
     )
 
     def setUp(self):
