@@ -142,3 +142,45 @@ def test_set_questionnaire_answer():
     question.save()
 
     assert utils.set_questionnaire_answer(user, service.name, question.id, 'a') is None
+
+
+@pytest.mark.django_db
+def test_path_get():
+    dict1 = {'k1': 'v1', 'k2': {'k21': 'v21', 'k22': 'v22'}}
+    assert utils.path_get(dict1, '') == dict1
+    assert utils.path_get(dict1, None) == dict1
+    assert utils.path_get(dict1, 'k1') == 'v1'
+    assert utils.path_get(dict1, 'k2.k22') == 'v22'
+    assert utils.path_get(dict1, 'k2') == {'k21': 'v21', 'k22': 'v22'}
+    assert utils.path_get(dict1, 'wrong') is None
+    assert utils.path_get(dict1, 'k2.wrong') is None
+
+
+@pytest.mark.django_db
+def test_path_replace():
+    dict1 = {'k1': 'v1', 'k2': {'k21': 'v21', 'k22': 'v22'}}
+    assert utils.path_replace(dict1, '', {'r': 'r'}) == {'r': 'r'}
+    assert utils.path_replace(dict1, 'k1', {'r': 'r'}) == {'k1': {'r': 'r'}, 'k2': {'k21': 'v21', 'k22': 'v22'}}
+    assert utils.path_replace(dict1, 'k2', {'r': 'r'}) == {'k1': 'v1', 'k2': {'r': 'r'}}
+    assert utils.path_replace(dict1, 'k2.k22', {'r': 'r'}) == {'k1': 'v1', 'k2': {'k21': 'v21', 'k22': {'r': 'r'}}}
+    assert utils.path_replace(dict1, 'new', {'r': 'r'}) == {
+        'new': {'r': 'r'},
+        'k1': 'v1',
+        'k2': {'k21': 'v21', 'k22': 'v22'},
+    }
+    assert utils.path_replace(dict1, 'k2.new', {'r': 'r'}) == {
+        'k1': 'v1',
+        'k2': {'k21': 'v21', 'k22': 'v22', 'new': {'r': 'r'}},
+    }
+    assert utils.path_replace(dict1, 'new1.new2.new3', {'r': 'r'}) == {
+        'k1': 'v1',
+        'k2': {'k21': 'v21', 'k22': 'v22'},
+        'new1': {'new2': {'new3': {'r': 'r'}}},
+    }
+    assert utils.path_replace(dict1, 'k2.k22.new', {'r': 'r'}) == {
+        'k1': 'v1',
+        'k2': {'k21': 'v21', 'k22': {'new': {'r': 'r'}}},
+    }
+    assert utils.path_replace(dict1, '', None) == {}
+    assert utils.path_replace(dict1, 'k1', None) == {'k1': None, 'k2': {'k21': 'v21', 'k22': 'v22'}}
+    assert utils.path_replace(dict1, 'k2', None) == {'k1': 'v1', 'k2': None}

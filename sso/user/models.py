@@ -287,3 +287,15 @@ class UserAnswer(TimeStampedModel):
 
     def __str__(self):
         return str(f'{self.user} : {self.question.name}')
+
+
+class UserData(TimeStampedModel):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    data = JSONField(blank=True, default=dict)
+
+    def __str__(self):
+        return str(f'{self.user}')
+
+    class Meta:
+        ordering = ['user']
+        verbose_name_plural = 'User data'

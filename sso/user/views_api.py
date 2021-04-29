@@ -8,11 +8,13 @@ from rest_framework.response import Response
 from conf.signature import SignatureCheckPermission
 from core.authentication import SessionAuthentication
 from sso.user import serializers
-from sso.user.models import LessonCompleted, Service
+from sso.user.models import LessonCompleted, Service, UserData
 from sso.user.utils import (
     get_lesson_completed,
     get_page_view,
     get_questionnaire,
+    path_get,
+    path_replace,
     set_lesson_completed,
     set_page_view,
     set_questionnaire_answer,
@@ -132,3 +134,29 @@ class userQuestionnaireView(GenericAPIView):
         data = {'result': 'ok'}
         data.update(get_questionnaire(self.request.user, service) or {})
         return Response(status=200, data=data)
+
+
+class userDataView(GenericAPIView):
+    permission_classes = [IsAuthenticated, SignatureCheckPermission]
+    authentication_classes = [SessionAuthentication]
+
+    def get(self, request):
+        path = request.query_params.get('path', '')
+        try:
+            json = UserData.objects.get(user=self.request.user).data
+        except ObjectDoesNotExist:
+            json = {}
+
+        return Response(status=200, data={'data': path_get(json, path)})
+
+    def post(self, request, *args, **kwargs):
+        data = request.data.get('data')
+        path = request.data.get('path')
+        try:
+            data_object = UserData.objects.get(user=self.request.user)
+        except ObjectDoesNotExist:
+            data_object = UserData(user=self.request.user)
+
+        data_object.data = path_replace(data_object.data or {}, path, data)
+        data_object.save()
+        return Response(status=200, data={'result': 'ok'})

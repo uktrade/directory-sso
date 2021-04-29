@@ -9,7 +9,7 @@ from django.http import HttpResponse
 from django.utils import timezone
 from django_json_widget.widgets import JSONEditorWidget
 
-from sso.user.models import DataRetentionStatistics, Question, User, UserAnswer, UserProfile
+from sso.user.models import DataRetentionStatistics, Question, User, UserAnswer, UserData, UserProfile
 
 
 class GDPRComplianceFilter(admin.SimpleListFilter):
@@ -171,3 +171,10 @@ class QuestionAdmin(admin.ModelAdmin):
 @admin.register(UserAnswer)
 class AnswerAdmin(admin.ModelAdmin):
     pass
+
+
+@admin.register(UserData)
+class DataAdmin(admin.ModelAdmin):
+    formfield_overrides = {
+        fields.JSONField: {'widget': JSONEditorWidget},
+    }
