@@ -34,7 +34,7 @@ class UserProfileAdmin(admin.ModelAdmin):
 
 @admin.register(DataRetentionStatistics)
 class DataRetentionStatistics(admin.ModelAdmin):
-    pass
+    list_display = ['sso_user', 'company_user', 'company', 'created', 'modified']
 
 
 @admin.register(User)

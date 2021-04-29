@@ -3,6 +3,7 @@
 ## Pre release
 
 ### Enhancements
+- GP2-2388 - Added field for Data retention admin UI
 - GP2-2381 - Updated contact link in footer via upgrading directory-component
 - GP2-2353 - VFM final page back button
 - GP2-2256 - magna header for BAU pages
