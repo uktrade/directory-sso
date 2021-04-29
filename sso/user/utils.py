@@ -155,31 +155,3 @@ def set_questionnaire_answer(user, service, question_id, user_answer):
 
     except ObjectDoesNotExist:
         pass
-
-
-def path_get(dict, path):
-    try:
-        for part in (path or '').split('.'):
-            if part:
-                dict = dict[part]
-        return dict
-    except KeyError:
-        return None
-
-
-def path_replace(target, path, data):
-    # Given a target object, returns a copy of the target with 'data' substuted in at the path given
-    # if path is blank, the whole of target is replaced.
-    split_path = path.split('.') if path else []
-    if len(split_path) > 0:
-        dict_copy = copy.deepcopy(target)
-        _dict = dict_copy
-        for index in range(0, len(split_path) - 1):
-            part = split_path[index]
-            if not isinstance(_dict.get(part), dict):
-                _dict[part] = {}
-            _dict = _dict[part]
-
-        _dict[split_path[len(split_path) - 1]] = data
-        return dict_copy
-    return data or {}

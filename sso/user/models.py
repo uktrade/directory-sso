@@ -281,6 +281,7 @@ class UserAnswer(TimeStampedModel):
 
     class Meta:
         ordering = ('user', 'question__sort_order')
+        unique_together = [['user', 'question']]
 
     def to_dict(self):
         return {'question_id': self.question.id, 'answer': self.answer}
@@ -291,11 +292,13 @@ class UserAnswer(TimeStampedModel):
 
 class UserData(TimeStampedModel):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
+    name = models.CharField(max_length=128)
     data = JSONField(blank=True, default=dict)
 
     def __str__(self):
-        return str(f'{self.user}')
+        return str(f'{self.user} : {self.name}')
 
     class Meta:
+        unique_together = [['user', 'name']]
         ordering = ['user']
         verbose_name_plural = 'User data'

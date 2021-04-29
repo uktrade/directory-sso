@@ -141,22 +141,22 @@ class userDataView(GenericAPIView):
     authentication_classes = [SessionAuthentication]
 
     def get(self, request):
-        path = request.query_params.get('path', '')
+        name = request.query_params.get('name', '')
         try:
-            json = UserData.objects.get(user=self.request.user).data
+            json = UserData.objects.get(user=self.request.user, name=name).data
         except ObjectDoesNotExist:
             json = {}
 
-        return Response(status=200, data={'data': path_get(json, path)})
+        return Response(status=200, data={'data': json})
 
     def post(self, request, *args, **kwargs):
         data = request.data.get('data')
-        path = request.data.get('path')
+        name = request.data.get('name')
         try:
             data_object = UserData.objects.get(user=self.request.user)
         except ObjectDoesNotExist:
-            data_object = UserData(user=self.request.user)
+            data_object = UserData(user=self.request.user, name=name)
 
-        data_object.data = path_replace(data_object.data or {}, path, data)
+        data_object.data = data
         data_object.save()
         return Response(status=200, data={'result': 'ok'})
