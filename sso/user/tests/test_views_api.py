@@ -402,3 +402,29 @@ def test_set_user_questionnaire_answer_invalid(api_client):
 
     response = api_client.post(reverse('api:user-questionnaire'), set_data, format='json')
     assert response.status_code == 200
+
+
+@pytest.mark.django_db
+def test_get_user_data(api_client):
+    user = factories.UserFactory()
+    api_client.force_authenticate(user=user)
+    models.UserData
+
+    data = {'name': 'data-object'}
+
+    response = api_client.get(reverse('api:user-data'), data, format='json')
+
+    assert response.status_code == 200
+
+
+@pytest.mark.django_db
+def test_set_user_data(api_client):
+    user = factories.UserFactory()
+    api_client.force_authenticate(user=user)
+    models.UserData
+
+    data = {'name': 'data-object', 'data': {'test': 1}}
+
+    response = api_client.post(reverse('api:user-data'), data, format='json')
+
+    assert response.status_code == 200

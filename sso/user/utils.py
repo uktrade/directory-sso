@@ -1,4 +1,3 @@
-import copy
 import urllib.parse
 
 import tldextract

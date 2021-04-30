@@ -13,8 +13,6 @@ from sso.user.utils import (
     get_lesson_completed,
     get_page_view,
     get_questionnaire,
-    path_get,
-    path_replace,
     set_lesson_completed,
     set_page_view,
     set_questionnaire_answer,
@@ -116,7 +114,7 @@ class LessonCompletedAPIView(GenericAPIView):
         return Response(response)
 
 
-class userQuestionnaireView(GenericAPIView):
+class UserQuestionnaireView(GenericAPIView):
     permission_classes = [IsAuthenticated, SignatureCheckPermission]
     authentication_classes = [SessionAuthentication]
 
@@ -136,7 +134,7 @@ class userQuestionnaireView(GenericAPIView):
         return Response(status=200, data=data)
 
 
-class userDataView(GenericAPIView):
+class UserDataView(GenericAPIView):
     permission_classes = [IsAuthenticated, SignatureCheckPermission]
     authentication_classes = [SessionAuthentication]
 
