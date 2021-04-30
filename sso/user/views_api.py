@@ -8,7 +8,7 @@ from rest_framework.response import Response
 from conf.signature import SignatureCheckPermission
 from core.authentication import SessionAuthentication
 from sso.user import serializers
-from sso.user.models import LessonCompleted, Service
+from sso.user.models import LessonCompleted, Service, UserData
 from sso.user.utils import (
     get_lesson_completed,
     get_page_view,
@@ -114,7 +114,7 @@ class LessonCompletedAPIView(GenericAPIView):
         return Response(response)
 
 
-class userQuestionnaireView(GenericAPIView):
+class UserQuestionnaireView(GenericAPIView):
     permission_classes = [IsAuthenticated, SignatureCheckPermission]
     authentication_classes = [SessionAuthentication]
 
@@ -132,3 +132,29 @@ class userQuestionnaireView(GenericAPIView):
         data = {'result': 'ok'}
         data.update(get_questionnaire(self.request.user, service) or {})
         return Response(status=200, data=data)
+
+
+class UserDataView(GenericAPIView):
+    permission_classes = [IsAuthenticated, SignatureCheckPermission]
+    authentication_classes = [SessionAuthentication]
+
+    def get(self, request):
+        name = request.query_params.get('name', '')
+        try:
+            json = UserData.objects.get(user=self.request.user, name=name).data
+        except ObjectDoesNotExist:
+            json = {}
+
+        return Response(status=200, data={'data': json})
+
+    def post(self, request, *args, **kwargs):
+        data = request.data.get('data')
+        name = request.data.get('name')
+        try:
+            data_object = UserData.objects.get(user=self.request.user)
+        except ObjectDoesNotExist:
+            data_object = UserData(user=self.request.user, name=name)
+
+        data_object.data = data
+        data_object.save()
+        return Response(status=200, data={'result': 'ok'})
