@@ -277,7 +277,7 @@ class Question(TimeStampedModel):
 class UserAnswer(TimeStampedModel):
     question = models.ForeignKey(Question, on_delete=models.CASCADE)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    answer = JSONField(blank=True, default=dict)
+    answer = JSONField(blank=True, null=True, default=dict)
 
     class Meta:
         ordering = ('user', 'question__sort_order')

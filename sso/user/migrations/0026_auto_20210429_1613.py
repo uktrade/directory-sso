@@ -14,6 +14,11 @@ class Migration(migrations.Migration):
     ]
 
     operations = [
+        migrations.AlterField(
+            model_name='useranswer',
+            name='answer',
+            field=django.contrib.postgres.fields.jsonb.JSONField(blank=True, default=dict, null=True),
+        ),
         migrations.AlterUniqueTogether(
             name='useranswer',
             unique_together={('user', 'question')},
