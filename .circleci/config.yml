@@ -2,7 +2,7 @@ version: 2
 jobs:
   test:
     docker:
-      - image: circleci/python:3.9.1
+      - image: circleci/python:3.9.2
       - image: circleci/postgres:10.11-alpine
         environment:
           POSTGRES_USER: debug
@@ -47,7 +47,7 @@ jobs:
             codecov
   flake8:
     docker:
-      - image: circleci/python:3.6.6
+      - image: circleci/python:3.9.2
     steps:
       - checkout
       - run:
@@ -59,7 +59,7 @@ jobs:
             flake8
   black:
     docker:
-      - image: circleci/python:3.9.1
+      - image: circleci/python:3.9.2
     steps:
       - checkout
       - run:
