@@ -1,6 +1,12 @@
 # Changelog
 
 ## Pre release
+### Enhancements
+### Fixed bugs
+
+
+## [v6.6.0](https://github.com/uktrade/directory-sso/releases/tag/v6.6.0)
+[Compare](https://github.com/uktrade/directory-sso/compare/6.5.0...6.6.0)
 
 ### Enhancements
 - GP2-2135 - User data storage
@@ -10,8 +16,6 @@
 - GP2-2256 - magna header for BAU pages
 - GP2-2332 - upgraded directory-components package
 - NOTICKET -  upgrade python 3.9.2
-
-### Fixed bugs
 
 ## [v6.5.0](https://github.com/uktrade/directory-sso/releases/tag/v6.5.0)
 [Compare](https://github.com/uktrade/directory-sso/compare/6.4.0...6.5.0)
