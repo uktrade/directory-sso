@@ -116,14 +116,15 @@ def test_get_questionnaire():
 
     utils.set_questionnaire_answer(user, service.name, second_question.id, 'answer')
     questionnaire = utils.get_questionnaire(user, service.name)
-    assert questionnaire is None
+    assert len(questionnaire['answers']) == 1
 
 
 @pytest.mark.django_db
-def stest_set_questionnaire_answer_invalid():
+def test_set_questionnaire_answer_invalid():
     user = UserFactory()
 
     assert utils.set_questionnaire_answer(user, 'service', 999, 'user_answer') is None
+    assert utils.set_questionnaire_answer(user, 'service', 999, '') is None
 
 
 @pytest.mark.django_db
