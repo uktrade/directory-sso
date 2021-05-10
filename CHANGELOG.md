@@ -9,6 +9,8 @@
 - GP2-2353 - VFM final page back button
 - GP2-2256 - magna header for BAU pages
 - GP2-2332 - upgraded directory-components package
+- NOTICKET -  upgrade python 3.9.2
+
 ### Fixed bugs
 
 ## [v6.5.0](https://github.com/uktrade/directory-sso/releases/tag/v6.5.0)
