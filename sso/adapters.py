@@ -95,7 +95,7 @@ class AccountAdapter(DefaultAccountAdapter):
             # This  is a social account send social account reset email
             # Ideally this should be in SocialAccountAdapter but unfortunately there's no hook for send email
             template_id = settings.GOV_NOTIFY_SOCIAL_PASSWORD_RESET_TEMPLATE_ID
-            personalisation = {'login_link': settings.MAGNA_URL + '/login?email=' + email}
+            personalisation = {'login_link': settings.MAGNA_URL + '/login/'}
 
         notifications_client = NotificationsAPIClient(settings.GOV_NOTIFY_API_KEY)
         notifications_client.send_email_notification(
