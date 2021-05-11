@@ -2,6 +2,7 @@
 
 ## Pre release
 ### Enhancements
+GP2-2225 - forgotten password notification social accounts
 ### Fixed bugs
 
 

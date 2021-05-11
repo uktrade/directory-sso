@@ -78,14 +78,24 @@ class AccountAdapter(DefaultAccountAdapter):
             reset_url += '?next={next_url}'.format(next_url=next_url)
         return reset_url
 
+    @staticmethod
+    def is_social_account(context):
+        return True if context['user'].socialaccount_set.first() else False
+
     def send_mail(self, template_prefix, email, context):
         template_id = EMAIL_TEMPLATES[template_prefix]
 
-        #  build personalisation dict from context
-        if template_id == settings.GOV_NOTIFY_PASSWORD_RESET_TEMPLATE_ID:
-            personalisation = {'password_reset': self.build_password_reset_url(context)}
+        if not self.is_social_account(context):
+            #  build personalisation dict from context
+            if template_id == settings.GOV_NOTIFY_PASSWORD_RESET_TEMPLATE_ID:
+                personalisation = {'password_reset': self.build_password_reset_url(context)}
+            else:
+                personalisation = {'confirmation_link': context['activate_url']}
         else:
-            personalisation = {'confirmation_link': context['activate_url']}
+            # This  is a social account send social account reset email
+            # Ideally this should be in SocialAccountAdapter but unfortunately there's no hook for send email
+            template_id = settings.GOV_NOTIFY_SOCIAL_PASSWORD_RESET_TEMPLATE_ID
+            personalisation = {'login_link': settings.MAGNA_URL + '/login?email=' + email}
 
         notifications_client = NotificationsAPIClient(settings.GOV_NOTIFY_API_KEY)
         notifications_client.send_email_notification(
