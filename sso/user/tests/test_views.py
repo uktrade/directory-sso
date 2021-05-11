@@ -3,6 +3,7 @@ from unittest.mock import patch
 
 import pytest
 from allauth.account.models import EmailAddress, EmailConfirmationHMAC
+from allauth.socialaccount.models import SocialAccount
 from directory_api_client import api_client
 from directory_constants import urls
 from django.conf import settings
@@ -43,6 +44,31 @@ def user():
     profile = factories.UserProfileFactory.create(user__email='test@example.com')
     user = profile.user
     user.set_password('password')
+    user.save()
+    return profile.user
+
+
+@pytest.fixture(autouse=False)
+def social_user():
+
+    profile = factories.UserProfileFactory.create(user__email='test@example.com')
+    user = profile.user
+    user.set_password('password')
+    account = SocialAccount(
+        user_id=user.id,
+        extra_data={
+            'id': user.id,
+            'email': user.email,
+            'verified_email': True,
+            'name': 'Jim Example',
+            'given_name': 'Jim',
+            'family_name': 'Example',
+            'locale': 'en',
+        },
+        provider='google',
+    )
+    account.save()
+    user.socialaccount = account
     user.save()
     return profile.user
 
@@ -324,6 +350,18 @@ def test_password_reset_redirect_default_param_if_no_next_param(mocked_notificat
 
     assert response.status_code == 302
     assert response.url == reverse('account_email_verification_sent')
+
+
+@patch('sso.adapters.NotificationsAPIClient')
+@pytest.mark.django_db
+def test_password_reset_social_login(mocked_notification_client, settings, client, social_user):
+    client.post(reverse('account_reset_password'), data={'email': social_user.email})
+    assert mocked_notification_client().send_email_notification.called is True
+    assert mocked_notification_client().send_email_notification.call_args == mock.call(
+        email_address=social_user.email,
+        personalisation={'login_link': settings.MAGNA_URL + '/login?email=' + social_user.email},
+        template_id=settings.GOV_NOTIFY_SOICAL_PASSWORD_RESET_TEMPLATE_ID,
+    )
 
 
 @pytest.mark.django_db
