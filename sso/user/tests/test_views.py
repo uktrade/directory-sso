@@ -360,7 +360,7 @@ def test_password_reset_social_login(mocked_notification_client, settings, clien
     assert mocked_notification_client().send_email_notification.call_args == mock.call(
         email_address=social_user.email,
         personalisation={'login_link': settings.MAGNA_URL + '/login?email=' + social_user.email},
-        template_id=settings.GOV_NOTIFY_SOICAL_PASSWORD_RESET_TEMPLATE_ID,
+        template_id=settings.GOV_NOTIFY_SOCIAL_PASSWORD_RESET_TEMPLATE_ID,
     )
 
 
