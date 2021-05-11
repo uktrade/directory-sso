@@ -444,30 +444,7 @@ if env.bool('FEATURE_SETTINGS_JANITOR_ENABLED', False):
     DIRECTORY_COMPONENTS_VAULT_PROJECT = env.str('DIRECTORY_COMPONENTS_VAULT_PROJECT')
 
 # Provider specific settings
-SOCIALACCOUNT_PROVIDERS = {
-    'linkedin_oauth2': {
-        'APP': {
-            'client_id': env.str('SOCIAL_LINKEDIN_ID'),
-            'secret': env.str('SOCIAL_LINKEDIN_SECRET'),
-            'key': env.str('SOCIAL_LINKEDIN_KEY'),
-        },
-        'SCOPE': ['r_liteprofile', 'r_emailaddress'],
-        'PROFILE_FIELDS': [
-            'id',
-            'firstName',
-            'lastName',
-            'email-address',
-            'profilePicture(displayImage~:playableStreams)',
-        ],
-    },
-    'google': {
-        'APP': {
-            'client_id': env.str('SOCIAL_GOOGLE_ID'),
-            'secret': env.str('SOCIAL_GOOGLE_SECRET'),
-            'key': env.str('SOCIAL_GOOGLE_KEY'),
-        }
-    },
-}
+# These are stored in Django admin google/facebook
 
 # Silence DRF's system check about having a global page size set without setting a global paginator. This is fine if we
 # want case-by-case pagination but with a default page size.
