@@ -2,7 +2,8 @@
 
 ## Pre release
 ### Enhancements
-GP2-2225 - forgotten password notification social accounts
+- GP2-2225 - forgotten password notification social accounts
+- NOTICKET - Remove social provider in settings confusing as it's stored in django admin
 ### Fixed bugs
 
 
