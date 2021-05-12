@@ -85,8 +85,8 @@ class UserProfileSerializer(serializers.ModelSerializer):
 
 
 class UserSerializer(serializers.ModelSerializer):
-
     user_profile = UserProfileSerializer()
+    social_login = serializers.SerializerMethodField()
 
     class Meta:
         model = User
@@ -94,8 +94,12 @@ class UserSerializer(serializers.ModelSerializer):
             'id',
             'email',
             'hashed_uuid',
+            'social_login',
             'user_profile',
         )
+
+    def get_social_login(self, obj):
+        return bool(obj.socialaccount_set.all())
 
 
 class ActivityStreamUsersSerializer(serializers.ModelSerializer):
