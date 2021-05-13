@@ -23,7 +23,7 @@
   "fields":
   {
     "created": null,
-    "modified": "2021-05-05T12:12:54.037Z",
+    "modified": "2021-05-13T14:34:46.163Z",
     "service": 1,
     "name": "segment",
     "title": "Which best describes you?",
@@ -48,7 +48,7 @@
     }],
     "predefined_choices": null,
     "is_active": true,
-    "sort_order": 1
+    "sort_order": 2
   }
 },
 {
@@ -57,7 +57,7 @@
   "fields":
   {
     "created": null,
-    "modified": "2021-05-11T13:55:48.700Z",
+    "modified": "2021-05-13T13:51:28.400Z",
     "service": 1,
     "name": "business-type",
     "title": "What type of business are you representing?",
