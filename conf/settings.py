@@ -261,7 +261,7 @@ ACCOUNT_LOGIN_ON_EMAIL_CONFIRMATION = True
 ACCOUNT_LOGIN_ON_PASSWORD_RESET = True
 SOCIALACCOUNT_ADAPTER = 'sso.adapters.SocialAccountAdapter'
 SOCIALACCOUNT_AUTO_SIGNUP = True
-SOCIALACCOUNT_EMAIL_VERIFICATION = "none"
+SOCIALACCOUNT_EMAIL_VERIFICATION = True
 
 VERIFICATION_EXPIRY_DAYS = env.int('VERIFICATION_EXPIRY_DAYS', 3)
 
@@ -374,6 +374,9 @@ GOV_NOTIFY_SIGNUP_CONFIRMATION_TEMPLATE_ID = env.str(
 GOV_NOTIFY_PASSWORD_RESET_TEMPLATE_ID = env.str(
     'GOV_NOTIFY_PASSWORD_RESET_TEMPLATE_ID', '9ef82687-4bc0-4278-b15c-a49bc9325b28'
 )
+GOV_NOTIFY_SOCIAL_PASSWORD_RESET_TEMPLATE_ID = env.str(
+    'GOV_NOTIFY_SOCIAL_PASSWORD_RESET_TEMPLATE_ID', 'e5b5416d-854b-4aef-82da-865b6f901dbd'
+)
 GOV_NOTIFY_ALREADY_REGISTERED_TEMPLATE_ID = env.str(
     'GOV_NOTIFY_ALREADY_REGISTERED_TEMPLATE_ID', '5c8cc5aa-a4f5-48ae-89e6-df5572c317ec'
 )
@@ -441,30 +444,7 @@ if env.bool('FEATURE_SETTINGS_JANITOR_ENABLED', False):
     DIRECTORY_COMPONENTS_VAULT_PROJECT = env.str('DIRECTORY_COMPONENTS_VAULT_PROJECT')
 
 # Provider specific settings
-SOCIALACCOUNT_PROVIDERS = {
-    'linkedin_oauth2': {
-        'APP': {
-            'client_id': env.str('SOCIAL_LINKEDIN_ID'),
-            'secret': env.str('SOCIAL_LINKEDIN_SECRET'),
-            'key': env.str('SOCIAL_LINKEDIN_KEY'),
-        },
-        'SCOPE': ['r_liteprofile', 'r_emailaddress'],
-        'PROFILE_FIELDS': [
-            'id',
-            'firstName',
-            'lastName',
-            'email-address',
-            'profilePicture(displayImage~:playableStreams)',
-        ],
-    },
-    'google': {
-        'APP': {
-            'client_id': env.str('SOCIAL_GOOGLE_ID'),
-            'secret': env.str('SOCIAL_GOOGLE_SECRET'),
-            'key': env.str('SOCIAL_GOOGLE_KEY'),
-        }
-    },
-}
+# These are stored in Django admin google/facebook
 
 # Silence DRF's system check about having a global page size set without setting a global paginator. This is fine if we
 # want case-by-case pagination but with a default page size.
