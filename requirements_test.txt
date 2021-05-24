@@ -60,7 +60,7 @@ directory-api-client==22.5.0
     # via -r requirements.in
 directory-client-core==6.3.0
     # via directory-api-client
-directory-components==36.2.0
+directory-components==37.2.0
     # via -r requirements.in
 directory-constants==20.28.0
     # via directory-components
