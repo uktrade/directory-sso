@@ -2,9 +2,11 @@
 
 ## Pre release
 ### Enhancements
+- GP2-2380 - Bump directory-components
 - GP2-2327 - Expose social login attribute
 - GP2-2225 - forgotten password notification social accounts
 - NOTICKET - Remove social provider in settings confusing as it's stored in django admin
+- GP2-2554 - error-page-update-links
 ### Fixed bugs
 
 
