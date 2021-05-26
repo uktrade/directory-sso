@@ -2,7 +2,6 @@
 
 ## Pre release
 ### Enhancements
-- GP2-2802 - Logout URL as env var for use on header
 - GP2-2380 - Bump directory-components
 - GP2-2327 - Expose social login attribute
 - GP2-2225 - forgotten password notification social accounts
