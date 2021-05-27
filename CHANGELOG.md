@@ -3,7 +3,7 @@
 ## Pre release
 ### Enhancements
 
-## [v8.0.0](https://github.com/uktrade/directory-sso/releases/tag/v8.0.0)
+## [8.0.0](https://github.com/uktrade/directory-sso/releases/tag/8.0.0)
 [Compare](https://github.com/uktrade/directory-sso/compare/6.6.0...8.0.0)
 
 - GP2-2380 - Bump directory-components
@@ -14,7 +14,7 @@
 ### Fixed bugs
 
 
-## [v6.6.0](https://github.com/uktrade/directory-sso/releases/tag/v6.6.0)
+## [6.6.0](https://github.com/uktrade/directory-sso/releases/tag/6.6.0)
 [Compare](https://github.com/uktrade/directory-sso/compare/6.5.0...6.6.0)
 
 ### Enhancements
@@ -26,19 +26,19 @@
 - GP2-2332 - upgraded directory-components package
 - NOTICKET -  upgrade python 3.9.2
 
-## [v6.5.0](https://github.com/uktrade/directory-sso/releases/tag/v6.5.0)
+## [6.5.0](https://github.com/uktrade/directory-sso/releases/tag/6.5.0)
 [Compare](https://github.com/uktrade/directory-sso/compare/6.4.0...6.5.0)
 ## Enhancements
 - GBAU-949 - Password reset page failing
 - GP2-2176 - Value for Money Questions
 
-## [v6.4.0](https://github.com/uktrade/directory-sso/releases/tag/v6.4.0)
+## [6.4.0](https://github.com/uktrade/directory-sso/releases/tag/6.4.0)
 [Compare](https://github.com/uktrade/directory-sso/compare/6.3.0...6.4.0)
 ### Enhancements
 - No ticket - Upgraded cryptography package
 - No ticket - update Activity Steam endpoint to deny requests from public network
 
-## [v6.3.0](https://github.com/uktrade/directory-sso/releases/tag/v6.3.0)
+## [6.3.0](https://github.com/uktrade/directory-sso/releases/tag/6.3.0)
 [Compare](https://github.com/uktrade/directory-sso/compare/6.2.0...6.3.0)
 ### Enhancements
 - GP2-1722 - Data retention statistics model
@@ -46,7 +46,7 @@
 - No ticket - Upgraded cryptography package
 - No ticket - update Activity Steam endpoint to deny requests from public network
 
-## [v6.2.0](https://github.com/uktrade/directory-sso/releases/tag/v6.2.0)
+## [6.2.0](https://github.com/uktrade/directory-sso/releases/tag/6.2.0)
 [Compare](https://github.com/uktrade/directory-sso/compare/6.1.0...6.2.0)
 
 ### Implemented enhancements
@@ -55,7 +55,7 @@
 -   GP2-1068 - adopt Black auto-formatting + provide optional pre-commit config
 -   No ticket - added Activity Stream endpoint to list users
 
-## [v6.1.0](https://github.com/uktrade/directory-sso/releases/tag/v6.1.0)
+## [6.1.0](https://github.com/uktrade/directory-sso/releases/tag/6.1.0)
 ### Fixed bugs:
 
 - GBAU-869 - Terminate session on logout from outside SSO
@@ -63,9 +63,9 @@
 ### Implemented enhancements
 - GP2-1068 - adopt Black auto-formatting + provide optional pre-commit config
 
-## [v6.0.0](https://github.com/uktrade/directory-sso/releases/tag/v6.0.0)
+## [6.0.0](https://github.com/uktrade/directory-sso/releases/tag/6.0.0)
 
-[Full Changelog](https://github.com/uktrade/directory-sso/compare/v6.0.0)
+[Full Changelog](https://github.com/uktrade/directory-sso/compare/6.0.0)
 
 ### Fixed bugs:
 
