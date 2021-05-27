@@ -3,7 +3,7 @@
 ## Pre release
 ### Enhancements
 
-## [v8.0.0](https://github.com/uktrade/directory-sso/releases/tag/8.0.0)
+## [8.0.0](https://github.com/uktrade/directory-sso/releases/tag/8.0.0)
 [Compare](https://github.com/uktrade/directory-sso/compare/6.6.0...8.0.0)
 
 - GP2-2380 - Bump directory-components
