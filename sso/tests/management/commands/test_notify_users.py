@@ -80,7 +80,7 @@ def test_notify_command_for_valid_response(inactive_user):
 
 
 @pytest.mark.django_db
-def test_notify_command_for_invalid_api_response(user):
+def test_notify_command_for_invalid_api_response(inactive_user):
     User = get_user_model()  # noqa
     total_users = User.objects.count()
     test_user = User.objects.first()
@@ -89,10 +89,7 @@ def test_notify_command_for_invalid_api_response(user):
 
     with pytest.raises(Exception):
         with patch('notifications_python_client.NotificationsAPIClient') as mock_call:
-            mock_call.return_value = MockInvalidResponse
-            # no users should be deleted
+            mock_call().send_email_notification.return_value = MockForbiddenResponse
             call_command('notify_users')
 
     assert test_user.inactivity_notification == 0
-    assert mock_call().send_email_notification.called is False
-    assert mock_call().send_email_notification.call_count == 0
