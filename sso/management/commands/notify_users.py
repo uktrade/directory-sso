@@ -67,8 +67,7 @@ class Command(MigrateCommand):
                     personalisation={'day_variation': note},
                 )
                 if hasattr(response, 'status_code') and response.status_code in [400, 403, 404, 429, 500]:
-                    self.stdout.write(self.style.ERROR(f'Something went wrong while notifying {user}'))
-                    raise Exception('Something went wrong in GOV notification service')
+                    raise Exception(f'Something went wrong in GOV notification service while notifying {user}')
                 else:
                     user.inactivity_notification += 1
                     user.save()
