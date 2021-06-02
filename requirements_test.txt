@@ -24,9 +24,9 @@ black==20.8b1
     #   blacken-docs
 blacken-docs==1.6.0
     # via -r requirements_test.in
-boto3==1.10.23
+boto3==1.17.85
     # via -r requirements.in
-botocore==1.13.50
+botocore==1.20.85
     # via
     #   boto3
     #   s3transfer
@@ -129,8 +129,6 @@ djangorestframework==3.12.2
     #   sigauth
 docopt==0.6.2
     # via notifications-python-client
-docutils==0.15.2
-    # via botocore
 execnet==1.8.0
     # via pytest-xdist
 factory-boy==3.2.0
@@ -281,7 +279,7 @@ ruamel.yaml.clib==0.2.2
     # via ruamel.yaml
 ruamel.yaml==0.16.13
     # via pre-commit-hooks
-s3transfer==0.2.1
+s3transfer==0.4.2
     # via boto3
 sentry-sdk==0.13.4
     # via -r requirements.in
@@ -318,7 +316,7 @@ typed-ast==1.4.2
     # via black
 typing-extensions==3.7.4.3
     # via black
-urllib3==1.25.11
+urllib3==1.26.5
     # via
     #   -r requirements.in
     #   botocore
