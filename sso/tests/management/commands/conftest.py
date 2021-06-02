@@ -1,7 +1,17 @@
 from datetime import datetime, timedelta
+from unittest.mock import patch
 
 import pytest
 from django.contrib.auth import get_user_model
+
+
+class MockResponse:
+    # GOV notification response doesnt send any status_code for valid request
+    pass
+
+
+class MockBadResponse:
+    status_code = 500
 
 
 @pytest.fixture
@@ -152,3 +162,19 @@ def old_user_with_no_notification():
     user.save()
     yield user
     user.delete()
+
+
+@pytest.fixture(scope="function")
+def mock_notification_client():
+    with patch('notifications_python_client.NotificationsAPIClient') as mock_client:
+        mock_instance = mock_client()
+        mock_instance.send_email_notification.return_value = MockResponse
+        yield mock_instance
+
+
+@pytest.fixture(scope="function")
+def mock_notification_bad_client():
+    with patch('notifications_python_client.NotificationsAPIClient') as mock_bad_client:
+        mock_instance = mock_bad_client()
+        mock_instance.send_email_notification.return_value = MockBadResponse
+        yield mock_instance

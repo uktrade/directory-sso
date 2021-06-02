@@ -135,8 +135,10 @@ execnet==1.8.0
     # via pytest-xdist
 factory-boy==3.2.0
     # via -r requirements_test.in
-faker==6.6.2
-    # via factory-boy
+faker==8.4.0
+    # via
+    #   -r requirements_test.in
+    #   factory-boy
 flake8==3.8.4
     # via -r requirements_test.in
 freezegun==1.1.0
