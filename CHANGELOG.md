@@ -29,7 +29,14 @@
 - GP2-2332 - upgraded directory-components package
 - NOTICKET -  upgrade python 3.9.2
 
-## [6.5.0](https://github.com/uktrade/directory-sso/releases/tag/6.5.0)
+
+## [v6.5.1](https://github.com/uktrade/directory-sso/releases/tag/v6.5.1)
+[Compare](https://github.com/uktrade/directory-sso/compare/6.5.0...6.5.1)
+## Enhancements
+- No ticket - Python version bump to 2.9.2
+
+
+## [v6.5.0](https://github.com/uktrade/directory-sso/releases/tag/v6.5.0)
 [Compare](https://github.com/uktrade/directory-sso/compare/6.4.0...6.5.0)
 ## Enhancements
 - GBAU-949 - Password reset page failing
