@@ -66,8 +66,9 @@ class Command(MigrateCommand):
                     template_id=template_id,
                     personalisation={'day_variation': note},
                 )
-
-                if response.status_code == 201:
+                if hasattr(response, 'status_code') and response.status_code in [400, 403, 404, 429, 500]:
+                    raise Exception(f'Something went wrong in GOV notification service while notifying {user}')
+                else:
                     user.inactivity_notification += 1
                     user.save()
 

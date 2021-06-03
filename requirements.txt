@@ -12,9 +12,9 @@ beautifulsoup4==4.9.3
     # via directory-components
 billiard==3.6.4.0
     # via celery
-boto3==1.10.23
+boto3==1.17.85
     # via -r requirements.in
-botocore==1.13.50
+botocore==1.20.85
     # via
     #   boto3
     #   s3transfer
@@ -109,8 +109,6 @@ djangorestframework==3.12.2
     #   sigauth
 docopt==0.6.2
     # via notifications-python-client
-docutils==0.15.2
-    # via botocore
 future==0.18.2
     # via
     #   django-json-widget
@@ -194,7 +192,7 @@ requests[security]==2.25.1
     #   requests-file
     #   requests-oauthlib
     #   tldextract
-s3transfer==0.2.1
+s3transfer==0.4.2
     # via boto3
 sentry-sdk==0.13.4
     # via -r requirements.in
@@ -218,7 +216,7 @@ sqlparse==0.4.1
     # via django
 tldextract==2.2.2
     # via -r requirements.in
-urllib3==1.25.11
+urllib3==1.26.5
     # via
     #   -r requirements.in
     #   botocore
