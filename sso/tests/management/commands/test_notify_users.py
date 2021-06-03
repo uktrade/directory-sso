@@ -72,7 +72,7 @@ def test_notify_command_for_invalid_api_response(inactive_user, mock_notificatio
     with pytest.raises(Exception) as exec_info:
         call_command('notify_users')
 
-    assert str(exec_info.value) == f'Something went wrong in GOV notification service while notifying {test_user}'
+        assert str(exec_info.value) == f'Something went wrong in GOV notification service while notifying {test_user}'
 
-    test_user.refresh_from_db()
-    assert test_user.inactivity_notification == 0
+        test_user.refresh_from_db()
+        assert test_user.inactivity_notification == 0
