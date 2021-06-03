@@ -41,7 +41,6 @@ def test_notify_command_for_active_users(user, mock_notification_client):
     call_command('notify_users')
 
     total_users = User.objects.count()
-
     assert total_users == 1
     assert mock_notification_client.send_email_notification.called is False
     assert mock_notification_client.send_email_notification.call_count == 0
@@ -57,7 +56,6 @@ def test_notify_command_for_valid_response(inactive_user, mock_notification_clie
     call_command('notify_users')
 
     test_user.refresh_from_db()
-
     assert test_user.inactivity_notification == 1
 
 
@@ -72,7 +70,6 @@ def test_notify_command_for_invalid_api_response(inactive_user, mock_notificatio
     with pytest.raises(Exception) as exec_info:
         call_command('notify_users')
 
-        assert str(exec_info.value) == f'Something went wrong in GOV notification service while notifying {test_user}'
-
-        test_user.refresh_from_db()
-        assert test_user.inactivity_notification == 0
+    assert str(exec_info.value) == f'Something went wrong in GOV notification service while notifying {test_user}'
+    test_user.refresh_from_db()
+    assert test_user.inactivity_notification == 0

@@ -1,5 +1,5 @@
 from datetime import datetime, timedelta
-from unittest.mock import patch
+from unittest import mock
 
 import pytest
 from django.contrib.auth import get_user_model
@@ -164,23 +164,17 @@ def old_user_with_no_notification():
     user.delete()
 
 
-@pytest.fixture()
+@pytest.fixture
 def mock_notification_client():
-    with patch('notifications_python_client.NotificationsAPIClient') as mock_client:
+    with mock.patch('sso.management.commands.notify_users.NotificationsAPIClient') as mock_client:
         mock_instance = mock_client.return_value
         mock_instance.send_email_notification.return_value = MockResponse
-
-        mock_instance.start()
         yield mock_instance
-        mock_instance.stop()
 
 
-@pytest.fixture()
+@pytest.fixture
 def mock_notification_bad_client():
-    with patch('notifications_python_client.NotificationsAPIClient') as mock_bad_client:
-        mock_instance = mock_bad_client.return_value
-        mock_instance.send_email_notification.return_value = MockBadResponse
-
-        mock_instance.start()
-        yield mock_instance
-        mock_instance.stop()
+    with mock.patch('sso.management.commands.notify_users.NotificationsAPIClient') as mock_bad_client:
+        instance = mock_bad_client.return_value
+        instance.send_email_notification.return_value = MockBadResponse
+        yield instance
