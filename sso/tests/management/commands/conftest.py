@@ -169,6 +169,7 @@ def mock_notification_client():
     with patch('notifications_python_client.NotificationsAPIClient') as mock_client:
         mock_instance = mock_client.return_value
         mock_instance.send_email_notification.return_value = MockResponse
+
         mock_instance.start()
         yield mock_instance
         mock_instance.stop()
