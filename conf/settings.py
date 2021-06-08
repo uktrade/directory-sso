@@ -1,4 +1,5 @@
 import os
+import ssl
 
 import dj_database_url
 import environ
@@ -461,6 +462,8 @@ CELERY_TASK_ALWAYS_EAGER = env.bool('CELERY_TASK_ALWAYS_EAGER', False)
 CELERY_RESULT_SERIALIZER = 'json'
 CELERY_TIMEZONE = 'UTC'
 CELERY_BROKER_POOL_LIMIT = None
+CELERY_BROKER_USE_SSL = {'ssl_cert_reqs': ssl.CERT_NONE}
+CELERY_REDIS_BACKEND_USE_SSL = CELERY_BROKER_USE_SSL
 
 CELERY_IMPORTS = ('sso.tasks',)
 # Flag for loading magna header
