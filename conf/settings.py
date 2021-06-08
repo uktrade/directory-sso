@@ -464,6 +464,7 @@ CELERY_BROKER_POOL_LIMIT = None
 CELERY_BROKER_USE_SSL = {
     'ssl_cert_reqs': ssl.CERT_NONE
 }
+CELERY_REDIS_BACKEND_USE_SSL = CELERY_BROKER_USE_SSL
 
 CELERY_IMPORTS = ('sso.tasks',)
 # Flag for loading magna header
