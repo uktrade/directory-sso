@@ -3,6 +3,8 @@
 ## Pre release
 
 ### Enhancements
+- no-ticket - dependencies upgrade
+
 ### Fixed bugs
 - NOTICKET - Refactor GOV notification response
 
