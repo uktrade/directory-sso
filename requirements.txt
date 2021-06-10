@@ -82,7 +82,7 @@ django-staff-sso-client==1.0.0
     # via -r requirements.in
 django-timezone-field==4.1.2
     # via django-celery-beat
-django==2.2.22
+django==2.2.24
     # via
     #   -r requirements.in
     #   directory-api-client
