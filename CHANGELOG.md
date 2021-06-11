@@ -3,7 +3,15 @@
 ## Pre release
 
 ### Enhancements
+### Fixed bugs
+
+
+## [8.3.0](https://github.com/uktrade/directory-sso/releases/tag/8.3.0)
+[Compare](https://github.com/uktrade/directory-sso/compare/8.0.0...8.3.0)
+
+### Enhancements
 - no-ticket - dependencies upgrade
+- GP2-3010 - added adhoc script for notification
 
 ### Fixed bugs
 - NOTICKET - Refactor GOV notification response
