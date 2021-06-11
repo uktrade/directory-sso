@@ -173,8 +173,24 @@ def mock_notification_client():
 
 
 @pytest.fixture
+def mock_adhoc_notification_client():
+    with mock.patch('sso.management.commands.adhoc_notify_users.NotificationsAPIClient') as mock_client:
+        mock_instance = mock_client.return_value
+        mock_instance.send_email_notification.return_value = MockResponse
+        yield mock_instance
+
+
+@pytest.fixture
 def mock_notification_bad_client():
     with mock.patch('sso.management.commands.notify_users.NotificationsAPIClient') as mock_bad_client:
+        instance = mock_bad_client.return_value
+        instance.send_email_notification.return_value = MockBadResponse
+        yield instance
+
+
+@pytest.fixture
+def mock_adhoc_notification_bad_client():
+    with mock.patch('sso.management.commands.adhoc_notify_users.NotificationsAPIClient') as mock_bad_client:
         instance = mock_bad_client.return_value
         instance.send_email_notification.return_value = MockBadResponse
         yield instance
