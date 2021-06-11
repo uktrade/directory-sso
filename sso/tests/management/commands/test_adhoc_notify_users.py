@@ -97,7 +97,9 @@ def test_adhoc_notify_command_final_notification_for_active_users(user, mock_adh
 
 
 @pytest.mark.django_db
-def test_adhoc_notify_command_test_zero_day_notification_note(zero_day_notification_user, mock_adhoc_notification_client):
+def test_adhoc_notify_command_test_zero_day_notification_note(
+    zero_day_notification_user, mock_adhoc_notification_client
+):
     User = get_user_model()  # noqa
     total_users = User.objects.count()
 
@@ -109,5 +111,7 @@ def test_adhoc_notify_command_test_zero_day_notification_note(zero_day_notificat
 
     assert mock_adhoc_notification_client.send_email_notification.called
     assert mock_adhoc_notification_client.send_email_notification.call_count == 1
-    assert mock_adhoc_notification_client.send_email_notification.call_args[1]['personalisation']['day_variation'] ==\
-           'today'
+    assert (
+        mock_adhoc_notification_client.send_email_notification.call_args[1]['personalisation']['day_variation']
+        == 'today'
+    )
