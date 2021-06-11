@@ -46,7 +46,7 @@ directory-constants==20.28.0
     # via directory-components
 directory-healthcheck==2.0.0
     # via -r requirements.in
-directory-validators==6.0.5
+directory-validators==6.0.6
     # via -r requirements.in
 dj-database-url==0.5.0
     # via -r requirements.in

@@ -66,7 +66,7 @@ directory-constants==20.28.0
     # via directory-components
 directory-healthcheck==2.0.0
     # via -r requirements.in
-directory-validators==6.0.5
+directory-validators==6.0.6
     # via -r requirements.in
 dj-database-url==0.5.0
     # via -r requirements.in
@@ -187,7 +187,7 @@ packaging==20.9
     #   pytest-sugar
 pathspec==0.8.1
     # via black
-pillow==8.1.2
+pillow==8.2.0
     # via directory-validators
 pluggy==0.13.1
     # via pytest
