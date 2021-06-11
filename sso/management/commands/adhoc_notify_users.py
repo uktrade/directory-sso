@@ -54,10 +54,6 @@ class Command(MigrateCommand):
         )
         # Notify user about deletion
         for user in old_users:
-
-            if user.inactivity_notification >= 4:
-                continue
-
             note = (f'in the next {notification_days} days',)
             if notification_days == 0:
                 note = 'today'

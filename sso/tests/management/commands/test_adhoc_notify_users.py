@@ -76,27 +76,6 @@ def test_adhoc_notify_command_for_invalid_api_response(inactive_user, mock_adhoc
 
 
 @pytest.mark.django_db
-def test_adhoc_notify_command_final_notification_for_active_users(user, mock_adhoc_notification_client):
-    User = get_user_model()  # noqa
-    user.inactivity_notification = 4
-    user.save()
-    total_users = User.objects.count()
-
-    assert total_users == 1
-
-    # No user should be notified as it active user
-    call_command('adhoc_notify_users', 30)
-
-    total_users = User.objects.count()
-    assert total_users == 1
-
-    user.refresh_from_db()
-    assert user.inactivity_notification == 4
-    assert mock_adhoc_notification_client.send_email_notification.called is False
-    assert mock_adhoc_notification_client.send_email_notification.call_count == 0
-
-
-@pytest.mark.django_db
 def test_adhoc_notify_command_test_zero_day_notification_note(
     zero_day_notification_user, mock_adhoc_notification_client
 ):
