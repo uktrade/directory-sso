@@ -2,18 +2,20 @@ import json
 from datetime import datetime, timedelta
 
 from directory_api_client import api_client
+from directory_forms_api_client.client import forms_api_client
 from django.conf import settings
 from django.core.management.commands.migrate import Command as MigrateCommand
 from django.db.models import Q
 
 from sso.user.models import DataRetentionStatistics, User
-from directory_forms_api_client.client import forms_api_client
+
 
 class Command(MigrateCommand):
     """
     Archive users who's not logged in past three years
     or created three years ago and never logged in
     """
+
     def handle(self, *args, **options):
         queryset = User.objects.all()
         total_users = queryset.count()

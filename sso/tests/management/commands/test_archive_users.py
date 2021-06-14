@@ -8,11 +8,11 @@ from sso.user.models import DataRetentionStatistics
 
 
 class MockFormsResponse:
-    status_code=204
+    status_code = 204
 
 
 class MockFormsInvalidResponse:
-    status_code=500
+    status_code = 500
 
 
 class MockResponse:
