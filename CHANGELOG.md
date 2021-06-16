@@ -3,6 +3,8 @@
 ## Pre release
 
 ### Enhancements
+- GP2-2841 - Standardisation of python buildpack
+
 ### Fixed bugs
 
 
@@ -10,7 +12,7 @@
 [Compare](https://github.com/uktrade/directory-sso/compare/8.0.0...8.3.0)
 
 ### Enhancements
-- GP2-2718 - Removal of forms api data 
+- GP2-2718 - Removal of forms api data
 - no-ticket - dependencies upgrade
 - GP2-3010 - added adhoc script for notification
 
