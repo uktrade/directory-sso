@@ -1,7 +1,7 @@
 # Changelog
 
 ## Pre release
-
+- GP2-2867 - Dockerise d-sso
 ### Enhancements
 - GP2-2841 - Standardisation of python buildpack
 
