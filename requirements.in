@@ -1,5 +1,5 @@
 dj-database-url==0.5.0
-django==2.2.22
+django==2.2.24
 django-allauth==0.40.0
 django-environ==0.4.5
 djangorestframework==3.12.2
@@ -18,6 +18,7 @@ notifications-python-client==5.4.1
 pyjwt==1.7.0
 sigauth==4.1.1
 directory-api-client==22.5.0
+directory-forms-api-client==6.1.0
 directory-validators==6.0.6
 directory-healthcheck==2.0.0
 directory-components==37.2.0
