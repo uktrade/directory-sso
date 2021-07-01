@@ -83,7 +83,7 @@ def zero_day_notification_user():
 
     # user last_login on 3 years ago
     today = datetime.now()
-    three_year_old = today - timedelta(days=3 * 365)
+    three_year_old = today - timedelta(days=3 * 366)
     user.last_login = three_year_old - timedelta(days=0)
     # user created 5 years ago
     user.created = today - timedelta(days=5 * 365)
