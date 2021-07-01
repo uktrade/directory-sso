@@ -94,6 +94,24 @@ def zero_day_notification_user():
 
 
 @pytest.fixture
+def zero_day_notification_adhoc_user():
+    """Fixture for old user who's last login and created three years ago"""
+    User = get_user_model()  # noqa
+    user = User.objects.create(email='def_adhoc_0@xyz.com')
+
+    # user last_login on 3 years ago
+    today = datetime.now()
+    more_than_three_year_old = today - timedelta(days=3 * 365)
+    user.last_login = more_than_three_year_old - timedelta(days=50)
+    # user created 5 years ago
+    user.created = today - timedelta(days=5 * 365)
+    user.inactivity_notification = 3
+    user.save()
+    yield user
+    user.delete()
+
+
+@pytest.fixture
 def inactive_user():
     """Fixture for old user who's last login and created three years ago"""
     User = get_user_model()  # noqa
