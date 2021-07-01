@@ -77,7 +77,7 @@ def test_adhoc_notify_command_for_invalid_api_response(inactive_user, mock_adhoc
 
 @pytest.mark.django_db
 def test_adhoc_notify_command_test_zero_day_notification_note(
-    zero_day_notification_user, mock_adhoc_notification_client
+    zero_day_notification_adhoc_user, mock_adhoc_notification_client
 ):
     User = get_user_model()  # noqa
     total_users = User.objects.count()
