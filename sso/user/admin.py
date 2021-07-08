@@ -9,7 +9,7 @@ from django.http import HttpResponse
 from django.utils import timezone
 from django_json_widget.widgets import JSONEditorWidget
 
-from sso.user.models import DataRetentionStatistics, Question, User, UserAnswer, UserData, UserProfile
+from sso.user.models import DataRetentionStatistics, Question, User, UserAnswer, UserData, UserProfile, LessonCompleted
 
 
 class GDPRComplianceFilter(admin.SimpleListFilter):
@@ -160,6 +160,9 @@ class UserAdmin(admin.ModelAdmin):
 
     download_password_reset_links.short_description = "Download password reset links for selected users"
 
+@admin.register(LessonCompleted)
+class LessonCompletedAdmin(admin.ModelAdmin):
+    pass
 
 @admin.register(Question)
 class QuestionAdmin(admin.ModelAdmin):
@@ -170,8 +173,9 @@ class QuestionAdmin(admin.ModelAdmin):
 
 @admin.register(UserAnswer)
 class AnswerAdmin(admin.ModelAdmin):
-    pass
-
+    formfield_overrides = {
+        fields.JSONField: {'widget': JSONEditorWidget},
+    }
 
 @admin.register(UserData)
 class DataAdmin(admin.ModelAdmin):
