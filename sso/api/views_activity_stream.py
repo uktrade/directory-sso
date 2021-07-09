@@ -13,7 +13,7 @@ from rest_framework.response import Response
 from rest_framework.viewsets import ViewSet
 
 from sso.user import serializers
-from sso.user.models import User
+from sso.user.models import User, UserAnswer
 
 logger = logging.getLogger(__name__)
 
@@ -161,4 +161,45 @@ class ActivityStreamDirectorySSOUsers(ListAPIView):
             'previous': self.paginator.get_previous_link(),
         }
 
+        return Response(data=page)
+
+
+class ActivityStreamDirectorySSOUserAnswersVFM(ListAPIView):
+    authentication_classes = [_ActivityStreamAuthentication]
+    permission_classes = []
+
+    pagination_class = ActivityStreamDirectorySSOUsersPagination
+    queryset = UserAnswer.objects.all()
+    serializer_class = serializers.ActivityStreamUserAnswerSerializer
+
+    def get(self, request, *args, **kwargs):
+        queryset = self.filter_queryset(self.get_queryset())
+
+        queryset_page = self.paginate_queryset(queryset)
+        serializer = self.get_serializer(queryset_page, many=True)
+        page = {
+            '@context': [
+                'https://www.w3.org/ns/activitystreams',
+            ],
+            'type': 'Collection',
+            'orderedItems': [
+                {
+                    'dit:application': 'DirectorySSO',
+                    'id': f'dit:DirectorySSO:UserAnswer:{user_answer["id"]}:Update',
+                    'published': user_answer["modified"],
+                    'type': 'Update',
+                    'object': {
+                        'id': f'dit:DirectorySSO:UserAnswer:{user_answer["id"]}',
+                        'type': 'dit:DirectorySSO:UserAnswer',
+                        'dit:DirectorySSO:UserAnswer:user:id': user_answer["user_id"],
+                        'dit:DirectorySSO:UserAnswer:answer': user_answer["answer"],
+                        'dit:DirectorySSO:UserAnswer:question:id': user_answer["question_id"],
+                        'dit:DirectorySSO:UserAnswer:question:title': user_answer["question_title"],
+                    },
+                }
+                for user_answer in serializer.data
+            ],
+            'next': self.paginator.get_next_link(),
+            'previous': self.paginator.get_previous_link(),
+        }
         return Response(data=page)

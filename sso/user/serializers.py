@@ -3,7 +3,7 @@ from django.db import transaction
 from rest_framework import serializers
 
 from sso.user import utils
-from sso.user.models import User, UserProfile
+from sso.user.models import User, UserAnswer, UserProfile
 from sso.verification.models import VerificationCode
 
 
@@ -106,3 +106,11 @@ class ActivityStreamUsersSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = ('id', 'email', 'date_joined', 'modified')
+
+
+class ActivityStreamUserAnswerSerializer(serializers.ModelSerializer):
+    question_title = serializers.CharField(source='question.title')
+
+    class Meta:
+        model = UserAnswer
+        fields = ('id', 'user_id', 'answer', 'modified', 'question_id', 'question_title')

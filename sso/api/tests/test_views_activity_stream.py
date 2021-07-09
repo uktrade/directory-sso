@@ -2,6 +2,7 @@ import datetime
 
 import mohawk
 import pytest
+from django.core.management import call_command
 from freezegun import freeze_time
 from rest_framework import status
 from rest_framework.reverse import reverse
@@ -31,6 +32,10 @@ def _url_incorrect_path():
 
 def _url_activity_stream_users():
     return 'http://testserver' + reverse('api:activity-stream-users')
+
+
+def _url_activity_stream_user_answers_vfm():
+    return 'http://testserver' + reverse('api:activity-stream-user-answers-vfm')
 
 
 def _auth_sender(key_id='some-id', secret_key='some-secret', url=_url, method='GET', content='', content_type=''):
@@ -231,6 +236,7 @@ def test_activity_stream_list_users_endpoint(api_client):
     the correct, and authentic, data is returned
     """
     UserFactory.create_batch(5)
+
     sender = _auth_sender(url=_url_activity_stream_users)
     response = api_client.get(
         _url_activity_stream_users(),
@@ -246,6 +252,64 @@ def test_activity_stream_list_users_endpoint(api_client):
         'type',
         'dit:DirectorySSO:User:email',
         'dit:DirectorySSO:User:dateJoined',
+    }
+    assert data['next'] is not None
+    assert data['previous'] is None
+
+    sender = _auth_sender(url=lambda: data['next'])
+    response = api_client.get(
+        data['next'],
+        content_type='',
+        HTTP_AUTHORIZATION=sender.request_header,
+    )
+    data = response.json()
+
+    assert response.status_code == status.HTTP_200_OK
+    assert len(data['orderedItems']) == 2
+    assert data['next'] is not None
+    assert data['previous'] is not None
+
+    sender = _auth_sender(url=lambda: data['next'])
+    response = api_client.get(
+        data['next'],
+        content_type='',
+        HTTP_AUTHORIZATION=sender.request_header,
+    )
+    data = response.json()
+
+    assert response.status_code == status.HTTP_200_OK
+    assert len(data['orderedItems']) == 1
+    assert data['next'] is None
+    assert data['previous'] is not None
+
+
+@pytest.mark.django_db
+def test_activity_stream_list_user_answers_vfm_endpoint(api_client):
+    """If the Authorization and X-Forwarded-For headers are correct, then
+    the correct, and authentic, data is returned
+    """
+    # Load some questions to associate
+
+    call_command('loaddata', 'test_fixtures/user_vfm_tests.json')
+
+    sender = _auth_sender(url=_url_activity_stream_user_answers_vfm)
+    response = api_client.get(
+        _url_activity_stream_user_answers_vfm(),
+        content_type='',
+        HTTP_AUTHORIZATION=sender.request_header,
+    )
+    data = response.json()
+
+    assert response.status_code == status.HTTP_200_OK
+
+    assert len(data['orderedItems']) == 2
+    assert set(data['orderedItems'][0]['object'].keys()) == {
+        'id',
+        'type',
+        'dit:DirectorySSO:UserAnswer:answer',
+        'dit:DirectorySSO:UserAnswer:user:id',
+        'dit:DirectorySSO:UserAnswer:question:id',
+        'dit:DirectorySSO:UserAnswer:question:title',
     }
     assert data['next'] is not None
     assert data['previous'] is None
