@@ -78,6 +78,11 @@ api_urlpatterns = [
         name='activity-stream-users',
     ),
     url(
+        r'^activity-stream/user-answers-vfm/$',
+        sso.api.views_activity_stream.ActivityStreamDirectorySSOUserAnswersVFM.as_view(),
+        name='activity-stream-user-answers-vfm',
+    ),
+    url(
         r'^verification-code/regenerate/$',
         sso.verification.views.RegenerateCodeCreateAPIView.as_view(),
         name='verification-code-regenerate',

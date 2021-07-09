@@ -4,6 +4,7 @@
 ### Enhancements
 - GP2-2867 - Dockerise d-sso
 - Noticket - fix test
+- GP2-3074 - pipeline vfm survey
 
 ## [8.4.0](https://github.com/uktrade/directory-sso/releases/tag/8.4.0)
 [Compare](https://github.com/uktrade/directory-sso/compare/8.4.0...8.4.0)
