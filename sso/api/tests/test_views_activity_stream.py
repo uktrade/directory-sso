@@ -301,9 +301,7 @@ def test_activity_stream_list_user_answers_vfm_endpoint(api_client):
     data = response.json()
 
     assert response.status_code == status.HTTP_200_OK
-    import pdb
 
-    pdb.set_trace()
     assert len(data['orderedItems']) == 2
     assert set(data['orderedItems'][0]['object'].keys()) == {
         'id',

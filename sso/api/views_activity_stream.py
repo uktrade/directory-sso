@@ -131,9 +131,6 @@ class ActivityStreamDirectorySSOUsers(ListAPIView):
     queryset = User.objects.all()
     serializer_class = serializers.ActivityStreamUsersSerializer
 
-    user_answer_queryset = User.objects.all()
-    user_answer_serializer_class = serializers.ActivityStreamUserAnswerSerializer
-
     def get(self, request, *args, **kwargs):
         queryset = self.filter_queryset(self.get_queryset())
 
