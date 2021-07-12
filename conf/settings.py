@@ -311,6 +311,7 @@ SIGAUTH_URL_NAMES_WHITELIST = [
     'healthcheck',
     'healthcheck-ping',
     'activity-stream-users',
+    'activity-stream-user-answers-vfm',
 ]
 
 # api request key
