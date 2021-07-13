@@ -195,6 +195,7 @@ class ActivityStreamDirectorySSOUserAnswersVFM(ListAPIView):
                         'dit:DirectorySSO:UserAnswer:answer': user_answer["answer"],
                         'dit:DirectorySSO:UserAnswer:question:id': user_answer["question_id"],
                         'dit:DirectorySSO:UserAnswer:question:title': user_answer["question_title"],
+                        'dit:DirectorySSO:UserAnswer:answer_label': user_answer["answer_label"],
                     },
                 }
                 for user_answer in serializer.data

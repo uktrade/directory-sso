@@ -310,7 +310,9 @@ def test_activity_stream_list_user_answers_vfm_endpoint(api_client):
         'dit:DirectorySSO:UserAnswer:user:id',
         'dit:DirectorySSO:UserAnswer:question:id',
         'dit:DirectorySSO:UserAnswer:question:title',
+        'dit:DirectorySSO:UserAnswer:answer_label',
     }
+
     assert data['next'] is not None
     assert data['previous'] is None
 
@@ -336,6 +338,7 @@ def test_activity_stream_list_user_answers_vfm_endpoint(api_client):
     data = response.json()
 
     assert response.status_code == status.HTTP_200_OK
+
     assert len(data['orderedItems']) == 1
     assert data['next'] is None
     assert data['previous'] is not None

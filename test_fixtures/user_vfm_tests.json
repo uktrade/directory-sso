@@ -121,6 +121,45 @@
     "sort_order": 12
   }
 },
+  {
+    "model": "user.question",
+    "pk": 3,
+    "fields": {
+      "created": null,
+      "modified": null,
+      "service": 1,
+      "name": "sufficient-demand",
+      "title": "To what extent do you agree or disagree there would not be enough demand for my business overseas to make it worthwhile?",
+      "question_type": "RADIO",
+      "question_choices": {
+        "options": [
+          {
+            "label": "Strongly agree",
+            "value": "5"
+          },
+          {
+            "label": "Somewhat agree",
+            "value": "4"
+          },
+          {
+            "label": "Neither agree nor disagree",
+            "value": "3"
+          },
+          {
+            "label": "Somewhat disagree",
+            "value": "2"
+          },
+          {
+            "label": "Strongly disagree",
+            "value": "1"
+          }
+        ]
+      },
+      "predefined_choices": null,
+      "is_active": true,
+      "sort_order": 6
+    }
+  },
 {
     "model": "user.useranswer",
     "pk": 1,
@@ -136,34 +175,35 @@
     "fields": {
       "question": 2,
       "user": 1,
-      "answer": "\u00a3500,000 to \u00a349,999,999"
+      "answer": "Below £85,000"
     }
 },
   {
     "model": "user.useranswer",
     "pk": 3,
     "fields": {
-      "question": 1,
-      "user": 2,
-      "answer": {"company_name": "Test company 2"}
+      "question": 3,
+      "user": 1,
+      "answer": "2"
     }
-},
-   {
+}
+,
+  {
     "model": "user.useranswer",
     "pk": 4,
     "fields": {
       "question": 2,
       "user": 2,
-      "answer": "\u00a8500,000 to \u00a399,999,999"
+      "answer": "Below £85,000"
     }
 },
-    {
+  {
     "model": "user.useranswer",
     "pk": 5,
     "fields": {
       "question": 1,
-      "user": 3,
-      "answer": {"company_name": "Test company 3"}
+      "user": 2,
+      "answer": {"company_name": "Test company 2"}
     }
 }
 ]
