@@ -1,0 +1,4 @@
+DATABASE_URL=postgres://debug:debug@great_postgres:5432/sso_debug
+POSTGRES_USER=debug
+POSTGRES_PASSWORD=debug
+REDIS_URL=redis://redis:6379/

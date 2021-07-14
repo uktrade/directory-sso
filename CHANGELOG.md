@@ -1,12 +1,16 @@
 # Changelog
 
 ## Pre release
-
 ### Enhancements
+- GP2-2445 - JSON widget for VFM answer admin
+- GP2-2867 - Dockerise d-sso
+- Noticket - fix test
+- GP2-3074 - pipeline vfm survey add questions object
+
+## [8.4.0](https://github.com/uktrade/directory-sso/releases/tag/8.4.0)
+[Compare](https://github.com/uktrade/directory-sso/compare/8.4.0...8.4.0)
+
 - GP2-2841 - Standardisation of python buildpack
-
-### Fixed bugs
-
 
 ## [8.3.0](https://github.com/uktrade/directory-sso/releases/tag/8.3.0)
 [Compare](https://github.com/uktrade/directory-sso/compare/8.0.0...8.3.0)
