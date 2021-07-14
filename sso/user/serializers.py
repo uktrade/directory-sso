@@ -110,7 +110,29 @@ class ActivityStreamUsersSerializer(serializers.ModelSerializer):
 
 class ActivityStreamUserAnswerSerializer(serializers.ModelSerializer):
     question_title = serializers.CharField(source='question.title')
+    answer_label = serializers.SerializerMethodField()
 
     class Meta:
         model = UserAnswer
-        fields = ('id', 'user_id', 'answer', 'modified', 'question_id', 'question_title')
+        fields = ('id', 'user_id', 'answer', 'modified', 'question_id', 'question_title', 'answer_label')
+
+    def get_answer_label(self, obj):
+        if obj.question.question_type in ['SELECT', 'RADIO']:
+            return self.get_choice_value(obj.answer, obj.question.to_dict()['choices']) or ''
+
+        elif obj.question.question_type == 'MULTI_SELECT':
+            answer_list = [
+                self.get_choice_value(
+                    answer,
+                    obj.question.to_dict()['choices'],
+                )
+                or ''
+                for answer in obj.answer
+            ]
+            return answer_list
+
+    def get_choice_value(self, value, choices_array):
+        choices_list = choices_array if isinstance(choices_array, list) else choices_array.get('options', choices_array)
+        for c in choices_list:
+            if c.get('value') == value:
+                return c.get('label')
