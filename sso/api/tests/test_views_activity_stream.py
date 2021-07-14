@@ -341,5 +341,10 @@ def test_activity_stream_list_user_answers_vfm_endpoint(api_client):
     assert response.status_code == status.HTTP_200_OK
 
     assert len(data['orderedItems']) == 1
+    assert data['orderedItems'][0]['object']['dit:DirectorySSO:UserAnswer:answer_label'] == [
+        'Automotive',
+        'Chemicals',
+        'Energy',
+    ]
     assert data['next'] is None
     assert data['previous'] is not None

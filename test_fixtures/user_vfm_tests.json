@@ -160,6 +160,38 @@
       "sort_order": 6
     }
   },
+
+  {
+  "model": "user.question",
+  "pk": 4,
+  "fields":
+  {
+    "service": 1,
+    "name": "Sector",
+    "title": "Which sector(s) is your business in?",
+    "question_type": "MULTI_SELECT",
+    "question_choices": [
+    {
+      "label": "Airports",
+      "value": "Airports"
+    },
+    {
+      "label": "Automotive",
+      "value": "Automotive"
+    },
+    {
+      "label": "Chemicals",
+      "value": "C"
+    },
+    {
+      "label": "Energy",
+      "value": "E"
+    }],
+    "predefined_choices": null,
+    "is_active": true,
+    "sort_order": 11
+  }
+},
 {
     "model": "user.useranswer",
     "pk": 1,
@@ -201,9 +233,9 @@
     "model": "user.useranswer",
     "pk": 5,
     "fields": {
-      "question": 1,
+      "question": 4,
       "user": 2,
-      "answer": {"company_name": "Test company 2"}
+      "answer": ["Automotive","C","E"]
     }
 }
 ]
