@@ -1,0 +1,241 @@
+[
+{
+    "model": "user.user",
+    "pk": 1,
+    "fields": {
+        "password": "pbkdf2_sha256$24000$qPsNN0ZOj885$K+9sqzUeZs80RtsZKsY9L9sT1vDgjaiMlzTcPqrpOa0=",
+        "last_login": null,
+        "is_superuser": false,
+        "created": "2017-01-08T17:56:14.305Z",
+        "modified": "2017-01-08T17:56:14.305Z",
+        "email": "load_tests25@example.com",
+        "is_staff": false,
+        "is_active": true,
+        "date_joined": "2017-01-08T17:56:14.275Z",
+        "groups": [],
+        "user_permissions": []
+    }
+},
+{
+    "model": "user.user",
+    "pk": 2,
+    "fields": {
+        "password": "pbkdf2_sha256$24000$qPsNN0ZOj885$K+9sqzUeZs80RtsZKsY9L9sT1vDgjaiMlzTcPqrpOa0=",
+        "last_login": null,
+        "is_superuser": false,
+        "created": "2017-01-08T17:56:14.305Z",
+        "modified": "2017-01-08T17:56:14.305Z",
+        "email": "load_tests24@example.com",
+        "is_staff": false,
+        "is_active": true,
+        "date_joined": "2017-01-08T17:56:14.275Z",
+        "groups": [],
+        "user_permissions": []
+    }
+},
+{
+    "model": "user.user",
+    "pk": 3,
+    "fields": {
+        "password": "pbkdf2_sha256$24000$qPsNN0ZOj885$K+9sqzUeZs80RtsZKsY9L9sT1vDgjaiMlzTcPqrpOa0=",
+        "last_login": null,
+        "is_superuser": false,
+        "created": "2017-01-08T17:56:14.305Z",
+        "modified": "2017-01-08T17:56:14.305Z",
+        "email": "load_tests23@example.com",
+        "is_staff": false,
+        "is_active": true,
+        "date_joined": "2017-01-08T17:56:14.275Z",
+        "groups": [],
+        "user_permissions": []
+    }
+},
+{
+    "model": "user.service",
+    "pk": 1,
+    "fields": {"name": "sso_tests"}
+},
+{
+    "model": "user.user",
+    "pk": 4,
+    "fields": {
+        "password": "pbkdf2_sha256$24000$qPsNN0ZOj885$K+9sqzUeZs80RtsZKsY9L9sT1vDgjaiMlzTcPqrpOa0=",
+        "last_login": null,
+        "is_superuser": false,
+        "created": "2017-01-08T17:56:14.305Z",
+        "modified": "2017-01-08T17:56:14.305Z",
+        "email": "load_tests22@example.com",
+        "is_staff": false,
+        "is_active": true,
+        "date_joined": "2017-01-08T17:56:14.275Z",
+        "groups": [],
+        "user_permissions": []
+    }
+},
+
+ {
+  "model": "user.question",
+  "pk": 1,
+  "fields":
+  {
+    "created": "2021-04-19T09:38:33.289Z",
+    "modified": "2021-05-05T14:05:39.197Z",
+    "service": 1,
+    "name": "company",
+    "title": "Business Name",
+    "question_type": "COMPANY_LOOKUP",
+    "question_choices": {
+      "placeholder": "Business name",
+      "manualContent": "Test.",
+      "reviewContent": "Test2",
+      "searchContent": "Test"
+    },
+    "predefined_choices": null,
+    "is_active": true,
+    "sort_order": 0
+  }
+},
+{
+  "model": "user.question",
+  "pk": 2,
+  "fields":
+  {
+    "created": "2021-04-26T13:48:05.400Z",
+    "modified": "2021-05-20T08:57:24.803Z",
+    "service": 1,
+    "name": "company-turnover-range",
+    "title": "What is your organisation\u2019s annual turnover in the UK?",
+    "question_type": "RADIO",
+    "question_choices": [
+    {
+      "label": "Below \u00a385,000",
+      "value": "Below \u00a385,000"
+    },
+    {
+      "label": "\u00a385,000 to \u00a3499,999",
+      "value": "\u00a385,000 to \u00a3499,999"
+    }
+  ],
+    "predefined_choices": null,
+    "is_active": true,
+    "sort_order": 12
+  }
+},
+  {
+    "model": "user.question",
+    "pk": 3,
+    "fields": {
+      "created": null,
+      "modified": null,
+      "service": 1,
+      "name": "sufficient-demand",
+      "title": "To what extent do you agree or disagree there would not be enough demand for my business overseas to make it worthwhile?",
+      "question_type": "RADIO",
+      "question_choices": {
+        "options": [
+          {
+            "label": "Strongly agree",
+            "value": "5"
+          },
+          {
+            "label": "Somewhat agree",
+            "value": "4"
+          },
+          {
+            "label": "Neither agree nor disagree",
+            "value": "3"
+          },
+          {
+            "label": "Somewhat disagree",
+            "value": "2"
+          },
+          {
+            "label": "Strongly disagree",
+            "value": "1"
+          }
+        ]
+      },
+      "predefined_choices": null,
+      "is_active": true,
+      "sort_order": 6
+    }
+  },
+
+  {
+  "model": "user.question",
+  "pk": 4,
+  "fields":
+  {
+    "service": 1,
+    "name": "Sector",
+    "title": "Which sector(s) is your business in?",
+    "question_type": "MULTI_SELECT",
+    "question_choices": [
+    {
+      "label": "Airports",
+      "value": "Airports"
+    },
+    {
+      "label": "Automotive",
+      "value": "Automotive"
+    },
+    {
+      "label": "Chemicals",
+      "value": "C"
+    },
+    {
+      "label": "Energy",
+      "value": "E"
+    }],
+    "predefined_choices": null,
+    "is_active": true,
+    "sort_order": 11
+  }
+},
+{
+    "model": "user.useranswer",
+    "pk": 1,
+    "fields": {
+      "question": 1,
+      "user": 1,
+      "answer": {"company_name": "Test company"}
+    }
+},
+   {
+    "model": "user.useranswer",
+    "pk": 2,
+    "fields": {
+      "question": 2,
+      "user": 1,
+      "answer": "Below £85,000"
+    }
+},
+  {
+    "model": "user.useranswer",
+    "pk": 3,
+    "fields": {
+      "question": 3,
+      "user": 1,
+      "answer": "2"
+    }
+}
+,
+  {
+    "model": "user.useranswer",
+    "pk": 4,
+    "fields": {
+      "question": 2,
+      "user": 2,
+      "answer": "Below £85,000"
+    }
+},
+  {
+    "model": "user.useranswer",
+    "pk": 5,
+    "fields": {
+      "question": 4,
+      "user": 2,
+      "answer": ["Automotive","C","E"]
+    }
+}
+]
