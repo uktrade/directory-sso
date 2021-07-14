@@ -26,6 +26,14 @@ def user_profile_data():
 
 
 @pytest.fixture
+def user_partial_profile_data():
+    return {
+        'first_name': 'Magna',
+        'last_name': 'User',
+    }
+
+
+@pytest.fixture
 def page_view_data():
     return {
         'page1': {'service': 'service-name', 'page': 'page/url'},
@@ -144,6 +152,19 @@ def test_update_user_profile(api_client, user_profile_data):
     assert profile.last_name == user_profile_data['last_name']
     assert profile.job_title == user_profile_data['job_title']
     assert profile.mobile_phone_number == user_profile_data['mobile_phone_number']
+
+
+@pytest.mark.django_db
+def test_update_partial_user_profile(api_client, user_partial_profile_data):
+
+    profile = factories.UserProfileFactory()
+    api_client.force_authenticate(user=profile.user)
+
+    response = api_client.patch(reverse('api:user-update-profile'), user_partial_profile_data, format='json')
+    profile.refresh_from_db()
+    assert response.status_code == 200
+    assert profile.first_name == user_partial_profile_data['first_name']
+    assert profile.last_name == user_partial_profile_data['last_name']
 
 
 @pytest.mark.django_db
