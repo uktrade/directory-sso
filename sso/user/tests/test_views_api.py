@@ -444,8 +444,9 @@ def test_get_and_set_user_data(api_client):
 
     # Update one and check the change
     response = api_client.post(url, {'name': 'data-object1', 'data': {'test': 'updated'}}, format='json')
-    assert api_client.get(url, {'name': 'data-object1'},
-                          format='json').json().get('data-object1') == {'test': 'updated'}
+    assert api_client.get(url, {'name': 'data-object1'}, format='json').json().get('data-object1') == {
+        'test': 'updated'
+    }
     assert api_client.get(url, {'name': 'data-object2'}, format='json').json().get('data-object2') == {'test': 2}
 
     # Read them back in one request
