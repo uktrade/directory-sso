@@ -426,26 +426,29 @@ def test_set_user_questionnaire_answer_invalid(api_client):
 
 
 @pytest.mark.django_db
-def test_get_user_data(api_client):
+def test_get_and_set_user_data(api_client):
     user = factories.UserFactory()
     api_client.force_authenticate(user=user)
-    models.UserData
+    url = reverse('api:user-data')
 
-    data = {'name': 'data-object'}
-
-    response = api_client.get(reverse('api:user-data'), data, format='json')
-
+    # Call set twice to put two objects in db
+    response = api_client.post(url, {'name': 'data-object1', 'data': {'test': 1}}, format='json')
     assert response.status_code == 200
 
-
-@pytest.mark.django_db
-def test_set_user_data(api_client):
-    user = factories.UserFactory()
-    api_client.force_authenticate(user=user)
-    models.UserData
-
-    data = {'name': 'data-object', 'data': {'test': 1}}
-
-    response = api_client.post(reverse('api:user-data'), data, format='json')
-
+    response = api_client.post(url, {'name': 'data-object2', 'data': {'test': 2}}, format='json')
     assert response.status_code == 200
+
+    # Read them back
+    assert api_client.get(url, {'name': 'data-object1'}, format='json').json().get('data-object1') == {'test': 1}
+    assert api_client.get(url, {'name': 'data-object2'}, format='json').json().get('data-object2') == {'test': 2}
+
+    # Update one and check the change
+    response = api_client.post(url, {'name': 'data-object1', 'data': {'test': 'updated'}}, format='json')
+    assert api_client.get(url, {'name': 'data-object1'},
+                          format='json').json().get('data-object1') == {'test': 'updated'}
+    assert api_client.get(url, {'name': 'data-object2'}, format='json').json().get('data-object2') == {'test': 2}
+
+    # Read them back in one request
+    both = api_client.get(url, {'name': ['data-object1', 'data-object2']}, format='json').json()
+    assert both.get('data-object1') == {'test': 'updated'}
+    assert both.get('data-object2') == {'test': 2}
