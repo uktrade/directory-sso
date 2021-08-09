@@ -453,3 +453,6 @@ def test_get_and_set_user_data(api_client):
     both = api_client.get(url, {'name': ['data-object1', 'data-object2']}, format='json').json()
     assert both.get('data-object1') == {'test': 'updated'}
     assert both.get('data-object2') == {'test': 2}
+
+    # test nonexistant object
+    assert api_client.get(url, {'name': 'data-object-unknown'}, format='json').json() == {}
