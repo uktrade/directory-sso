@@ -1,7 +1,9 @@
 from allauth.account.models import EmailAddress
 from django.contrib.auth import login
 from django.shortcuts import get_object_or_404
+from django.utils.decorators import method_decorator
 from django.utils.timezone import now
+from ratelimit.decorators import ratelimit
 from rest_framework.generics import CreateAPIView, GenericAPIView
 from rest_framework.response import Response
 
@@ -39,6 +41,7 @@ class VerifyVerificationCodeAPIView(GenericAPIView):
     def get_object(self):
         return get_object_or_404(models.VerificationCode.objects.all(), user__email__iexact=self.request.data['email'])
 
+    @method_decorator(ratelimit(key='post:email', rate='12/m', method='POST', block=True))
     def post(self, request, *args, **kwargs):
         instance = self.get_object()
         serializer = self.get_serializer(instance, data=request.data)
