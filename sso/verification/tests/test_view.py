@@ -3,6 +3,7 @@ from datetime import date, datetime, timedelta
 import dateutil.parser
 import pytest
 from allauth.account.models import EmailAddress
+from django.core.cache import cache
 from django.urls import reverse
 from django.utils.timezone import now
 from freezegun import freeze_time
@@ -163,3 +164,29 @@ def test_verify_no_verification_code(api_client):
     )
 
     assert response.status_code == 404
+
+
+@pytest.mark.django_db
+def test_verify_verification_code_limit_exceeded(api_client):
+    cache.clear()
+
+    verification_code = VerificationCodeFactory()
+
+    url = reverse('api:verification-code-verify')
+    invalid_code = '1234'
+
+    assert verification_code.code
+
+    for i in range(13):
+        response = api_client.post(
+            url,
+            {
+                'code': invalid_code,
+                'email': verification_code.user.email,
+            },
+            format='json',
+        )
+        if i < 12:
+            assert response.status_code == 400
+        else:
+            assert response.status_code == 403
