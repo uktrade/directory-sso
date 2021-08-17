@@ -2,6 +2,7 @@
 
 ## Pre release
 ### Enhancements
+- GP2-3152 - Verification code rate limiting + reduced expiry time
 - No-ticket - removed adhoc script for data notification
 - GP2-3017 - Added test for partial user profile update
 - GP2-2445 - JSON widget for VFM answer admin
