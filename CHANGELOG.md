@@ -4,14 +4,17 @@
 ### Enhancements
 - GP2-3152 - Verification code rate limiting + reduced expiry time
 - No-ticket - removed adhoc script for data notification
+- GP2-3074 - pipeline vfm survey add questions object
+
+### Fixed bugs
 - GP2-3017 - Added test for partial user profile update
 - GP2-2445 - JSON widget for VFM answer admin
 - GP2-2867 - Dockerise d-sso
 - Noticket - fix test
-- GP2-3074 - pipeline vfm survey add questions object
 
-### Fixed bugs
-- NOTICKET - fix user_data post and improve tests
+## [8.6.0](https://github.com/uktrade/directory-sso/releases/tag/8.6.0)
+[Compare](https://github.com/uktrade/directory-sso/compare/8.6.0...8.4.0)
+- GP2-2867 - Dockerise d-sso
 
 ## [8.4.0](https://github.com/uktrade/directory-sso/releases/tag/8.4.0)
 [Compare](https://github.com/uktrade/directory-sso/compare/8.4.0...8.4.0)
