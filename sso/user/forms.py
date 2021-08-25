@@ -187,13 +187,26 @@ class ResetPasswordForm(forms.DirectoryComponentsFormMixin, allauth.account.form
 
 
 class ResetPasswordKeyForm(forms.DirectoryComponentsFormMixin, allauth.account.forms.ResetPasswordKeyForm):
+    PASSWORD_HELP_TEXT = (
+        '<p>Your password must:</p>'
+        '<ul class="list list-bullet">'
+        '<li>be at least 10 characters</li>'
+        '<li>contain at least one letter</li>'
+        '<li>contain at least one number</li>'
+        '<li>not contain the word "password"</li>'
+        '</ul>'
+    )
+
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.fields['password1'] = PasswordField(
             label="New password",
             label_suffix='',
+            help_text=mark_safe(self.PASSWORD_HELP_TEXT),
         )
+        self.fields['password1'].widget.attrs['autocomplete'] = 'new-password'
         self.fields['password2'] = PasswordField(
             label="Confirm password",
             label_suffix='',
         )
+        self.fields['password2'].widget.attrs['autocomplete'] = 'new-password'

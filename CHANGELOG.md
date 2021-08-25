@@ -7,6 +7,7 @@
 - GP2-3074 - pipeline vfm survey add questions object
 
 ### Fixed bugs
+- GP2-3260 - Validation on password reset
 - GP2-3017 - Added test for partial user profile update
 - GP2-2445 - JSON widget for VFM answer admin
 - GP2-2867 - Dockerise d-sso
