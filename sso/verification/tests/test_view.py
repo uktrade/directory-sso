@@ -5,13 +5,15 @@ import pytest
 from allauth.account.models import EmailAddress
 from django.core.cache import cache
 from django.urls import reverse
+from django.utils.encoding import force_bytes
+from django.utils.http import urlsafe_base64_encode
 from django.utils.timezone import now
 from freezegun import freeze_time
 from pytz import UTC
 from rest_framework.test import APIClient
 
 from sso.user.tests.factories import UserFactory
-from sso.verification import models
+from sso.verification import helpers, models
 from sso.verification.tests.factories import VerificationCodeFactory
 
 
@@ -190,3 +192,85 @@ def test_verify_verification_code_limit_exceeded(api_client):
             assert response.status_code == 400
         else:
             assert response.status_code == 403
+
+
+@pytest.mark.django_db
+def test_verify_verification_code_with_uidb64_and_token(api_client):
+    cache.clear()
+
+    verification_code = VerificationCodeFactory()
+    uidb64 = urlsafe_base64_encode(force_bytes(verification_code.user.pk))
+    token = helpers.verification_token.make_token(verification_code.user)
+    url = reverse('api:verification-code-verify')
+    response = api_client.post(
+        url,
+        {
+            'code': verification_code.code,
+            'uidb64': uidb64,
+            'token': token,
+        },
+        format='json',
+    )
+
+    assert response.status_code == 200
+
+
+@pytest.mark.django_db
+def test_verify_verification_code_with_token_missing(api_client):
+    cache.clear()
+
+    verification_code = VerificationCodeFactory()
+    uidb64 = urlsafe_base64_encode(force_bytes(verification_code.user.pk))
+    url = reverse('api:verification-code-verify')
+    response = api_client.post(
+        url,
+        {
+            'code': verification_code.code,
+            'uidb64': uidb64,
+        },
+        format='json',
+    )
+
+    assert response.status_code == 404
+
+
+@pytest.mark.django_db
+def test_verify_verification_code_with_wrong_uidb64(api_client):
+    cache.clear()
+
+    verification_code = VerificationCodeFactory()
+    uidb64 = 'aBcDe'
+    token = helpers.verification_token.make_token(verification_code.user)
+    url = reverse('api:verification-code-verify')
+    response = api_client.post(
+        url,
+        {
+            'code': verification_code.code,
+            'uidb64': uidb64,
+            'token': token,
+        },
+        format='json',
+    )
+
+    assert response.status_code == 404
+
+
+@pytest.mark.django_db
+def test_verify_verification_code_with_wrong_token(api_client):
+    cache.clear()
+
+    verification_code = VerificationCodeFactory()
+    uidb64 = urlsafe_base64_encode(force_bytes(verification_code.user.pk))
+    token = '12345'
+    url = reverse('api:verification-code-verify')
+    response = api_client.post(
+        url,
+        {
+            'code': verification_code.code,
+            'uidb64': uidb64,
+            'token': token,
+        },
+        format='json',
+    )
+
+    assert response.status_code == 404

@@ -2,6 +2,7 @@
 
 ## Pre release
 ### Enhancements
+- GP2-3344 - Make account verification token based
 - GP2-3152 - Verification code rate limiting + reduced expiry time
 - No-ticket - removed adhoc script for data notification
 - GP2-3074 - pipeline vfm survey add questions object

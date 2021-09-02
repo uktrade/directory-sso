@@ -1,9 +1,12 @@
 from django.contrib.auth import password_validation
 from django.db import transaction
+from django.utils.encoding import force_bytes
+from django.utils.http import urlsafe_base64_encode
 from rest_framework import serializers
 
 from sso.user import utils
 from sso.user.models import User, UserAnswer, UserProfile
+from sso.verification import helpers
 from sso.verification.models import VerificationCode
 
 
@@ -32,17 +35,27 @@ class PasswordCheckSerializer(serializers.Serializer):
 
 class CreateUserSerializer(serializers.ModelSerializer):
     verification_code = VerificationCodeSerializer(read_only=True)
+    uidb64 = serializers.SerializerMethodField()
+    verification_token = serializers.SerializerMethodField()
 
     class Meta:
         model = User
         fields = (
             'email',
             'password',
+            'uidb64',
+            'verification_token',
             'verification_code',
         )
         extra_kwargs = {
             'password': {'write_only': True},
         }
+
+    def get_uidb64(self, obj):
+        return urlsafe_base64_encode(force_bytes(obj.pk))
+
+    def get_verification_token(self, obj):
+        return helpers.verification_token.make_token(obj)
 
     def validate_password(self, value):
         password_validation.validate_password(value)
