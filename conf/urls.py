@@ -92,6 +92,11 @@ api_urlpatterns = [
         sso.verification.views.VerifyVerificationCodeAPIView.as_view(),
         name='verification-code-verify',
     ),
+    url(
+        r'^verification-token/$',
+        sso.verification.views.VerificationTokenRetrieveAPIView.as_view(),
+        name='verification-token',
+    ),
     url(r'^user/$', sso.user.views_api.UserCreateAPIView.as_view(), name='user'),
     url(r'^user/profile/$', sso.user.views_api.UserProfileCreateAPIView.as_view(), name='user-create-profile'),
     url(r'^user/profile/update/$', sso.user.views_api.UserProfileUpdateAPIView.as_view(), name='user-update-profile'),
