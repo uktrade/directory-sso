@@ -83,18 +83,6 @@ def test_regenerate_code_no_user(api_client):
     assert models.VerificationCode.objects.count() == 0
 
 
-@pytest.mark.django_db
-def test_retrieve_verification_token(api_client):
-    user = UserFactory()
-    token = helpers.verification_token.make_token(user)
-    api_client.force_authenticate(user=user)
-
-    response = api_client.get(reverse('api:verification-token'))
-
-    assert response.status_code == 200
-    assert response.data['token'] == token
-
-
 @freeze_time("2018-01-14 12:00:01")
 @pytest.mark.django_db
 def test_verify_verification_code(api_client):

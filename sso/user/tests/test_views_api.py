@@ -49,7 +49,12 @@ def test_create_user_api_valid(api_client):
 
     response = api_client.post(reverse('api:user'), {'email': new_email, 'password': password}, format='json')
     assert response.status_code == 201
-    assert response.json() == {'email': new_email, 'verification_code': mock.ANY}
+    assert response.json() == {
+        'email': new_email,
+        'verification_code': mock.ANY,
+        'uidb64': mock.ANY,
+        'verification_token': mock.ANY,
+    }
 
     assert models.User.objects.filter(email=new_email).count() == 1
 

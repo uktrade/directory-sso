@@ -6,7 +6,7 @@ from django.utils.encoding import force_text
 from django.utils.http import urlsafe_base64_decode
 from django.utils.timezone import now
 from ratelimit.decorators import ratelimit
-from rest_framework.generics import CreateAPIView, GenericAPIView, RetrieveAPIView
+from rest_framework.generics import CreateAPIView, GenericAPIView
 from rest_framework.response import Response
 
 from conf.signature import SignatureCheckPermission
@@ -34,15 +34,6 @@ class RegenerateCodeCreateAPIView(CreateAPIView):
 
     def get_object(self):
         return get_object_or_404(models.VerificationCode.objects.all(), user__email__iexact=self.request.data['email'])
-
-
-class VerificationTokenRetrieveAPIView(RetrieveAPIView):
-    permission_classes = [SignatureCheckPermission]
-
-    def get(self, request, *args, **kwargs):
-        token = helpers.verification_token.make_token(self.request.user)
-
-        return Response(status=200, data={'token': token})
 
 
 class VerifyVerificationCodeAPIView(GenericAPIView):
