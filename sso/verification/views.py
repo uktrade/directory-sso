@@ -10,6 +10,7 @@ from rest_framework.generics import CreateAPIView, GenericAPIView, RetrieveAPIVi
 from rest_framework.response import Response
 
 from conf.signature import SignatureCheckPermission
+from sso.user.models import User
 from sso.verification import helpers, models, serializers
 
 
@@ -38,8 +39,8 @@ class RegenerateCodeCreateAPIView(CreateAPIView):
 class VerificationTokenRetrieveAPIView(RetrieveAPIView):
     permission_classes = [SignatureCheckPermission]
 
-    def get(self):
-        token = helpers.verification_token.make_token(self.request.user.email)
+    def get(self, request, *args, **kwargs):
+        token = helpers.verification_token.make_token(self.request.user)
 
         return Response(status=200, data={'token': token})
 
@@ -52,12 +53,12 @@ class VerifyVerificationCodeAPIView(GenericAPIView):
     def get_email(self, uidb64, token):
         try:
             uid = force_text(urlsafe_base64_decode(uidb64))
-            email_obj = EmailAddress.objects.get(pk=uid)
-        except (TypeError, ValueError, OverflowError, EmailAddress.DoesNotExist):
-            email_obj = None
+            user = User.objects.get(pk=uid)
+        except (TypeError, ValueError, OverflowError, User.DoesNotExist):
+            user = None
 
-        if email_obj is not None and helpers.verification_token.check_token(email_obj, token):
-            return email_obj.email
+        if user is not None and helpers.verification_token.check_token(user, token):
+            return user.email
 
     def get_object(self):
         uidb64 = self.request.data.get('uidb64')
@@ -66,7 +67,7 @@ class VerifyVerificationCodeAPIView(GenericAPIView):
         if uidb64 and token:
             email = self.get_email(uidb64, token)
         else:
-            email = self.request.data['email']
+            email = self.request.data.get('email')
 
         return get_object_or_404(models.VerificationCode.objects.all(), user__email__iexact=email)
 

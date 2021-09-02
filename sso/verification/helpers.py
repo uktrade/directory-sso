@@ -6,8 +6,8 @@ from django.utils.crypto import get_random_string
 
 
 class TokenGenerator(PasswordResetTokenGenerator):
-    def _make_hash_value(self, email, timestamp):
-        return six.text_type(email.pk) + six.text_type(timestamp)
+    def _make_hash_value(self, user, timestamp):
+        return six.text_type(user.pk) + six.text_type(timestamp)
 
 
 generate_verification_code = partial(get_random_string, allowed_chars='0123456789', length=5)
