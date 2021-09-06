@@ -82,4 +82,4 @@ class VerifyVerificationCodeAPIView(GenericAPIView):
             user=instance.user,
             backend='django.contrib.auth.backends.ModelBackend',
         )
-        return Response()
+        return Response({'email': instance.user.email})
