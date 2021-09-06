@@ -211,7 +211,7 @@ def test_verify_verification_code_with_uidb64_and_token(api_client):
         },
         format='json',
     )
-
+    assert response.json()['email'] == verification_code.user.email
     assert response.status_code == 200
 
 
