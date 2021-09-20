@@ -6,6 +6,8 @@ from allauth.utils import set_form_field_order
 from directory_components import forms
 from directory_constants import urls
 from django.conf import settings
+from django.contrib.auth.password_validation import validate_password
+from django.core.exceptions import ValidationError
 from django.forms import TextInput
 from django.urls import reverse
 from django.utils.safestring import mark_safe
@@ -197,3 +199,11 @@ class ResetPasswordKeyForm(forms.DirectoryComponentsFormMixin, allauth.account.f
             label="Confirm password",
             label_suffix='',
         )
+
+    def clean_password1(self):
+        password1 = self.cleaned_data.get('password1')
+        try:
+            validate_password(password1)
+        except ValidationError as error:
+            self.add_error('password1', error)
+        return password1
