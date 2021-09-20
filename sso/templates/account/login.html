@@ -4,7 +4,7 @@
 {% load socialaccount %}
 {% load breadcrumbs from directory_components %}
 {% block head_title %}Sign in - great.gov.uk{% endblock %}
-
+{% block head_other %}<meta name="robots" content="noindex">{% endblock %}
 {% block content %}
 {% breadcrumbs 'Sign in' %}
   <a href="{{ services_urls.great_domestic }}">Great.gov.uk</a>
