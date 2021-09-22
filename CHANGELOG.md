@@ -8,6 +8,9 @@
 - Noticket - fix test
 - GP2-3074 - pipeline vfm survey add questions object
 
+### Fixed bugs
+- GP2-3260 - Password reset validation fix
+
 ## [8.4.0](https://github.com/uktrade/directory-sso/releases/tag/8.4.0)
 [Compare](https://github.com/uktrade/directory-sso/compare/8.4.0...8.4.0)
 
