@@ -1,6 +1,7 @@
 from django.core.exceptions import ObjectDoesNotExist
 from django.db import IntegrityError
 from rest_framework import status
+from rest_framework.exceptions import ValidationError
 from rest_framework.generics import CreateAPIView, GenericAPIView, UpdateAPIView
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
@@ -13,6 +14,7 @@ from sso.user.utils import (
     get_lesson_completed,
     get_page_view,
     get_questionnaire,
+    notify_already_registered,
     set_lesson_completed,
     set_page_view,
     set_questionnaire_answer,
@@ -22,6 +24,16 @@ from sso.user.utils import (
 class UserCreateAPIView(CreateAPIView):
     serializer_class = serializers.CreateUserSerializer
     permission_classes = [SignatureCheckPermission]
+
+    def create(self, request, *args, **kwargs):
+        try:
+            super().create(request, *args, **kwargs)
+        except ValidationError as error:
+            if 'already exists' in str(error):
+                notify_already_registered(request.data['email'])
+                return Response(status=200)
+        else:
+            return Response(status=201)
 
 
 class UserProfileCreateAPIView(CreateAPIView):

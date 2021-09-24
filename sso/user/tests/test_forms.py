@@ -10,6 +10,7 @@ from django.forms.fields import Field
 
 from sso.user import forms
 from sso.user.models import User
+from sso.user.utils import notify_already_registered
 
 REQUIRED_MESSAGE = Field.default_error_messages['required']
 INVALID_EMAIL_MESSAGE = EmailValidator.message
@@ -196,7 +197,7 @@ def test_password_reset_autocomplete():
 
 @patch('sso.user.forms.NotificationsAPIClient')
 def test_notify_already_registered(mocked_notifications):
-    forms.SignupForm.notify_already_registered('test@example.com')
+    notify_already_registered('test@example.com')
     stub = mocked_notifications().send_email_notification
     assert stub.call_count == 1
     assert stub.call_args == mock.call(
