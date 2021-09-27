@@ -43,7 +43,8 @@ def page_view_data():
 
 
 @pytest.mark.django_db
-def test_create_user_api_valid(api_client):
+@mock.patch('sso.user.utils.NotificationsAPIClient')
+def test_create_user_api_valid(mocked_notifications, api_client):
     new_email = 'test@test123.com'
     password = 'Abh129Jk392Hj2'
 
@@ -55,6 +56,18 @@ def test_create_user_api_valid(api_client):
         'uidb64': mock.ANY,
         'verification_token': mock.ANY,
     }
+
+    assert models.User.objects.filter(email=new_email).count() == 1
+
+
+@pytest.mark.django_db
+def test_create_user_api_duplicated_email(api_client):
+    user = factories.UserFactory()
+    new_email = user.email
+    password = 'Abh129Jk392Hj2'
+
+    response = api_client.post(reverse('api:user'), {'email': new_email, 'password': password}, format='json')
+    assert response.status_code == 409
 
     assert models.User.objects.filter(email=new_email).count() == 1
 

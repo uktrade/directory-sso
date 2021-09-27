@@ -25,15 +25,14 @@ class UserCreateAPIView(CreateAPIView):
     serializer_class = serializers.CreateUserSerializer
     permission_classes = [SignatureCheckPermission]
 
-    def create(self, request, *args, **kwargs):
-        try:
-            super().create(request, *args, **kwargs)
-        except ValidationError as error:
-            if 'already exists' in str(error):
-                notify_already_registered(request.data['email'])
-                return Response(status=200)
-        else:
-            return Response(status=201)
+    def perform_create(self, serializer):
+        super().perform_create(serializer)
+        notify_already_registered(serializer.data['email'])
+
+    def handle_exception(self, exc):
+        if isinstance(exc, ValidationError) and 'already exists' in str(exc):
+            return Response(status=status.HTTP_409_CONFLICT)
+        return super().handle_exception(exc)
 
 
 class UserProfileCreateAPIView(CreateAPIView):

@@ -3,14 +3,12 @@ from unittest.mock import patch
 
 import pytest
 from allauth.account.models import EmailAddress
-from directory_constants import urls
 from django.conf import settings
 from django.core.validators import EmailValidator
 from django.forms.fields import Field
 
 from sso.user import forms
 from sso.user.models import User
-from sso.user.utils import notify_already_registered
 
 REQUIRED_MESSAGE = Field.default_error_messages['required']
 INVALID_EMAIL_MESSAGE = EmailValidator.message
@@ -193,19 +191,3 @@ def test_password_reset_autocomplete():
     # http://stackoverflow.com/a/30976223/904887
     form = forms.ResetPasswordForm()
     assert form.fields['email'].widget.attrs['autocomplete'] == 'new-password'
-
-
-@patch('sso.user.forms.NotificationsAPIClient')
-def test_notify_already_registered(mocked_notifications):
-    notify_already_registered('test@example.com')
-    stub = mocked_notifications().send_email_notification
-    assert stub.call_count == 1
-    assert stub.call_args == mock.call(
-        email_address='test@example.com',
-        personalisation={
-            'login_url': 'http://sso.trade.great:8003/accounts/login/',
-            'password_reset_url': ('http://sso.trade.great:8003/accounts/password/reset/'),
-            'contact_us_url': urls.domestic.CONTACT_US,
-        },
-        template_id='5c8cc5aa-a4f5-48ae-89e6-df5572c317ec',
-    )
