@@ -61,7 +61,8 @@ def test_create_user_api_valid(mocked_notifications, api_client):
 
 
 @pytest.mark.django_db
-def test_create_user_api_duplicated_email(api_client):
+@mock.patch('sso.user.utils.NotificationsAPIClient')
+def test_create_user_api_duplicated_email(mocked_notifications, api_client):
     user = factories.UserFactory()
     new_email = user.email
     password = 'Abh129Jk392Hj2'
