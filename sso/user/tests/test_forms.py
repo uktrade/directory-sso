@@ -3,7 +3,6 @@ from unittest.mock import patch
 
 import pytest
 from allauth.account.models import EmailAddress
-from directory_constants import urls
 from django.conf import settings
 from django.core.validators import EmailValidator
 from django.forms.fields import Field
@@ -87,6 +86,52 @@ def test_password_reset_form_email_required():
     assert REQUIRED_MESSAGE in form.errors['email']
 
 
+def test_password_reset_key_form_validations_required():
+    form = forms.ResetPasswordKeyForm(data={'password1': '', 'password2': ''})
+
+    assert form.is_valid() is False
+    assert REQUIRED_MESSAGE in form.errors['password1']
+    assert REQUIRED_MESSAGE in form.errors['password2']
+
+
+def test_password_reset_key_form_validations_mismatching():
+    mismatching_message = 'You must type the same password each time.'
+    form = forms.ResetPasswordKeyForm(data={'password1': 'onetwothree123', 'password2': 'threetwoone321'})
+
+    assert form.is_valid() is False
+    assert mismatching_message in form.errors['password2']
+
+
+def test_password_reset_key_form_validations_too_short():
+    too_short_message = 'This password is too short. It must contain at least 10 characters.'
+    form = forms.ResetPasswordKeyForm(data={'password1': 'one1', 'password2': 'one1'})
+
+    assert form.is_valid() is False
+    assert too_short_message in form.errors['password1']
+
+
+def test_password_reset_key_form_validations_too_common():
+    too_common_message = 'This password is too common.'
+    form = forms.ResetPasswordKeyForm(data={'password1': 'password123', 'password2': 'password123'})
+
+    assert form.is_valid() is False
+    assert too_common_message in form.errors['password1']
+
+
+def test_password_reset_key_form_validations_entirely_numeric():
+    entirely_numeric_message = 'This password is entirely numeric.'
+    form = forms.ResetPasswordKeyForm(data={'password1': '0123456789', 'password2': '0123456789'})
+
+    assert form.is_valid() is False
+    assert entirely_numeric_message in form.errors['password1']
+
+
+def test_password_reset_key_form_validations_valid():
+    form = forms.ResetPasswordKeyForm(data={'password1': 'onetwothree1', 'password2': 'onetwothree1'})
+
+    assert form.is_valid() is True
+
+
 def test_signup_rejects_missing_terms_agreed():
     form = forms.SignupForm(data={})
 
@@ -146,19 +191,3 @@ def test_password_reset_autocomplete():
     # http://stackoverflow.com/a/30976223/904887
     form = forms.ResetPasswordForm()
     assert form.fields['email'].widget.attrs['autocomplete'] == 'new-password'
-
-
-@patch('sso.user.forms.NotificationsAPIClient')
-def test_notify_already_registered(mocked_notifications):
-    forms.SignupForm.notify_already_registered('test@example.com')
-    stub = mocked_notifications().send_email_notification
-    assert stub.call_count == 1
-    assert stub.call_args == mock.call(
-        email_address='test@example.com',
-        personalisation={
-            'login_url': 'http://sso.trade.great:8003/accounts/login/',
-            'password_reset_url': ('http://sso.trade.great:8003/accounts/password/reset/'),
-            'contact_us_url': urls.domestic.CONTACT_US,
-        },
-        template_id='5c8cc5aa-a4f5-48ae-89e6-df5572c317ec',
-    )

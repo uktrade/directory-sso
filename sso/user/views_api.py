@@ -1,6 +1,7 @@
 from django.core.exceptions import ObjectDoesNotExist
 from django.db import IntegrityError
 from rest_framework import status
+from rest_framework.exceptions import ValidationError
 from rest_framework.generics import CreateAPIView, GenericAPIView, UpdateAPIView
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
@@ -13,6 +14,7 @@ from sso.user.utils import (
     get_lesson_completed,
     get_page_view,
     get_questionnaire,
+    notify_already_registered,
     set_lesson_completed,
     set_page_view,
     set_questionnaire_answer,
@@ -22,6 +24,12 @@ from sso.user.utils import (
 class UserCreateAPIView(CreateAPIView):
     serializer_class = serializers.CreateUserSerializer
     permission_classes = [SignatureCheckPermission]
+
+    def handle_exception(self, exc):
+        if isinstance(exc, ValidationError) and 'already exists' in str(exc):
+            notify_already_registered(self.request.data['email'])
+            return Response(status=status.HTTP_409_CONFLICT)
+        return super().handle_exception(exc)
 
 
 class UserProfileCreateAPIView(CreateAPIView):
@@ -139,19 +147,20 @@ class UserDataView(GenericAPIView):
     authentication_classes = [SessionAuthentication]
 
     def get(self, request):
-        name = request.query_params.get('name', '')
-        try:
-            json = UserData.objects.get(user=self.request.user, name=name).data
-        except ObjectDoesNotExist:
-            json = {}
-
-        return Response(status=200, data={'data': json})
+        names = request.query_params.getlist('name', '')
+        data = {}
+        for name in names:
+            try:
+                data[name] = UserData.objects.get(user=self.request.user, name=name).data
+            except ObjectDoesNotExist:
+                pass
+        return Response(status=200, data=data)
 
     def post(self, request, *args, **kwargs):
         data = request.data.get('data')
         name = request.data.get('name')
         try:
-            data_object = UserData.objects.get(user=self.request.user)
+            data_object = UserData.objects.get(user=self.request.user, name=name)
         except ObjectDoesNotExist:
             data_object = UserData(user=self.request.user, name=name)
 

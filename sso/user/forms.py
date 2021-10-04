@@ -5,13 +5,13 @@ from allauth.account.utils import filter_users_by_email
 from allauth.utils import set_form_field_order
 from directory_components import forms
 from directory_constants import urls
-from django.conf import settings
+from django.contrib.auth.password_validation import validate_password
+from django.core.exceptions import ValidationError
 from django.forms import TextInput
-from django.urls import reverse
 from django.utils.safestring import mark_safe
-from notifications_python_client import NotificationsAPIClient
 
 from sso.user.fields import PasswordField
+from sso.user.utils import notify_already_registered
 
 
 class SignupForm(forms.DirectoryComponentsFormMixin, allauth.account.forms.SignupForm):
@@ -77,29 +77,10 @@ class SignupForm(forms.DirectoryComponentsFormMixin, allauth.account.forms.Signu
         self.fields['password2'].widget.attrs['autocomplete'] = 'new-password'
         set_form_field_order(self, self.field_order)
 
-    @staticmethod
-    def notify_already_registered(email):
-        """
-        To prevent account enumeration in the signup form we do not inform the
-        user if the email is already registered (security requirement), instead
-        we send a notification with a link to password reset.
-        """
-        notifications_client = NotificationsAPIClient(settings.GOV_NOTIFY_API_KEY)
-
-        notifications_client.send_email_notification(
-            email_address=email,
-            template_id=settings.GOV_NOTIFY_ALREADY_REGISTERED_TEMPLATE_ID,
-            personalisation={
-                'login_url': (settings.SSO_BASE_URL + reverse('account_login')),
-                'password_reset_url': (settings.SSO_BASE_URL + reverse('account_reset_password')),
-                'contact_us_url': urls.domestic.CONTACT_US,
-            },
-        )
-
     def clean_email(self):
         value = super().clean_email()
         if EmailAddress.objects.filter(email__iexact=value).exists():
-            self.notify_already_registered(email=value)
+            notify_already_registered(email=value)
         return value
 
 
@@ -197,3 +178,11 @@ class ResetPasswordKeyForm(forms.DirectoryComponentsFormMixin, allauth.account.f
             label="Confirm password",
             label_suffix='',
         )
+
+    def clean_password1(self):
+        password1 = self.cleaned_data.get('password1')
+        try:
+            validate_password(password1)
+        except ValidationError as error:
+            self.add_error('password1', error)
+        return password1

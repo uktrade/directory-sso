@@ -4,9 +4,12 @@ import tldextract
 from allauth.account.utils import get_request_param
 from allauth.socialaccount.templatetags.socialaccount import ProviderLoginURLNode
 from directory_api_client import api_client
+from directory_constants import urls
 from django.conf import settings
 from django.core.exceptions import ObjectDoesNotExist
+from django.urls import reverse
 from django.utils.http import urlencode
+from notifications_python_client import NotificationsAPIClient
 
 from sso.user.models import LessonCompleted, Question, Service, ServicePage, UserAnswer, UserPageView
 
@@ -154,3 +157,22 @@ def set_questionnaire_answer(user, service, question_id, user_answer):
 
     except ObjectDoesNotExist:
         pass
+
+
+def notify_already_registered(email):
+    """
+    To prevent account enumeration we do not inform the user if the email is
+    already registered (security requirement), instead we send a notification
+    with a link to password reset.
+    """
+    notifications_client = NotificationsAPIClient(settings.GOV_NOTIFY_API_KEY)
+
+    notifications_client.send_email_notification(
+        email_address=email,
+        template_id=settings.GOV_NOTIFY_ALREADY_REGISTERED_TEMPLATE_ID,
+        personalisation={
+            'login_url': (settings.SSO_BASE_URL + reverse('account_login')),
+            'password_reset_url': (settings.SSO_BASE_URL + reverse('account_reset_password')),
+            'contact_us_url': urls.domestic.CONTACT_US,
+        },
+    )
