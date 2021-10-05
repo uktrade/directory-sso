@@ -9,6 +9,10 @@
 - Noticket - fix test
 - GP2-3074 - pipeline vfm survey add questions object
 
+### Hotfix
+- GP2-3260 - Password reset validation fix
+- GP2-3104 - Treating upper and lowercase emails as being the same from User creation API endpoint
+
 ## [8.4.0](https://github.com/uktrade/directory-sso/releases/tag/8.4.0)
 [Compare](https://github.com/uktrade/directory-sso/compare/8.4.0...8.4.0)
 

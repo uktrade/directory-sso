@@ -8,7 +8,7 @@ from rest_framework.response import Response
 from conf.signature import SignatureCheckPermission
 from core.authentication import SessionAuthentication
 from sso.user import serializers
-from sso.user.models import LessonCompleted, Service, UserData
+from sso.user.models import LessonCompleted, Service, User, UserData
 from sso.user.utils import (
     get_lesson_completed,
     get_page_view,
@@ -22,6 +22,14 @@ from sso.user.utils import (
 class UserCreateAPIView(CreateAPIView):
     serializer_class = serializers.CreateUserSerializer
     permission_classes = [SignatureCheckPermission]
+
+    def create(self, request, *args, **kwargs):
+        try:
+            User.objects.get(email__iexact=request.data.get('email'))
+        except ObjectDoesNotExist:
+            return super().create(request, *args, **kwargs)
+
+        return Response(status=status.HTTP_409_CONFLICT)
 
 
 class UserProfileCreateAPIView(CreateAPIView):

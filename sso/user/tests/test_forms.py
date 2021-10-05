@@ -87,6 +87,52 @@ def test_password_reset_form_email_required():
     assert REQUIRED_MESSAGE in form.errors['email']
 
 
+def test_password_reset_key_form_validations_required():
+    form = forms.ResetPasswordKeyForm(data={'password1': '', 'password2': ''})
+
+    assert form.is_valid() is False
+    assert REQUIRED_MESSAGE in form.errors['password1']
+    assert REQUIRED_MESSAGE in form.errors['password2']
+
+
+def test_password_reset_key_form_validations_mismatching():
+    mismatching_message = 'You must type the same password each time.'
+    form = forms.ResetPasswordKeyForm(data={'password1': 'onetwothree123', 'password2': 'threetwoone321'})
+
+    assert form.is_valid() is False
+    assert mismatching_message in form.errors['password2']
+
+
+def test_password_reset_key_form_validations_too_short():
+    too_short_message = 'This password is too short. It must contain at least 10 characters.'
+    form = forms.ResetPasswordKeyForm(data={'password1': 'one1', 'password2': 'one1'})
+
+    assert form.is_valid() is False
+    assert too_short_message in form.errors['password1']
+
+
+def test_password_reset_key_form_validations_too_common():
+    too_common_message = 'This password is too common.'
+    form = forms.ResetPasswordKeyForm(data={'password1': 'password123', 'password2': 'password123'})
+
+    assert form.is_valid() is False
+    assert too_common_message in form.errors['password1']
+
+
+def test_password_reset_key_form_validations_entirely_numeric():
+    entirely_numeric_message = 'This password is entirely numeric.'
+    form = forms.ResetPasswordKeyForm(data={'password1': '0123456789', 'password2': '0123456789'})
+
+    assert form.is_valid() is False
+    assert entirely_numeric_message in form.errors['password1']
+
+
+def test_password_reset_key_form_validations_valid():
+    form = forms.ResetPasswordKeyForm(data={'password1': 'onetwothree1', 'password2': 'onetwothree1'})
+
+    assert form.is_valid() is True
+
+
 def test_signup_rejects_missing_terms_agreed():
     form = forms.SignupForm(data={})
 
