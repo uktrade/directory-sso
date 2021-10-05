@@ -2,6 +2,7 @@
 
 ## Pre release
 ### Enhancements
+- GP2-3104 - Treating upper and lowercase emails as being the same from User creation API endpoint
 - GP2-3017 - Added test for partial user profile update
 - GP2-2445 - JSON widget for VFM answer admin
 - GP2-2867 - Dockerise d-sso
