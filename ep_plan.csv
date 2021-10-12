@@ -1,0 +1,278 @@
+sso_id,export_countries,export_commodity_codes
+213403,"[{'country_name': 'Italy', 'country_iso2_code': None}]","[{'commodity_code': '080810', 'commodity_name': 'apple'}]"
+213411,[],[]
+213423,"[{'country_name': 'Iceland', 'country_iso2_code': 'IS'}]","[{'commodity_code': '220300', 'commodity_name': 'gin'}]"
+213417,"[{'country_name': 'Netherlands', 'country_iso2_code': 'NL'}]",[]
+213426,"[{'country_name': 'South Africa', 'country_iso2_code': 'ZA'}]","[{'commodity_code': '220850', 'commodity_name': 'gin'}]"
+213425,"[{'country_name': 'Senegal', 'country_iso2_code': 'SN'}]","[{'commodity_code': '160210', 'commodity_name': 'meat'}]"
+213422,[],"[{'commodity_code': '180620', 'commodity_name': 'chocolate'}]"
+213431,[],"[{'commodity_code': '040610', 'commodity_name': 'cheese'}]"
+213441,"[{'country_name': 'Afghanistan', 'country_iso2_code': 'AF'}]","[{'commodity_code': '152200', 'commodity_name': 'fat, oil, wax and margarine'}]"
+213432,"[{'country_name': 'Italy', 'country_iso2_code': None}]",[]
+213448,[],"[{'commodity_code': '180690', 'commodity_name': 'chocolate'}]"
+213449,"[{'country_name': 'Iran', 'country_iso2_code': 'IR'}]","[{'commodity_code': '330119', 'commodity_name': 'essential oil'}]"
+213427,"[{'country_name': 'Jamaica', 'country_iso2_code': None}]","[{'commodity_code': '220850', 'commodity_name': 'gin'}]"
+213439,[],"[{'commodity_code': '020220', 'commodity_name': 'beef'}]"
+213452,"[{'region': 'China and Hong Kong', 'country_name': 'China', 'country_iso2_code': 'CN'}]","[{'commodity_code': '040610', 'commodity_name': 'cheese'}]"
+213453,"[{'region': 'Latin America and Caribbean', 'country_name': 'Jamaica', 'country_iso2_code': 'JM'}]","[{'commodity_code': '500710', 'commodity_name': 'fabric'}]"
+213456,[],"[{'commodity_code': '490199', 'commodity_name': 'book'}]"
+213458,"[{'region': 'Europe', 'country_name': 'Austria', 'country_iso2_code': 'AT'}]",[]
+213460,[],[]
+213461,"[{'region': 'Europe', 'country_name': 'Italy', 'country_iso2_code': None}]",[]
+213463,[],[]
+210565,"[{'region': 'Europe', 'country_name': 'France', 'country_iso2_code': None}]","[{'commodity_code': '070190', 'commodity_name': 'potato'}]"
+213469,"[{'region': 'Africa', 'country_name': 'Angola', 'country_iso2_code': 'AO'}]","[{'commodity_code': '220850', 'commodity_name': 'gin'}]"
+213465,"[{'region': 'Europe', 'country_name': 'Spain', 'country_iso2_code': None}]",[]
+213471,"[{'region': 'Europe', 'country_name': 'Albania', 'country_iso2_code': 'AL'}]","[{'commodity_code': '220850', 'commodity_name': 'gin'}]"
+213472,"[{'region': 'Africa', 'country_name': 'Chad', 'country_iso2_code': 'TD'}]","[{'commodity_code': '220850', 'commodity_name': 'gin'}]"
+213473,"[{'region': 'Europe', 'country_name': 'Akrotiri', 'country_iso2_code': 'XQZ'}]","[{'commodity_code': '220850', 'commodity_name': 'gin'}]"
+213476,"[{'region': 'Asia Pacific', 'country_name': 'Japan', 'country_iso2_code': 'JP'}]","[{'commodity_code': '220830', 'commodity_name': 'whisky'}]"
+213477,"[{'region': 'Europe', 'country_name': 'Austria', 'country_iso2_code': 'AT'}]","[{'commodity_code': '220830', 'commodity_name': 'whisky'}]"
+213468,"[{'region': 'North America', 'country_name': 'Kingman Reef', 'country_iso2_code': 'UM-89'}]",[]
+213466,"[{'region': 'Latin America and Caribbean', 'country_name': 'Jamaica', 'country_iso2_code': None}]",[]
+213486,"[{'region': 'Africa', 'country_name': 'South Africa', 'country_iso2_code': 'ZA'}]","[{'commodity_code': '220850', 'commodity_name': 'gin'}]"
+213487,"[{'region': 'Africa', 'country_name': 'Mauritius', 'country_iso2_code': 'MU'}]","[{'commodity_code': '010619', 'commodity_name': 'dog'}]"
+213489,"[{'region': 'Africa', 'country_name': 'South Africa', 'country_iso2_code': 'ZA'}]","[{'commodity_code': '220300', 'commodity_name': 'alcoholic beer'}]"
+213494,"[{'region': 'North America', 'country_name': 'Palmyra Atoll', 'country_iso2_code': 'UM-95'}]",[]
+206734,"[{'region': 'Europe', 'country_name': 'Greenland', 'country_iso2_code': 'GL'}]","[{'commodity_code': '090210', 'commodity_name': 'tea'}]"
+213637,"[{'region': 'Africa', 'country_name': 'Angola', 'country_iso2_code': 'AO'}]",[]
+213638,"[{'region': 'Europe', 'country_name': 'Germany', 'country_iso2_code': 'DE'}]","[{'commodity_code': '701310', 'commodity_name': 'Container'}]"
+213639,"[{'region': 'Europe', 'country_name': 'Akrotiri', 'country_iso2_code': 'XQZ'}]",[]
+213642,[],[]
+213643,"[{'region': 'Africa', 'country_name': 'Angola', 'country_iso2_code': 'AO'}]",[]
+213645,"[{'region': 'Europe', 'country_name': 'Netherlands', 'country_iso2_code': 'NL'}]","[{'commodity_code': '040690', 'commodity_name': 'Feta'}]"
+213651,[],[]
+213502,[],"[{'commodity_code': '090210', 'commodity_name': 'Tea'}]"
+213653,"[{'region': 'Eastern Europe and Central Asia', 'country_name': 'Armenia', 'country_iso2_code': 'AM'}]",[]
+213654,"[{'region': 'Europe', 'country_name': 'Svalbard and Jan Mayen', 'country_iso2_code': 'SJ'}]",[]
+213457,[],"[{'commodity_code': '190220', 'commodity_name': 'Pasta'}]"
+213657,"[{'region': 'Eastern Europe and Central Asia', 'country_name': 'Russia', 'country_iso2_code': 'RU'}]","[{'commodity_code': '040690', 'commodity_name': 'Feta'}]"
+213663,"[{'region': 'Africa', 'country_name': 'Angola', 'country_iso2_code': 'AO'}]",[]
+213666,"[{'region': 'Africa', 'country_name': 'Benin', 'country_iso2_code': 'BJ'}]","[{'commodity_code': '090112', 'commodity_name': 'Coffee'}]"
+213656,[],"[{'commodity_code': '210111', 'commodity_name': 'Coffee'}]"
+213667,"[{'region': 'Africa', 'country_name': 'Congo (Democratic Republic)', 'country_iso2_code': 'CD'}]","[{'commodity_code': '080810', 'commodity_name': 'Apple'}]"
+213668,"[{'region': 'Europe', 'country_name': 'Netherlands', 'country_iso2_code': 'NL'}]","[{'commodity_code': '220850', 'commodity_name': 'Gin'}]"
+213675,"[{'region': 'Europe', 'country_name': 'Albania', 'country_iso2_code': 'AL'}]",[]
+213676,"[{'region': 'China and Hong Kong', 'country_name': 'China', 'country_iso2_code': 'CN'}]",[]
+213678,"[{'region': 'Europe', 'country_name': 'Belgium', 'country_iso2_code': 'BE'}]","[{'commodity_code': '220850', 'commodity_name': 'Gin'}]"
+213681,"[{'region': 'Europe', 'country_name': 'Italy', 'country_iso2_code': 'IT'}]","[{'commodity_code': '040610', 'commodity_name': 'Cheese'}]"
+213682,"[{'region': 'Africa', 'country_name': 'Algeria', 'country_iso2_code': 'DZ'}]",[]
+203931,"[{'region': 'Europe', 'country_name': 'France', 'country_iso2_code': 'FR'}]","[{'commodity_code': '220850', 'commodity_name': 'gin'}]"
+213679,"[{'region': 'Eastern Europe and Central Asia', 'country_name': 'Russia', 'country_iso2_code': 'RU'}]","[{'commodity_code': '040610', 'commodity_name': 'Cheese'}]"
+213688,[],[]
+213413,"[{'region': 'Europe', 'country_name': 'Estonia', 'country_iso2_code': 'EE'}]","[{'commodity_code': '080810', 'commodity_name': 'Apple'}]"
+213694,"[{'region': 'China and Hong Kong', 'country_name': 'China', 'country_iso2_code': 'CN'}]","[{'commodity_code': '871120', 'commodity_name': 'Land vehicle'}]"
+213710,[],[]
+213690,[],"[{'commodity_code': '090121', 'commodity_name': 'Coffee bean'}]"
+213719,"[{'region': 'Europe', 'country_name': 'Belgium', 'country_iso2_code': 'BE'}]","[{'commodity_code': '220850', 'commodity_name': 'Gin'}]"
+213716,"[{'region': 'South Asia', 'country_name': 'India', 'country_iso2_code': 'IN'}]","[{'commodity_code': '410221', 'commodity_name': 'Leather'}]"
+213720,"[{'region': 'Africa', 'country_name': 'Mauritius', 'country_iso2_code': 'MU'}]","[{'commodity_code': '040630', 'commodity_name': 'Cheese'}]"
+213718,[],"[{'commodity_code': '040610', 'commodity_name': 'Cheese'}]"
+213647,"[{'region': 'Europe', 'country_name': 'Germany', 'country_iso2_code': 'DE'}]","[{'commodity_code': '220850', 'commodity_name': 'Gin'}]"
+189233,"[{'region': 'China and Hong Kong', 'country_name': 'China', 'country_iso2_code': 'CN'}]","[{'commodity_code': '220300', 'commodity_name': 'Alcoholic beer'}]"
+213724,"[{'region': 'Europe', 'country_name': 'Spain', 'country_iso2_code': 'ES'}]","[{'commodity_code': '220850', 'commodity_name': 'Gin'}]"
+213858,[],"[{'commodity_code': '500720', 'commodity_name': 'Silk stuff'}]"
+213859,"[{'region': 'China and Hong Kong', 'country_name': 'China', 'country_iso2_code': 'CN'}]","[{'commodity_code': '190590', 'commodity_name': 'Cake'}]"
+170583,"[{'region': 'Europe', 'country_name': 'Netherlands', 'country_iso2_code': 'NL'}]","[{'commodity_code': '081190', 'commodity_name': 'Wood ink'}]"
+213686,"[{'region': 'Europe', 'country_name': 'Netherlands', 'country_iso2_code': 'NL'}]","[{'commodity_code': '860791', 'commodity_name': 'Shoe'}]"
+213860,"[{'region': 'South Asia', 'country_name': 'Bhutan', 'country_iso2_code': 'BT'}]","[{'commodity_code': '851310', 'commodity_name': 'Lamp and lighting fitting'}]"
+213862,"[{'region': 'Latin America and Caribbean', 'country_name': 'Jamaica', 'country_iso2_code': 'JM'}]","[{'commodity_code': '950662', 'commodity_name': 'Basketball'}]"
+213864,"[{'region': 'Europe', 'country_name': 'Germany', 'country_iso2_code': 'DE'}]","[{'commodity_code': '090122', 'commodity_name': ""Dominic's Coffee""}]"
+213865,[],"[{'commodity_code': '611595', 'commodity_name': 'Socks'}]"
+213867,[],[]
+213868,[],[]
+213870,"[{'region': 'Europe', 'country_name': 'Belgium', 'country_iso2_code': 'BE'}]","[{'commodity_code': '090111', 'commodity_name': 'shirt'}]"
+213671,[],[]
+207243,"[{'region': 'Middle East, Afghanistan and Pakistan', 'country_name': 'Afghanistan', 'country_iso2_code': 'AF'}]","[{'commodity_code': '190410', 'commodity_name': 'Breakfast cereal'}]"
+213873,[],[]
+207246,"[{'region': 'North America', 'country_name': 'United States', 'country_iso2_code': 'US'}]","[{'commodity_code': '040610', 'commodity_name': 'Cheese'}]"
+213875,[],[]
+213876,[],[]
+213877,[],[]
+213878,[],[]
+213879,[],[]
+213880,[],[]
+213881,[],"[{'commodity_code': '220850', 'commodity_name': 'Gin'}]"
+205715,[],[]
+213883,[],[]
+213884,[],[]
+204699,[],[]
+213435,[],[]
+213885,[],[]
+213887,[],[]
+213890,[],[]
+213892,[],[]
+213894,[],[]
+213896,[],[]
+213897,[],[]
+214030,[],[]
+214033,[],[]
+205208,[],"[{'commodity_code': '080450', 'commodity_name': 'Mango'}]"
+214032,"[{'region': 'Europe', 'country_name': 'Germany', 'country_iso2_code': 'DE'}]","[{'commodity_code': '220850', 'commodity_name': 'Gin'}]"
+213705,[],[]
+214234,[],[]
+214368,[],[]
+214369,[],[]
+214370,"[{'region': 'Asia Pacific', 'country_name': 'Australia', 'country_iso2_code': 'AU'}]",[]
+214437,[],[]
+214438,[],"[{'commodity_code': '190410', 'commodity_name': 'Toasties'}]"
+214639,[],"[{'commodity_code': '081110', 'commodity_name': 'Strawberry'}]"
+108350,"[{'region': 'Africa', 'country_name': 'Algeria', 'country_iso2_code': 'DZ'}]","[{'commodity_code': '190590', 'commodity_name': 'Cake'}]"
+213871,"[{'region': 'Europe', 'country_name': 'Netherlands', 'country_iso2_code': 'NL'}]","[{'commodity_code': '080310', 'commodity_name': 'Fruit'}]"
+213891,"[{'region': 'Africa', 'country_name': 'Eswatini', 'country_iso2_code': 'SZ'}]","[{'commodity_code': '940179', 'commodity_name': 'Seat'}]"
+208528,"[{'region': 'China and Hong Kong', 'country_name': 'China', 'country_iso2_code': 'CN'}]","[{'commodity_code': '220300', 'commodity_name': 'Alcoholic beer'}]"
+213889,"[{'region': 'South Asia', 'country_name': 'India', 'country_iso2_code': 'IN'}]","[{'commodity_code': '040210', 'commodity_name': 'Milk'}]"
+213886,"[{'region': 'South Asia', 'country_name': 'India', 'country_iso2_code': 'IN'}]","[{'commodity_code': '040210', 'commodity_name': 'Milk'}]"
+213872,"[{'region': 'China and Hong Kong', 'country_name': 'China', 'country_iso2_code': 'CN'}]","[{'commodity_code': '690590', 'commodity_name': 'Tile'}]"
+213866,[],[]
+214034,"[{'region': 'South Asia', 'country_name': 'India', 'country_iso2_code': 'IN'}]","[{'commodity_code': '220850', 'commodity_name': 'Gin'}]"
+214707,"[{'region': 'Africa', 'country_name': 'Algeria', 'country_iso2_code': 'DZ'}]","[{'commodity_code': '090210', 'commodity_name': 'Tea'}]"
+214640,"[{'region': 'Africa', 'country_name': 'Algeria', 'country_iso2_code': 'DZ'}]","[{'commodity_code': '870321', 'commodity_name': 'Land vehicle'}]"
+214840,[],[]
+214842,[],[]
+215173,[],"[{'commodity_code': '040610', 'commodity_name': 'Cheese'}]"
+213445,"[{'region': 'Asia Pacific', 'country_name': 'Japan', 'country_iso2_code': 'JP'}]","[{'commodity_code': '210690', 'commodity_name': 'Vegan sushi'}]"
+215441,[],[]
+215442,[],[]
+213438,[],[]
+215240,"[{'region': 'Europe', 'country_name': 'Netherlands', 'country_iso2_code': 'NL'}]","[{'commodity_code': '220190', 'commodity_name': 'Water'}]"
+213882,"[{'region': 'Europe', 'country_name': 'Belgium', 'country_iso2_code': 'BE'}]","[{'commodity_code': '081010', 'commodity_name': 'Strawberry'}]"
+215577,[],[]
+178274,[],[]
+215580,[],[]
+213442,"[{'region': 'Africa', 'country_name': 'Mauritius', 'country_iso2_code': 'MU'}]","[{'commodity_code': '871200', 'commodity_name': 'Bicycle'}]"
+212618,"[{'region': 'Europe', 'country_name': 'Italy', 'country_iso2_code': 'IT'}]","[{'commodity_code': '070190', 'commodity_name': 'Potato'}]"
+215582,[],[]
+215583,[],[]
+171714,"[{'region': 'Africa', 'country_name': 'Seychelles', 'country_iso2_code': 'SC'}]","[{'commodity_code': '190590', 'commodity_name': 'Cake'}]"
+215587,[],[]
+213680,[],[]
+213863,[],[]
+215586,"[{'region': 'Europe', 'country_name': 'Italy', 'country_iso2_code': 'IT'}]","[{'commodity_code': '081010', 'commodity_name': 'strawberries'}]"
+215589,[],[]
+215590,[],[]
+215592,[],[]
+215593,[],[]
+215595,[],[]
+215596,[],[]
+215600,[],[]
+215602,"[{'region': 'Europe', 'country_name': 'Czechia', 'country_iso2_code': 'CZ'}]","[{'commodity_code': '846792', 'commodity_name': 'Parts'}]"
+215588,[],[]
+215603,[],[]
+215604,[],[]
+215605,[],[]
+213396,"[{'region': 'Europe', 'country_name': 'Croatia', 'country_iso2_code': 'HR'}]","[{'commodity_code': '081190', 'commodity_name': 'Apple'}]"
+210821,"[{'region': 'Africa', 'country_name': 'Algeria', 'country_iso2_code': 'DZ'}]","[{'commodity_code': '040610', 'commodity_name': 'Cheese'}]"
+215609,[],[]
+215610,[],[]
+215611,[],[]
+215612,[],[]
+215613,[],[]
+215614,[],[]
+215615,[],[]
+215616,[],[]
+215617,[],[]
+215618,[],[]
+215619,[],[]
+215622,[],[]
+215624,[],[]
+215623,[],[]
+215625,[],[]
+215626,[],[]
+215630,[],[]
+191489,"[{'region': 'South Asia', 'country_name': 'Maldives', 'country_iso2_code': 'MV'}]","[{'commodity_code': '220850', 'commodity_name': 'Gin'}]"
+215606,"[{'region': 'Europe', 'country_name': 'Germany', 'country_iso2_code': 'DE'}]","[{'commodity_code': '080830', 'commodity_name': 'Pear'}]"
+215631,"[{'region': 'Africa', 'country_name': 'Comoros', 'country_iso2_code': 'KM'}]","[{'commodity_code': '220850', 'commodity_name': 'Gin'}]"
+215632,"[{'region': 'Eastern Europe and Central Asia', 'country_name': 'Turkey', 'country_iso2_code': 'TR'}]","[{'commodity_code': '220850', 'commodity_name': 'Gin'}]"
+215633,[],[]
+215578,"[{'region': 'Asia Pacific', 'country_name': 'Japan', 'country_iso2_code': 'JP'}]","[{'commodity_code': '220300', 'commodity_name': 'Ice cold beer beer beer beers'}]"
+215635,[],[]
+215636,[],[]
+215637,[],"[{'commodity_code': '220850', 'commodity_name': 'Gin'}]"
+213717,[],[]
+108556,"[{'region': 'Europe', 'country_name': 'Belgium', 'country_iso2_code': 'BE'}]","[{'commodity_code': '090121', 'commodity_name': 'my beans'}]"
+213677,"[{'region': 'Europe', 'country_name': 'Netherlands', 'country_iso2_code': 'NL'}]","[{'commodity_code': '710229', 'commodity_name': 'Fake ice'}]"
+171627,[],"[{'commodity_code': '200899', 'commodity_name': 'Chickpea'}]"
+180793,"[{'region': 'Europe', 'country_name': 'Belgium', 'country_iso2_code': 'BE'}]","[{'commodity_code': '220300', 'commodity_name': 'Alcoholic beer'}]"
+213412,"[{'region': 'Europe', 'country_name': 'Germany', 'country_iso2_code': 'DE'}]","[{'commodity_code': '220850', 'commodity_name': 'Gin'}]"
+215638,"[{'region': 'Europe', 'country_name': 'Germany', 'country_iso2_code': 'DE'}]","[{'commodity_code': '081340', 'commodity_name': '081340 Strawberry'}]"
+213470,"[{'region': 'Europe', 'country_name': 'Belgium', 'country_iso2_code': None}]","[{'commodity_code': '220850', 'commodity_name': 'gin'}]"
+215639,"[{'region': 'Asia Pacific', 'country_name': 'Australia', 'country_iso2_code': 'AU'}]","[{'commodity_code': '220850', 'commodity_name': 'Gin'}]"
+213446,"[{'region': 'South Asia', 'country_name': 'India', 'country_iso2_code': 'IN'}]","[{'commodity_code': '090111', 'commodity_name': 'Coffee'}]"
+215643,"[{'region': 'Europe', 'country_name': 'Germany', 'country_iso2_code': 'DE'}]","[{'commodity_code': '100610', 'commodity_name': 'Rice'}]"
+215644,[],"[{'commodity_code': '071021', 'commodity_name': 'Frozen green peas'}]"
+215649,"[{'region': 'Europe', 'country_name': 'Belgium', 'country_iso2_code': 'BE'}]","[{'commodity_code': '220850', 'commodity_name': 'Gin'}]"
+215650,"[{'region': 'Europe', 'country_name': 'Belgium', 'country_iso2_code': 'BE'}]","[{'commodity_code': '220850', 'commodity_name': 'Gin'}]"
+213861,"[{'region': 'Asia Pacific', 'country_name': 'Japan', 'country_iso2_code': 'JP'}]","[{'commodity_code': '820559', 'commodity_name': 'Shovel spade'}]"
+215654,[],[]
+215653,[],"[{'commodity_code': '081330', 'commodity_name': 'Apple'}]"
+215655,[],"[{'commodity_code': '080810', 'commodity_name': 'Apple'}]"
+215656,"[{'region': 'Eastern Europe and Central Asia', 'country_name': 'Russia', 'country_iso2_code': 'RU'}]","[{'commodity_code': '040610', 'commodity_name': 'Cheese'}]"
+215657,"[{'region': 'Europe', 'country_name': 'Greece', 'country_iso2_code': 'GR'}]","[{'commodity_code': '021099', 'commodity_name': 'Chicken'}]"
+201395,"[{'region': 'Europe', 'country_name': 'Czechia', 'country_iso2_code': 'CZ'}]","[{'commodity_code': '090122', 'commodity_name': 'Coffee bean'}]"
+204443,"[{'region': 'Europe', 'country_name': 'Germany', 'country_iso2_code': 'DE'}]","[{'commodity_code': '080450', 'commodity_name': 'Mango'}]"
+215659,"[{'region': 'Europe', 'country_name': 'Greece', 'country_iso2_code': 'GR'}]","[{'commodity_code': '020120', 'commodity_name': 'Beef'}]"
+215660,[],[]
+215661,[],[]
+215634,"[{'region': 'Eastern Europe and Central Asia', 'country_name': 'Turkey', 'country_iso2_code': 'TR'}]","[{'commodity_code': '081330', 'commodity_name': 'Apple'}]"
+215663,"[{'region': 'Europe', 'country_name': 'Belgium', 'country_iso2_code': 'BE'}]","[{'commodity_code': '081010', 'commodity_name': 'Strawberry'}]"
+215662,"[{'region': 'Europe', 'country_name': 'Spain', 'country_iso2_code': 'ES'}]","[{'commodity_code': '040610', 'commodity_name': 'Cheese'}]"
+215664,[],"[{'commodity_code': '040610', 'commodity_name': 'Cheese'}]"
+116418,"[{'region': 'Africa', 'country_name': 'Comoros', 'country_iso2_code': 'KM'}]","[{'commodity_code': '391739', 'commodity_name': 'Drinking straw'}]"
+215665,[],"[{'commodity_code': '040610', 'commodity_name': 'Cheese'}]"
+215668,[],[]
+215669,[],[]
+215670,[],[]
+215671,[],[]
+215672,[],[]
+215673,[],[]
+215674,[],[]
+215675,[],[]
+215666,"[{'region': 'Europe', 'country_name': 'Italy', 'country_iso2_code': 'IT'}]","[{'commodity_code': '040610', 'commodity_name': 'Cheese'}]"
+211590,"[{'region': 'Africa', 'country_name': 'Benin', 'country_iso2_code': 'BJ'}]","[{'commodity_code': '080810', 'commodity_name': 'Apple'}]"
+215650,"[{'region': 'Europe', 'country_name': 'France', 'country_iso2_code': 'FR'}]","[{'commodity_code': '200410', 'commodity_name': 'Food chips'}]"
+215599,"[{'region': 'Europe', 'country_name': 'Netherlands', 'country_iso2_code': 'NL'}]","[{'commodity_code': '080830', 'commodity_name': 'Pear'}]"
+213697,"[{'region': 'Eastern Europe and Central Asia', 'country_name': 'Russia', 'country_iso2_code': 'RU'}]","[{'commodity_code': '040610', 'commodity_name': 'Cheese'}]"
+206989,"[{'region': 'Asia Pacific', 'country_name': 'Philippines', 'country_iso2_code': 'PH'}]","[{'commodity_code': '090121', 'commodity_name': 'Coffee bean'}]"
+206989,"[{'region': 'Europe', 'country_name': 'Italy', 'country_iso2_code': 'IT'}]","[{'commodity_code': '040630', 'commodity_name': 'Cheese (040630)'}]"
+213697,"[{'region': 'Europe', 'country_name': 'Germany', 'country_iso2_code': 'DE'}]","[{'commodity_code': '040610', 'commodity_name': 'Cheese'}]"
+213721,"[{'region': 'Eastern Europe and Central Asia', 'country_name': 'Russia', 'country_iso2_code': 'RU'}]","[{'commodity_code': '220850', 'commodity_name': 'Gin'}]"
+199367,"[{'region': 'Europe', 'country_name': 'Netherlands', 'country_iso2_code': 'NL'}]","[{'commodity_code': '220850', 'commodity_name': 'Gin'}]"
+215702,"[{'region': 'Europe', 'country_name': 'India', 'country_iso2_code': 'IN'}]","[{'commodity_code': '220300', 'commodity_name': 'Alcoholic beer'}]"
+215702,"[{'region': 'Africa', 'country_name': 'Angola', 'country_iso2_code': 'AO'}]","[{'commodity_code': '220850', 'commodity_name': 'Gin'}]"
+215712,"[{'region': 'Eastern Europe and Central Asia', 'country_name': 'Russia', 'country_iso2_code': 'RU'}]","[{'commodity_code': '040610', 'commodity_name': 'Cheese'}]"
+213418,"[{'region': 'Africa', 'country_name': 'Benin', 'country_iso2_code': 'BJ'}]","[{'commodity_code': '030431', 'commodity_name': 'Meat'}]"
+213418,"[{'region': 'Asia Pacific', 'country_name': 'Australia', 'country_iso2_code': 'AU'}]","[{'commodity_code': '960810', 'commodity_name': 'Pen'}]"
+213418,"[{'region': 'Africa', 'country_name': 'Algeria', 'country_iso2_code': 'DZ'}]","[{'commodity_code': '610520', 'commodity_name': 'Shirt'}]"
+213418,"[{'region': 'North America', 'country_name': 'United States', 'country_iso2_code': 'US'}]","[{'commodity_code': '960810', 'commodity_name': 'Pen'}]"
+213697,"[{'region': 'Europe', 'country_name': 'Germany', 'country_iso2_code': 'DE'}]","[{'commodity_code': '940152', 'commodity_name': 'Chair'}]"
+213418,"[{'region': 'Europe', 'country_name': 'Italy', 'country_iso2_code': 'IT'}]","[{'commodity_code': '060220', 'commodity_name': 'Tree'}]"
+213418,"[{'region': 'Asia Pacific', 'country_name': 'Singapore', 'country_iso2_code': 'SG'}]","[{'commodity_code': '420229', 'commodity_name': 'Handbags, shopping bags, travelling-bags, and similar articles'}]"
+213418,"[{'region': 'Europe', 'country_name': 'France', 'country_iso2_code': 'FR'}]","[{'commodity_code': '610520', 'commodity_name': 'Shirt'}]"
+213418,"[{'region': 'Europe', 'country_name': 'Belgium', 'country_iso2_code': 'BE'}]","[{'commodity_code': '090111', 'commodity_name': 'Coffee'}]"
+213697,"[{'region': 'Europe', 'country_name': 'Sweden', 'country_iso2_code': 'SE'}]","[{'commodity_code': '040610', 'commodity_name': 'Cheese'}]"
+213697,"[{'region': 'Europe', 'country_name': 'Germany', 'country_iso2_code': 'DE'}]","[{'commodity_code': '040610', 'commodity_name': 'Cheese'}]"
+213697,"[{'region': 'Africa', 'country_name': 'Algeria', 'country_iso2_code': 'DZ'}]","[{'commodity_code': '210111', 'commodity_name': 'tea'}]"
+215724,"[{'region': 'Europe', 'country_name': 'Germany', 'country_iso2_code': 'DE'}]","[{'commodity_code': '090122', 'commodity_name': 'Coffee bean'}]"
+213418,"[{'region': 'Africa', 'country_name': 'Algeria', 'country_iso2_code': 'DZ'}]","[{'commodity_code': '040610', 'commodity_name': 'Cheese'}]"
+108350,"[{'region': 'Middle East, Afghanistan and Pakistan', 'country_name': 'Saudi Arabia', 'country_iso2_code': 'SA'}]","[{'commodity_code': '930629', 'commodity_name': 'Bullet'}]"
+215725,"[{'region': 'Europe', 'country_name': 'Germany', 'country_iso2_code': 'DE'}]","[{'commodity_code': '081010', 'commodity_name': 'Strawberry'}]"
+213697,"[{'region': 'Europe', 'country_name': 'Germany', 'country_iso2_code': 'DE'}]","[{'commodity_code': '940152', 'commodity_name': 'Chair'}]"
+206989,"[{'region': 'Europe', 'country_name': 'France', 'country_iso2_code': 'FR'}]","[{'commodity_code': '040630', 'commodity_name': 'Cheese'}]"
+206989,"[{'region': 'China and Hong Kong', 'country_name': 'China', 'country_iso2_code': 'CN'}]","[{'commodity_code': '040510', 'commodity_name': 'Butter'}]"
+215734,"[{'region': 'Europe', 'country_name': 'Germany', 'country_iso2_code': 'DE'}]","[{'commodity_code': '220300', 'commodity_name': 'Alcoholic beer'}]"
+206989,"[{'region': 'Europe', 'country_name': 'Germany', 'country_iso2_code': 'DE'}]","[{'commodity_code': '040610', 'commodity_name': 'Cheese'}]"
+215761,"[{'region': 'Asia Pacific', 'country_name': 'Japan', 'country_iso2_code': 'JP'}]","[{'commodity_code': '020329', 'commodity_name': 'Bacon'}]"
+215621,"[{'region': 'Europe', 'country_name': 'Netherlands', 'country_iso2_code': 'NL'}]","[{'commodity_code': '300290', 'commodity_name': 'Lactic acid bacteria'}]"
+213503,"[{'region': 'Africa', 'country_name': 'Algeria', 'country_iso2_code': 'DZ'}]","[{'commodity_code': '610332', 'commodity_name': 'Garment likely to be of textile composition'}]"
+213888,"[{'region': 'Europe', 'country_name': 'Netherlands', 'country_iso2_code': 'NL'}]","[{'commodity_code': '081010', 'commodity_name': 'Strawberry'}]"
+211850,"[{'region': 'Europe', 'country_name': 'Belgium', 'country_iso2_code': 'BE'}]","[{'commodity_code': '200520', 'commodity_name': 'Potato chip'}]"
+215651,"[{'region': 'Europe', 'country_name': 'France', 'country_iso2_code': 'FR'}]","[{'commodity_code': '871160', 'commodity_name': 'E-Bike Rad 6000'}]"
+199367,"[{'region': 'Europe', 'country_name': 'Germany', 'country_iso2_code': 'DE'}]","[{'commodity_code': '220850', 'commodity_name': 'Water'}]"
+215700,"[{'region': 'Europe', 'country_name': 'Belgium', 'country_iso2_code': 'BE'}]","[{'commodity_code': '081190', 'commodity_name': 'Apple'}]"
+215599,"[{'region': 'Europe', 'country_name': 'Italy', 'country_iso2_code': 'IT'}]","[{'commodity_code': '080430', 'commodity_name': 'Pineapple'}]"
+213697,"[{'region': 'Europe', 'country_name': 'Italy', 'country_iso2_code': 'IT'}]","[{'commodity_code': '090111', 'commodity_name': 'Coffee'}]"
+213697,"[{'region': 'Europe', 'country_name': 'Germany', 'country_iso2_code': 'DE'}]","[{'commodity_code': '940152', 'commodity_name': 'Chair'}]"
+215621,"[{'region': 'Europe', 'country_name': 'Netherlands', 'country_iso2_code': 'NL'}]","[{'commodity_code': '021020', 'commodity_name': 'Beef'}]"
+203675,"[{'region': 'Europe', 'country_name': 'Italy', 'country_iso2_code': 'IT'}]","[{'commodity_code': '040610', 'commodity_name': 'Cheese'}]"
+215599,"[{'region': 'North America', 'country_name': 'United States', 'country_iso2_code': 'US'}]","[{'commodity_code': '440711', 'commodity_name': 'Wood'}]"
