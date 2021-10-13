@@ -102,6 +102,7 @@ staticfiles/
 node_modules
 
 .pytest_cache
+.python-version
 
 # Docker
 media
