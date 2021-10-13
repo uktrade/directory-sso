@@ -1,4 +1,5 @@
-import csv, ast
+import csv
+import ast
 from sso.user.models import UserData, User
 from django.core.exceptions import ObjectDoesNotExist
 
