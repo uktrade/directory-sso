@@ -1,0 +1,11 @@
+sso_id,export_countries,export_commodity_codes
+1,"[{'country_name': 'Italy', 'country_iso2_code': None}]","[{'commodity_code': '080810', 'commodity_name': 'apple'}]"
+2,[],[]
+3,"[{'country_name': 'Iceland', 'country_iso2_code': 'IS'}]","[{'commodity_code': '220300', 'commodity_name': 'gin'}]"
+4,"[{'country_name': 'Netherlands', 'country_iso2_code': 'NL'}]",[]
+5,"[{'country_name': 'South Africa', 'country_iso2_code': 'ZA'}]","[{'commodity_code': '220850', 'commodity_name': 'gin'}]"
+6,"[{'country_name': 'Senegal', 'country_iso2_code': 'SN'}]","[{'commodity_code': '160210', 'commodity_name': 'meat'}]"
+7,[],"[{'commodity_code': '180620', 'commodity_name': 'chocolate'}]"
+8,[],"[{'commodity_code': '040610', 'commodity_name': 'cheese'}]"
+9,"[{'country_name': 'Afghanistan', 'country_iso2_code': 'AF'}]","[{'commodity_code': '152200', 'commodity_name': 'fat, oil, wax and margarine'}]"
+15,"[{'country_name': 'Italy', 'country_iso2_code': None}]",[]
