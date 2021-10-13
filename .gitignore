@@ -102,12 +102,3 @@ staticfiles/
 node_modules
 
 .pytest_cache
-
-# Docker
-media
-config/.env
-config/env/secrets-do-not-commit
-dockerise/dbfiles
-# Python, we should fix these by not creating them with 'make secrets'
-dev
-config/env/secrets-do-not-commit-e

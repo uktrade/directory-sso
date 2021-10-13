@@ -7,9 +7,6 @@
 - GP2-3152 - Verification code rate limiting + reduced expiry time
 - No-ticket - removed adhoc script for data notification
 - GP2-3074 - pipeline vfm survey add questions object
-- GP2-3646 - Migrate existing product and market data to the product/market baskets
-
-
 
 ### Fixed bugs
 - GP2-3260 - Password reset validation fix
