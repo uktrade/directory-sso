@@ -20,8 +20,8 @@ def user_factory():
 def test_read_csv_and_save_basket(user_factory):
     expected_product = [{'commodity_code': '080810', 'commodity_name': 'apple'}]
     expected_market = [{'country_name': 'Italy', 'country_iso2_code': None}]
-
     my_file = Path("sso/user/tests/ep_plan_factory.csv")
+
     read_csv_and_save_basket(my_file)
 
     user_exist = models.User.objects.get(pk=1)
@@ -29,11 +29,11 @@ def test_read_csv_and_save_basket(user_factory):
     data_len = len(models.UserData.objects.all())
 
     for value in data:
-      if value.name == "UserMarkets":
-         market = value.data
-      if value.name == "UserProducts":
-         product = value.data
+        if value.name == "UserMarkets":
+            market = value.data
+        if value.name == "UserProducts":
+            product = value.data
 
-    assert product == expected_product
-    assert market == expected_market
+    assert expected_product == product
+    assert expected_market == market
     assert data_len == 18
