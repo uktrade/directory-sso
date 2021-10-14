@@ -1,5 +1,3 @@
-from pathlib import Path
-
 from django.core.management.commands.migrate import Command as MigrateCommand
 from sso.user import helpers
 

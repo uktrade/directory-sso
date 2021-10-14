@@ -36,7 +36,7 @@ def test_read_csv_and_save_basket(user_factory, user_data_factory):
     user_exist = models.User.objects.get(pk=1)
     data = models.UserData.objects.filter(user=user_exist)
     data_len = len(models.UserData.objects.all())
-    print(models.UserData.objects.all())
+
     for value in data:
         if value.name == "UserMarkets":
             market = value.data
