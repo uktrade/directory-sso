@@ -1,6 +1,6 @@
 import csv
 import ast
-from django.db import transaction, IntegrityError
+from django.db import transaction
 from sso.user.models import UserData, User
 
 
