@@ -24,20 +24,16 @@ def read_csv_and_save_basket(path):
             if user is None:
                 continue
 
-            try:
-                for data_name in user_data_names:
-                    data_object = UserData.objects.filter(user=user, name=data_name).first()
+            for data_name in user_data_names:
+                data_object = UserData.objects.filter(user=user, name=data_name).first()
 
-                    if data_object is None:
-                        data_object = UserData(user=user, name=data_name)
+                if data_object is None:
+                    data_object = UserData(user=user, name=data_name)
 
-                    if data_name == user_data_names[0]:
-                        data = export_countries
-                    if data_name == user_data_names[1]:
-                        data = export_commodity_codes
+                if data_name == user_data_names[0]:
+                    data = export_countries
+                if data_name == user_data_names[1]:
+                    data = export_commodity_codes
 
-                    data_object.data = data
-                    data_object.save()
-
-            except IntegrityError as e:
-                print("Integrity Error print:", e)
+                data_object.data = data
+                data_object.save()
