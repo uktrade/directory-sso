@@ -1,4 +1,5 @@
 import pytest
+from django.core import management
 from pathlib import Path
 
 from sso.user.tests import factories
@@ -22,6 +23,12 @@ def user_data_factory(user_factory):
     data = models.UserData.objects.create(user=user, name="UserMarkets")
 
     return data
+
+
+@pytest.mark.django_db
+def test_move_ep_to_basket_no_file(user_factory, user_data_factory):
+    with pytest.raises(Exception) as e_info:
+        management.call_command('move_ep_to_basket', 'no_file.csv')
 
 
 @pytest.mark.django_db

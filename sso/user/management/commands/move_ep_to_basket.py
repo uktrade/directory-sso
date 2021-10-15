@@ -17,3 +17,4 @@ class Command(MigrateCommand):
             helpers.read_csv_and_save_basket(my_file)
         except FileNotFoundError:
             self.stdout.write(self.style.WARNING(f'No file: {my_file} is found.'))
+            raise FileNotFoundError
