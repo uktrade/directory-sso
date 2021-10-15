@@ -26,6 +26,11 @@ def user_data_factory(user_factory):
 
 
 @pytest.mark.django_db
+def test_move_ep_to_basket(user_factory, user_data_factory):
+    management.call_command('move_ep_to_basket', 'sso/user/tests/ep_plan_factory.csv')
+
+
+@pytest.mark.django_db
 def test_move_ep_to_basket_no_file(user_factory, user_data_factory):
     with pytest.raises(Exception) as e_info:
         management.call_command('move_ep_to_basket', 'no_file.csv')
