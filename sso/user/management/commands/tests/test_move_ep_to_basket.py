@@ -4,7 +4,7 @@ from pathlib import Path
 
 from sso.user.tests import factories
 from sso.user import models
-from sso.user.helpers import read_csv_and_save_basket
+from sso.user.management.commands.move_ep_to_basket import read_csv_and_save_basket
 
 
 @pytest.fixture
