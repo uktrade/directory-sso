@@ -15,6 +15,11 @@
 - GP2-2867 - Dockerise d-sso
 - Noticket - fix test
 
+### Hotfix
+- NOTICKET - Fix verification code expiration date when regenerating
+- GP2-3260 - Password reset validation fix
+- GP2-3104 - Treating upper and lowercase emails as being the same from User creation API endpoint
+
 ## [8.6.0](https://github.com/uktrade/directory-sso/releases/tag/8.6.0)
 [Compare](https://github.com/uktrade/directory-sso/compare/8.6.0...8.4.0)
 - GP2-2867 - Dockerise d-sso
