@@ -25,7 +25,7 @@ class VerificationCode(TimeStampedModel):
 
     @property
     def expiration_date(self):
-        return self.created + timedelta(minutes=settings.VERIFICATION_EXPIRY_MINUTES)
+        return self.modified + timedelta(minutes=settings.VERIFICATION_EXPIRY_MINUTES)
 
     @property
     def is_expired(self):

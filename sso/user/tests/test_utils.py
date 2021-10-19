@@ -1,5 +1,8 @@
+from unittest import mock
+
 import pytest
 from allauth.socialaccount.models import SocialAccount
+from directory_constants import urls
 
 from sso.user import utils
 from sso.user.tests.factories import QuestionFactory, ServiceFactory, UserAnswerFactory, UserFactory
@@ -142,3 +145,19 @@ def test_set_questionnaire_answer():
     question.save()
 
     assert utils.set_questionnaire_answer(user, service.name, question.id, 'a') is None
+
+
+@mock.patch('sso.user.utils.NotificationsAPIClient')
+def test_notify_already_registered(mocked_notifications):
+    utils.notify_already_registered('test@example.com')
+    stub = mocked_notifications().send_email_notification
+    assert stub.call_count == 1
+    assert stub.call_args == mock.call(
+        email_address='test@example.com',
+        personalisation={
+            'login_url': 'http://sso.trade.great:8003/accounts/login/',
+            'password_reset_url': ('http://sso.trade.great:8003/accounts/password/reset/'),
+            'contact_us_url': urls.domestic.CONTACT_US,
+        },
+        template_id='5c8cc5aa-a4f5-48ae-89e6-df5572c317ec',
+    )

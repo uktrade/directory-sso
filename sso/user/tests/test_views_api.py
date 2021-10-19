@@ -43,7 +43,8 @@ def page_view_data():
 
 
 @pytest.mark.django_db
-def test_create_user_api_valid(api_client):
+@mock.patch('sso.user.utils.NotificationsAPIClient')
+def test_create_user_api_valid(mocked_notifications, api_client):
     new_email = 'test@test123.com'
     password = 'Abh129Jk392Hj2'
 
@@ -57,6 +58,32 @@ def test_create_user_api_valid(api_client):
     }
 
     assert models.User.objects.filter(email=new_email).count() == 1
+
+
+@pytest.mark.django_db
+@mock.patch('sso.user.utils.NotificationsAPIClient')
+def test_create_user_api_duplicated_email(mocked_notifications, api_client):
+    user = factories.UserFactory()
+    new_email = user.email
+    password = 'Abh129Jk392Hj2'
+
+    response = api_client.post(reverse('api:user'), {'email': new_email, 'password': password}, format='json')
+    assert response.status_code == 409
+
+    assert models.User.objects.filter(email=new_email).count() == 1
+
+
+@pytest.mark.django_db
+def test_create_user_api_email_case_insensitive(api_client):
+    factories.UserFactory(email='TEST@example.com')
+
+    new_email = 'test@example.com'
+    password = 'Abh129Jk392Hj2'
+
+    response = api_client.post(reverse('api:user'), {'email': new_email, 'password': password}, format='json')
+
+    assert response.status_code == 409
+    assert models.User.objects.filter(email__iexact=new_email).count() == 1
 
 
 @pytest.mark.django_db
