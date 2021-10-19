@@ -1,7 +1,7 @@
 # Changelog
 
 ## Pre release
-### Enhancements
+- GP2-3412 - Add no-index tag in legacy URL signin page
 - GP2-3406 - Notifications for already registered users on sign-up
 - GP2-3344 - Make account verification token based
 - GP2-3152 - Verification code rate limiting + reduced expiry time
@@ -14,6 +14,11 @@
 - GP2-2445 - JSON widget for VFM answer admin
 - GP2-2867 - Dockerise d-sso
 - Noticket - fix test
+
+### Hotfix
+- NOTICKET - Fix verification code expiration date when regenerating
+- GP2-3260 - Password reset validation fix
+- GP2-3104 - Treating upper and lowercase emails as being the same from User creation API endpoint
 
 ## [8.6.0](https://github.com/uktrade/directory-sso/releases/tag/8.6.0)
 [Compare](https://github.com/uktrade/directory-sso/compare/8.6.0...8.4.0)
