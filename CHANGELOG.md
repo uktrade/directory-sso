@@ -1,7 +1,7 @@
 # Changelog
 
 ## Pre release
-### Enhancements
+- GP2-3412 - Add no-index tag in legacy URL signin page
 - GP2-3406 - Notifications for already registered users on sign-up
 - GP2-3344 - Make account verification token based
 - GP2-3152 - Verification code rate limiting + reduced expiry time
