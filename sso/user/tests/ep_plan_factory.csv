@@ -7,6 +7,7 @@ sso_id,export_countries,export_commodity_codes
 6,"[{'country_name': 'Senegal', 'country_iso2_code': 'SN'}]","[{'commodity_code': '160210', 'commodity_name': 'meat'}]"
 8,[],"[{'commodity_code': '180620', 'commodity_name': 'chocolate'}]"
 9,[],"[{'commodity_code': '040610', 'commodity_name': 'cheese'}]"
+14,"[{'country_name': 'Netherlands', 'country_iso2_code': 'NL'}, {'country_name': 'Iran', 'country_iso2_code': 'IR'}]",[]
 20,"[{'country_name': 'Afghanistan', 'country_iso2_code': 'AF'}]","[{'commodity_code': '152200', 'commodity_name': 'fat, oil, wax and margarine'}]"
 21,"[{'country_name': 'Italy', 'country_iso2_code': None}]",[]
 22,[],"[{'commodity_code': '180690', 'commodity_name': 'chocolate'}]"

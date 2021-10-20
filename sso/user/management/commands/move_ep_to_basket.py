@@ -8,17 +8,16 @@ from sso.user.models import UserData, User
 
 def inject_data(user, user_data_name, items):
     data_object = UserData.objects.filter(user=user, name=user_data_name).first()
-    holding_data = []
-    if data_object is None:
-        data_object = UserData(user=user, name=user_data_name)
+    data_object = data_object or UserData(user=user, name=user_data_name)
 
     if not data_object.data:
-        holding_data = items
+        data_object.data = items
     else:
-        if not any(data in items for data in data_object.data):
-            holding_data = items + data_object.data
-
-    data_object.data = holding_data
+        for item in items:
+            if not item in data_object.data:
+                data_object.data.append(item)
+    test = data_object.data
+    data_object.data = test
     data_object.save()
 
 
