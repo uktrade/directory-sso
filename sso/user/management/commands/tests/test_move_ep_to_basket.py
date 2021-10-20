@@ -106,7 +106,7 @@ def test_read_csv_and_save_basket(user_factory, user_data_factory):
 
     assert expected_product == product
     assert expected_market == market
-    assert data_len == 16
+    assert data_len == 18
 
 
 @pytest.mark.django_db
@@ -114,16 +114,10 @@ def test_inject_data(user_data_multi_data):
     user = models.User.objects.get(pk=14)
     data_object = models.UserData.objects.filter(user=user, name="UserMarkets").first()
 
-    test_list_countries = [
-        {'region': 'North America', 'country_name': 'United States', 'country_iso2_code': 'US'},
-        {'country_name': 'Afghanistan', 'country_iso2_code': 'AF'},
-        {'country_name': 'Italy', 'country_iso2_code': None},
-    ]
     test_list_no_dupe = [
         {'country_name': 'Italy', 'country_iso2_code': None},
         {'country_name': 'Jamaica', 'country_iso2_code': None},
     ]
-
     inject_data(user, "UserMarkets", test_list_no_dupe)
     data_object.refresh_from_db()
     assert data_object.data == [

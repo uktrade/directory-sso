@@ -14,7 +14,7 @@ def inject_data(user, user_data_name, items):
         data_object.data = items
     else:
         for item in items:
-            if not item in data_object.data:
+            if item not in data_object.data:
                 data_object.data.append(item)
     test = data_object.data
     data_object.data = test
