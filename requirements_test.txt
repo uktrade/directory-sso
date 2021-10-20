@@ -56,7 +56,7 @@ cryptography==3.3.2
     #   requests
 defusedxml==0.7.1
     # via python3-openid
-directory-api-client==22.5.0
+directory-api-client==24.0.0
     # via -r requirements.in
 directory-client-core==6.3.0
     # via
