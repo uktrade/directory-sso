@@ -5,9 +5,6 @@ from pathlib import Path
 from sso.user.tests import factories
 from sso.user import models
 from sso.user.management.commands.move_ep_to_basket import read_csv_and_save_basket, inject_data
-from django.core.management.base import BaseCommand
-from django.core.management.commands.migrate import Command
-import sys
 
 
 @pytest.fixture
@@ -86,12 +83,6 @@ def test_move_ep_to_basket(
 def test_move_ep_to_basket_no_file(user_factory, user_data_factory):
     with pytest.raises(Exception):
         management.call_command('move_ep_to_basket', 'no_file.csv')
-
-
-class TestCsv(Command):
-    @pytest.mark.django_db
-    def test(self):
-        print("HIT")
 
 
 @pytest.mark.django_db
