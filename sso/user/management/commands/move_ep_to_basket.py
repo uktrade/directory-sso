@@ -56,3 +56,5 @@ class Command(MigrateCommand):
         except FileNotFoundError:
             self.stdout.write(self.style.WARNING(f'No file: {my_file} is found.'))
             raise FileNotFoundError
+
+        self.stdout.write(self.style.SUCCESS(f"Migration to basket succesfully finished."))
