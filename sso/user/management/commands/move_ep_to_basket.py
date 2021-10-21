@@ -43,7 +43,7 @@ def read_csv_and_save_basket(path, **kwargs):
                 self = kwargs.get('self')
                 self.stdout.write(
                     self.style.NOTICE(
-                        f"Injected into sso_id: {sso_id} with market: {export_countries} and product: {export_commodity_codes}  "
+                        f"sso_id: {sso_id} with market: {export_countries} and product: {export_commodity_codes}."
                     )
                 )
                 self.stdout.write(self.style.NOTICE("---"))
