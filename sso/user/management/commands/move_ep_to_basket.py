@@ -51,6 +51,7 @@ class Command(MigrateCommand):
     def handle(self, *args, **options):
         my_file = options['path_to_file']
 
+        self.stdout.write(self.style.WARNING(f"Starting migration process to basket."))
         try:
             read_csv_and_save_basket(my_file)
         except FileNotFoundError:
