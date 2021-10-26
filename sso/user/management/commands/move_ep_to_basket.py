@@ -21,7 +21,7 @@ def inject_data(user, user_data_name, items):
 
 
 @transaction.atomic
-def read_csv_and_save_basket(path):
+def read_csv_and_save_basket(path, **kwargs):
 
     with open(path, 'r') as csv_file:
         reader = csv.DictReader(csv_file)
@@ -39,6 +39,15 @@ def read_csv_and_save_basket(path):
             inject_data(user, "UserMarkets", export_countries)
             inject_data(user, "UserProducts", export_commodity_codes)
 
+            if kwargs.get('self'):
+                self = kwargs.get('self')
+                self.stdout.write(
+                    self.style.NOTICE(
+                        f"sso_id: {sso_id} with market: {export_countries} and product: {export_commodity_codes}."
+                    )
+                )
+                self.stdout.write(self.style.NOTICE("---"))
+
 
 class Command(MigrateCommand):
     """
@@ -51,8 +60,11 @@ class Command(MigrateCommand):
     def handle(self, *args, **options):
         my_file = options['path_to_file']
 
+        self.stdout.write(self.style.WARNING("Starting migration process to basket."))
         try:
-            read_csv_and_save_basket(my_file)
+            read_csv_and_save_basket(my_file, self=self)
         except FileNotFoundError:
             self.stdout.write(self.style.WARNING(f'No file: {my_file} is found.'))
             raise FileNotFoundError
+
+        self.stdout.write(self.style.SUCCESS("Migration to basket succesfully finished."))
