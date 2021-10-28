@@ -5,12 +5,13 @@
 - GP2-3406 - Notifications for already registered users on sign-up
 - GP2-3344 - Make account verification token based
 - GP2-3152 - Verification code rate limiting + reduced expiry time
-- No-ticket - removed adhoc script for data notification
 - GP2-3074 - pipeline vfm survey add questions object
 - GP2-3646 - Migrate existing product and market data to the product/market baskets
 
 ### Fixed bugs
 - GP2-3260 - Password reset validation fix
+### Enhancements
+- No-ticket - removed adhoc script for data notification
 - GP2-3017 - Added test for partial user profile update
 - GP2-2445 - JSON widget for VFM answer admin
 - GP2-2867 - Dockerise d-sso
@@ -24,6 +25,11 @@
 ## [8.6.0](https://github.com/uktrade/directory-sso/releases/tag/8.6.0)
 [Compare](https://github.com/uktrade/directory-sso/compare/8.6.0...8.4.0)
 - GP2-2867 - Dockerise d-sso
+
+### Hotfix
+- NOTICKET - Fix verification code expiration date when regenerating
+- GP2-3260 - Password reset validation fix
+- GP2-3104 - Treating upper and lowercase emails as being the same from User creation API endpoint
 
 ## [8.4.0](https://github.com/uktrade/directory-sso/releases/tag/8.4.0)
 [Compare](https://github.com/uktrade/directory-sso/compare/8.4.0...8.4.0)
