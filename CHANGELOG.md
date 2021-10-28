@@ -1,4 +1,11 @@
 # Changelog
+## Pre-release changes - please put everything in the appropriate category below
+
+### Hotfix
+
+### Enhancements
+
+### Fixed bugs
 
 ## [9.0.0](https://github.com/uktrade/directory-sso/releases/tag/9.0.0)
 [Compare](https://github.com/uktrade/directory-sso/compare/9.0.0...8.6.0)
