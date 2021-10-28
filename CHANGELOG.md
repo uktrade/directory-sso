@@ -1,6 +1,8 @@
 # Changelog
 
-## Pre release
+## [9.0.0](https://github.com/uktrade/directory-sso/releases/tag/9.0.0)
+[Compare](https://github.com/uktrade/directory-sso/compare/9.0.0...8.6.0)
+
 - GP2-3412 - Add no-index tag in legacy URL signin page
 - GP2-3406 - Notifications for already registered users on sign-up
 - GP2-3344 - Make account verification token based
