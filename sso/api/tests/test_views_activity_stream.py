@@ -308,6 +308,7 @@ def test_activity_stream_list_user_answers_vfm_endpoint(api_client):
         'type',
         'dit:DirectorySSO:UserAnswer:answer',
         'dit:DirectorySSO:UserAnswer:user:id',
+        'dit:DirectorySSO:UserAnswer:user:hashed_uuid',
         'dit:DirectorySSO:UserAnswer:question:id',
         'dit:DirectorySSO:UserAnswer:question:title',
         'dit:DirectorySSO:UserAnswer:answer_label',
