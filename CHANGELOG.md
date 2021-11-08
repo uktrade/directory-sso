@@ -4,6 +4,7 @@
 ### Hotfix
 
 ### Enhancements
+- GP2 - 3180 VFM add user hashID
 
 ### Fixed bugs
 
