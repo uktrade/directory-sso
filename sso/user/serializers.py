@@ -128,9 +128,7 @@ class ActivityStreamUserAnswerSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = UserAnswer
-        fields = (
-            'id', 'user_id', 'hashed_uuid', 'answer', 'modified', 'question_id', 'question_title', 'answer_label'
-        )
+        fields = ('id', 'user_id', 'hashed_uuid', 'answer', 'modified', 'question_id', 'question_title', 'answer_label')
 
     def get_answer_label(self, obj):
         if obj.question.question_type in ['SELECT', 'RADIO']:
