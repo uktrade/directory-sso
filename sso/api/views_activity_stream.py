@@ -192,6 +192,7 @@ class ActivityStreamDirectorySSOUserAnswersVFM(ListAPIView):
                         'id': f'dit:DirectorySSO:UserAnswer:{user_answer["id"]}',
                         'type': 'dit:DirectorySSO:UserAnswer',
                         'dit:DirectorySSO:UserAnswer:user:id': user_answer["user_id"],
+                        'dit:DirectorySSO:UserAnswer:user:hashed_uuid': user_answer["hashed_uuid"],
                         'dit:DirectorySSO:UserAnswer:answer': user_answer["answer"],
                         'dit:DirectorySSO:UserAnswer:question:id': user_answer["question_id"],
                         'dit:DirectorySSO:UserAnswer:question:title': user_answer["question_title"],
