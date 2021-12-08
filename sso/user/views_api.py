@@ -1,14 +1,16 @@
 from django.core.exceptions import ObjectDoesNotExist
 from django.db import IntegrityError
 from rest_framework import status
+from rest_framework import response
 from rest_framework.generics import CreateAPIView, GenericAPIView, UpdateAPIView
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 
 from conf.signature import SignatureCheckPermission
 from core.authentication import SessionAuthentication
+from sso import user
 from sso.user import serializers
-from sso.user.models import LessonCompleted, Service, User, UserData
+from sso.user.models import LessonCompleted, Service, User, UserData, UserProfile
 from sso.user.utils import (
     get_lesson_completed,
     get_page_view,
@@ -27,7 +29,13 @@ class UserCreateAPIView(CreateAPIView):
         try:
             User.objects.get(email__iexact=request.data.get('email'))
         except ObjectDoesNotExist:
-            return super().create(request, *args, **kwargs)
+            response = super().create(request, *args, **kwargs)
+            if response.status_code == 201:
+                user = User.objects.get(email__iexact=request.data.get('email'))
+                user_profile = UserProfile.objects.filter(user=user).first()
+                user_profile.mobile_phone_number = request.data.get('mobile_phone_number')
+                user_profile.save()
+            return response
 
         return Response(status=status.HTTP_409_CONFLICT)
 
