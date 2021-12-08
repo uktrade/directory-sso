@@ -1,4 +1,5 @@
 # Changelog
+- GP2-3859 - Create Profile with optional Phone Number
 ## Pre-release changes - please put everything in the appropriate category below
 
 ### Hotfix
