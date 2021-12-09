@@ -56,8 +56,37 @@ def test_create_user_api_valid(mocked_notifications, api_client):
         'uidb64': mock.ANY,
         'verification_token': mock.ANY,
     }
+    user = models.User.objects.filter(email=new_email).first()
 
     assert models.User.objects.filter(email=new_email).count() == 1
+    # Assert profile should not be created without a phone number.
+    assert models.UserProfile.objects.filter(user=user).count() == 0
+
+
+@pytest.mark.django_db
+@mock.patch('sso.user.utils.NotificationsAPIClient')
+def test_create_user_with_phone(mocked_notifications, api_client):
+    new_email = 'test@test123.com'
+    password = 'Abh129Jk392Hj2'
+    mobile_phone_number = '07882237473'
+
+    response = api_client.post(
+        reverse('api:user'),
+        {'email': new_email, 'password': password, 'mobile_phone_number': mobile_phone_number},
+        format='json',
+    )
+    assert response.status_code == 201
+    assert response.json() == {
+        'email': new_email,
+        'verification_code': mock.ANY,
+        'uidb64': mock.ANY,
+        'verification_token': mock.ANY,
+    }
+
+    user = models.User.objects.filter(email=new_email).first()
+    user_profile = models.UserProfile.objects.filter(user=user).first()
+
+    assert user_profile.mobile_phone_number == '07882237473'
 
 
 @pytest.mark.django_db
