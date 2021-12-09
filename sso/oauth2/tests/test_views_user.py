@@ -8,6 +8,7 @@ from rest_framework import status
 from rest_framework.test import APIClient
 
 from sso.user.models import User, UserProfile
+from sso.oauth2.tests import factories
 
 
 def setup_data():
@@ -36,6 +37,16 @@ def setup_data():
     )
 
     return superuser, application, user, user_profile, access_token
+
+
+@pytest.fixture
+def user_fixture():
+    return factories.UserFactory.create(email='test_fixture@example.com')
+
+
+@pytest.fixture
+def access_token_fixture(user_fixture):
+    return factories.AccessTokenFactory.create(user=user_fixture)
 
 
 @pytest.mark.django_db

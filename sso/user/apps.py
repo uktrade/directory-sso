@@ -1,5 +1,5 @@
 from django.apps import AppConfig
-from django.db.models.signals import pre_save, post_save
+from django.db.models.signals import pre_save
 
 
 class UserConfig(AppConfig):
@@ -9,4 +9,3 @@ class UserConfig(AppConfig):
         from sso.user import signals
 
         pre_save.connect(receiver=signals.create_uuid, sender='user.User')
-        post_save.connect(receiver=signals.create_profile, sender='user.User')

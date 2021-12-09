@@ -28,11 +28,10 @@ class UserCreateAPIView(CreateAPIView):
             User.objects.get(email__iexact=request.data.get('email'))
         except ObjectDoesNotExist:
             response = super().create(request, *args, **kwargs)
-            if response.status_code == 201:
+            phone_number = request.data.get('mobile_phone_number')
+            if response.status_code == 201 and phone_number != '':
                 user = User.objects.get(email__iexact=request.data.get('email'))
-                user_profile = UserProfile.objects.filter(user=user).first()
-                user_profile.mobile_phone_number = request.data.get('mobile_phone_number')
-                user_profile.save()
+                UserProfile.objects.create(user=user, mobile_phone_number=phone_number)
             return response
 
         return Response(status=status.HTTP_409_CONFLICT)
