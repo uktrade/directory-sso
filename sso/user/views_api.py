@@ -29,9 +29,7 @@ class UserCreateAPIView(CreateAPIView):
         except ObjectDoesNotExist:
             response = super().create(request, *args, **kwargs)
             phone_number = request.data.get('mobile_phone_number')
-            print("PHONE: ", phone_number)
             if response.status_code == 201 and phone_number:
-                print("BINGO")
                 user = User.objects.get(email__iexact=request.data.get('email'))
                 UserProfile.objects.create(user=user, mobile_phone_number=phone_number)
             return response
