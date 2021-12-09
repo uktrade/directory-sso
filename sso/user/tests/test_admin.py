@@ -153,12 +153,11 @@ def superuser_client(superuser):
 @pytest.mark.django_db
 @patch('sso.user.admin.UserAdmin.get_fab_user_ids')
 def test_download_csv_exops_not_fab(mock_get_fab_user_ids, settings, superuser_client):
-
     settings.EXOPS_APPLICATION_CLIENT_ID = 'debug'
     application = ApplicationFactory(client_id='debug')
-    user_one = AccessTokenFactory.create(application=application).user  # should be in the csv
-    user_two = AccessTokenFactory.create(application=application).user  # should not be in the csv
-    AccessTokenFactory.create().user  # should not be in the csv
+    user_one = AccessTokenFactory.create(token='test1', application=application).user  # should be in the csv
+    user_two = AccessTokenFactory.create(token='test2', application=application).user  # should not be in the csv
+    AccessTokenFactory.create(token='test3').user  # should not be in the csv
 
     mock_get_fab_user_ids.return_value = [user_two.pk]
     data = {'action': 'download_csv_exops_not_fab', '_selected_action': User.objects.all().values_list('pk', flat=True)}
@@ -175,7 +174,7 @@ def test_download_csv_exops_not_fab(mock_get_fab_user_ids, settings, superuser_c
             ('is_active', user_one.is_active),
             ('is_staff', user_one.is_staff),
             ('is_superuser', user_one.is_superuser),
-            ('last_login', user_one.last_login),
+            ('last_login', ''),
             ('last_name', ''),
             ('lessoncompleted', ''),
             ('modified', user_one.modified),
@@ -201,9 +200,7 @@ def test_download_csv_exops_not_fab_distinct(mock_get_fab_user_ids, settings, su
     settings.EXOPS_APPLICATION_CLIENT_ID = 'debug'
     application = ApplicationFactory(client_id='debug')
     # given a user has created multiple tokens
-    token_one = AccessTokenFactory.create(
-        application=application,
-    )
+    token_one = AccessTokenFactory.create(application=application, token='test1')
     AccessTokenFactory.create(
         application=application,
         user=token_one.user,
