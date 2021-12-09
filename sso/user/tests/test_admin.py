@@ -174,7 +174,7 @@ def test_download_csv_exops_not_fab(mock_get_fab_user_ids, settings, superuser_c
             ('is_active', user_one.is_active),
             ('is_staff', user_one.is_staff),
             ('is_superuser', user_one.is_superuser),
-            ('last_login', ''),
+            ('last_login', user_one.last_login),
             ('last_name', ''),
             ('lessoncompleted', ''),
             ('modified', user_one.modified),

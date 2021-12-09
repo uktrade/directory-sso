@@ -4,7 +4,6 @@ from django.utils import timezone
 from oauth2_provider.models import AccessToken, Application
 
 from sso.user.tests.factories import UserFactory
-from oauth2_provider.models import AccessToken, Application
 
 
 class ApplicationFactory(factory.django.DjangoModelFactory):
