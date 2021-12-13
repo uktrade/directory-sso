@@ -3,6 +3,7 @@
 
 ### Hotfix
 ### Enhancements
+- GP2-3381 - Improve password reset notifications
 ### Fixed bugs
 
 ## [9.1.0](https://github.com/uktrade/directory-sso/releases/tag/9.1.0)
