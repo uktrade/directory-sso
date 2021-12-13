@@ -330,6 +330,24 @@ def test_confirm_email_invalid_key(settings, client, email_confirmation):
 
 @patch('sso.adapters.NotificationsAPIClient')
 @pytest.mark.django_db
+def test_password_reset_unverified_user(mocked_notification_client, settings, client, user):
+    VerificationCode.objects.create(user=user)
+    client.post(reverse('account_reset_password'), data={'email': user.email})
+    assert mocked_notification_client().send_email_notification.called is True
+    call = mocked_notification_client().send_email_notification.call_args
+    assert call == mock.call(
+        email_address='test@example.com',
+        personalisation={
+            'verification_link': settings.DEFAULT_REDIRECT_URL + 'enrol/resend-verification/verification/',
+            'resend_verification_link': settings.DEFAULT_REDIRECT_URL + 'enrol/resend-verification/resend/',
+            'code': mock.ANY,
+        },
+        template_id=settings.GOV_NOTIFY_PASSWORD_RESET_UNVERIFIED_TEMPLATE_ID,
+    )
+
+
+@patch('sso.adapters.NotificationsAPIClient')
+@pytest.mark.django_db
 def test_password_reset_redirect_default_param_if_no_next_param(
     mocked_notification_client, settings, client, verified_user
 ):
