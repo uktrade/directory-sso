@@ -13,8 +13,11 @@ from notifications_python_client import NotificationsAPIClient
 
 from sso.user.models import UserProfile
 from sso.user.utils import get_url_with_redirect, is_valid_redirect
+from sso.verification import helpers
 from sso.verification.models import VerificationCode
 
+VERIFICATION_URL = domestic.SINGLE_SIGN_ON_PROFILE / 'enrol/resend-verification/verification/'
+RESEND_VERIFICATION_URL = domestic.SINGLE_SIGN_ON_PROFILE / 'enrol/resend-verification/resend/'
 EMAIL_TEMPLATES = {
     'account/email/email_confirmation_signup': settings.GOV_NOTIFY_SIGNUP_CONFIRMATION_TEMPLATE_ID,
     'account/email/email_confirmation': settings.GOV_NOTIFY_SIGNUP_CONFIRMATION_TEMPLATE_ID,
@@ -82,13 +85,35 @@ class AccountAdapter(DefaultAccountAdapter):
     def is_social_account(context):
         return True if context['user'].socialaccount_set.first() else False
 
+    @staticmethod
+    def is_verified_account(context):
+        email_address = EmailAddress.objects.get(email=context['user'].email)
+        return email_address.verified
+
+    @staticmethod
+    def regenerate_verification_code(context):
+        code = helpers.generate_verification_code()
+        verification_code = context['user'].verification_code
+        verification_code.code = code
+        verification_code.save(update_fields=['code'])
+        return code
+
     def send_mail(self, template_prefix, email, context):
         template_id = EMAIL_TEMPLATES[template_prefix]
 
         if not self.is_social_account(context):
             #  build personalisation dict from context
             if template_id == settings.GOV_NOTIFY_PASSWORD_RESET_TEMPLATE_ID:
-                personalisation = {'password_reset': self.build_password_reset_url(context)}
+                if self.is_verified_account(context):
+                    personalisation = {'password_reset': self.build_password_reset_url(context)}
+                else:
+                    template_id = settings.GOV_NOTIFY_PASSWORD_RESET_UNVERIFIED_TEMPLATE_ID
+                    code = self.regenerate_verification_code(context)
+                    personalisation = {
+                        'verification_link': VERIFICATION_URL,
+                        'resend_verification_link': RESEND_VERIFICATION_URL,
+                        'code': code,
+                    }
             else:
                 personalisation = {'confirmation_link': context['activate_url']}
         else:
@@ -120,7 +145,7 @@ class AccountAdapter(DefaultAccountAdapter):
         except VerificationCode.DoesNotExist:
             return super().respond_email_verification_sent(request, user)
         else:
-            return redirect(domestic.SINGLE_SIGN_ON_PROFILE / 'enrol/resend-verification/resend/')
+            return redirect(RESEND_VERIFICATION_URL)
 
     def is_safe_url(self, url):
         if url:

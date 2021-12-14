@@ -330,16 +330,36 @@ def test_confirm_email_invalid_key(settings, client, email_confirmation):
 
 @patch('sso.adapters.NotificationsAPIClient')
 @pytest.mark.django_db
-def test_password_reset_redirect_default_param_if_no_next_param(mocked_notification_client, settings, client, user):
-
-    settings.ALLOWED_REDIRECT_DOMAINS = ['example.com', 'other.com']
-    new_password = 'ZaronZ0xos'
-    # submit form and send 'password reset link' email without a 'next' param
+def test_password_reset_unverified_user(mocked_notification_client, settings, client, user):
+    VerificationCode.objects.create(user=user)
     client.post(reverse('account_reset_password'), data={'email': user.email})
     assert mocked_notification_client().send_email_notification.called is True
     call = mocked_notification_client().send_email_notification.call_args
     assert call == mock.call(
         email_address='test@example.com',
+        personalisation={
+            'verification_link': settings.DEFAULT_REDIRECT_URL + 'enrol/resend-verification/verification/',
+            'resend_verification_link': settings.DEFAULT_REDIRECT_URL + 'enrol/resend-verification/resend/',
+            'code': mock.ANY,
+        },
+        template_id=settings.GOV_NOTIFY_PASSWORD_RESET_UNVERIFIED_TEMPLATE_ID,
+    )
+
+
+@patch('sso.adapters.NotificationsAPIClient')
+@pytest.mark.django_db
+def test_password_reset_redirect_default_param_if_no_next_param(
+    mocked_notification_client, settings, client, verified_user
+):
+
+    settings.ALLOWED_REDIRECT_DOMAINS = ['example.com', 'other.com']
+    new_password = 'ZaronZ0xos'
+    # submit form and send 'password reset link' email without a 'next' param
+    client.post(reverse('account_reset_password'), data={'email': verified_user.email})
+    assert mocked_notification_client().send_email_notification.called is True
+    call = mocked_notification_client().send_email_notification.call_args
+    assert call == mock.call(
+        email_address='verified@example.com',
         personalisation={'password_reset': mock.ANY},
         template_id=settings.GOV_NOTIFY_PASSWORD_RESET_TEMPLATE_ID,
     )
@@ -349,7 +369,7 @@ def test_password_reset_redirect_default_param_if_no_next_param(mocked_notificat
     response = client.post(preflight_response.url, {'password1': new_password, 'password2': new_password})
 
     assert response.status_code == 302
-    assert response.url == reverse('account_email_verification_sent')
+    assert response.url == settings.DEFAULT_REDIRECT_URL
 
 
 @patch('sso.adapters.NotificationsAPIClient')
@@ -373,12 +393,12 @@ def test_password_reset_invalid_key(client, user):
 
 @patch('sso.adapters.NotificationsAPIClient')
 @pytest.mark.django_db
-def test_password_reset_no_internal_session(mocked_notification_client, client, user):
-    client.post(reverse('account_reset_password'), data={'email': user.email})
+def test_password_reset_no_internal_session(mocked_notification_client, client, verified_user):
+    client.post(reverse('account_reset_password'), data={'email': verified_user.email})
     assert mocked_notification_client().send_email_notification.called is True
     call = mocked_notification_client().send_email_notification.call_args
     assert call == mock.call(
-        email_address='test@example.com',
+        email_address='verified@example.com',
         personalisation={'password_reset': mock.ANY},
         template_id=settings.GOV_NOTIFY_PASSWORD_RESET_TEMPLATE_ID,
     )
@@ -396,7 +416,9 @@ def test_password_reset_no_internal_session(mocked_notification_client, client, 
 
 @patch('sso.adapters.NotificationsAPIClient')
 @pytest.mark.django_db
-def test_password_reset_redirect_next_param_if_next_param_valid(mocked_notification_client, settings, client, user):
+def test_password_reset_redirect_next_param_if_next_param_valid(
+    mocked_notification_client, settings, client, verified_user
+):
     settings.DEFAULT_REDIRECT_URL = 'http://other.com'
     settings.ALLOWED_REDIRECT_DOMAINS = ['example.com', 'other.com']
     new_password = 'ZaronZ0xos'
@@ -404,11 +426,11 @@ def test_password_reset_redirect_next_param_if_next_param_valid(mocked_notificat
     expected = reverse('account_email_verification_sent')
 
     # submit form and send 'password reset link' email with a 'next' param
-    client.post('{url}?next={next}'.format(url=password_reset_url, next=expected), data={'email': user.email})
+    client.post('{url}?next={next}'.format(url=password_reset_url, next=expected), data={'email': verified_user.email})
     assert mocked_notification_client().send_email_notification.called is True
     call = mocked_notification_client().send_email_notification.call_args
     assert call == mock.call(
-        email_address='test@example.com',
+        email_address='verified@example.com',
         personalisation={'password_reset': mock.ANY},
         template_id=settings.GOV_NOTIFY_PASSWORD_RESET_TEMPLATE_ID,
     )
@@ -428,7 +450,9 @@ def test_password_reset_redirect_next_param_if_next_param_valid(mocked_notificat
 
 @patch('sso.adapters.NotificationsAPIClient')
 @pytest.mark.django_db
-def test_password_reset_redirect_next_param_if_next_param_invalid(mocked_notification_client, settings, client, user):
+def test_password_reset_redirect_next_param_if_next_param_invalid(
+    mocked_notification_client, settings, client, verified_user
+):
     settings.DEFAULT_REDIRECT_URL = 'http://other.com'
     settings.ALLOWED_REDIRECT_DOMAINS = ['other.com']
     new_password = 'ZaronZ0xos'
@@ -436,11 +460,13 @@ def test_password_reset_redirect_next_param_if_next_param_invalid(mocked_notific
     next_param = 'http://www.example.com'
 
     # submit form and send 'password reset link' email with a 'next' param
-    client.post('{url}?next={next}'.format(url=password_reset_url, next=next_param), data={'email': user.email})
+    client.post(
+        '{url}?next={next}'.format(url=password_reset_url, next=next_param), data={'email': verified_user.email}
+    )
     assert mocked_notification_client().send_email_notification.called is True
     call = mocked_notification_client().send_email_notification.call_args
     assert call == mock.call(
-        email_address='test@example.com',
+        email_address='verified@example.com',
         personalisation={'password_reset': mock.ANY},
         template_id=settings.GOV_NOTIFY_PASSWORD_RESET_TEMPLATE_ID,
     )
@@ -451,12 +477,14 @@ def test_password_reset_redirect_next_param_if_next_param_invalid(mocked_notific
     response = client.post(preflight_response.url, {'password1': new_password, 'password2': new_password})
 
     assert response.status_code == 302
-    assert response.url == reverse('account_email_verification_sent')
+    assert response.url == settings.DEFAULT_REDIRECT_URL
 
 
 @patch('sso.adapters.NotificationsAPIClient')
 @pytest.mark.django_db
-def test_password_reset_redirect_next_param_if_next_param_internal(mocked_notification_client, settings, client, user):
+def test_password_reset_redirect_next_param_if_next_param_internal(
+    mocked_notification_client, settings, client, verified_user
+):
     settings.DEFAULT_REDIRECT_URL = 'http://other.com'
     settings.ALLOWED_REDIRECT_DOMAINS = ['example.com', 'other.com']
     new_password = 'ZaronZ0xos'
@@ -465,13 +493,14 @@ def test_password_reset_redirect_next_param_if_next_param_internal(mocked_notifi
 
     # submit form and send 'password reset link' email with a 'next' param
     client.post(
-        '{url}?next={next}'.format(url=password_reset_url, next=expected), data={'email': user.email, 'next': expected}
+        '{url}?next={next}'.format(url=password_reset_url, next=expected),
+        data={'email': verified_user.email, 'next': expected},
     )
 
     assert mocked_notification_client().send_email_notification.called is True
     call = mocked_notification_client().send_email_notification.call_args
     assert call == mock.call(
-        email_address='test@example.com',
+        email_address='verified@example.com',
         personalisation={'password_reset': mock.ANY},
         template_id=settings.GOV_NOTIFY_PASSWORD_RESET_TEMPLATE_ID,
     )
