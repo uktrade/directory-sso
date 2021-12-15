@@ -1,5 +1,4 @@
 from datetime import timedelta
-
 import factory
 from django.utils import timezone
 from oauth2_provider.models import AccessToken, Application

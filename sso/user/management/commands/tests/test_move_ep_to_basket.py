@@ -1,10 +1,11 @@
-import pytest
-from django.core import management
 from pathlib import Path
 
-from sso.user.tests import factories
+import pytest
+from django.core import management
+
 from sso.user import models
-from sso.user.management.commands.move_ep_to_basket import read_csv_and_save_basket, inject_data
+from sso.user.management.commands.move_ep_to_basket import inject_data, read_csv_and_save_basket
+from sso.user.tests import factories
 
 
 @pytest.fixture

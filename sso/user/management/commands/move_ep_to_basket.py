@@ -1,9 +1,10 @@
+import ast
+import csv
+
 from django.core.management.commands.migrate import Command as MigrateCommand
 from django.db import transaction
-import csv
-import ast
 
-from sso.user.models import UserData, User
+from sso.user.models import User, UserData
 
 
 def inject_data(user, user_data_name, items):
