@@ -16,7 +16,7 @@ from sso.user.utils import get_url_with_redirect, is_valid_redirect
 from sso.verification import helpers
 from sso.verification.models import VerificationCode
 
-VERIFICATION_URL = domestic.SINGLE_SIGN_ON_PROFILE / 'enrol/resend-verification/verification/'
+VERIFICATION_URL = domestic.SINGLE_SIGN_ON_PROFILE / 'enrol/pre-verified/verification/'
 RESEND_VERIFICATION_URL = domestic.SINGLE_SIGN_ON_PROFILE / 'enrol/resend-verification/resend/'
 EMAIL_TEMPLATES = {
     'account/email/email_confirmation_signup': settings.GOV_NOTIFY_SIGNUP_CONFIRMATION_TEMPLATE_ID,

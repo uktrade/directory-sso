@@ -338,7 +338,7 @@ def test_password_reset_unverified_user(mocked_notification_client, settings, cl
     assert call == mock.call(
         email_address='test@example.com',
         personalisation={
-            'verification_link': settings.DEFAULT_REDIRECT_URL + 'enrol/resend-verification/verification/',
+            'verification_link': settings.DEFAULT_REDIRECT_URL + 'enrol/pre-verified/verification/',
             'resend_verification_link': settings.DEFAULT_REDIRECT_URL + 'enrol/resend-verification/resend/',
             'code': mock.ANY,
         },
