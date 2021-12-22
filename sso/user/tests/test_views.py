@@ -331,7 +331,6 @@ def test_confirm_email_invalid_key(settings, client, email_confirmation):
 @patch('sso.adapters.NotificationsAPIClient')
 @pytest.mark.django_db
 def test_password_reset_redirect_default_param_if_no_next_param(mocked_notification_client, settings, client, user):
-
     settings.ALLOWED_REDIRECT_DOMAINS = ['example.com', 'other.com']
     new_password = 'ZaronZ0xos'
     # submit form and send 'password reset link' email without a 'next' param

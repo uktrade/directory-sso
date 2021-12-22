@@ -15,6 +15,7 @@ from sso.user.models import UserProfile
 from sso.user.utils import get_url_with_redirect, is_valid_redirect
 from sso.verification.models import VerificationCode
 
+RESEND_VERIFICATION_URL = domestic.SINGLE_SIGN_ON_PROFILE / 'enrol/resend-verification/resend/'
 EMAIL_TEMPLATES = {
     'account/email/email_confirmation_signup': settings.GOV_NOTIFY_SIGNUP_CONFIRMATION_TEMPLATE_ID,
     'account/email/email_confirmation': settings.GOV_NOTIFY_SIGNUP_CONFIRMATION_TEMPLATE_ID,
@@ -120,7 +121,7 @@ class AccountAdapter(DefaultAccountAdapter):
         except VerificationCode.DoesNotExist:
             return super().respond_email_verification_sent(request, user)
         else:
-            return redirect(domestic.SINGLE_SIGN_ON_PROFILE / 'enrol/resend-verification/resend/')
+            return redirect(RESEND_VERIFICATION_URL)
 
     def is_safe_url(self, url):
         if url:

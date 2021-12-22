@@ -8,7 +8,7 @@ from rest_framework.response import Response
 from conf.signature import SignatureCheckPermission
 from core.authentication import SessionAuthentication
 from sso.user import serializers
-from sso.user.models import LessonCompleted, Service, User, UserData
+from sso.user.models import LessonCompleted, Service, User, UserData, UserProfile
 from sso.user.utils import (
     get_lesson_completed,
     get_page_view,
@@ -27,7 +27,12 @@ class UserCreateAPIView(CreateAPIView):
         try:
             User.objects.get(email__iexact=request.data.get('email'))
         except ObjectDoesNotExist:
-            return super().create(request, *args, **kwargs)
+            response = super().create(request, *args, **kwargs)
+            phone_number = request.data.get('mobile_phone_number')
+            if response.status_code == 201 and phone_number:
+                user = User.objects.get(email__iexact=request.data.get('email'))
+                UserProfile.objects.create(user=user, mobile_phone_number=phone_number)
+            return response
 
         return Response(status=status.HTTP_409_CONFLICT)
 

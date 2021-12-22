@@ -1,12 +1,16 @@
 # Changelog
+- GP2-3859 - Create Profile with optional Phone Number
 ## Pre-release changes - please put everything in the appropriate category below
 
 ### Hotfix
+### Enhancements
+- GP2-3381 - Improve password reset notifications
+### Fixed bugs
 
+## [9.1.0](https://github.com/uktrade/directory-sso/releases/tag/9.1.0)
+[Compare](https://github.com/uktrade/directory-sso/compare/9.1.0...9.0.0)
 ### Enhancements
 - GP2 - 3180 VFM add user hashID
-
-### Fixed bugs
 
 ## [9.0.0](https://github.com/uktrade/directory-sso/releases/tag/9.0.0)
 [Compare](https://github.com/uktrade/directory-sso/compare/9.0.0...8.6.0)
