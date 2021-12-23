@@ -116,9 +116,17 @@ class UserSerializer(serializers.ModelSerializer):
 
 
 class ActivityStreamUsersSerializer(serializers.ModelSerializer):
+    telephone = serializers.CharField(source='user_profile.mobile_phone_number')
+
     class Meta:
         model = User
-        fields = ('id', 'email', 'date_joined', 'modified')
+        fields = ('id', 'email', 'telephone', 'date_joined', 'modified')
+
+    def get_mobile_phone_number(self, obj):
+        import pdb
+
+        pdb.set_trace()
+        return obj.user_profile.mobile_phone_number
 
 
 class ActivityStreamUserAnswerSerializer(serializers.ModelSerializer):
