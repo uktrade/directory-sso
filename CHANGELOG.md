@@ -8,6 +8,10 @@
 
 ### Fixed bugs
 
+## [9.2.1](https://github.com/uktrade/directory-sso/releases/tag/9.2.1)
+[Compare](https://github.com/uktrade/directory-sso/compare/9.2.0...9.2.1)
+### Enhancements
+- GP2-3904 add mobile activity stream
 
 ## [9.2.0](https://github.com/uktrade/directory-sso/releases/tag/9.2.0)
 [Compare](https://github.com/uktrade/directory-sso/compare/9.2.0...9.1.0)
