@@ -8,7 +8,7 @@ from rest_framework import status
 from rest_framework.reverse import reverse
 from rest_framework.test import APIClient
 
-from sso.user.tests.factories import UserFactory
+from sso.user.tests.factories import UserFactory, UserProfileFactory
 
 WHITELISTED_X_FORWARDED_FOR_HEADER = '1.2.3.4, ' + '4.5.5.5, ' + '3.5.5.5, ' + '2.5.5.5, ' + '1.5.5.5'
 
@@ -235,8 +235,9 @@ def test_activity_stream_list_users_endpoint(api_client):
     """If the Authorization and X-Forwarded-For headers are correct, then
     the correct, and authentic, data is returned
     """
-    UserFactory.create_batch(5)
-
+    user_1 = UserFactory()
+    UserProfileFactory(user=user_1, mobile_phone_number='824802648236868364')
+    UserFactory.create_batch(4)
     sender = _auth_sender(url=_url_activity_stream_users)
     response = api_client.get(
         _url_activity_stream_users(),
@@ -244,13 +245,13 @@ def test_activity_stream_list_users_endpoint(api_client):
         HTTP_AUTHORIZATION=sender.request_header,
     )
     data = response.json()
-
     assert response.status_code == status.HTTP_200_OK
     assert len(data['orderedItems']) == 2
     assert set(data['orderedItems'][0]['object'].keys()) == {
         'id',
         'type',
         'dit:DirectorySSO:User:email',
+        'dit:DirectorySSO:User:telephone',
         'dit:DirectorySSO:User:dateJoined',
     }
     assert data['next'] is not None

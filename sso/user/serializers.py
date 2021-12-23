@@ -116,9 +116,11 @@ class UserSerializer(serializers.ModelSerializer):
 
 
 class ActivityStreamUsersSerializer(serializers.ModelSerializer):
+    telephone = serializers.CharField(source='user_profile.mobile_phone_number')
+
     class Meta:
         model = User
-        fields = ('id', 'email', 'date_joined', 'modified')
+        fields = ('id', 'email', 'telephone', 'date_joined', 'modified')
 
 
 class ActivityStreamUserAnswerSerializer(serializers.ModelSerializer):
