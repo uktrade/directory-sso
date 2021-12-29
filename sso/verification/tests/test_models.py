@@ -4,7 +4,6 @@ import pytest
 from django.conf import settings
 from django.utils.timezone import now
 from freezegun import freeze_time
-import datetime
 
 from sso.verification.tests import factories
 
