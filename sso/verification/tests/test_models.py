@@ -31,9 +31,3 @@ def test_verification_not_expired():
 def test_verification_model():
     verification_code = factories.VerificationCodeFactory()
     assert str(verification_code) == str(verification_code.user)
-
-
-@pytest.mark.django_db
-def test_verification_verified():
-    verification_code = factories.VerificationCodeFactory()
-    assert verification_code.date_verified == datetime.datetime(2021, 12, 29)
