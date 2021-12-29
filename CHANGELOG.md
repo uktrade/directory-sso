@@ -1,5 +1,6 @@
 # Changelog
 
+
 ## Pre-release changes - please put everything in the appropriate category below
 
 ### Hotfix
@@ -7,7 +8,7 @@
 ### Enhancements
 
 ### Fixed bugs
-
+- GP2-3911 - Email Verification 
 
 ## [9.2.0](https://github.com/uktrade/directory-sso/releases/tag/9.2.0)
 [Compare](https://github.com/uktrade/directory-sso/compare/9.2.0...9.1.0)
