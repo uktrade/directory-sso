@@ -151,6 +151,7 @@ class ActivityStreamDirectorySSOUsers(ListAPIView):
                     'object': {
                         'id': f'dit:DirectorySSO:User:{user["id"]}',
                         'type': 'dit:DirectorySSO:User',
+                        'dit:DirectorySSO:User:hashedUuid': user['hashed_uuid'],
                         'dit:DirectorySSO:User:email': user['email'],
                         'dit:DirectorySSO:User:telephone': user['telephone'],
                         'dit:DirectorySSO:User:dateJoined': user['date_joined'],

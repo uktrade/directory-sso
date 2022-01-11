@@ -6,6 +6,7 @@
 ### Hotfix
 
 ### Enhancements
+- GLS-41 - Added hashed id attribute to users on Activity Stream endpoint
 
 ### Fixed bugs
 - GP2-3911 - Email Verification 
