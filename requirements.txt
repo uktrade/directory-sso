@@ -6,25 +6,25 @@
 #
 amqp==2.6.1
     # via kombu
-attrs==20.3.0
+attrs==21.4.0
     # via jsonschema
-beautifulsoup4==4.9.3
+beautifulsoup4==4.10.0
     # via directory-components
 billiard==3.6.4.0
     # via celery
 boto3==1.17.85
     # via -r requirements.in
-botocore==1.20.85
+botocore==1.20.112
     # via
     #   boto3
     #   s3transfer
 celery[redis]==4.3.0
     # via -r requirements.in
-certifi==2020.12.5
+certifi==2021.10.8
     # via
     #   requests
     #   sentry-sdk
-cffi==1.14.5
+cffi==1.15.0
     # via cryptography
 chardet==4.0.0
     # via requests
@@ -36,6 +36,8 @@ cryptography==3.3.2
     #   requests
 defusedxml==0.7.1
     # via python3-openid
+deprecated==1.2.13
+    # via redis
 directory-api-client==24.0.0
     # via -r requirements.in
 directory-client-core==6.3.0
@@ -44,7 +46,7 @@ directory-client-core==6.3.0
     #   directory-forms-api-client
 directory-components==37.2.0
     # via -r requirements.in
-directory-constants==20.28.0
+directory-constants==20.28.1
     # via directory-components
 directory-forms-api-client==6.1.0
     # via -r requirements.in
@@ -58,7 +60,7 @@ django-admin-ip-restrictor==2.1.0
     # via -r requirements.in
 django-allauth==0.40.0
     # via -r requirements.in
-django-appconf==1.0.4
+django-appconf==1.0.5
     # via django-cryptography
 django-celery-beat==1.5.0
     # via -r requirements.in
@@ -68,7 +70,7 @@ django-environ==0.4.5
     # via -r requirements.in
 django-extensions==2.2.5
     # via -r requirements.in
-django-filter==2.2.0
+django-filter==21.1
     # via -r requirements.in
 django-health-check==3.8.0
     # via directory-healthcheck
@@ -86,9 +88,9 @@ django-sort-order-field==1.2
     # via -r requirements.in
 django-staff-sso-client==1.0.0
     # via -r requirements.in
-django-timezone-field==4.1.2
+django-timezone-field==4.2.1
     # via django-celery-beat
-django==2.2.24
+django==2.2.25
     # via
     #   -r requirements.in
     #   directory-api-client
@@ -141,29 +143,33 @@ monotonic==1.6
     #   notifications-python-client
 notifications-python-client==5.4.1
     # via -r requirements.in
-oauthlib==3.1.0
+oauthlib==3.1.1
     # via
     #   django-oauth-toolkit
     #   requests-oauthlib
 olefile==0.46
     # via directory-validators
-pillow==8.3.2
+packaging==21.3
+    # via redis
+pillow==9.0.0
     # via directory-validators
 psycopg2-binary==2.8.4
     # via -r requirements.in
-pycparser==2.20
+pycparser==2.21
     # via cffi
 pyjwt==1.7.0
     # via
     #   -r requirements.in
     #   notifications-python-client
-pyopenssl==20.0.1
+pyopenssl==21.0.0
     # via requests
-pyrsistent==0.17.3
+pyparsing==3.0.6
+    # via packaging
+pyrsistent==0.18.0
     # via jsonschema
-python-crontab==2.5.1
+python-crontab==2.6.0
     # via django-celery-beat
-python-dateutil==2.8.1
+python-dateutil==2.8.2
     # via
     #   botocore
     #   python-crontab
@@ -177,7 +183,7 @@ pytz==2020.1
     #   django-timezone-field
 raven==6.10.0
     # via django-staff-sso-client
-redis==3.5.3
+redis==4.1.0
     # via
     #   celery
     #   django-redis
@@ -206,7 +212,7 @@ sigauth==4.1.1
     # via
     #   -r requirements.in
     #   directory-client-core
-six==1.15.0
+six==1.16.0
     # via
     #   cryptography
     #   django-extensions
@@ -216,13 +222,13 @@ six==1.15.0
     #   python-dateutil
     #   requests-file
     #   w3lib
-soupsieve==2.2.1
+soupsieve==2.3.1
     # via beautifulsoup4
 sqlparse==0.4.2
     # via django
 tldextract==2.2.2
     # via -r requirements.in
-urllib3==1.26.5
+urllib3==1.26.8
     # via
     #   -r requirements.in
     #   botocore
@@ -237,6 +243,8 @@ w3lib==1.22.0
     # via directory-client-core
 whitenoise==4.1.4
     # via -r requirements.in
+wrapt==1.13.3
+    # via deprecated
 
 # The following packages are considered to be unsafe in a requirements file:
 # setuptools
