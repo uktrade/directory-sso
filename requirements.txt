@@ -66,7 +66,7 @@ directory-forms-api-client==6.1.0
     # via -r requirements.in
 directory-healthcheck==2.0.0
     # via -r requirements.in
-directory-validators==7.0.1
+directory-validators==8.0.0
     # via -r requirements.in
 dj-database-url==0.5.0
     # via -r requirements.in
@@ -104,7 +104,7 @@ django-staff-sso-client==1.0.0
     # via -r requirements.in
 django-timezone-field==4.2.1
     # via django-celery-beat
-django==2.2.25
+django==2.2.26
     # via
     #   -r requirements.in
     #   directory-api-client
