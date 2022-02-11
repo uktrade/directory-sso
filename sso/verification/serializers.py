@@ -32,12 +32,15 @@ class RegenerateCodeSerializer(serializers.ModelSerializer):
 class CheckVerificationCodeSerializer(serializers.ModelSerializer):
     MESSAGE_CODE_EXPIRED = 'Registration verification code expired'
     MESSAGE_CODE_MISMATCH = 'Invalid registration verification code'
+    MESSAGE_CODE_VERIFIED = 'Registration verification code verified'
 
     class Meta:
         model = VerificationCode
         fields = ['code']
 
     def validate_code(self, value):
+        if self.instance.date_verified:
+            raise serializers.ValidationError(self.MESSAGE_CODE_VERIFIED)
         if self.instance.is_expired:
             raise serializers.ValidationError(self.MESSAGE_CODE_EXPIRED)
         if not constant_time_compare(value, self.instance.code):

@@ -20,13 +20,13 @@ class Command(MigrateCommand):
         today = datetime.now()
         three_year_old = today - timedelta(days=3 * 365)
         thirty_day_notification = three_year_old - timedelta(days=30)
-        forty_day_notification = three_year_old - timedelta(days=14)
+        fourteen_day_notification = three_year_old - timedelta(days=14)
         seven_day_notification = three_year_old - timedelta(days=7)
         zero_day_notification = three_year_old - timedelta(days=0)
 
         notification_batch = {
             thirty_day_notification.date(): 'in the next 30 days',
-            forty_day_notification.date(): 'in the next 14 days',
+            fourteen_day_notification.date(): 'in the next 14 days',
             seven_day_notification.date(): 'in the next 7 days',
             zero_day_notification.date(): 'today',
         }
@@ -69,8 +69,9 @@ class Command(MigrateCommand):
                 if hasattr(response, 'status_code') and response.status_code in [400, 403, 404, 429, 500]:
                     raise Exception(f'Something went wrong in GOV notification service while notifying {user}')
                 else:
-                    user.inactivity_notification += 1
+                    user.inactivity_notification = user.inactivity_notification + 1
                     user.save()
+                    user.refresh_from_db()
 
             notification_counter += 1
         self.stdout.write(self.style.SUCCESS('Notification sent!!'))
