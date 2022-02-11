@@ -250,6 +250,7 @@ def test_activity_stream_list_users_endpoint(api_client):
     assert set(data['orderedItems'][0]['object'].keys()) == {
         'id',
         'type',
+        'dit:DirectorySSO:User:hashedUuid',
         'dit:DirectorySSO:User:email',
         'dit:DirectorySSO:User:telephone',
         'dit:DirectorySSO:User:dateJoined',
