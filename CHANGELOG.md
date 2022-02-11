@@ -9,7 +9,8 @@
 - GLS-41 - Added hashed id attribute to users on Activity Stream endpoint
 
 ### Fixed bugs
-- GP2-3911 - Email Verification 
+- GLS-91 - Data retentions notification bugfix
+- GP2-3911 - Email Verification
 
 ## [9.2.0](https://github.com/uktrade/directory-sso/releases/tag/9.2.0)
 [Compare](https://github.com/uktrade/directory-sso/compare/9.2.0...9.1.0)
