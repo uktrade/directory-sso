@@ -1,6 +1,7 @@
 import pytest
 from django.contrib.auth import get_user_model
 from django.core.management import call_command
+from datetime import datetime, timedelta
 
 
 @pytest.mark.django_db
@@ -26,6 +27,82 @@ def test_notify_command_with_multiple_users(
     total_users = User.objects.count()
 
     assert total_users == 5
+    assert mock_notification_client.send_email_notification.called
+    assert mock_notification_client.send_email_notification.call_count == 4
+
+
+@pytest.mark.django_db
+def test_notify_command_with_single_user_lifecycle(
+    thirty_day_notification_user,
+    mock_notification_client,
+):
+    """
+    Multiple user setup and one user is active and other old enough to get notification
+    four notification should be generated
+    """
+    User = get_user_model()  # noqa
+    total_users = User.objects.count()
+
+    assert total_users == 1
+
+    # one old user deleted as per data retention policy
+    call_command('notify_users')
+    total_users = User.objects.count()
+
+    thirty_day_notification_user.refresh_from_db()
+
+    assert thirty_day_notification_user.inactivity_notification == 1
+    assert total_users == 1
+    assert mock_notification_client.send_email_notification.called
+    assert mock_notification_client.send_email_notification.call_count == 1
+
+    today = datetime.now()
+    three_year_old = today - timedelta(days=3 * 365)
+    # second notification
+    thirty_day_notification_user.last_login = three_year_old - timedelta(days=14)
+    thirty_day_notification_user.save()
+
+    thirty_day_notification_user.refresh_from_db()
+
+    call_command('notify_users')
+    total_users = User.objects.count()
+
+    thirty_day_notification_user.refresh_from_db()
+
+    assert thirty_day_notification_user.inactivity_notification == 2
+    assert total_users == 1
+    assert mock_notification_client.send_email_notification.called
+    assert mock_notification_client.send_email_notification.call_count == 2
+
+    # third notification
+    thirty_day_notification_user.last_login = three_year_old - timedelta(days=7)
+    thirty_day_notification_user.save()
+
+    thirty_day_notification_user.refresh_from_db()
+
+    call_command('notify_users')
+    total_users = User.objects.count()
+
+    thirty_day_notification_user.refresh_from_db()
+
+    assert thirty_day_notification_user.inactivity_notification == 3
+    assert total_users == 1
+    assert mock_notification_client.send_email_notification.called
+    assert mock_notification_client.send_email_notification.call_count == 3
+
+    # final notification
+    thirty_day_notification_user.last_login = three_year_old - timedelta(days=0)
+    thirty_day_notification_user.save()
+
+    thirty_day_notification_user.refresh_from_db()
+
+    call_command('notify_users')
+    total_users = User.objects.count()
+
+    thirty_day_notification_user.refresh_from_db()
+
+    assert thirty_day_notification_user.inactivity_notification == 4
+    assert total_users == 1
     assert mock_notification_client.send_email_notification.called
     assert mock_notification_client.send_email_notification.call_count == 4
 
