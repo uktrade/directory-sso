@@ -121,7 +121,7 @@ class ActivityStreamUsersSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = ('id', 'hashed_uuid', 'email', 'telephone', 'date_joined', 'modified')
-
+        
 
 class ActivityStreamUserAnswerSerializer(serializers.ModelSerializer):
     question_title = serializers.CharField(source='question.title')

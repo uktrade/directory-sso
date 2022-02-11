@@ -6,11 +6,26 @@
 ### Hotfix
 
 ### Enhancements
+
 - GLS-41 - Added hashed id attribute to users on Activity Stream endpoint
+
 
 ### Fixed bugs
 - GLS-91 - Data retentions notification bugfix
 - GP2-3911 - Email Verification
+
+## [9.2.0](https://github.com/uktrade/directory-sso/releases/tag/9.2.0)
+[Compare](https://github.com/uktrade/directory-sso/compare/9.2.0...9.1.0)
+
+### Enhancements
+- GP2-3381 - Improve password reset notifications
+- GP2-3859 - Create Profile with optional Phone Number
+
+## [9.1.0](https://github.com/uktrade/directory-sso/releases/tag/9.1.0)
+[Compare](https://github.com/uktrade/directory-sso/compare/9.1.0...9.0.0)
+### Enhancements
+- GP2 - 3180 VFM add user hashID
+
 
 ## [9.2.0](https://github.com/uktrade/directory-sso/releases/tag/9.2.0)
 [Compare](https://github.com/uktrade/directory-sso/compare/9.2.0...9.1.0)
