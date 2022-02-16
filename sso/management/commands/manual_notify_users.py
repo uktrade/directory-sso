@@ -33,24 +33,19 @@ class Command(BaseCommand):
         )
         parser.add_argument(
             '--date',
-            type=int,
+            type=str,
             help='Date from which to filter inactive user accounts with the format YYYY-MM-DD',
         )
 
     def handle(self, *args, **options):
-        now_date = timezone.now()
         notification_days = options['notification_days']
 
         if options['date']:
-            end_date = now_date
-            start_date = timezone.make_aware(
+            date = timezone.make_aware(
                 datetime.strptime(options['date'], "%Y-%m-%d"), timezone=pytz.timezone(settings.TIME_ZONE)
             )
-            time_window = relativedelta(start_date, end_date)
         else:
-            time_window = relativedelta(years=self.DATA_RETENTION_STORAGE_YEARS)
-
-        date = now_date - time_window
+            date = timezone.now() - relativedelta(years=self.DATA_RETENTION_STORAGE_YEARS)
 
         queryset = User.objects.all()
 
