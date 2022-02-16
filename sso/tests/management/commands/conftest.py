@@ -2,6 +2,7 @@ from datetime import datetime, timedelta
 from unittest import mock
 
 import pytest
+from dateutil.relativedelta import relativedelta
 from django.contrib.auth import get_user_model
 
 
@@ -101,7 +102,7 @@ def zero_day_notification_adhoc_user():
 
     # user last_login on 3 years ago
     today = datetime.now()
-    three_year_old = today - timedelta(days=3 * 365)
+    three_year_old = today - relativedelta(years=3)
     user.last_login = three_year_old
     # user created 5 years ago
     user.created = today - timedelta(days=5 * 365)
