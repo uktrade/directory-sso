@@ -1,8 +1,11 @@
 from datetime import datetime
 
+import pytz
+from dateutil.relativedelta import relativedelta
 from django.conf import settings
 from django.core.management.base import BaseCommand
 from django.db.models import Q
+from django.utils import timezone
 from notifications_python_client import NotificationsAPIClient
 
 from sso.user.models import User
@@ -14,8 +17,8 @@ class Command(BaseCommand):
     or not logged in since the aforementioned date.
 
     Usage:
-            python manage.py manual_notify_users 14 --from-year 2018 --from-month 1
-            make manage manual_notify_users -- 14 --from-year 2018 --from-month 1
+            python manage.py manual_notify_users 14 --date 2018-01-01
+            make manage manual_notify_users -- 14 --date 2018-01-01
     """
 
     DATA_RETENTION_STORAGE_YEARS = 3
@@ -23,34 +26,26 @@ class Command(BaseCommand):
     help = 'Notify inactive users of potential account deletion'
 
     def add_arguments(self, parser):
-        current_datetime = datetime.now()
-        current_year = current_datetime.year
-        current_month = current_datetime.month
-
         parser.add_argument(
             'notification_days',
             type=int,
             help='Number of days of notice to include in the email notification. Possible entries are: 30, 14, 7, 0',
         )
         parser.add_argument(
-            '--from-year',
-            type=int,
-            dest='from_year',
-            default=(current_year - self.DATA_RETENTION_STORAGE_YEARS),
-            help='Year from which to filter inactive user accounts. Defaults to exactly three years back',
-        )
-        parser.add_argument(
-            '--from-month',
-            type=int,
-            dest='from_month',
-            default=current_month,
-            help='Month from which to filter inactive user accounts. Defaults to current month',
+            '--date',
+            type=str,
+            help='Date from which to filter inactive user accounts with the format YYYY-MM-DD',
         )
 
     def handle(self, *args, **options):
         notification_days = options['notification_days']
-        from_year = options['from_year']
-        from_month = options['from_month']
+
+        if options['date']:
+            date = timezone.make_aware(
+                datetime.strptime(options['date'], "%Y-%m-%d"), timezone=pytz.timezone(settings.TIME_ZONE)
+            )
+        else:
+            date = timezone.now() - relativedelta(years=self.DATA_RETENTION_STORAGE_YEARS)
 
         queryset = User.objects.all()
 
@@ -69,16 +64,14 @@ class Command(BaseCommand):
         inactive_users = queryset.filter(
             # Accounts with last login dated less than or equal year and month provided
             Q(
-                last_login__year__lte=from_year,
-                last_login__month__lte=from_month,
+                last_login__lte=date,
                 inactivity_notification=inactivity_notification,
             )
             |
             # Accounts with no login activity, with creation dated less than or equal year and month provided
             Q(
                 last_login__isnull=True,
-                created__year__lte=from_year,
-                created__month__lte=from_month,
+                created__lte=date,
                 inactivity_notification=inactivity_notification,
             )
         )
