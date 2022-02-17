@@ -2,6 +2,7 @@ from datetime import datetime, timedelta
 from unittest import mock
 
 import pytest
+from dateutil.relativedelta import relativedelta
 from django.contrib.auth import get_user_model
 
 
@@ -95,14 +96,14 @@ def zero_day_notification_user():
 
 @pytest.fixture
 def zero_day_notification_adhoc_user():
-    """Fixture for old user who's last login and created three years ago"""
+    """Fixture for old user with a last login of three years ago"""
     User = get_user_model()  # noqa
     user = User.objects.create(email='def_adhoc_0@xyz.com')
 
     # user last_login on 3 years ago
     today = datetime.now()
-    more_than_three_year_old = today - timedelta(days=3 * 365)
-    user.last_login = more_than_three_year_old - timedelta(days=50)
+    three_year_old = today - relativedelta(years=3)
+    user.last_login = three_year_old
     # user created 5 years ago
     user.created = today - timedelta(days=5 * 365)
     user.inactivity_notification = 3
@@ -192,7 +193,7 @@ def mock_notification_client():
 
 @pytest.fixture
 def mock_adhoc_notification_client():
-    with mock.patch('sso.management.commands.adhoc_notify_users.NotificationsAPIClient') as mock_client:
+    with mock.patch('sso.management.commands.manual_notify_users.NotificationsAPIClient') as mock_client:
         mock_instance = mock_client.return_value
         mock_instance.send_email_notification.return_value = MockResponse
         yield mock_instance
@@ -208,7 +209,7 @@ def mock_notification_bad_client():
 
 @pytest.fixture
 def mock_adhoc_notification_bad_client():
-    with mock.patch('sso.management.commands.adhoc_notify_users.NotificationsAPIClient') as mock_bad_client:
+    with mock.patch('sso.management.commands.manual_notify_users.NotificationsAPIClient') as mock_bad_client:
         instance = mock_bad_client.return_value
         instance.send_email_notification.return_value = MockBadResponse
         yield instance
