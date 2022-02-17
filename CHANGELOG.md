@@ -7,11 +7,17 @@
 
 ### Enhancements
 
-- GLS-41 - Added hashed id attribute to users on Activity Stream endpoint
+### Fixed bugs
 
+## [9.4.0](https://github.com/uktrade/directory-sso/releases/tag/9.4.0)
+[Compare](https://github.com/uktrade/directory-sso/compare/9.4.0...9.3.0)
+
+### Enhancements
+- GLS-41 - Added hashed id attribute to users on Activity Stream endpoint
+- GLS-91 - Add management command for data retention notifications
 
 ### Fixed bugs
-- GLS-91 - Data retentions notification bugfix
+- GLS-91 - Data retention notification bugfix
 - GP2-3911 - Email Verification
 
 ## [9.2.0](https://github.com/uktrade/directory-sso/releases/tag/9.2.0)
@@ -25,7 +31,6 @@
 [Compare](https://github.com/uktrade/directory-sso/compare/9.1.0...9.0.0)
 ### Enhancements
 - GP2 - 3180 VFM add user hashID
-
 
 ## [9.2.0](https://github.com/uktrade/directory-sso/releases/tag/9.2.0)
 [Compare](https://github.com/uktrade/directory-sso/compare/9.2.0...9.1.0)
@@ -111,12 +116,10 @@
 - GP2-2332 - upgraded directory-components package
 - NOTICKET -  upgrade python 3.9.2
 
-
 ## [v6.5.1](https://github.com/uktrade/directory-sso/releases/tag/v6.5.1)
 [Compare](https://github.com/uktrade/directory-sso/compare/6.5.0...6.5.1)
 ## Enhancements
 - No ticket - Python version bump to 2.9.2
-
 
 ## [v6.5.0](https://github.com/uktrade/directory-sso/releases/tag/v6.5.0)
 [Compare](https://github.com/uktrade/directory-sso/compare/6.4.0...6.5.0)
