@@ -5,6 +5,7 @@ from unittest.mock import patch
 
 import pytest
 from allauth.account.models import EmailAddress
+from dateutil.relativedelta import relativedelta
 from django.conf import settings
 from django.contrib.admin import site
 from django.test import Client
@@ -283,25 +284,31 @@ class CompanyAdminAuthTestCase(TestCase):
 
 
 @pytest.mark.django_db
-def test_GDPR_compliance_filter(rf, superuser):
-    three_years_ago = 365 * 3
+def test_inactivity_filter(rf, superuser):
+    three_years_ago = timezone.now() - relativedelta(years=3)
 
-    with freeze_time(timezone.now() - timedelta(days=three_years_ago + 1)):
+    with freeze_time(three_years_ago):
         user_one = UserFactory()
+        user_one.last_login = three_years_ago - timedelta(days=5)
+        user_one.save()
 
-    with freeze_time(timezone.now() - timedelta(days=three_years_ago)):
-        user_two = UserFactory()
+    with freeze_time(three_years_ago):
+        user_two = UserFactory(is_superuser=True)
+        user_two.last_login = three_years_ago
+        user_two.save()
 
-    with freeze_time(timezone.now() - timedelta(days=three_years_ago - 1)):
+    with freeze_time(three_years_ago):
         user_three = UserFactory()
+        user_three.last_login = three_years_ago + timedelta(days=5)
+        user_three.save()
 
     modeladmin = admin.UserAdmin(User, site)
-    request = rf.get('/', {'gdpr': True})
+    request = rf.get('/', {'inactive': True})
     request.user = superuser
     changelist = modeladmin.get_changelist_instance(request)
     queryset = changelist.get_queryset(request)
 
-    assert queryset.count() == 2
+    assert queryset.count() == 1
     assert user_one in queryset
-    assert user_two in queryset
+    assert user_two not in queryset
     assert user_three not in queryset

@@ -1,11 +1,13 @@
 from allauth.account.forms import default_token_generator, user_pk_to_url_str
 from allauth.account.models import EmailConfirmation
+from dateutil.relativedelta import relativedelta
 from directory_constants import choices
 from django.conf import settings
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin
 from django.contrib.postgres.fields import JSONField
 from django.core.mail import send_mail
 from django.db import models
+from django.db.models import Q
 from django.urls import reverse
 from django.utils import timezone
 from django.utils.translation import ugettext_lazy as _
@@ -50,6 +52,29 @@ class UserManager(BaseUserManager):
         return user
 
 
+class InactiveUserManager(models.Manager):
+    def get_queryset(self):
+        date = timezone.now() - relativedelta(years=settings.DATA_RETENTION_STORAGE_YEARS)
+        return (
+            super()
+            .get_queryset()
+            .filter(
+                # Accounts with last login dated less than or equal year and month provided
+                Q(
+                    last_login__lte=date,
+                )
+                |
+                # Accounts with no login activity, with creation dated less than or equal year and month provided
+                Q(
+                    last_login__isnull=True,
+                    created__lte=date,
+                )
+            )
+            # Exclude superusers and staff members
+            .exclude(Q(is_superuser=True) | Q(is_staff=True))
+        )
+
+
 class User(AbstractBaseUser, PermissionsMixin, TimeStampedModel):
 
     email = models.EmailField(_('email'), unique=True)
@@ -76,6 +101,7 @@ class User(AbstractBaseUser, PermissionsMixin, TimeStampedModel):
     inactivity_notification = models.PositiveSmallIntegerField(default=0)
 
     objects = UserManager()
+    inactive = InactiveUserManager()
 
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = []
