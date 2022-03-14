@@ -45,7 +45,7 @@ class Command(BaseCommand):
                 datetime.strptime(options['date'], "%Y-%m-%d"), timezone=pytz.timezone(settings.TIME_ZONE)
             )
         else:
-            date = timezone.now() - relativedelta(years=self.DATA_RETENTION_STORAGE_YEARS)
+            date = timezone.now() - relativedelta(years=settings.DATA_RETENTION_STORAGE_YEARS)
 
         queryset = User.objects.all()
 
