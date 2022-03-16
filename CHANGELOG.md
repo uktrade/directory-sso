@@ -8,6 +8,7 @@
 ### Enhancements
 - GLS-41 - Added hashed id attribute to users on Activity Stream endpoint
 - GLS-91 - Add management command for data retention notifications
+- GLS-132 - Add filter for inactive users
 
 ### Fixed bugs
 - GLS-91 - Data retentions notification bugfix
