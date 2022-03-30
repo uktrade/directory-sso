@@ -70,11 +70,8 @@ class VerifyVerificationCodeAPIView(GenericAPIView):
         serializer.is_valid(raise_exception=True)
         serializer.save(date_verified=now())
 
-        EmailAddress.objects.get_or_create(
-            user=instance.user,
-            verified=True,
-            email=instance.user.email,
-            primary=True,
+        EmailAddress.objects.update_or_create(
+            user=instance.user, email=instance.user.email, defaults={'verified': True, 'primary': True}
         )
 
         login(
