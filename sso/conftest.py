@@ -46,7 +46,7 @@ def migration(transactional_db):
             return self._old_apps
 
         def apply(self, app, migrate_to):
-            """ Migrate forwards to the "migrate_to" migration """
+            """Migrate forwards to the "migrate_to" migration"""
             self.migrate_to = [(app, migrate_to)]
             self.executor.loader.build_graph()  # reload.
             self.executor.migrate(self.migrate_to)

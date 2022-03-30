@@ -9,6 +9,7 @@
 - GLS-41 - Added hashed id attribute to users on Activity Stream endpoint
 - GLS-91 - Add management command for data retention notifications
 - GLS-132 - Add filter for inactive users
+- GLS-22 - Integrates the new account verification journey when trying to reset the password of an unverified account
 
 ### Fixed bugs
 - GLS-91 - Data retentions notification bugfix
