@@ -40,9 +40,10 @@ class Command(MigrateCommand):
         }
 
         for notification_counter, note in notification_note.items():
-            queryset = queryset.filter(inactivity_notification=notification_counter)
+            old_users = queryset.filter(inactivity_notification=notification_counter)
+
             if notification_remindar.get(notification_counter):
-                old_users = queryset.filter(
+                old_users = old_users.filter(
                     inactivity_notification_sent__lte=today
                     - timedelta(days=notification_remindar.get(notification_counter)),  # noqa
                 )
