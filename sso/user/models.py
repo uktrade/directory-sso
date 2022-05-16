@@ -100,6 +100,8 @@ class User(AbstractBaseUser, PermissionsMixin, TimeStampedModel):
 
     inactivity_notification = models.PositiveSmallIntegerField(default=0)
 
+    inactivity_notification_sent = models.DateTimeField(_('Notification sent'), null=True)
+
     objects = UserManager()
     inactive = InactiveUserManager()
 
@@ -122,7 +124,6 @@ class User(AbstractBaseUser, PermissionsMixin, TimeStampedModel):
         is_correct = super().check_password(raw_password)
         if is_correct:
             self.failed_login_attempts = 0
-            # if user is logged in then set inactivity to default (0)
             self.inactivity_notification = 0
             self.save()
         else:

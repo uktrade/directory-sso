@@ -2,7 +2,7 @@ from datetime import datetime, timedelta
 
 from django.conf import settings
 from django.core.management.commands.migrate import Command as MigrateCommand
-from django.db.models import Q
+from django.db.models import F
 from notifications_python_client import NotificationsAPIClient
 
 from sso.user.models import User
@@ -15,50 +15,38 @@ class Command(MigrateCommand):
     """
 
     def handle(self, *args, **options):
-        queryset = User.objects.all()
+        queryset = User.inactive
 
         today = datetime.now()
-        three_year_old = today - timedelta(days=3 * 365)
-        thirty_day_notification = three_year_old - timedelta(days=30)
-        fourteen_day_notification = three_year_old - timedelta(days=14)
-        seven_day_notification = three_year_old - timedelta(days=7)
-        zero_day_notification = three_year_old - timedelta(days=0)
 
-        notification_batch = {
-            thirty_day_notification.date(): 'in the next 30 days',
-            fourteen_day_notification.date(): 'in the next 14 days',
-            seven_day_notification.date(): 'in the next 7 days',
-            zero_day_notification.date(): 'today',
+        notification_note = {
+            0: 'in the next 30 days',
+            1: 'in the next 14 days',
+            2: 'in the next 7 days',
+            3: 'today',
         }
 
         notifications_client = NotificationsAPIClient(settings.GOV_NOTIFY_API_KEY)
         template_id = settings.GOV_NOTIFY_DATA_RETENTION_NOTIFICATION_TEMPLATE_ID
 
-        # This counter refer to notification batch of 30, 14, 7 and 0 days
+        # This remindar batch refer to notification batch of 30, 14, 7 and 0 days
         # So notification counter align as 1 -> 30 days, 2->14 days, 3 -> 7 days 4 -> 0 day
         # also same value as counter will be saved in db as inactivity_notification
         # so this is to track notification and avoid sending multiple notification
-        notification_counter = 0
-        for notification_date, note in notification_batch.items():
-            old_users = queryset.filter(
-                # last login 3 years old
-                Q(
-                    last_login__year=notification_date.year,
-                    last_login__month=notification_date.month,
-                    last_login__day=notification_date.day,
-                    created__lte=notification_date,
-                    inactivity_notification=notification_counter,
+        notification_remindar = {
+            0: None,
+            1: 14,
+            2: 7,
+            3: 7,
+        }
+
+        for notification_counter, note in notification_note.items():
+            queryset = queryset.filter(inactivity_notification=notification_counter)
+            if notification_remindar.get(notification_counter):
+                old_users = queryset.filter(
+                    inactivity_notification_sent__lte=today
+                    - timedelta(days=notification_remindar.get(notification_counter)),  # noqa
                 )
-                |
-                # account created 3 years ago but never logged in
-                Q(
-                    last_login__isnull=True,
-                    created__year=notification_date.year,
-                    created__month=notification_date.month,
-                    created__day=notification_date.day,
-                    inactivity_notification=notification_counter,
-                )
-            )
             # Notify user about deletion
             for user in old_users:
                 response = notifications_client.send_email_notification(
@@ -69,9 +57,8 @@ class Command(MigrateCommand):
                 if hasattr(response, 'status_code') and response.status_code in [400, 403, 404, 429, 500]:
                     raise Exception(f'Something went wrong in GOV notification service while notifying {user}')
                 else:
-                    user.inactivity_notification = user.inactivity_notification + 1
+                    user.inactivity_notification += 1
+                    user.inactivity_notification_sent = today
                     user.save()
-                    user.refresh_from_db()
 
-            notification_counter += 1
         self.stdout.write(self.style.SUCCESS('Notification sent!!'))
