@@ -25,7 +25,7 @@ class DownloadCaseStudyCSVTestCase(TestCase):
 
     header = (
         'created,date_joined,email,first_name,hashed_uuid,'
-        'id,is_active,is_staff,is_superuser,'
+        'id,inactivity_notification_sent,is_active,is_staff,is_superuser,'
         'last_login,last_name,lessoncompleted,modified,oauth2_provider_application,page_views,user_profile,useranswer'
         ',userdata,utm,verification_code'
     )
@@ -43,7 +43,7 @@ class DownloadCaseStudyCSVTestCase(TestCase):
         user = User.objects.first()
         row_one = (
             "{created},{date_joined},admin@example.com,,{hashed_uuid},"
-            "{id},True,True,True,"
+            "{id},,True,True,True,"
             "{last_login},,,{modified},,,,,,{utm},"
         ).format(
             created=user.created,
@@ -69,7 +69,7 @@ class DownloadCaseStudyCSVTestCase(TestCase):
         user_one = User.objects.all()[2]
         row_one = (
             '{created},{date_joined},{email},,{hashed_uuid},'
-            '{id},{is_active},{is_staff},'
+            '{id},,{is_active},{is_staff},'
             '{is_superuser},,,,{modified},,,{user_profile},,,'
             '{utm},'
             '{verification_code}'
@@ -91,7 +91,7 @@ class DownloadCaseStudyCSVTestCase(TestCase):
         user_two = User.objects.all()[1]
         row_two = (
             '{created},{date_joined},{email},,{hashed_uuid},'
-            '{id},{is_active},{is_staff},'
+            '{id},,{is_active},{is_staff},'
             '{is_superuser},,,,{modified},,,{user_profile},,,{utm},'
             '{verification_code}'
         ).format(
@@ -112,7 +112,7 @@ class DownloadCaseStudyCSVTestCase(TestCase):
         user_three = User.objects.all()[0]
         row_three = (
             '{created},{date_joined},{email},,{hashed_uuid},'
-            '{id},{is_active},{is_staff},'
+            '{id},,{is_active},{is_staff},'
             '{is_superuser},{last_login},,,{modified},,,{user_profile},,,{utm},'
             '{verification_code}'
         ).format(
@@ -172,6 +172,7 @@ def test_download_csv_exops_not_fab(mock_get_fab_user_ids, settings, superuser_c
             ('first_name', ''),
             ('hashed_uuid', user_one.hashed_uuid),
             ('id', user_one.id),
+            ('inactivity_notification_sent', ''),
             ('is_active', user_one.is_active),
             ('is_staff', user_one.is_staff),
             ('is_superuser', user_one.is_superuser),

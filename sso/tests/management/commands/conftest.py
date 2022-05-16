@@ -1,8 +1,10 @@
+import pytest
+
 from datetime import datetime, timedelta
 from unittest import mock
-
-import pytest
 from dateutil.relativedelta import relativedelta
+
+from django.conf import settings
 from django.contrib.auth import get_user_model
 
 
@@ -31,7 +33,7 @@ def thirty_day_notification_user():
 
     # user last_login on 3 years and 30 days ago
     today = datetime.now()
-    three_year_old = today - timedelta(days=3 * 365)
+    three_year_old = today - relativedelta(years=settings.DATA_RETENTION_STORAGE_YEARS)
     user.last_login = three_year_old - timedelta(days=30)
     # user created 5 years ago
     user.created = datetime.now() - timedelta(days=5 * 365)
@@ -48,11 +50,12 @@ def fourteen_day_notification_user():
 
     # user last_login on 3 years and 14 days ago
     today = datetime.now()
-    three_year_old = today - timedelta(days=3 * 365)
+    three_year_old = today - relativedelta(years=settings.DATA_RETENTION_STORAGE_YEARS)
     user.last_login = three_year_old - timedelta(days=14)
     # user created 5 years ago
     user.created = datetime.now() - timedelta(days=5 * 365)
     user.inactivity_notification = 1
+    user.inactivity_notification_sent = today - timedelta(days=15)
     user.save()
     yield user
     user.delete()
@@ -66,11 +69,12 @@ def seven_day_notification_user():
 
     # user last_login on 3 years and 7 days ago
     today = datetime.now()
-    three_year_old = today - timedelta(days=3 * 365)
+    three_year_old = today - relativedelta(years=settings.DATA_RETENTION_STORAGE_YEARS)
     user.last_login = three_year_old - timedelta(days=7)
     # user created 5 years ago
     user.created = today - timedelta(days=5 * 365)
     user.inactivity_notification = 2
+    user.inactivity_notification_sent = today - timedelta(days=8)
     user.save()
     yield user
     user.delete()
@@ -84,11 +88,12 @@ def zero_day_notification_user():
 
     # user last_login on 3 years ago
     today = datetime.now()
-    three_year_old = today - timedelta(days=3 * 365)
+    three_year_old = today - relativedelta(years=settings.DATA_RETENTION_STORAGE_YEARS)
     user.last_login = three_year_old - timedelta(days=0)
     # user created 5 years ago
     user.created = today - timedelta(days=5 * 365)
     user.inactivity_notification = 3
+    user.inactivity_notification_sent = today - timedelta(days=15)
     user.save()
     yield user
     user.delete()
@@ -102,11 +107,12 @@ def zero_day_notification_adhoc_user():
 
     # user last_login on 3 years ago
     today = datetime.now()
-    three_year_old = today - relativedelta(years=3)
+    three_year_old = today - relativedelta(years=settings.DATA_RETENTION_STORAGE_YEARS)
     user.last_login = three_year_old
     # user created 5 years ago
     user.created = today - timedelta(days=5 * 365)
     user.inactivity_notification = 3
+    user.inactivity_notification_sent = today - timedelta(days=8)
     user.save()
     yield user
     user.delete()
@@ -158,12 +164,14 @@ def active_user():
 def old_user():
     """Fixture for old user who's last login and created three years ago"""
     User = get_user_model()  # noqa
+    today = datetime.now()
     user = User.objects.create(email='old_user@xyz.com')
     # user last_login around 4 years ago
     user.last_login = datetime.now() - timedelta(days=4 * 365)
     # user created 5 years ago
     user.created = datetime.now() - timedelta(days=5 * 365)
     user.inactivity_notification = 4
+    user.inactivity_notification_sent = today
     user.save()
     yield user
     user.delete()
