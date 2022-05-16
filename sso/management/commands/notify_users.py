@@ -2,7 +2,6 @@ from datetime import datetime, timedelta
 
 from django.conf import settings
 from django.core.management.commands.migrate import Command as MigrateCommand
-from django.db.models import F
 from notifications_python_client import NotificationsAPIClient
 
 from sso.user.models import User

@@ -1,11 +1,10 @@
 import json
-from datetime import datetime, timedelta
 
 from directory_api_client import api_client
 from directory_forms_api_client.client import forms_api_client
 from django.conf import settings
 from django.core.management.commands.migrate import Command as MigrateCommand
-from django.db.models import Q
+
 
 from sso.user.models import DataRetentionStatistics, User
 
@@ -19,7 +18,6 @@ class Command(MigrateCommand):
     def handle(self, *args, **options):
         queryset = User.inactive
         total_users = queryset.count()
-        three_year_old = datetime.now() - timedelta(days=3 * 365)
         company, company_user = 0, 0
 
         old_users = queryset.filter(
