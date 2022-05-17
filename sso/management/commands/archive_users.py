@@ -1,11 +1,10 @@
 import json
-from datetime import datetime, timedelta
 
 from directory_api_client import api_client
 from directory_forms_api_client.client import forms_api_client
 from django.conf import settings
 from django.core.management.commands.migrate import Command as MigrateCommand
-from django.db.models import Q
+
 
 from sso.user.models import DataRetentionStatistics, User
 
@@ -17,18 +16,13 @@ class Command(MigrateCommand):
     """
 
     def handle(self, *args, **options):
-        queryset = User.objects.all()
+        queryset = User.inactive
         total_users = queryset.count()
-        three_year_old = datetime.now() - timedelta(days=3 * 365)
         company, company_user = 0, 0
 
         old_users = queryset.filter(
-            # last login 3 years old and inactivity_notification=4 means we have sent final notification to user
-            Q(last_login__lt=three_year_old, created__lt=three_year_old, inactivity_notification=4)
-            |
-            # account created 3 years ago but never logged in and inactivity_notification=4
-            # means we have sent final notification to user
-            Q(last_login__isnull=True, created__lt=three_year_old, inactivity_notification=4)
+            # inactivity_notification=4 means we have sent final notification to user
+            inactivity_notification=4
         )
         total_old_users = old_users.count()
         # Delete related user data in directory-api

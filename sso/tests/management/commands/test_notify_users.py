@@ -1,8 +1,9 @@
-from datetime import datetime, timedelta
-
+from datetime import datetime
+from dateutil.relativedelta import relativedelta
 import pytest
 from django.contrib.auth import get_user_model
 from django.core.management import call_command
+from freezegun import freeze_time
 
 
 @pytest.mark.django_db
@@ -47,7 +48,8 @@ def test_notify_command_with_single_user_lifecycle(
     assert total_users == 1
 
     # one old user deleted as per data retention policy
-    call_command('notify_users')
+    with freeze_time(datetime.now() - relativedelta(days=30)):
+        call_command('notify_users')
     total_users = User.objects.count()
 
     thirty_day_notification_user.refresh_from_db()
@@ -58,14 +60,14 @@ def test_notify_command_with_single_user_lifecycle(
     assert mock_notification_client.send_email_notification.call_count == 1
 
     today = datetime.now()
-    three_year_old = today - timedelta(days=3 * 365)
+    three_year_old = today - relativedelta(days=3 * 365)
     # second notification
-    thirty_day_notification_user.last_login = three_year_old - timedelta(days=14)
+    thirty_day_notification_user.last_login = three_year_old - relativedelta(days=30)
     thirty_day_notification_user.save()
 
     thirty_day_notification_user.refresh_from_db()
-
-    call_command('notify_users')
+    with freeze_time(datetime.now() - relativedelta(days=14)):
+        call_command('notify_users')
     total_users = User.objects.count()
 
     thirty_day_notification_user.refresh_from_db()
@@ -76,12 +78,13 @@ def test_notify_command_with_single_user_lifecycle(
     assert mock_notification_client.send_email_notification.call_count == 2
 
     # third notification
-    thirty_day_notification_user.last_login = three_year_old - timedelta(days=7)
+    thirty_day_notification_user.last_login = three_year_old - relativedelta(days=7)
     thirty_day_notification_user.save()
 
     thirty_day_notification_user.refresh_from_db()
 
-    call_command('notify_users')
+    with freeze_time(datetime.now() - relativedelta(days=6)):
+        call_command('notify_users')
     total_users = User.objects.count()
 
     thirty_day_notification_user.refresh_from_db()
@@ -92,12 +95,14 @@ def test_notify_command_with_single_user_lifecycle(
     assert mock_notification_client.send_email_notification.call_count == 3
 
     # final notification
-    thirty_day_notification_user.last_login = three_year_old - timedelta(days=0)
+    thirty_day_notification_user.last_login = three_year_old - relativedelta(days=0)
     thirty_day_notification_user.save()
 
     thirty_day_notification_user.refresh_from_db()
 
-    call_command('notify_users')
+    # no need to do freeze time here but consitency for above call
+    with freeze_time(datetime.now() + relativedelta(days=1)):
+        call_command('notify_users')
     total_users = User.objects.count()
 
     thirty_day_notification_user.refresh_from_db()

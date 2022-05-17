@@ -6,24 +6,22 @@ from django.conf import settings
 from django.contrib import admin
 from django.contrib.postgres import fields
 from django.http import HttpResponse
-from django.utils import timezone
 from django_json_widget.widgets import JSONEditorWidget
 
 from sso.user.models import DataRetentionStatistics, LessonCompleted, Question, User, UserAnswer, UserData, UserProfile
 
 
-class GDPRComplianceFilter(admin.SimpleListFilter):
-    title = 'GDPR compliance'
-    parameter_name = 'gdpr'
+class InactiveUserFilter(admin.SimpleListFilter):
+    title = 'Inactivity'
+    parameter_name = 'inactive'
 
     def lookups(self, request, model_admin):
-        return ((True, 'is not compliant'),)
+        return ((True, 'is not active'),)
 
     def queryset(self, request, queryset):
         value = self.value()
         if value:
-            three_years_ago = timezone.now() - datetime.timedelta(days=365 * 3)
-            queryset = queryset.filter(modified__date__lte=three_years_ago)
+            queryset = User.inactive
         return queryset
 
 
@@ -43,7 +41,7 @@ class UserAdmin(admin.ModelAdmin):
     search_fields = ('email',)
     readonly_fields = ('created', 'modified')
     list_display = ('email', 'is_superuser', 'is_staff')
-    list_filter = (GDPRComplianceFilter,)
+    list_filter = (InactiveUserFilter,)
     exclude = ('password',)
     actions = [
         'download_csv',
