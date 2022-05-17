@@ -6,19 +6,41 @@
 
 ### Enhancements
 
+### Fixed bugs
+
+- GLS-226 - Data retentions refactor
+
+## [9.4.0](https://github.com/uktrade/directory-sso/releases/tag/9.4.0)
+[Compare](https://github.com/uktrade/directory-sso/compare/9.4.0...9.3.0)
+
+### Enhancements
+
 - GLS-41 - Added hashed id attribute to users on Activity Stream endpoint
 - GLS-91 - Add management command for data retention notifications
 - GLS-132 - Add filter for inactive users
 - GLS-22 - Integrates the new account verification journey when trying to reset the password of an unverified account
 
 ### Fixed bugs
-
-- GLS-226 - Data retentions refactor
 - GLS-91 - Data retentions notification bugfix
 - GP2-3911 - Email Verification
 
 ## [9.2.0](https://github.com/uktrade/directory-sso/releases/tag/9.2.0)
+[Compare](https://github.com/uktrade/directory-sso/compare/9.2.0...9.1.0)
 
+### Enhancements
+
+- GP2-3381 - Improve password reset notifications
+- GP2-3859 - Create Profile with optional Phone Number
+
+## [9.1.0](https://github.com/uktrade/directory-sso/releases/tag/9.1.0)
+
+[Compare](https://github.com/uktrade/directory-sso/compare/9.1.0...9.0.0)
+
+### Enhancements
+
+- GP2 - 3180 VFM add user hashID
+
+## [9.2.0](https://github.com/uktrade/directory-sso/releases/tag/9.2.0)
 [Compare](https://github.com/uktrade/directory-sso/compare/9.2.0...9.1.0)
 
 ### Enhancements
@@ -42,13 +64,14 @@
 - GP2-3406 - Notifications for already registered users on sign-up
 - GP2-3344 - Make account verification token based
 - GP2-3152 - Verification code rate limiting + reduced expiry time
-- No-ticket - removed adhoc script for data notification
 - GP2-3074 - pipeline vfm survey add questions object
 - GP2-3646 - Migrate existing product and market data to the product/market baskets
 
 ### Fixed bugs
 
 - GP2-3260 - Password reset validation fix
+### Enhancements
+- No-ticket - removed adhoc script for data notification
 - GP2-3017 - Added test for partial user profile update
 - GP2-2445 - JSON widget for VFM answer admin
 - GP2-2867 - Dockerise d-sso
@@ -65,6 +88,11 @@
 [Compare](https://github.com/uktrade/directory-sso/compare/8.6.0...8.4.0)
 
 - GP2-2867 - Dockerise d-sso
+
+### Hotfix
+- NOTICKET - Fix verification code expiration date when regenerating
+- GP2-3260 - Password reset validation fix
+- GP2-3104 - Treating upper and lowercase emails as being the same from User creation API endpoint
 
 ## [8.4.0](https://github.com/uktrade/directory-sso/releases/tag/8.4.0)
 
@@ -110,7 +138,7 @@
 - GP2-2353 - VFM final page back button
 - GP2-2256 - magna header for BAU pages
 - GP2-2332 - upgraded directory-components package
-- NOTICKET - upgrade python 3.9.2
+- NOTICKET -  upgrade python 3.9.2
 
 ## [v6.5.1](https://github.com/uktrade/directory-sso/releases/tag/v6.5.1)
 
