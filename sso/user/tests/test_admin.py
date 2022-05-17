@@ -5,6 +5,7 @@ from unittest.mock import patch
 
 import pytest
 from allauth.account.models import EmailAddress
+from dateutil.relativedelta import relativedelta
 from django.conf import settings
 from django.contrib.admin import site
 from django.test import Client
@@ -24,7 +25,7 @@ class DownloadCaseStudyCSVTestCase(TestCase):
 
     header = (
         'created,date_joined,email,first_name,hashed_uuid,'
-        'id,is_active,is_staff,is_superuser,'
+        'id,inactivity_notification_sent,is_active,is_staff,is_superuser,'
         'last_login,last_name,lessoncompleted,modified,oauth2_provider_application,page_views,user_profile,useranswer'
         ',userdata,utm,verification_code'
     )
@@ -42,7 +43,7 @@ class DownloadCaseStudyCSVTestCase(TestCase):
         user = User.objects.first()
         row_one = (
             "{created},{date_joined},admin@example.com,,{hashed_uuid},"
-            "{id},True,True,True,"
+            "{id},,True,True,True,"
             "{last_login},,,{modified},,,,,,{utm},"
         ).format(
             created=user.created,
@@ -68,7 +69,7 @@ class DownloadCaseStudyCSVTestCase(TestCase):
         user_one = User.objects.all()[2]
         row_one = (
             '{created},{date_joined},{email},,{hashed_uuid},'
-            '{id},{is_active},{is_staff},'
+            '{id},,{is_active},{is_staff},'
             '{is_superuser},,,,{modified},,,{user_profile},,,'
             '{utm},'
             '{verification_code}'
@@ -90,7 +91,7 @@ class DownloadCaseStudyCSVTestCase(TestCase):
         user_two = User.objects.all()[1]
         row_two = (
             '{created},{date_joined},{email},,{hashed_uuid},'
-            '{id},{is_active},{is_staff},'
+            '{id},,{is_active},{is_staff},'
             '{is_superuser},,,,{modified},,,{user_profile},,,{utm},'
             '{verification_code}'
         ).format(
@@ -111,7 +112,7 @@ class DownloadCaseStudyCSVTestCase(TestCase):
         user_three = User.objects.all()[0]
         row_three = (
             '{created},{date_joined},{email},,{hashed_uuid},'
-            '{id},{is_active},{is_staff},'
+            '{id},,{is_active},{is_staff},'
             '{is_superuser},{last_login},,,{modified},,,{user_profile},,,{utm},'
             '{verification_code}'
         ).format(
@@ -171,6 +172,7 @@ def test_download_csv_exops_not_fab(mock_get_fab_user_ids, settings, superuser_c
             ('first_name', ''),
             ('hashed_uuid', user_one.hashed_uuid),
             ('id', user_one.id),
+            ('inactivity_notification_sent', ''),
             ('is_active', user_one.is_active),
             ('is_staff', user_one.is_staff),
             ('is_superuser', user_one.is_superuser),
@@ -283,25 +285,31 @@ class CompanyAdminAuthTestCase(TestCase):
 
 
 @pytest.mark.django_db
-def test_GDPR_compliance_filter(rf, superuser):
-    three_years_ago = 365 * 3
+def test_inactivity_filter(rf, superuser):
+    three_years_ago = timezone.now() - relativedelta(years=3)
 
-    with freeze_time(timezone.now() - timedelta(days=three_years_ago + 1)):
+    with freeze_time(three_years_ago):
         user_one = UserFactory()
+        user_one.last_login = three_years_ago - timedelta(days=5)
+        user_one.save()
 
-    with freeze_time(timezone.now() - timedelta(days=three_years_ago)):
-        user_two = UserFactory()
+    with freeze_time(three_years_ago):
+        user_two = UserFactory(is_superuser=True)
+        user_two.last_login = three_years_ago
+        user_two.save()
 
-    with freeze_time(timezone.now() - timedelta(days=three_years_ago - 1)):
+    with freeze_time(three_years_ago):
         user_three = UserFactory()
+        user_three.last_login = three_years_ago + timedelta(days=5)
+        user_three.save()
 
     modeladmin = admin.UserAdmin(User, site)
-    request = rf.get('/', {'gdpr': True})
+    request = rf.get('/', {'inactive': True})
     request.user = superuser
     changelist = modeladmin.get_changelist_instance(request)
     queryset = changelist.get_queryset(request)
 
-    assert queryset.count() == 2
+    assert queryset.count() == 1
     assert user_one in queryset
-    assert user_two in queryset
+    assert user_two not in queryset
     assert user_three not in queryset
