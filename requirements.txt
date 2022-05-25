@@ -110,7 +110,7 @@ django-health-check==3.8.0
     # via directory-healthcheck
 django-ipware==2.1.0
     # via django-admin-ip-restrictor
-django-json-widget==1.1.1
+django_json_widget==1.1.1
     # via -r requirements.in
 django-oauth-toolkit==1.2.0
     # via -r requirements.in
@@ -133,9 +133,7 @@ djangorestframework==3.12.2
 docopt==0.6.2
     # via notifications-python-client
 future==0.18.2
-    # via
-    #   django-json-widget
-    #   notifications-python-client
+    # via django-json-widget
 gunicorn==20.0.4
     # via -r requirements.in
 idna==2.10
@@ -153,10 +151,8 @@ kombu==5.2.3
 mohawk==0.3.4
     # via sigauth
 monotonic==1.6
-    # via
-    #   directory-client-core
-    #   notifications-python-client
-notifications-python-client==5.4.1
+    # via directory-client-core
+notifications-python-client==6.3.0
     # via -r requirements.in
 oauthlib==3.1.1
     # via
