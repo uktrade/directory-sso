@@ -13,7 +13,7 @@
 ## Development
 
 ### Installing
-* [Using pyenv and virtualenv](https://uktrade.atlassian.net/wiki/spaces/ED/pages/2225930260/Getting+up+running+with+pyenv+virtualenv+-+Front+end+dev+survival+guide)
+*[Using pyenv and virtualenv](https://uktrade.atlassian.net/wiki/spaces/ED/pages/2225930260/Getting+up+running+with+pyenv+virtualenv+-+Front+end+dev+survival+guide)*
 
     $ git clone https://github.com/uktrade/directory-sso
     $ cd directory-sso
@@ -26,10 +26,10 @@
     $ createdb sso_debug
     $ make manage migrate
     $ make manage loaddata fixtures/development.json
-    $ make webserver  
+    $ make webserver
 
 ### Requirements
-[Python 3.6.12](https://www.python.org/downloads/release/python-3612/)
+[Python 3.9](https://www.python.org/downloads/release/python-3913/)
 
 [Postgres](https://www.postgresql.org/)
 
@@ -76,7 +76,7 @@ We add compiled CSS files to version control. This will sometimes result in conf
 You should not edit CSS files directly, instead edit their SCSS counterparts.
 
 ### Testing
-We are using distributed testing by default. You can disable it by removing `-n auto --dist=loadfile ` from the pytest.ini 
+We are using distributed testing by default. You can disable it by removing `-n auto --dist=loadfile ` from the pytest.ini
 You can also disable it by running pytest with `--dist=no --pdb` and insert a breaking assertion (e.g. `assert 0`) where you would normally `pdb.set_trace()`.
 
 ## Helpful links
