@@ -5,7 +5,6 @@ from allauth.account.models import EmailAddress
 from allauth.account.utils import get_request_param
 from allauth.exceptions import ImmediateHttpResponse
 from allauth.socialaccount.adapter import DefaultSocialAccountAdapter
-from directory_constants.urls import domestic
 from django.conf import settings
 from django.shortcuts import redirect
 from django.urls import reverse
@@ -17,8 +16,8 @@ from sso.user.models import UserProfile
 from sso.user.utils import get_url_with_redirect, is_valid_redirect
 from sso.verification import helpers
 from sso.verification.models import VerificationCode
+from sso.constants import RESEND_VERIFICATION_URL
 
-RESEND_VERIFICATION_URL = domestic.SINGLE_SIGN_ON_PROFILE / 'enrol/resend-verification/resend/'
 EMAIL_TEMPLATES = {
     'account/email/email_confirmation_signup': settings.GOV_NOTIFY_SIGNUP_CONFIRMATION_TEMPLATE_ID,
     'account/email/email_confirmation': settings.GOV_NOTIFY_SIGNUP_CONFIRMATION_TEMPLATE_ID,
