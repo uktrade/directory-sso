@@ -6,6 +6,8 @@
 
 ### Enhancements
 
+- GLS-336 - Resend verification code if expired code is entered
+
 ### Fixed bugs
 
 - GLS-226 - Data retentions refactor

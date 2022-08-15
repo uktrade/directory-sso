@@ -38,8 +38,6 @@ class CheckVerificationCodeSerializer(serializers.ModelSerializer):
         fields = ['code']
 
     def validate_code(self, value):
-        if self.instance.is_expired:
-            raise serializers.ValidationError(self.MESSAGE_CODE_EXPIRED)
         if not constant_time_compare(value, self.instance.code):
             raise serializers.ValidationError(self.MESSAGE_CODE_MISMATCH)
         return value
