@@ -6,6 +6,8 @@
 
 ### Enhancements
 
+- GLS-333 - Return 401 response from LoginView if user is unverified
+
 ### Fixed bugs
 
 - GLS-226 - Data retentions refactor

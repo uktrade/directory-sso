@@ -170,7 +170,7 @@ def test_login_redirect_new_flow_unverified(mock_notification, client, user, set
     VerificationCode.objects.create(user=user)
     response = client.post(reverse('account_login'), {'login': user.email, 'password': 'password'})
 
-    assert response.status_code == 302
+    assert response.status_code == 401
     assert response.url == 'http://profile.trade.great:8006/profile/enrol/resend-verification/resend/'
     assert mock_notification().send_email_notification.call_count == 0
 
