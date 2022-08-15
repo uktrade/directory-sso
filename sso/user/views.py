@@ -11,6 +11,7 @@ from django.views.generic import RedirectView
 
 import core.mixins
 from sso.user import utils
+from sso.constants import RESEND_VERIFICATION_URL
 
 
 class RedirectToNextMixin:
@@ -39,6 +40,9 @@ class LoginView(RedirectToNextMixin, allauth_views.LoginView):
     def form_valid(self, form):
         response = super().form_valid(form)
         if response.status_code == 302 and response.url == reverse("account_email_verification_sent"):
+            return response
+        elif response.url == RESEND_VERIFICATION_URL:
+            response.status_code = 401
             return response
         else:
             self.request.session.save()
