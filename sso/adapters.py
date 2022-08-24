@@ -12,11 +12,11 @@ from django.utils.encoding import force_bytes
 from django.utils.http import urlsafe_base64_encode
 from notifications_python_client import NotificationsAPIClient
 
+from sso.constants import RESEND_VERIFICATION_URL
 from sso.user.models import UserProfile
 from sso.user.utils import get_url_with_redirect, is_valid_redirect
 from sso.verification import helpers
 from sso.verification.models import VerificationCode
-from sso.constants import RESEND_VERIFICATION_URL
 
 EMAIL_TEMPLATES = {
     'account/email/email_confirmation_signup': settings.GOV_NOTIFY_SIGNUP_CONFIRMATION_TEMPLATE_ID,
@@ -107,6 +107,10 @@ class AccountAdapter(DefaultAccountAdapter):
         return settings.MAGNA_URL + '/signup/' + verification_params
 
     def send_mail(self, template_prefix, email, context):
+        # Don't send an email if the account doesn't exist
+        if template_prefix == 'account/email/unknown_account':
+            return None
+
         template_id = EMAIL_TEMPLATES[template_prefix]
 
         if not self.is_social_account(context):

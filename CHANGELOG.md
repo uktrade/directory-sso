@@ -5,7 +5,10 @@
 ### Hotfix
 
 ### Fixed bugs
+
 ### Enhancements
+
+- GLS-380 - Upgrade package to use Django 3.2
 
 ## [9.5.0](https://github.com/uktrade/directory-sso/releases/tag/9.5.0)
 [Compare](https://github.com/uktrade/directory-sso/compare/9.4.2...9.5.0)
