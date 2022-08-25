@@ -4,9 +4,19 @@
 
 ### Hotfix
 
+### Fixed bugs
+### Enhancements
+
+## [9.5.0](https://github.com/uktrade/directory-sso/releases/tag/9.5.0)
+[Compare](https://github.com/uktrade/directory-sso/compare/9.4.2...9.5.0)
+
 ### Enhancements
 
 - GLS-336 - Resend verification code if expired code is entered
+- GLS-333 - Return 401 response from LoginView if user is unverified
+
+## [9.4.2](https://github.com/uktrade/directory-sso/releases/tag/9.4.2)
+[Compare](https://github.com/uktrade/directory-sso/compare/9.4.0...9.4.2)
 
 ### Fixed bugs
 
