@@ -6,6 +6,7 @@ from django.utils.encoding import force_text
 from django.utils.http import urlsafe_base64_decode
 from django.utils.timezone import now
 from ratelimit.decorators import ratelimit
+from rest_framework import status
 from rest_framework.generics import CreateAPIView, GenericAPIView
 from rest_framework.response import Response
 
@@ -68,6 +69,13 @@ class VerifyVerificationCodeAPIView(GenericAPIView):
         serializer = self.get_serializer(instance, data=request.data)
 
         serializer.is_valid(raise_exception=True)
+        # Ensure that the validation code hasn't expired
+        if instance.is_expired:
+            # Send the email address in response to allow a new code to be generated and sent
+            return Response(
+                {'email': instance.user.email, 'expired': True}, status=status.HTTP_422_UNPROCESSABLE_ENTITY
+            )
+
         serializer.save(date_verified=now())
 
         EmailAddress.objects.update_or_create(
