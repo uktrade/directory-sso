@@ -144,10 +144,13 @@ def test_verify_verification_code_expired(api_client):
         verification_code = VerificationCodeFactory()
 
     url = reverse('api:verification-code-verify')
-    response = api_client.post(url, {'code': '12345', 'email': verification_code.user.email}, format='json')
+    response = api_client.post(
+        url, {'code': verification_code.code, 'email': verification_code.user.email}, format='json'
+    )
 
-    assert response.status_code == 400
+    assert response.status_code == 422
     assert verification_code.date_verified is None
+    assert response.json() == {'email': verification_code.user.email, 'expired': True}
 
 
 @pytest.mark.django_db
