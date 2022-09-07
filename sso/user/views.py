@@ -1,7 +1,7 @@
 import urllib
 
 from allauth.account import views as allauth_views
-from allauth.account.views import INTERNAL_RESET_SESSION_KEY, INTERNAL_RESET_URL_KEY
+from allauth.account.views import INTERNAL_RESET_SESSION_KEY
 from directory_constants import urls
 from django.conf import settings
 from django.contrib.sessions.backends.db import SessionStore
@@ -10,8 +10,8 @@ from django.urls import reverse, reverse_lazy
 from django.views.generic import RedirectView
 
 import core.mixins
-from sso.user import utils
 from sso.constants import RESEND_VERIFICATION_URL
+from sso.user import utils
 
 
 class RedirectToNextMixin:
@@ -85,12 +85,12 @@ class PasswordResetFromKeyView(RedirectToNextMixin, core.mixins.NoIndexMixin, al
         internal_session = self.request.session.get(INTERNAL_RESET_SESSION_KEY)
         # This prevents a 500 in a situation when user opened a valid internal
         # session key link without the cookie set (e.g. incognito - edge case)
-        if key == INTERNAL_RESET_URL_KEY and not internal_session:
+        if key == self.reset_url_key and not internal_session:
             return self.render_to_response({'token_fail': True})
 
         response = super().dispatch(request, uidb36, key, **kwargs)
 
-        if key != INTERNAL_RESET_URL_KEY and response.status_code == 302:
+        if key != self.reset_url_key and response.status_code == 302:
             return redirect(
                 urllib.parse.unquote(
                     utils.get_url_with_redirect(url=response.url, redirect_url=self.get_redirect_url())
