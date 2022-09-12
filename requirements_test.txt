@@ -133,7 +133,7 @@ django-json-widget==1.1.1
     # via -r requirements.in
 django-oauth-toolkit==1.2.0
     # via -r requirements.in
-django-pglocks==1.0.3
+django-pglocks==1.0.4
     # via -r requirements.in
 django-ratelimit==3.0.1
     # via -r requirements.in
@@ -311,6 +311,7 @@ six==1.15.0
     #   click-repl
     #   cryptography
     #   django-extensions
+    #   django-pglocks
     #   jsonschema
     #   mohawk
     #   pyopenssl
