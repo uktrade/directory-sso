@@ -22,5 +22,6 @@ def test_set_script_name(rf, script_name, prefix):
 
     soup = BeautifulSoup(response.content, 'html.parser')
 
-    element = soup.find('form')
+    element = soup.findAll('form')[1]
+
     assert element.attrs['action'].startswith(prefix)
