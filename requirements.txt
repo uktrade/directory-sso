@@ -114,7 +114,7 @@ django-health-check==3.16.5
     # via directory-healthcheck
 django-ipware==2.1.0
     # via django-admin-ip-restrictor
-django_json_widget==1.1.1
+django-json-widget==1.1.1
     # via -r requirements.in
 django-oauth-toolkit==1.2.0
     # via -r requirements.in
@@ -262,7 +262,7 @@ w3lib==1.22.0
     # via directory-client-core
 wcwidth==0.2.5
     # via prompt-toolkit
-whitenoise==4.1.4
+whitenoise==6.2.0
     # via -r requirements.in
 wrapt==1.13.3
     # via deprecated
