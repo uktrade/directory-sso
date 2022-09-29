@@ -224,7 +224,7 @@ s3transfer==0.4.2
     # via boto3
 sentry-sdk==0.13.4
     # via -r requirements.in
-sigauth==5.1.1
+sigauth==4.3.0
     # via
     #   -r requirements.in
     #   directory-client-core
