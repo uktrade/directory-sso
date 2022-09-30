@@ -34,3 +34,4 @@ django-sort-order-field==1.2
 django_json_widget==1.1.1
 urllib3>=1.26.5
 Pyjwt==2.4.*
+oauthlib==3.2.1
