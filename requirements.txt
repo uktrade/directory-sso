@@ -48,13 +48,16 @@ cryptography==3.3.2
     # via
     #   -r requirements.in
     #   django-cryptography
+    #   jwcrypto
     #   pyjwt
     #   pyopenssl
     #   requests
 defusedxml==0.7.1
     # via python3-openid
 deprecated==1.2.13
-    # via redis
+    # via
+    #   jwcrypto
+    #   redis
 directory-api-client==25.1.0
     # via -r requirements.in
 directory-client-core==7.1.0
@@ -116,7 +119,7 @@ django-ipware==2.1.0
     # via django-admin-ip-restrictor
 django-json-widget==1.1.1
     # via -r requirements.in
-django-oauth-toolkit==1.2.0
+django-oauth-toolkit==2.1.0
     # via -r requirements.in
 django-pglocks==1.0.4
     # via -r requirements.in
@@ -150,6 +153,8 @@ jmespath==0.10.0
     #   botocore
 jsonschema==3.2.0
     # via directory-components
+jwcrypto==1.4.2
+    # via django-oauth-toolkit
 kombu==5.2.3
     # via celery
 mohawk==0.3.4
