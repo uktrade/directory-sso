@@ -6,9 +6,11 @@
 #
 amqp==5.0.9
     # via kombu
-attrs==21.4.0
+asgiref==3.5.2
+    # via django
+attrs==22.1.0
     # via jsonschema
-beautifulsoup4==4.10.0
+beautifulsoup4==4.11.1
     # via directory-components
 billiard==3.6.4.0
     # via celery
@@ -46,31 +48,35 @@ cryptography==3.3.2
     # via
     #   -r requirements.in
     #   django-cryptography
+    #   jwcrypto
+    #   pyjwt
     #   pyopenssl
     #   requests
 defusedxml==0.7.1
     # via python3-openid
 deprecated==1.2.13
-    # via redis
-directory-api-client==24.0.0
+    # via
+    #   jwcrypto
+    #   redis
+directory-api-client==25.1.0
     # via -r requirements.in
-directory-client-core==6.3.0
+directory-client-core==7.1.0
     # via
     #   directory-api-client
     #   directory-forms-api-client
-directory-components==37.2.0
+directory-components==38.0.0
     # via -r requirements.in
-directory-constants==20.28.1
+directory-constants==22.0.0
     # via directory-components
-directory-forms-api-client==6.1.0
+directory-forms-api-client==7.1.0
     # via -r requirements.in
-directory-healthcheck==2.0.0
+directory-healthcheck==3.0.1
     # via -r requirements.in
-directory-validators==8.0.1
+directory-validators==9.2.1
     # via -r requirements.in
 dj-database-url==0.5.0
     # via -r requirements.in
-django==2.2.28
+django==3.2.15
     # via
     #   -r requirements.in
     #   directory-api-client
@@ -84,15 +90,16 @@ django==2.2.28
     #   django-appconf
     #   django-celery-beat
     #   django-filter
+    #   django-health-check
     #   django-oauth-toolkit
     #   django-redis
     #   django-staff-sso-client
     #   django-timezone-field
     #   djangorestframework
     #   sigauth
-django-admin-ip-restrictor==2.1.0
+django-admin-ip-restrictor==2.2.0
     # via -r requirements.in
-django-allauth==0.40.0
+django-allauth==0.51.0
     # via -r requirements.in
 django-appconf==1.0.5
     # via django-cryptography
@@ -106,23 +113,23 @@ django-extensions==2.2.5
     # via -r requirements.in
 django-filter==21.1
     # via -r requirements.in
-django-health-check==3.8.0
+django-health-check==3.16.5
     # via directory-healthcheck
 django-ipware==2.1.0
     # via django-admin-ip-restrictor
-django_json_widget==1.1.1
+django-json-widget==1.1.1
     # via -r requirements.in
-django-oauth-toolkit==1.2.0
+django-oauth-toolkit==2.1.0
     # via -r requirements.in
-django-pglocks==1.0.3
+django-pglocks==1.0.4
     # via -r requirements.in
 django-ratelimit==3.0.1
     # via -r requirements.in
-django-redis==4.10.0
+django-redis==5.2.0
     # via -r requirements.in
 django-sort-order-field==1.2
     # via -r requirements.in
-django-staff-sso-client==1.0.0
+django-staff-sso-client==4.0.1
     # via -r requirements.in
 django-timezone-field==4.2.1
     # via django-celery-beat
@@ -146,6 +153,8 @@ jmespath==0.10.0
     #   botocore
 jsonschema==3.2.0
     # via directory-components
+jwcrypto==1.4.2
+    # via django-oauth-toolkit
 kombu==5.2.3
     # via celery
 mohawk==0.3.4
@@ -154,8 +163,9 @@ monotonic==1.6
     # via directory-client-core
 notifications-python-client==6.3.0
     # via -r requirements.in
-oauthlib==3.1.1
+oauthlib==3.2.1
     # via
+    #   -r requirements.in
     #   django-oauth-toolkit
     #   requests-oauthlib
 olefile==0.46
@@ -170,15 +180,16 @@ psycopg2-binary==2.8.4
     # via -r requirements.in
 pycparser==2.21
     # via cffi
-pyjwt==2.4.0
+pyjwt[crypto]==2.4.0
     # via
     #   -r requirements.in
+    #   django-allauth
     #   notifications-python-client
 pyopenssl==21.0.0
     # via requests
 pyparsing==3.0.6
     # via packaging
-pyrsistent==0.18.0
+pyrsistent==0.18.1
     # via jsonschema
 python-crontab==2.6.0
     # via django-celery-beat
@@ -194,8 +205,6 @@ pytz==2021.3
     #   directory-validators
     #   django
     #   django-timezone-field
-raven==6.10.0
-    # via django-staff-sso-client
 redis==4.1.0
     # via
     #   celery
@@ -221,7 +230,7 @@ s3transfer==0.4.2
     # via boto3
 sentry-sdk==0.13.4
     # via -r requirements.in
-sigauth==4.1.1
+sigauth==4.3.0
     # via
     #   -r requirements.in
     #   directory-client-core
@@ -230,13 +239,14 @@ six==1.16.0
     #   click-repl
     #   cryptography
     #   django-extensions
+    #   django-pglocks
     #   jsonschema
     #   mohawk
     #   pyopenssl
     #   python-dateutil
     #   requests-file
     #   w3lib
-soupsieve==2.3.1
+soupsieve==2.3.2.post1
     # via beautifulsoup4
 sqlparse==0.4.2
     # via django
@@ -258,7 +268,7 @@ w3lib==1.22.0
     # via directory-client-core
 wcwidth==0.2.5
     # via prompt-toolkit
-whitenoise==4.1.4
+whitenoise==6.2.0
     # via -r requirements.in
 wrapt==1.13.3
     # via deprecated
