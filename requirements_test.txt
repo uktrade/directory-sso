@@ -81,7 +81,7 @@ directory-client-core==7.1.0
     #   directory-forms-api-client
 directory-components==38.0.0
     # via -r requirements.in
-directory-constants==22.0.0
+directory-constants==22.0.1
     # via directory-components
 directory-forms-api-client==7.1.0
     # via -r requirements.in
