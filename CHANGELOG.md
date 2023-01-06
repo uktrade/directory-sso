@@ -12,6 +12,7 @@
 - KLS-113 - Bump Django from 3.2.15 to 3.2.16
 - KLS-236 upgrade pillow to 9.3.0
 
+
 ## [9.6.0](https://github.com/uktrade/directory-sso/releases/tag/9.6.0)
 [Compare](https://github.com/uktrade/directory-sso/compare/9.5.0...9.6.0)
 
