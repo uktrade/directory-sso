@@ -139,7 +139,7 @@ djangorestframework==3.12.2
     #   sigauth
 docopt==0.6.2
     # via notifications-python-client
-future==0.18.2
+future==0.18.3
     # via django-json-widget
 gunicorn==20.0.4
     # via -r requirements.in
