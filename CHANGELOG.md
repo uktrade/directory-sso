@@ -7,11 +7,30 @@
 ### Fixed bugs
 
 ### Enhancements
-- GLS-380 - Upgrade package to use Django 3.2 (small patch)
-- GLS-380 - Upgrade package to use Django 3.2
+- KLS-398 - Upgrade django to 3.2.18
+
+## [10.0.3](https://github.com/uktrade/directory-sso/releases/tag/10.0.3)
+[Compare](https://github.com/uktrade/directory-sso/compare/10.0.2...10.0.3)
+- KLS-334 patch future 0.18.3
+
+## [10.0.2](https://github.com/uktrade/directory-sso/releases/tag/10.0.2)
+[Compare](https://github.com/uktrade/directory-sso/compare/10.0.1...10.0.2)
+### Enhancements
+- Bump certifi from 2020.12.5 to 2022.12.7
+
+## [10.0.1](https://github.com/uktrade/directory-sso/releases/tag/10.0.1)
+[Compare](https://github.com/uktrade/directory-sso/compare/10.0.0...10.0.1)
+### Enhancements
 - KLS-113 - Bump Django from 3.2.15 to 3.2.16
 - KLS-236 upgrade pillow to 9.3.0
-- KLS-334 patch future 0.18.3
+- Update python version of Docker
+
+## [10.0.0](https://github.com/uktrade/directory-sso/releases/tag/10.0.0)
+[Compare](https://github.com/uktrade/directory-sso/compare/9.6.0...10.0.0)
+### Enhancements
+- GLS-380 - Upgrade package to use Django 3.2 (small patch)
+- GLS-380 - Upgrade package to use Django 3.2
+
 ## [9.6.0](https://github.com/uktrade/directory-sso/releases/tag/9.6.0)
 [Compare](https://github.com/uktrade/directory-sso/compare/9.5.0...9.6.0)
 
