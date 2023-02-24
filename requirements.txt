@@ -163,7 +163,7 @@ monotonic==1.6
     # via directory-client-core
 notifications-python-client==6.3.0
     # via -r requirements.in
-oauthlib==3.2.1
+oauthlib==3.2.2
     # via
     #   -r requirements.in
     #   django-oauth-toolkit
