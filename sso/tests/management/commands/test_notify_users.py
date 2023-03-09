@@ -48,7 +48,7 @@ def test_notify_command_with_single_user_lifecycle(
     assert total_users == 1
 
     # one old user deleted as per data retention policy
-    with freeze_time(datetime.now() - relativedelta(days=30)):
+    with freeze_time(datetime.now() - relativedelta(months=1)):
         call_command('notify_users')
     total_users = User.objects.count()
 

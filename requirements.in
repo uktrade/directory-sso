@@ -22,7 +22,7 @@ directory-api-client==25.1.0
 directory-forms-api-client==7.1.0
 directory-validators==9.2.1
 directory-healthcheck==3.0.1
-directory-components==38.2.1
+directory-components==39.0.2
 requests[security]==2.25.1
 urllib3>=1.24.2<2.0.0
 django-cryptography==1.0
