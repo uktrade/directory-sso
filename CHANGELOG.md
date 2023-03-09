@@ -8,6 +8,7 @@
 
 ### Enhancements
 - KLS-398 - Upgrade django to 3.2.18
+- KLS-459 - Upgrade directory-components to version 39.0.2
 
 ## [10.0.3](https://github.com/uktrade/directory-sso/releases/tag/10.0.3)
 [Compare](https://github.com/uktrade/directory-sso/compare/10.0.2...10.0.3)
