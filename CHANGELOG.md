@@ -7,6 +7,10 @@
 ### Fixed bugs
 
 ### Enhancements
+
+## [10.0.6](https://github.com/uktrade/directory-sso/releases/tag/10.0.6)
+[Compare](https://github.com/uktrade/directory-sso/compare/10.0.5...10.0.6)
+### Enhancements
 - KLS-398 - Upgrade django to 3.2.18
 - KLS-459 - Upgrade directory-components to version 39.0.2
 
