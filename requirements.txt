@@ -30,7 +30,7 @@ certifi==2022.12.7
     #   sentry-sdk
 cffi==1.15.0
     # via cryptography
-chardet==4.0.0
+charset-normalizer==3.1.0
     # via requests
 click==8.0.3
     # via
@@ -50,8 +50,6 @@ cryptography==39.0.1
     #   django-cryptography
     #   jwcrypto
     #   pyjwt
-    #   pyopenssl
-    #   requests
 defusedxml==0.7.1
     # via python3-openid
 deprecated==1.2.13
@@ -187,8 +185,6 @@ pyjwt[crypto]==2.4.0
     #   -r requirements.in
     #   django-allauth
     #   notifications-python-client
-pyopenssl==21.0.0
-    # via requests
 pyparsing==3.0.6
     # via packaging
 pyrsistent==0.18.1
@@ -211,7 +207,7 @@ redis==4.1.0
     # via
     #   celery
     #   django-redis
-requests[security]==2.25.1
+requests[security]==2.28.2
     # via
     #   -r requirements.in
     #   directory-api-client
@@ -243,7 +239,6 @@ six==1.16.0
     #   django-pglocks
     #   jsonschema
     #   mohawk
-    #   pyopenssl
     #   python-dateutil
     #   requests-file
     #   w3lib
