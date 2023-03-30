@@ -10,6 +10,8 @@ apipkg==1.5
     # via execnet
 asgiref==3.5.2
     # via django
+async-timeout==4.0.2
+    # via redis
 attrs==20.3.0
     # via
     #   jsonschema
@@ -276,7 +278,7 @@ pytz==2021.3
     #   directory-validators
     #   django
     #   django-timezone-field
-redis==3.5.3
+redis==4.5.4
     # via
     #   celery
     #   django-redis
