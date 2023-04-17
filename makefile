@@ -17,6 +17,15 @@ checks:
 pytest:
 	ENV_FILES='test,dev' pytest $(ARGUMENTS)
 
+pytest_codecov:
+	ENV_FILES='test,dev' \
+	pytest \
+		--cov-config=.coveragerc \
+		--cov-report=term \
+		--cov=. \
+		--codecov \
+		$(ARGUMENTS)
+
 flake8:
 	flake8 . \
 	--exclude=.venv,venv,node_modules,migrations \

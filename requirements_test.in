@@ -5,10 +5,11 @@ pytest-cov
 pytest-django>=3.5.1,<4.0.0
 pytest-sugar
 factory-boy
-codecov==2.1.7
 freezegun
 pytest-xdist
 faker==8.4.0
+pytest-codecov
+GitPython
 
 # Pinned because pre-commit features specific versions
 black==22.3.0
