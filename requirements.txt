@@ -240,8 +240,10 @@ six==1.16.0
     #   w3lib
 soupsieve==2.3.2.post1
     # via beautifulsoup4
-sqlparse==0.4.2
-    # via django
+sqlparse==0.4.4
+    # via
+    #   -r requirements.in
+    #   django
 tldextract==2.2.2
     # via -r requirements.in
 urllib3==1.26.15

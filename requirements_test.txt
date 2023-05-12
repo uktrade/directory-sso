@@ -333,8 +333,10 @@ smmap==5.0.0
     # via gitdb
 soupsieve==2.3.2.post1
     # via beautifulsoup4
-sqlparse==0.4.2
-    # via django
+sqlparse==0.4.4
+    # via
+    #   -r requirements.in
+    #   django
 termcolor==1.1.0
     # via pytest-sugar
 text-unidecode==1.3
