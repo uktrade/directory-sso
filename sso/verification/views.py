@@ -2,7 +2,7 @@ from allauth.account.models import EmailAddress
 from django.contrib.auth import login
 from django.shortcuts import get_object_or_404
 from django.utils.decorators import method_decorator
-from django.utils.encoding import force_text
+from django.utils.encoding import force_str
 from django.utils.http import urlsafe_base64_decode
 from django.utils.timezone import now
 from ratelimit.decorators import ratelimit
@@ -44,7 +44,7 @@ class VerifyVerificationCodeAPIView(GenericAPIView):
 
     def get_email(self, uidb64, token):
         try:
-            uid = force_text(urlsafe_base64_decode(uidb64))
+            uid = force_str(urlsafe_base64_decode(uidb64))
             user = User.objects.get(pk=uid)
         except (TypeError, ValueError, OverflowError, User.DoesNotExist):
             user = None

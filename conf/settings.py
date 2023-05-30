@@ -68,7 +68,7 @@ SITE_ID = 1
 MIDDLEWARE = [
     'directory_components.middleware.MaintenanceModeMiddleware',
     'core.middleware.SSODisplayLoggedInCookieMiddleware',
-    'admin_ip_restrictor.middleware.AdminIPRestrictorMiddleware',
+    #'admin_ip_restrictor.middleware.AdminIPRestrictorMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',
     'conf.signature.SignatureCheckMiddleware',
@@ -486,3 +486,5 @@ DIRECTORY_CONSTANTS_URL_GREAT_MAGNA = env.str('DIRECTORY_CONSTANTS_URL_GREAT_MAG
 DATA_RETENTION_STORAGE_YEARS = env.int('DATA_RETENTION_STORAGE_YEARS', 3)
 
 DATETIME_INPUT_FORMATS = ['%Y-%m-%d']
+
+DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
