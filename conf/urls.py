@@ -37,7 +37,9 @@ allauth_urlpatterns = [
         allauth.account.views.EmailVerificationSentView.as_view(),
         name="account_email_verification_sent",
     ),
-    re_path(r"^confirm-email/(?P<key>[-:\w]+)/$", sso.user.views.ConfirmEmailView.as_view(), name="account_confirm_email"),
+    re_path(
+        r"^confirm-email/(?P<key>[-:\w]+)/$", sso.user.views.ConfirmEmailView.as_view(), name="account_confirm_email"
+    ),
     re_path(r"^password/set/$", allauth.account.views.password_set, name="account_set_password"),
     re_path(r"^password/reset/$", sso.user.views.PasswordResetView.as_view(), name="account_reset_password"),
     re_path(
@@ -93,9 +95,13 @@ api_urlpatterns = [
     ),
     re_path(r'^user/$', sso.user.views_api.UserCreateAPIView.as_view(), name='user'),
     re_path(r'^user/profile/$', sso.user.views_api.UserProfileCreateAPIView.as_view(), name='user-create-profile'),
-    re_path(r'^user/profile/update/$', sso.user.views_api.UserProfileUpdateAPIView.as_view(), name='user-update-profile'),
+    re_path(
+        r'^user/profile/update/$', sso.user.views_api.UserProfileUpdateAPIView.as_view(), name='user-update-profile'
+    ),
     re_path(r'^user/page-view/$', sso.user.views_api.UserPageViewAPIView.as_view(), name='user-page-views'),
-    re_path(r'^user/lesson-completed/$', sso.user.views_api.LessonCompletedAPIView.as_view(), name='user-lesson-completed'),
+    re_path(
+        r'^user/lesson-completed/$', sso.user.views_api.LessonCompletedAPIView.as_view(), name='user-lesson-completed'
+    ),
     re_path(r'^user/questionnaire/$', sso.user.views_api.UserQuestionnaireView.as_view(), name='user-questionnaire'),
     re_path(r'^user/data/$', sso.user.views_api.UserDataView.as_view(), name='user-data'),
 ]
@@ -123,7 +129,9 @@ urlpatterns = [
 
 if settings.FEATURE_ENFORCE_STAFF_SSO_ENABLED:
     authbroker_urls = [
-        re_path(r'^admin/login/$', RedirectView.as_view(url=reverse_lazy('authbroker_client:login'), query_string=True)),
+        re_path(
+            r'^admin/login/$', RedirectView.as_view(url=reverse_lazy('authbroker_client:login'), query_string=True)
+        ),
         re_path('^auth/', include('authbroker_client.urls')),
     ]
     urlpatterns = [re_path('^', include(authbroker_urls))] + urlpatterns
