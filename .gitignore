@@ -116,4 +116,4 @@ dockerise/dbfiles
 # Python, we should fix these by not creating them with 'make secrets'
 dev
 config/env/secrets-do-not-commit-e
-Dockerfile.dev
+/Dockerfile.dev
