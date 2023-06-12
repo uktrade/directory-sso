@@ -16,7 +16,7 @@ boto3==1.26.141
 tldextract==3.4.4
 django-redis>=5.2.0
 notifications-python-client==8.0.1
-sigauth>=5.2.0
+sigauth>=5.2.1
 directory-api-client==26.3.0
 directory-components==39.1.2
 directory-forms-api-client==7.2.0
