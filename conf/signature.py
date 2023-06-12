@@ -8,3 +8,4 @@ class SignatureCheckMiddleware(middleware.SignatureCheckMiddlewareBase):
 
 class SignatureCheckPermission(permissions.SignatureCheckPermissionBase):
     secret = settings.SIGNATURE_SECRET
+    check_nonce = False
