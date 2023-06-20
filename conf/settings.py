@@ -68,7 +68,6 @@ SITE_ID = 1
 MIDDLEWARE = [
     'directory_components.middleware.MaintenanceModeMiddleware',
     'core.middleware.SSODisplayLoggedInCookieMiddleware',
-    'admin_ip_restrictor.middleware.AdminIPRestrictorMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',
     'conf.signature.SignatureCheckMiddleware',
@@ -238,6 +237,7 @@ OAUTH2_PROVIDER = {'SCOPES': {'profile': 'Access to your profile'}}
 OAUTH2_PROVIDER_ACCESS_TOKEN_MODEL = 'oauth2_provider.AccessToken'
 OAUTH2_PROVIDER_APPLICATION_MODEL = 'oauth2_provider.Application'
 OAUTH2_PROVIDER_REFRESH_TOKEN_MODEL = 'oauth2_provider.RefreshToken'
+
 
 # django-allauth
 REDIRECT_FIELD_NAME = env.str('REDIRECT_FIELD_NAME', 'next')
@@ -486,3 +486,5 @@ DIRECTORY_CONSTANTS_URL_GREAT_MAGNA = env.str('DIRECTORY_CONSTANTS_URL_GREAT_MAG
 DATA_RETENTION_STORAGE_YEARS = env.int('DATA_RETENTION_STORAGE_YEARS', 3)
 
 DATETIME_INPUT_FORMATS = ['%Y-%m-%d']
+
+DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'

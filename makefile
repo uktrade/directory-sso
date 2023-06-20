@@ -62,3 +62,7 @@ beat:
 
 
 .PHONY: clean autoformat checks pytest manage webserver requirements install_requirements css secrets worker beat
+
+
+pytest-docker:
+	ENV_FILES='secrets-do-not-commit,test,dev' pytest $(ARGUMENTS)

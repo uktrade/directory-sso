@@ -1,4 +1,4 @@
-from unittest.mock import Mock, call, patch
+from unittest.mock import Mock, call, patch, MagicMock
 
 import pytest
 from allauth.exceptions import ImmediateHttpResponse
@@ -10,6 +10,11 @@ from django.contrib.sessions.middleware import SessionMiddleware
 from sso.adapters import AccountAdapter, SocialAccountAdapter, is_valid_redirect
 from sso.tests.test_utils import not_raises
 from sso.user.tests.factories import UserFactory
+
+
+@pytest.fixture
+def mock_get_response(autouse=True):
+    return MagicMock()
 
 
 def test_next_validation_returns_true_if_in_allowed_domains(settings):
@@ -185,10 +190,10 @@ def test_social_adapter_pre_social_login_handles_email_dupes(mock_email, rf):
     mock_email.get.return_value = user.email
 
     request = rf.get('/signup')
-    middleware = SessionMiddleware()
+    middleware = SessionMiddleware(mock_get_response)
     middleware.process_request(request)
 
-    middleware = MessageMiddleware()
+    middleware = MessageMiddleware(mock_get_response)
     middleware.process_request(request)
     request.session.save()
 
@@ -202,10 +207,10 @@ def test_social_adapter_pre_social_login_handles_non_existing_email(rf):
     adapter = get_adapter()
 
     request = rf.get('/signup')
-    middleware = SessionMiddleware()
+    middleware = SessionMiddleware(mock_get_response)
     middleware.process_request(request)
 
-    middleware = MessageMiddleware()
+    middleware = MessageMiddleware(mock_get_response)
     middleware.process_request(request)
     request.session.save()
 
@@ -219,10 +224,10 @@ def test_social_adapter_pre_social_login_handles_for_existing_email(rf):
     adapter = get_adapter()
 
     request = rf.get('/signup')
-    middleware = SessionMiddleware()
+    middleware = SessionMiddleware(mock_get_response)
     middleware.process_request(request)
 
-    middleware = MessageMiddleware()
+    middleware = MessageMiddleware(mock_get_response)
     middleware.process_request(request)
     request.session.save()
 

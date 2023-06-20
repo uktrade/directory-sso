@@ -4,13 +4,12 @@ from dateutil.relativedelta import relativedelta
 from directory_constants import choices
 from django.conf import settings
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin
-from django.contrib.postgres.fields import JSONField
 from django.core.mail import send_mail
 from django.db import models
-from django.db.models import Q
+from django.db.models import Q, JSONField
 from django.urls import reverse
 from django.utils import timezone
-from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import gettext_lazy as _
 from sort_order_field import SortOrderField
 
 from sso.api.model_utils import TimeStampedModel
