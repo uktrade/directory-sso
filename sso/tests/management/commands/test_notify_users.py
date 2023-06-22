@@ -1,6 +1,7 @@
 from datetime import datetime
-from dateutil.relativedelta import relativedelta
+
 import pytest
+from dateutil.relativedelta import relativedelta
 from django.contrib.auth import get_user_model
 from django.core.management import call_command
 from freezegun import freeze_time
