@@ -1,4 +1,4 @@
-from unittest.mock import Mock, call, patch, MagicMock
+from unittest.mock import MagicMock, Mock, call, patch
 
 import pytest
 from allauth.exceptions import ImmediateHttpResponse

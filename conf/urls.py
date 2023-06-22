@@ -7,7 +7,7 @@ from django.conf import settings
 from django.contrib import admin
 from django.contrib.auth.decorators import login_required
 from django.contrib.sitemaps.views import sitemap
-from django.urls import reverse_lazy, include, re_path
+from django.urls import include, re_path, reverse_lazy
 from django.views.generic import RedirectView
 
 import conf.sitemaps
