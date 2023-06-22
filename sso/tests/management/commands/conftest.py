@@ -1,9 +1,8 @@
-import pytest
-
 from datetime import datetime, timedelta
 from unittest import mock
-from dateutil.relativedelta import relativedelta
 
+import pytest
+from dateutil.relativedelta import relativedelta
 from django.conf import settings
 from django.contrib.auth import get_user_model
 
