@@ -58,9 +58,9 @@ defusedxml==0.7.1
     # via python3-openid
 deprecated==1.2.13
     # via jwcrypto
-directory-api-client==26.3.0
+directory-api-client==26.4.2
     # via -r requirements.in
-directory-client-core==7.2.3
+directory-client-core==7.2.5
     # via
     #   directory-api-client
     #   directory-forms-api-client
@@ -68,15 +68,15 @@ directory-components==39.1.2
     # via -r requirements.in
 directory-constants==23.1.0
     # via directory-components
-directory-forms-api-client==7.2.0
+directory-forms-api-client==7.2.2
     # via -r requirements.in
-directory-healthcheck==3.1.1
+directory-healthcheck==3.1.2
     # via -r requirements.in
 directory-validators==9.3.0
     # via -r requirements.in
 dj-database-url==2.0.0
     # via -r requirements.in
-django==4.1.9
+django==4.1.10
     # via
     #   -r requirements.in
     #   directory-api-client
