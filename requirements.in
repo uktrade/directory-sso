@@ -27,7 +27,7 @@ urllib3>=1.24.2<2.0.0
 django-cryptography==1.1
 celery[redis]>=5.2.3
 django-celery-beat>=2.3.0
-cryptography==41.0.0
+cryptography==41.0.2
 django-sort-order-field==1.2
 django_json_widget==1.1.1
 urllib3==1.26.16
