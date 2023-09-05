@@ -254,6 +254,7 @@ def test_activity_stream_list_users_endpoint(api_client):
         'dit:DirectorySSO:User:email',
         'dit:DirectorySSO:User:telephone',
         'dit:DirectorySSO:User:dateJoined',
+        'dit:DirectorySSO:User:LastLogin',
     }
     assert data['next'] is not None
     assert data['previous'] is None

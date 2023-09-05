@@ -158,6 +158,7 @@ class ActivityStreamDirectorySSOUsers(ListAPIView):
                         'dit:DirectorySSO:User:email': user['email'],
                         'dit:DirectorySSO:User:telephone': user['telephone'],
                         'dit:DirectorySSO:User:dateJoined': user['date_joined'],
+                        'dit:DirectorySSO:User:LastLogin': user['last_login'],
                     },
                 }
                 for user in serializer.data
