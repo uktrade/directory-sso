@@ -120,7 +120,7 @@ class ActivityStreamUsersSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = ('id', 'hashed_uuid', 'email', 'telephone', 'date_joined', 'modified')
+        fields = ('id', 'hashed_uuid', 'email', 'telephone', 'date_joined', 'modified', 'last_login')
 
 
 class ActivityStreamUserAnswerSerializer(serializers.ModelSerializer):
