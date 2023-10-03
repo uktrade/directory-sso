@@ -252,7 +252,7 @@ typing-extensions==4.6.3
     # via dj-database-url
 tzdata==2023.3
     # via django-celery-beat
-urllib3==1.26.16
+urllib3==1.26.17
     # via
     #   -r requirements.in
     #   botocore
