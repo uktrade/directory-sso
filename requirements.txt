@@ -171,7 +171,7 @@ oauthlib==3.2.2
     #   requests-oauthlib
 olefile==0.46
     # via directory-validators
-pillow==9.5.0
+pillow==10.0.1
     # via
     #   -r requirements.in
     #   directory-validators
