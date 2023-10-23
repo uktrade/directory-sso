@@ -9,7 +9,7 @@ django-pglocks>=1.0.4
 django-ratelimit>=3.0.1
 whitenoise>=6.5
 gunicorn==20.1.0
-pillow==9.5.0
+pillow==10.1.0
 psycopg2-binary==2.9.6
 sentry-sdk==1.29.2
 boto3==1.26.141
@@ -23,14 +23,13 @@ directory-forms-api-client==7.2.2
 directory-validators==9.3.0
 directory-healthcheck>=3.1.2
 requests[security]==2.31.0
-urllib3>=1.24.2<2.0.0
 django-cryptography==1.1
 celery[redis]>=5.2.3
 django-celery-beat>=2.3.0
-cryptography==41.0.3
+cryptography==41.0.4
 django-sort-order-field==1.2
 django_json_widget==1.1.1
-urllib3==1.26.16
+urllib3==1.26.18
 Pyjwt==2.7.0
 oauthlib==3.2.2
 sqlparse==0.4.4
