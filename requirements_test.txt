@@ -33,7 +33,6 @@ botocore==1.29.158
 celery[redis]==5.2.3
     # via
     #   -r requirements.in
-    #   celery
     #   django-celery-beat
 certifi==2023.7.22
     # via
@@ -79,19 +78,19 @@ directory-client-core==7.2.5
     # via
     #   directory-api-client
     #   directory-forms-api-client
-directory-components==39.1.3
+directory-components==39.1.4
     # via -r requirements.in
 directory-constants==23.1.0
     # via directory-components
-directory-forms-api-client==7.2.2
+directory-forms-api-client==7.3.1
     # via -r requirements.in
 directory-healthcheck==3.1.2
     # via -r requirements.in
-directory-validators==9.3.0
+directory-validators==9.3.1
     # via -r requirements.in
 dj-database-url==2.0.0
     # via -r requirements.in
-django==4.1.10
+django==4.1.13
     # via
     #   -r requirements.in
     #   directory-api-client
@@ -300,7 +299,6 @@ requests[security]==2.31.0
     #   django-oauth-toolkit
     #   notifications-python-client
     #   pytest-codecov
-    #   requests
     #   requests-file
     #   requests-oauthlib
     #   tldextract
