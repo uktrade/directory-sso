@@ -33,6 +33,7 @@ botocore==1.29.158
 celery[redis]==5.2.3
     # via
     #   -r requirements.in
+    #   celery
     #   django-celery-beat
 certifi==2023.7.22
     # via
@@ -62,7 +63,7 @@ coverage[toml]==5.5
     #   pytest-cov
 cron-descriptor==1.4.0
     # via django-celery-beat
-cryptography==41.0.4
+cryptography==41.0.6
     # via
     #   -r requirements.in
     #   django-cryptography
@@ -299,6 +300,7 @@ requests[security]==2.31.0
     #   django-oauth-toolkit
     #   notifications-python-client
     #   pytest-codecov
+    #   requests
     #   requests-file
     #   requests-oauthlib
     #   tldextract
