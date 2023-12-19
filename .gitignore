@@ -105,6 +105,7 @@ conf/env/secrets-do-not-commit
 staticfiles/
 node_modules
 
+.pii-secret-hook/
 .pytest_cache
 .python-version
 
