@@ -17,11 +17,11 @@ tldextract==3.4.4
 django-redis>=5.2.0
 notifications-python-client==8.0.1
 sigauth>=5.2.2
-directory-api-client==26.4.2
-directory-components==39.1.4
-directory-forms-api-client==7.3.1
-directory-validators==9.3.1
-directory-healthcheck>=3.1.2
+directory-api-client==26.4.5
+directory-components==40.1.0
+directory-forms-api-client==7.3.2
+directory-validators==9.3.2
+directory-healthcheck>=3.2
 requests[security]==2.31.0
 django-cryptography==1.1
 celery[redis]>=5.2.3
@@ -33,6 +33,6 @@ urllib3==1.26.18
 Pyjwt==2.7.0
 oauthlib==3.2.2
 sqlparse==0.4.4
-django-staff-sso-client==4.2.0
+django-staff-sso-client==4.2.1
 django-oauth-toolkit>=2.2.0
 certifi==2023.07.22
