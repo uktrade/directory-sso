@@ -33,7 +33,7 @@ def thirty_day_notification_user():
     # user last_login on 3 years and 30 days ago
     today = datetime.now()
     three_year_old = today - relativedelta(years=settings.DATA_RETENTION_STORAGE_YEARS)
-    user.last_login = three_year_old - relativedelta(month=1)
+    user.last_login = three_year_old - relativedelta(months=1)
     # user created 5 years ago
     user.created = datetime.now() - timedelta(days=5 * 365)
     user.save()
