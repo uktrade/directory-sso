@@ -1,5 +1,5 @@
 dj-database-url>=1.0.0
-django==4.2
+django==4.2.7
 django-allauth>=0.51.0
 django-environ>=0.9.0
 djangorestframework>=3.13.1
@@ -16,12 +16,13 @@ boto3==1.26.141
 tldextract==3.4.4
 django-redis>=5.2.0
 notifications-python-client==9.0.0
-sigauth>=5.2.2
+sigauth>=5.2.3
 directory-api-client==26.4.5
-directory-components==40.1.0
+directory-constants==24.1.0
+directory-components==40.1.1
 directory-forms-api-client==7.3.2
 directory-validators==9.3.2
-directory-healthcheck==3.2
+directory-healthcheck==3.3
 requests[security]==2.31.0
 django-cryptography==1.1
 celery[redis]>=5.2.3
