@@ -192,7 +192,7 @@ jmespath==1.0.1
     #   botocore
 jsonschema==3.2.0
     # via directory-components
-jwcrypto==1.5.0
+jwcrypto==1.5.1
     # via django-oauth-toolkit
 kombu==5.3.4
     # via celery
