@@ -12,7 +12,7 @@ pytest-codecov
 GitPython>=3.1.41
 
 # Pinned because pre-commit features specific versions
-black==22.3.0
+black==24.3.0
 blacken-docs==1.6.0
 isort==5.6.4
 flake8==3.8.4

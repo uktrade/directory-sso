@@ -16,7 +16,7 @@ beautifulsoup4==4.12.2
     # via directory-components
 billiard==4.2.0
     # via celery
-black==22.3.0
+black==24.3.0
     # via
     #   -r requirements_test.in
     #   blacken-docs
@@ -213,6 +213,7 @@ olefile==0.47
     # via directory-validators
 packaging==23.2
     # via
+    #   black
     #   pytest
     #   pytest-sugar
 pathspec==0.12.1
