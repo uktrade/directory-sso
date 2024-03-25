@@ -1,5 +1,5 @@
 dj-database-url==2.1.*
-django==4.2.10
+django==4.2.11
 django-allauth>=0.51.0
 django-environ>=0.9.0
 djangorestframework>=3.13.1
