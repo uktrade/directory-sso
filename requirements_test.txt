@@ -16,7 +16,7 @@ beautifulsoup4==4.12.2
     # via directory-components
 billiard==4.2.0
     # via celery
-black==22.3.0
+black==24.3.0
     # via
     #   -r requirements_test.in
     #   blacken-docs
@@ -68,8 +68,6 @@ cryptography==42.0.4
     #   pyjwt
 defusedxml==0.7.1
     # via python3-openid
-deprecated==1.2.14
-    # via jwcrypto
 directory-api-client==26.4.7
     # via -r requirements.in
 directory-client-core==7.2.13
@@ -91,7 +89,7 @@ directory-validators==9.3.3
     # via -r requirements.in
 dj-database-url==2.1.0
     # via -r requirements.in
-django==4.2.10
+django==4.2.11
     # via
     #   -r requirements.in
     #   directory-api-client
@@ -190,7 +188,7 @@ jmespath==1.0.1
     #   botocore
 jsonschema==3.2.0
     # via directory-components
-jwcrypto==1.5.1
+jwcrypto==1.5.6
     # via django-oauth-toolkit
 kombu==5.3.4
     # via celery
@@ -213,6 +211,7 @@ olefile==0.47
     # via directory-validators
 packaging==23.2
     # via
+    #   black
     #   pytest
     #   pytest-sugar
 pathspec==0.12.1
@@ -347,6 +346,7 @@ typing-extensions==4.9.0
     #   asgiref
     #   black
     #   dj-database-url
+    #   jwcrypto
     #   kombu
 tzdata==2023.3
     # via
@@ -370,8 +370,6 @@ wcwidth==0.2.12
     # via prompt-toolkit
 whitenoise==6.6.0
     # via -r requirements.in
-wrapt==1.16.0
-    # via deprecated
 
 # The following packages are considered to be unsafe in a requirements file:
 # setuptools
