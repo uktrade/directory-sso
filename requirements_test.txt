@@ -216,7 +216,7 @@ packaging==23.2
     #   pytest-sugar
 pathspec==0.12.1
     # via black
-pillow==10.2.0
+pillow==10.3.0
     # via
     #   -r requirements.in
     #   directory-validators
