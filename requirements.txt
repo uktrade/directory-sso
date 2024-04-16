@@ -145,8 +145,9 @@ future==0.18.3
     # via django-json-widget
 gunicorn==20.1.0
     # via -r requirements.in
-idna==3.6
+idna==3.7
     # via
+    #   -r requirements.in
     #   requests
     #   tldextract
 jmespath==1.0.1
