@@ -143,7 +143,7 @@ filelock==3.13.1
     # via tldextract
 future==0.18.3
     # via django-json-widget
-gunicorn==20.1.0
+gunicorn==22.0.0
     # via -r requirements.in
 idna==3.7
     # via
@@ -173,6 +173,8 @@ oauthlib==3.2.2
     #   requests-oauthlib
 olefile==0.47
     # via directory-validators
+packaging==24.0
+    # via gunicorn
 pillow==10.3.0
     # via
     #   -r requirements.in
