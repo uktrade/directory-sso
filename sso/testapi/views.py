@@ -98,5 +98,5 @@ class TestUsersAPIView(core.mixins.NoIndexMixin, DestroyAPIView):
             }
             return Response(data=data)
         except IntegrityError as ex:
-            data = {'error': str(ex)}
+            data = {'error': str(ex.args[0])}
             return Response(status=400, data=data)
