@@ -97,6 +97,5 @@ class TestUsersAPIView(core.mixins.NoIndexMixin, DestroyAPIView):
                 'mobile_phone_number': profile.mobile_phone_number,
             }
             return Response(data=data)
-        except IntegrityError as ex:
-            data = {'error': str(ex)}
-            return Response(status=400, data=data)
+        except IntegrityError:
+            return Response(status=400)
