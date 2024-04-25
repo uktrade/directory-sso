@@ -67,7 +67,7 @@ jobs:
           command: |
             python3 -m venv .venv
             . .venv/bin/activate
-            pip install black==22.3.0
+            pip install black
             black ./ --check
 
 workflows:
