@@ -9,7 +9,7 @@ jobs:
           POSTGRES_USER: debug
           POSTGRES_PASSWORD: debug
           POSTGRES_DB: sso_debug
-      - image: circleci/redis:3.2-alpine
+      - image: cimg/redis:7.2.4
     steps:
       - checkout
       - setup_remote_docker:
