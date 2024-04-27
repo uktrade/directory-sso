@@ -4,7 +4,7 @@ jobs:
     working_directory: ~/directory-sso
     docker:
       - image: cimg/python:3.9.13
-      - image: cimg/postgres:12.17
+      - image: cimg/postgres:16.2
         environment:
           POSTGRES_USER: debug
           POSTGRES_PASSWORD: debug
