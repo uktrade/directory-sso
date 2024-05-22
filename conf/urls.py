@@ -7,7 +7,7 @@ from django.conf import settings
 from django.contrib import admin
 from django.contrib.auth.decorators import login_required
 from django.contrib.sitemaps.views import sitemap
-from django.urls import include, re_path, reverse_lazy
+from django.urls import include, path, re_path, reverse_lazy
 from django.views.generic import RedirectView
 
 import conf.sitemaps
@@ -18,6 +18,7 @@ import sso.testapi.views
 import sso.user.views
 import sso.user.views_api
 import sso.verification.views
+from core.views import PingDomView
 
 sitemaps = {
     'static': conf.sitemaps.StaticViewSitemap,
@@ -124,6 +125,7 @@ urlpatterns = [
     re_path(r'^social/', include(allauth.socialaccount.urls)),
     re_path(r'^accounts/login/via-linkedin/', sso.user.views.LoginViaLinkedinView.as_view(), name='login-via-linkedin'),
     re_path(r'^accounts/login/via-google/', sso.user.views.LoginViaGoogleView.as_view(), name='login-via-google'),
+    path('pingdom/ping.xml', PingDomView.as_view(), name='pingdom'),
 ]
 
 

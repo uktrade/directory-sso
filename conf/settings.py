@@ -352,6 +352,7 @@ SIGNATURE_SECRET = env.str('SIGNATURE_SECRET')
 SIGAUTH_URL_NAMES_WHITELIST = [
     'healthcheck',
     'healthcheck-ping',
+    'pingdom',
     'activity-stream-users',
     'activity-stream-user-answers-vfm',
 ]
