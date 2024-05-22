@@ -8,7 +8,7 @@ from core.pingdom.services import DatabaseHealthCheck
 
 @pytest.mark.django_db
 def test_pingdom_database_healthcheck_ok(client):
-    response = client.get(reverse('core:pingdom'))
+    response = client.get(reverse('pingdom'))
     assert response.status_code == 200
 
 
@@ -19,5 +19,5 @@ def test_pingdom_database_healthcheck_false(mock_database_check, client):
         False,
         'Database Error',
     )
-    response = client.get(reverse('core:pingdom'))
+    response = client.get(reverse('pingdom'))
     assert response.status_code == 500
