@@ -1,3 +1,4 @@
+dbt-copilot-python==0.2.0
 dj-database-url==2.1.*
 django==4.2.11
 django-allauth>=0.51.0
