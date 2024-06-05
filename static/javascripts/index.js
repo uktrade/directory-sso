@@ -11,7 +11,7 @@ GOVUK.utils = (new function() {
    * GOVUK.utils.getParameterByName('a_param');
    **/
   this.getParameterByName = function(name) {
-    var param = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
+    var param = name.replace(/[\\\[]/g, "\\[").replace(/[\]]/g, "\\]");
     var qs = document.location.search.replace("&amp;", "&");
     var regex = new RegExp("[\\?&]" + param + "=([^&#]*)");
     var results = regex.exec(qs);
@@ -103,6 +103,7 @@ GOVUK.utm = (new function() {
   this.set = function() {
     // params = [utm_campaign|utm_content|utm_medium|utm_source\utm_term]
     var params = document.location.search.match(/utm_[a-z]+/g) || [];
+    print()
     var domain = document.getElementById("utmCookieDomain");
     var config = { days: 7 };
     var data = {};
