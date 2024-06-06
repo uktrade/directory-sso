@@ -103,7 +103,6 @@ GOVUK.utm = (new function() {
   this.set = function() {
     // params = [utm_campaign|utm_content|utm_medium|utm_source\utm_term]
     var params = document.location.search.match(/utm_[a-z]+/g) || [];
-    print()
     var domain = document.getElementById("utmCookieDomain");
     var config = { days: 7 };
     var data = {};
