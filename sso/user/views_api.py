@@ -182,8 +182,6 @@ class UserDataView(GenericAPIView):
 
 @method_decorator(csrf_exempt, name='get')
 class CSRFView(APIView):
-    permission_classes = []
-    authentication_classes = []
 
     def get(self, request, *args, **kwargs):
         token = get_token(request)
