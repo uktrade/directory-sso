@@ -105,7 +105,6 @@ api_urlpatterns = [
     ),
     re_path(r'^user/questionnaire/$', sso.user.views_api.UserQuestionnaireView.as_view(), name='user-questionnaire'),
     re_path(r'^user/data/$', sso.user.views_api.UserDataView.as_view(), name='user-data'),
-   
 ]
 
 testapi_urls = [

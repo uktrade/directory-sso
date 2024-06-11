@@ -1,13 +1,11 @@
 from django.core.exceptions import ObjectDoesNotExist
 from django.db import IntegrityError
-from django.http import JsonResponse
 from django.middleware.csrf import get_token
 from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_exempt
 from rest_framework import status
 from rest_framework.generics import CreateAPIView, GenericAPIView, UpdateAPIView
 from rest_framework.permissions import IsAuthenticated
-from rest_framework.renderers import JSONRenderer
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
