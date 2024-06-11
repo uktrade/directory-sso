@@ -105,6 +105,7 @@ api_urlpatterns = [
     ),
     re_path(r'^user/questionnaire/$', sso.user.views_api.UserQuestionnaireView.as_view(), name='user-questionnaire'),
     re_path(r'^user/data/$', sso.user.views_api.UserDataView.as_view(), name='user-data'),
+   
 ]
 
 testapi_urls = [
@@ -126,6 +127,7 @@ urlpatterns = [
     re_path(r'^accounts/login/via-linkedin/', sso.user.views.LoginViaLinkedinView.as_view(), name='login-via-linkedin'),
     re_path(r'^accounts/login/via-google/', sso.user.views.LoginViaGoogleView.as_view(), name='login-via-google'),
     path('pingdom/ping.xml', PingDomView.as_view(), name='pingdom'),
+    re_path(r'^csrf/$', sso.user.views_api.CSRFView.as_view(), name='csrf-view'),
 ]
 
 

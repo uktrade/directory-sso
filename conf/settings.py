@@ -72,6 +72,7 @@ MIDDLEWARE = [
     'core.middleware.SSODisplayLoggedInCookieMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',
+    'django.middleware.csrf.CsrfViewMiddleware',
     'conf.signature.SignatureCheckMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
