@@ -22,10 +22,10 @@ from sso.user.utils import (
     set_questionnaire_answer,
 )
 
-
+@method_decorator(csrf_exempt, name='create')
 class UserCreateAPIView(CreateAPIView):
     serializer_class = serializers.CreateUserSerializer
-    permission_classes = [SignatureCheckPermission]
+    permission_classes = []
 
     def create(self, request, *args, **kwargs):
         try:
@@ -178,9 +178,11 @@ class UserDataView(GenericAPIView):
         return Response(status=200, data={'result': 'ok'})
 
 
-@method_decorator(csrf_exempt, name='get')
+@method_decorator(csrf_exempt, name='post')
 class CSRFView(APIView):
+    permission_classes = []
+    authentication_classes = []
 
-    def get(self, request, *args, **kwargs):
+    def post(self, request, *args, **kwargs):
         token = get_token(request)
         return Response(status=200, data={'csrftoken': token})
