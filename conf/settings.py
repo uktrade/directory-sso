@@ -346,6 +346,8 @@ CSRF_TRUSTED_ORIGINS = [
     'https://great.*.uktrade.digital/',
     'https://www.great.gov.uk/',
     'http://localhost:8020/',
+    'http://0.0.0.0:8004/',
+    'https://*.example.com',
 ]
 
 # Set with comma separated values in env
