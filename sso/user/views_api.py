@@ -26,7 +26,7 @@ from sso.user.utils import (
 @method_decorator(csrf_exempt, name='create')
 class UserCreateAPIView(CreateAPIView):
     serializer_class = serializers.CreateUserSerializer
-    permission_classes = []
+    permission_classes = [SignatureCheckPermission]
 
     def create(self, request, *args, **kwargs):
         try:
