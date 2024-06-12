@@ -20,7 +20,7 @@ from sso.verification import helpers, models, serializers
 @method_decorator(csrf_exempt, name='post')
 class RegenerateCodeCreateAPIView(CreateAPIView):
     serializer_class = serializers.RegenerateCodeSerializer
-    permission_classes = []
+    permission_classes = [SignatureCheckPermission]
 
     def post(self, request, *args, **kwargs):
         instance = self.get_object()
@@ -43,7 +43,7 @@ class RegenerateCodeCreateAPIView(CreateAPIView):
 @method_decorator(csrf_exempt, name='post')
 class VerifyVerificationCodeAPIView(GenericAPIView):
     serializer_class = serializers.CheckVerificationCodeSerializer
-    permission_classes = []
+    permission_classes = [SignatureCheckPermission]
     authentication_classes = []
 
     def get_email(self, uidb64, token):

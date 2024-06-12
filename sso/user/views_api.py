@@ -22,6 +22,7 @@ from sso.user.utils import (
     set_questionnaire_answer,
 )
 
+
 @method_decorator(csrf_exempt, name='create')
 class UserCreateAPIView(CreateAPIView):
     serializer_class = serializers.CreateUserSerializer
