@@ -15,6 +15,7 @@ from conf.signature import SignatureCheckPermission
 from sso.user.models import User
 from sso.verification import helpers, models, serializers
 
+
 @method_decorator(csrf_exempt, name='post')
 class RegenerateCodeCreateAPIView(CreateAPIView):
     serializer_class = serializers.RegenerateCodeSerializer
