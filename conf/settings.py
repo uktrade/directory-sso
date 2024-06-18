@@ -342,13 +342,7 @@ SESSION_COOKIE_SECURE = env.bool('SESSION_COOKIE_SECURE', True)
 
 CSRF_COOKIE_SECURE = env.bool('CSRF_COOKIE_SECURE', True)
 CSRF_COOKIE_HTTPONLY = True
-CSRF_TRUSTED_ORIGINS = [
-    'https://great.*.uktrade.digital/',
-    'https://www.great.gov.uk/',
-    'http://localhost:8020/',
-    'http://0.0.0.0:8004/',
-    'https://*.example.com',
-]
+CSRF_TRUSTED_ORIGINS = env.list('CSRF_TRUSTED_ORIGINS', default=[])
 
 # Set with comma separated values in env
 ALLOWED_REDIRECT_DOMAINS = env.list('ALLOWED_REDIRECT_DOMAINS', default=[])
