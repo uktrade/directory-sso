@@ -15,7 +15,6 @@ from sso.user.models import User
 from sso.verification import helpers, models, serializers
 
 
-# TOCHECK
 class RegenerateCodeCreateAPIView(CreateAPIView):
     serializer_class = serializers.RegenerateCodeSerializer
     permission_classes = [SignatureCheckPermission]
@@ -38,7 +37,6 @@ class RegenerateCodeCreateAPIView(CreateAPIView):
         return get_object_or_404(models.VerificationCode.objects.all(), user__email__iexact=self.request.data['email'])
 
 
-# TOCHECK
 class VerifyVerificationCodeAPIView(GenericAPIView):
     serializer_class = serializers.CheckVerificationCodeSerializer
     permission_classes = [SignatureCheckPermission]
