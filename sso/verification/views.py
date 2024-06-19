@@ -3,7 +3,6 @@ from django.contrib.auth import login
 from django.shortcuts import get_object_or_404
 from django.utils.decorators import method_decorator
 from django.utils.encoding import force_str
-from django.views.decorators.csrf import csrf_exempt
 from django.utils.http import urlsafe_base64_decode
 from django.utils.timezone import now
 from ratelimit.decorators import ratelimit
@@ -16,7 +15,7 @@ from sso.user.models import User
 from sso.verification import helpers, models, serializers
 
 
-#TOCHECK
+# TOCHECK
 class RegenerateCodeCreateAPIView(CreateAPIView):
     serializer_class = serializers.RegenerateCodeSerializer
     permission_classes = [SignatureCheckPermission]
@@ -39,7 +38,7 @@ class RegenerateCodeCreateAPIView(CreateAPIView):
         return get_object_or_404(models.VerificationCode.objects.all(), user__email__iexact=self.request.data['email'])
 
 
-#TOCHECK
+# TOCHECK
 class VerifyVerificationCodeAPIView(GenericAPIView):
     serializer_class = serializers.CheckVerificationCodeSerializer
     permission_classes = [SignatureCheckPermission]

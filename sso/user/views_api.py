@@ -22,7 +22,8 @@ from sso.user.utils import (
     set_questionnaire_answer,
 )
 
-#TOCHECK
+
+# TOCHECK
 class UserCreateAPIView(CreateAPIView):
     serializer_class = serializers.CreateUserSerializer
     permission_classes = [SignatureCheckPermission]
