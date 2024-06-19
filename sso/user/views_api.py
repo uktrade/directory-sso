@@ -22,8 +22,7 @@ from sso.user.utils import (
     set_questionnaire_answer,
 )
 
-
-@method_decorator(csrf_exempt, name='create')
+#TOCHECK
 class UserCreateAPIView(CreateAPIView):
     serializer_class = serializers.CreateUserSerializer
     permission_classes = [SignatureCheckPermission]
@@ -181,7 +180,7 @@ class UserDataView(GenericAPIView):
 
 @method_decorator(csrf_exempt, name='post')
 class CSRFView(APIView):
-    permission_classes = []
+    permission_classes = [SignatureCheckPermission]
     authentication_classes = []
 
     def post(self, request, *args, **kwargs):
