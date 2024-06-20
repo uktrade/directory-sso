@@ -1,9 +1,13 @@
 from django.core.exceptions import ObjectDoesNotExist
 from django.db import IntegrityError
+from django.middleware.csrf import get_token
+from django.utils.decorators import method_decorator
+from django.views.decorators.csrf import csrf_exempt
 from rest_framework import status
 from rest_framework.generics import CreateAPIView, GenericAPIView, UpdateAPIView
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
+from rest_framework.views import APIView
 
 from conf.signature import SignatureCheckPermission
 from core.authentication import SessionAuthentication
@@ -19,6 +23,7 @@ from sso.user.utils import (
 )
 
 
+# TOCHECK
 class UserCreateAPIView(CreateAPIView):
     serializer_class = serializers.CreateUserSerializer
     permission_classes = [SignatureCheckPermission]
@@ -172,3 +177,13 @@ class UserDataView(GenericAPIView):
         data_object.data = data
         data_object.save()
         return Response(status=200, data={'result': 'ok'})
+
+
+@method_decorator(csrf_exempt, name='post')
+class CSRFView(APIView):
+    permission_classes = [SignatureCheckPermission]
+    authentication_classes = []
+
+    def post(self, request, *args, **kwargs):
+        token = get_token(request)
+        return Response(status=200, data={'csrftoken': token})

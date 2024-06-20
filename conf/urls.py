@@ -126,8 +126,8 @@ urlpatterns = [
     re_path(r'^accounts/login/via-linkedin/', sso.user.views.LoginViaLinkedinView.as_view(), name='login-via-linkedin'),
     re_path(r'^accounts/login/via-google/', sso.user.views.LoginViaGoogleView.as_view(), name='login-via-google'),
     path('pingdom/ping.xml', PingDomView.as_view(), name='pingdom'),
+    path('csrf/', sso.user.views_api.CSRFView.as_view(), name='csrf-view'),
 ]
-
 
 if settings.FEATURE_ENFORCE_STAFF_SSO_ENABLED:
     authbroker_urls = [
