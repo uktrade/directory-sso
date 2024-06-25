@@ -1,11 +1,6 @@
 from django.core.exceptions import ObjectDoesNotExist
 from django.db import IntegrityError
 from django.middleware.csrf import get_token
-<<<<<<< Updated upstream
-from django.utils.decorators import method_decorator
-from django.views.decorators.csrf import csrf_exempt
-=======
->>>>>>> Stashed changes
 from rest_framework import status
 from rest_framework.generics import CreateAPIView, GenericAPIView, UpdateAPIView
 from rest_framework.permissions import IsAuthenticated
@@ -26,7 +21,6 @@ from sso.user.utils import (
 )
 
 
-# TOCHECK
 class UserCreateAPIView(CreateAPIView):
     serializer_class = serializers.CreateUserSerializer
     permission_classes = [SignatureCheckPermission]
@@ -182,18 +176,10 @@ class UserDataView(GenericAPIView):
         return Response(status=200, data={'result': 'ok'})
 
 
-<<<<<<< Updated upstream
-@method_decorator(csrf_exempt, name='post')
-=======
->>>>>>> Stashed changes
 class CSRFView(APIView):
     permission_classes = [SignatureCheckPermission]
     authentication_classes = []
 
-<<<<<<< Updated upstream
-    def post(self, request, *args, **kwargs):
-=======
     def get(self, request):
->>>>>>> Stashed changes
         token = get_token(request)
         return Response(status=200, data={'csrftoken': token})

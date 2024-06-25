@@ -5,7 +5,6 @@ from django.views.decorators.cache import never_cache
 from django.views.generic import TemplateView
 from rest_framework.views import APIView
 from django.middleware.csrf import get_token
-from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_exempt
 from core.pingdom.services import health_check_services
 from rest_framework.response import Response
