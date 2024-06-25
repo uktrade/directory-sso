@@ -1,6 +1,9 @@
 from django.core.exceptions import ObjectDoesNotExist
 from django.db import IntegrityError
+from django.http import JsonResponse
 from django.middleware.csrf import get_token
+from django.utils.decorators import method_decorator
+from django.views.decorators.csrf import csrf_exempt
 from rest_framework import status
 from rest_framework.generics import CreateAPIView, GenericAPIView, UpdateAPIView
 from rest_framework.permissions import IsAuthenticated
@@ -176,10 +179,14 @@ class UserDataView(GenericAPIView):
         return Response(status=200, data={'result': 'ok'})
 
 
+@method_decorator(csrf_exempt, name='dispatch')
 class CSRFView(APIView):
     permission_classes = [SignatureCheckPermission]
     authentication_classes = []
 
-    def get(self, request):
+    def _get_token(self, request):
         token = get_token(request)
-        return Response(status=200, data={'csrftoken': token})
+        return JsonResponse(status=200, data={'csrftoken': token})
+
+    def dispatch(self, request, *args, **kwargs):
+        return self._get_token(request)
