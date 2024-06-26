@@ -1,3 +1,4 @@
+import logging
 import urllib.parse
 
 from allauth.account.adapter import DefaultAccountAdapter
@@ -24,6 +25,7 @@ EMAIL_TEMPLATES = {
     'account/email/password_reset_key': settings.GOV_NOTIFY_PASSWORD_RESET_TEMPLATE_ID,
 }
 
+logger = logging.getLogger(__name__)
 
 class AccountAdapter(DefaultAccountAdapter):
     def get_email_confirmation_url(self, request, emailconfirmation):
@@ -76,6 +78,8 @@ class AccountAdapter(DefaultAccountAdapter):
     def build_password_reset_url(context):
         """Add next param if valid redirect."""
         reset_url = context['password_reset_url']
+        logger.exception('RESET URL' + context)
+        
         next_url = context['request'].POST.get('next', '')
         if next_url and is_valid_redirect(next_url):
             reset_url += '?next={next_url}'.format(next_url=next_url)
