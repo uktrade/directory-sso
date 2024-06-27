@@ -153,7 +153,7 @@ django-staff-sso-client==4.2.2
     # via -r requirements.in
 django-timezone-field==6.1.0
     # via django-celery-beat
-djangorestframework==3.14.0
+djangorestframework==3.15.2
     # via
     #   -r requirements.in
     #   sigauth
@@ -292,9 +292,7 @@ python-dateutil==2.8.2
 python3-openid==3.2.0
     # via django-allauth
 pytz==2023.3
-    # via
-    #   directory-validators
-    #   djangorestframework
+    # via directory-validators
 pyyaml==6.0.1
     # via pre-commit
 redis==5.0.1
@@ -355,7 +353,7 @@ tzdata==2023.3
     # via
     #   celery
     #   django-celery-beat
-urllib3==1.26.18
+urllib3==1.26.19
     # via
     #   -r requirements.in
     #   botocore
