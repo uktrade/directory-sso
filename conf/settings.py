@@ -7,9 +7,12 @@ import environ
 import sentry_sdk
 from django.urls import reverse_lazy
 from django_log_formatter_asim import ASIMFormatter
+from sentry_sdk.integrations.celery import CeleryIntegration
 from sentry_sdk.integrations.django import DjangoIntegration
+from sentry_sdk.integrations.redis import RedisIntegration
 
 from core.helpers import is_valid_domain
+from .utils import strip_password_data
 
 env = environ.Env()
 for env_file in env.list('ENV_FILES', default=[]):
@@ -229,7 +232,12 @@ else:
 # Sentry
 if env.str('SENTRY_DSN', ''):
     sentry_sdk.init(
-        dsn=env.str('SENTRY_DSN'), environment=env.str('SENTRY_ENVIRONMENT'), integrations=[DjangoIntegration()]
+        dsn=env.str('SENTRY_DSN'),
+        environment=env.str('SENTRY_ENVIRONMENT'),
+        integrations=[DjangoIntegration(), CeleryIntegration(), RedisIntegration()],
+        before_send=strip_password_data,
+        enable_tracing=env.bool('SENTRY_ENABLE_TRACING', False),
+        traces_sample_rate=env.float('SENTRY_TRACES_SAMPLE_RATE', 1.0),
     )
 
 
