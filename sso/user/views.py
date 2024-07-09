@@ -82,11 +82,11 @@ class PasswordResetFromKeyView(RedirectToNextMixin, core.mixins.NoIndexMixin, al
         if settings.FEATURE_FLAGS['DISABLE_REGISTRATION_ON']:
             return redirect('https://sorry.great.gov.uk/')
 
-        internal_session = self.request.session.get(INTERNAL_RESET_SESSION_KEY)
+        #internal_session = self.request.session.get(INTERNAL_RESET_SESSION_KEY)
         # This prevents a 500 in a situation when user opened a valid internal
         # session key link without the cookie set (e.g. incognito - edge case)
-        if key == self.reset_url_key and not internal_session:
-            return self.render_to_response({'token_fail': True})
+        #if key == self.reset_url_key and not internal_session:
+            #return self.render_to_response({'token_fail': True})
 
         response = super().dispatch(request, uidb36, key, **kwargs)
 
