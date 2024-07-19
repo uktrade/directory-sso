@@ -1,4 +1,3 @@
-
 from unittest.mock import MagicMock, Mock
 
 from sso import constants
