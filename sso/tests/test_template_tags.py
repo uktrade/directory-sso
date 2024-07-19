@@ -64,3 +64,9 @@ def test_get_canonical_url_without_www(rf):
     context_data = {'request': request}
     canonical_url = get_canonical_url(context_data)
     assert canonical_url == 'https://www.great.com/sso/accounts/login/password_reset'
+
+
+def test_get_canonical_url_without_request():
+    context_data = {}
+    canonical_url = get_canonical_url(context_data)
+    assert canonical_url == ''
