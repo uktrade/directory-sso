@@ -1,4 +1,7 @@
+from unittest.mock import MagicMock, Mock
+
 from sso import constants
+from sso.templatetags.canonical_url_tags import get_canonical_url
 from sso.templatetags.sso_email import header_image
 from sso.templatetags.sso_validation import is_valid_redirect_domain
 
@@ -39,3 +42,31 @@ def test_is_valid_returns_false_when_no_domain_supplied(settings):
 
     is_valid = is_valid_redirect_domain(None)
     assert is_valid is False
+
+
+def test_get_canonical_url_with_www(rf):
+    request = Mock()
+    request.scheme = 'https'
+    request.path = '/sso/accounts/login/password_reset'
+    request.get_host = MagicMock(return_value='www.great.com')
+
+    context_data = {'request': request}
+    canonical_url = get_canonical_url(context_data)
+    assert canonical_url == 'https://www.great.com/sso/accounts/login/password_reset'
+
+
+def test_get_canonical_url_without_www(rf):
+    request = Mock()
+    request.scheme = 'https'
+    request.path = '/sso/accounts/login/password_reset'
+    request.get_host = MagicMock(return_value='great.com')
+
+    context_data = {'request': request}
+    canonical_url = get_canonical_url(context_data)
+    assert canonical_url == 'https://www.great.com/sso/accounts/login/password_reset'
+
+
+def test_get_canonical_url_without_request():
+    context_data = {}
+    canonical_url = get_canonical_url(context_data)
+    assert canonical_url == ''
