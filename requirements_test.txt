@@ -6,6 +6,8 @@
 #
 amqp==5.2.0
     # via kombu
+annotated-types==0.7.0
+    # via pydantic
 asgiref==3.7.2
     # via django
 async-timeout==4.0.3
@@ -326,6 +328,14 @@ pycodestyle==2.6.0
     # via flake8
 pycparser==2.21
     # via cffi
+pydantic==2.7.3
+    # via
+    #   -r requirements.in
+    #   pydantic-settings
+pydantic-core==2.18.4
+    # via pydantic
+pydantic-settings==2.3.1
+    # via -r requirements.in
 pyflakes==2.2.0
     # via flake8
 pyjwt[crypto]==2.7.0
@@ -364,6 +374,8 @@ python-dateutil==2.8.2
     #   faker
     #   freezegun
     #   python-crontab
+python-dotenv==1.0.1
+    # via pydantic-settings
 python3-openid==3.2.0
     # via django-allauth
 pytz==2023.3
@@ -443,6 +455,8 @@ typing-extensions==4.9.0
     #   jwcrypto
     #   kombu
     #   opentelemetry-sdk
+    #   pydantic
+    #   pydantic-core
 tzdata==2023.3
     # via
     #   celery

@@ -3,7 +3,6 @@ import ssl
 from typing import Any, Dict
 
 import dj_database_url
-import environ
 import sentry_sdk
 from django.urls import reverse_lazy
 from django_log_formatter_asim import ASIMFormatter
@@ -13,10 +12,7 @@ from sentry_sdk.integrations.redis import RedisIntegration
 
 from core.helpers import is_valid_domain
 from .utils import strip_password_data
-
-env = environ.Env()
-for env_file in env.list('ENV_FILES', default=[]):
-    env.read_env(f'conf/env/{env_file}')
+from conf.env import env
 
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
@@ -27,7 +23,7 @@ BASE_DIR = os.path.dirname(PROJECT_ROOT)
 # See https://docs.djangoproject.com/en/1.9/howto/deployment/checklist/
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = env.bool('DEBUG', False)
+DEBUG = env.debug
 
 # As app is running behind a host-based router supplied by Heroku or other
 # PaaS, we can open ALLOWED_HOSTS
@@ -116,11 +112,9 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'conf.wsgi.application'
 
-VCAP_SERVICES = env.json('VCAP_SERVICES', {})
-
 # Database
 # https://docs.djangoproject.com/en/1.9/ref/settings/#databases
-DATABASES = {'default': dj_database_url.config()}
+DATABASES = {'default': dj_database_url.config(default=env.database_url)}
 
 # Internationalization
 # https://docs.djangoproject.com/en/1.9/topics/i18n/
@@ -141,9 +135,9 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 if not os.path.exists(STATIC_ROOT):
     os.makedirs(STATIC_ROOT)
 
-STATIC_HOST = env.str('STATIC_HOST', '')
+STATIC_HOST = env.static_host
 STATIC_URL = STATIC_HOST + '/static/'
-STATICFILES_STORAGE = env.str('STATICFILES_STORAGE', 'whitenoise.storage.CompressedStaticFilesStorage')
+STATICFILES_STORAGE = env.staticfiles_storage
 # Extra places for collectstatic to find static files.
 STATICFILES_DIRS = (os.path.join(BASE_DIR, 'static'),)
 for static_dir in STATICFILES_DIRS:
@@ -152,7 +146,7 @@ for static_dir in STATICFILES_DIRS:
 
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = env.str('SECRET_KEY')
+SECRET_KEY = env.secret_key
 
 # Logging for development
 if DEBUG:
@@ -231,14 +225,14 @@ else:
     }
 
 # Sentry
-if env.str('SENTRY_DSN', ''):
+if env.sentry_dsn:
     sentry_sdk.init(
-        dsn=env.str('SENTRY_DSN'),
-        environment=env.str('SENTRY_ENVIRONMENT'),
+        dsn=env.sentry_dsn,
+        environment=env.sentry_environment,
         integrations=[DjangoIntegration(), CeleryIntegration(), RedisIntegration()],
         before_send=strip_password_data,
-        enable_tracing=env.bool('SENTRY_ENABLE_TRACING', False),
-        traces_sample_rate=env.float('SENTRY_TRACES_SAMPLE_RATE', 1.0),
+        enable_tracing=env.sentry_enable_tracing,
+        traces_sample_rate=env.traces_sample_rate,
     )
 
 # Authentication
@@ -258,7 +252,7 @@ AUTHENTICATION_BACKENDS = [
 ]
 
 # SSO config
-FEATURE_ENFORCE_STAFF_SSO_ENABLED = env.bool('FEATURE_ENFORCE_STAFF_SSO_ENABLED', False)
+FEATURE_ENFORCE_STAFF_SSO_ENABLED = env.feature_enforce_staff_sso_enabled
 # authbroker config
 if FEATURE_ENFORCE_STAFF_SSO_ENABLED:
     AUTHENTICATION_BACKENDS.append('authbroker_client.backends.AuthbrokerBackend')
@@ -268,9 +262,9 @@ else:
     LOGIN_URL = reverse_lazy('account_login')
 
 # SSO config
-AUTHBROKER_URL = env.str('STAFF_SSO_AUTHBROKER_URL')
-AUTHBROKER_CLIENT_ID = env.str('AUTHBROKER_CLIENT_ID')
-AUTHBROKER_CLIENT_SECRET = env.str('AUTHBROKER_CLIENT_SECRET')
+AUTHBROKER_URL = env.staff_sso_authbroker_url
+AUTHBROKER_CLIENT_ID = env.authbroker_client_id
+AUTHBROKER_CLIENT_SECRET = env.authbroker_client_secret
 
 # DRF
 REST_FRAMEWORK = {
@@ -278,7 +272,7 @@ REST_FRAMEWORK = {
     'DEFAULT_FILTER_BACKENDS': ('django_filters.rest_framework.DjangoFilterBackend',),
     'DEFAULT_PERMISSION_CLASSES': ('rest_framework.permissions.IsAuthenticated',),
     'UNAUTHENTICATED_USER': None,
-    'PAGE_SIZE': env.int('REST_FRAMEWORK_PAGE_SIZE', 1000),
+    'PAGE_SIZE': env.rest_framework_page_size,
 }
 
 # django-oauth2-toolkit
@@ -290,10 +284,10 @@ OAUTH2_PROVIDER_REFRESH_TOKEN_MODEL = 'oauth2_provider.RefreshToken'
 
 
 # django-allauth
-REDIRECT_FIELD_NAME = env.str('REDIRECT_FIELD_NAME', 'next')
-DEFAULT_REDIRECT_URL = env.str('DEFAULT_REDIRECT_URL', 'https://find-a-buyer.export.great.gov.uk/')
-LOGIN_REDIRECT_URL = env.str('LOGIN_REDIRECT_URL', DEFAULT_REDIRECT_URL)
-LOGOUT_REDIRECT_URL = env.str('LOGOUT_REDIRECT_URL', DEFAULT_REDIRECT_URL)
+REDIRECT_FIELD_NAME = env.redirect_field_name
+DEFAULT_REDIRECT_URL = env.default_redirect_url
+LOGIN_REDIRECT_URL = env.login_redirect_url
+LOGOUT_REDIRECT_URL = env.logout_redirect_url
 ACCOUNT_AUTHENTICATION_METHOD = 'email'
 ACCOUNT_UNIQUE_EMAIL = True
 ACCOUNT_USER_MODEL_USERNAME_FIELD = None
@@ -302,8 +296,8 @@ ACCOUNT_USERNAME_REQUIRED = False
 ACCOUNT_CONFIRM_EMAIL_ON_GET = False
 ACCOUNT_EMAIL_CONFIRMATION_EXPIRE_DAYS = 3
 ACCOUNT_EMAIL_VERIFICATION = 'mandatory'
-ACCOUNT_EMAIL_SUBJECT_PREFIX = env.str('ACCOUNT_EMAIL_SUBJECT_PREFIX', 'Your great.gov.uk account: ')
-ACCOUNT_DEFAULT_HTTP_PROTOCOL = env.str('ACCOUNT_DEFAULT_HTTP_PROTOCOL', 'https')
+ACCOUNT_EMAIL_SUBJECT_PREFIX = env.account_email_subject_prefix
+ACCOUNT_DEFAULT_HTTP_PROTOCOL = env.account_default_http_protocol
 ACCOUNT_LOGIN_ATTEMPTS_LIMIT = 5
 ACCOUNT_LOGIN_ATTEMPTS_TIMEOUT = 300  # seconds
 ACCOUNT_SIGNUP_EMAIL_ENTER_TWICE = True
@@ -315,21 +309,21 @@ SOCIALACCOUNT_ADAPTER = 'sso.adapters.SocialAccountAdapter'
 SOCIALACCOUNT_AUTO_SIGNUP = True
 SOCIALACCOUNT_EMAIL_VERIFICATION = True
 
-VERIFICATION_EXPIRY_MINUTES = env.int('VERIFICATION_EXPIRY_MINUTES', 30)
+VERIFICATION_EXPIRY_MINUTES = env.verification_expiry_minutes
 
 # Email
 EMAIL_BACKED_CLASSES = {
     'default': 'django.core.mail.backends.smtp.EmailBackend',
     'console': 'django.core.mail.backends.console.EmailBackend',
 }
-EMAIL_BACKED_CLASS_NAME = env.str('EMAIL_BACKEND_CLASS_NAME', 'default')
+EMAIL_BACKED_CLASS_NAME = env.email_backend_class_name
 EMAIL_BACKEND = EMAIL_BACKED_CLASSES[EMAIL_BACKED_CLASS_NAME]
-EMAIL_HOST = env.str('EMAIL_HOST')
-EMAIL_PORT = env.str('EMAIL_PORT')
-EMAIL_HOST_USER = env.str('EMAIL_HOST_USER')
-EMAIL_HOST_PASSWORD = env.str('EMAIL_HOST_PASSWORD')
+EMAIL_HOST = env.email_host
+EMAIL_PORT = env.email_port
+EMAIL_HOST_USER = env.email_host_user
+EMAIL_HOST_PASSWORD = env.email_host_password
 EMAIL_USE_TLS = True
-DEFAULT_FROM_EMAIL = env.str('DEFAULT_FROM_EMAIL')
+DEFAULT_FROM_EMAIL = env.default_from_email
 
 ACCOUNT_FORMS = {
     'signup': 'sso.user.forms.SignupForm',
@@ -342,22 +336,23 @@ ACCOUNT_FORMS = {
     'reset_password_from_key': 'sso.user.forms.ResetPasswordKeyForm',
 }
 
-SESSION_COOKIE_DOMAIN = env.str('SESSION_COOKIE_DOMAIN')
+SESSION_COOKIE_DOMAIN = env.session_cookie_domain
 # env var not same as setting to be more explicit (directory-ui uses same name)
-SESSION_COOKIE_NAME = env.str('SSO_SESSION_COOKIE')
-SESSION_COOKIE_SECURE = env.bool('SESSION_COOKIE_SECURE', True)
+SESSION_COOKIE_NAME = env.sso_session_cookie
+SESSION_COOKIE_SECURE = env.session_cookie_secure
 
-CSRF_COOKIE_SECURE = env.bool('CSRF_COOKIE_SECURE', True)
+CSRF_COOKIE_SECURE = env.csrf_cookie_secure
 CSRF_COOKIE_HTTPONLY = True
-CSRF_TRUSTED_ORIGINS = env.list('CSRF_TRUSTED_ORIGINS', default=[])
+CSRF_TRUSTED_ORIGINS = env.csrf_trusted_origins.split(',')
 
 # Set with comma separated values in env
-ALLOWED_REDIRECT_DOMAINS = env.list('ALLOWED_REDIRECT_DOMAINS', default=[])
+ALLOWED_REDIRECT_DOMAINS = env.allowed_redirect_domains.split(',')
+
 for domain in ALLOWED_REDIRECT_DOMAINS:
     assert is_valid_domain(domain) is True
 
 # Signature check
-SIGNATURE_SECRET = env.str('SIGNATURE_SECRET')
+SIGNATURE_SECRET = env.signature_secret
 SIGAUTH_URL_NAMES_WHITELIST = [
     'healthcheck',
     'healthcheck-ping',
@@ -367,7 +362,7 @@ SIGAUTH_URL_NAMES_WHITELIST = [
 ]
 
 # api request key
-DIRECTORY_API_SECRET = env.str('DIRECTORY_API_SECRET', '')
+DIRECTORY_API_SECRET = env.directory_api_secret
 
 # Use proxy host name when generating links (e.g. in emails)
 USE_X_FORWARDED_HOST = True
@@ -375,107 +370,86 @@ SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 X_FRAME_OPTIONS = 'DENY'
 
 # Google tag manager
-UTM_COOKIE_DOMAIN = env.str('UTM_COOKIE_DOMAIN')
-GOOGLE_TAG_MANAGER_ID = env.str('GOOGLE_TAG_MANAGER_ID')
-GOOGLE_TAG_MANAGER_ENV = env.str('GOOGLE_TAG_MANAGER_ENV', '')
+UTM_COOKIE_DOMAIN = env.utm_cookie_domain
+GOOGLE_TAG_MANAGER_ID = env.google_tag_manager_id
+GOOGLE_TAG_MANAGER_ENV = env.google_tag_manager_env
 
 # sso profile
-SSO_PROFILE_URL = env.str('SSO_PROFILE_URL')
+SSO_PROFILE_URL = env.sso_profile_url
 
 # magna
-MAGNA_URL = env.str('MAGNA_URL')
+MAGNA_URL = env.magna_url
 
 # directory-api
-DIRECTORY_API_CLIENT_BASE_URL = env.str('DIRECTORY_API_CLIENT_BASE_URL')
-DIRECTORY_API_CLIENT_API_KEY = env.str('DIRECTORY_API_CLIENT_API_KEY')
-DIRECTORY_API_CLIENT_SENDER_ID = env.str('DIRECTORY_API_CLIENT_SENDER_ID', 'directory')
-DIRECTORY_API_CLIENT_DEFAULT_TIMEOUT = env.str('DIRECTORY_API_CLIENT_DEFAULT_TIMEOUT', 15)
+DIRECTORY_API_CLIENT_BASE_URL = env.directory_api_client_base_url
+DIRECTORY_API_CLIENT_API_KEY = env.directory_api_client_api_key
+DIRECTORY_API_CLIENT_SENDER_ID = env.directory_api_client_sender_id
+DIRECTORY_API_CLIENT_DEFAULT_TIMEOUT = env.directory_api_client_default_timeout
 
 # directory forms api client
-DIRECTORY_FORMS_API_BASE_URL = env.str('DIRECTORY_FORMS_API_BASE_URL')
-DIRECTORY_FORMS_API_API_KEY = env.str('DIRECTORY_FORMS_API_API_KEY')
-DIRECTORY_FORMS_API_SENDER_ID = env.str('DIRECTORY_FORMS_API_SENDER_ID')
-DIRECTORY_FORMS_API_DEFAULT_TIMEOUT = env.int('DIRECTORY_API_FORMS_DEFAULT_TIMEOUT', 5)
-DIRECTORY_FORMS_API_ZENDESK_SEVICE_NAME = env.str('DIRECTORY_FORMS_API_ZENDESK_SEVICE_NAME', 'api')
+DIRECTORY_FORMS_API_BASE_URL = env.directory_forms_api_base_url
+DIRECTORY_FORMS_API_API_KEY = env.directory_forms_api_api_key
+DIRECTORY_FORMS_API_SENDER_ID = env.directory_forms_api_sender_id
+DIRECTORY_FORMS_API_DEFAULT_TIMEOUT = env.directory_forms_api_default_timeout
+DIRECTORY_FORMS_API_ZENDESK_SEVICE_NAME = env.directory_forms_api_zendesk_sevice_name
 
 # directory clients
 DIRECTORY_CLIENT_CORE_CACHE_EXPIRE_SECONDS = 60 * 60 * 24 * 30  # 30 days
 
 # Export Opportunities
-EXOPS_APPLICATION_CLIENT_ID = env.str('EXOPS_APPLICATION_CLIENT_ID')
+EXOPS_APPLICATION_CLIENT_ID = env.exops_application_client_id
 
 # HEADER AND FOOTER LINKS
-DIRECTORY_CONSTANTS_URL_GREAT_DOMESTIC = env.str('DIRECTORY_CONSTANTS_URL_GREAT_DOMESTIC', '')
-DIRECTORY_CONSTANTS_URL_EXPORT_OPPORTUNITIES = env.str('DIRECTORY_CONSTANTS_URL_EXPORT_OPPORTUNITIES', '')
-DIRECTORY_CONSTANTS_URL_SELLING_ONLINE_OVERSEAS = env.str('DIRECTORY_CONSTANTS_URL_SELLING_ONLINE_OVERSEAS', '')
-DIRECTORY_CONSTANTS_URL_EVENTS = env.str('DIRECTORY_CONSTANTS_URL_EVENTS', '')
-DIRECTORY_CONSTANTS_URL_INVEST = env.str('DIRECTORY_CONSTANTS_URL_INVEST', '')
-DIRECTORY_CONSTANTS_URL_FIND_A_SUPPLIER = env.str('DIRECTORY_CONSTANTS_URL_FIND_A_SUPPLIER', '')
-DIRECTORY_CONSTANTS_URL_SINGLE_SIGN_ON = env.str('DIRECTORY_CONSTANTS_URL_SINGLE_SIGN_ON', '')
-DIRECTORY_CONSTANTS_URL_FIND_A_BUYER = env.str('DIRECTORY_CONSTANTS_URL_FIND_A_BUYER', '')
-DIRECTORY_CONSTANTS_URL_SSO_PROFILE = env.str('DIRECTORY_CONSTANTS_URL_SSO_PROFILE', '')
-PRIVACY_COOKIE_DOMAIN = env.str('PRIVACY_COOKIE_DOMAIN')
+DIRECTORY_CONSTANTS_URL_GREAT_DOMESTIC = env.directory_constants_url_great_domestic
+DIRECTORY_CONSTANTS_URL_EXPORT_OPPORTUNITIES = env.directory_constants_url_export_opportunities
+DIRECTORY_CONSTANTS_URL_SELLING_ONLINE_OVERSEAS = env.directory_constants_url_selling_online_overseas
+DIRECTORY_CONSTANTS_URL_INVEST = env.directory_constants_url_invest
+DIRECTORY_CONSTANTS_URL_FIND_A_SUPPLIER = env.directory_constants_url_find_a_supplier
+DIRECTORY_CONSTANTS_URL_SINGLE_SIGN_ON = env.directory_constants_url_single_sign_on
+DIRECTORY_CONSTANTS_URL_FIND_A_BUYER = env.directory_constants_url_find_a_buyer
+DIRECTORY_CONSTANTS_URL_SSO_PROFILE = env.directory_constants_url_sso_profile
+PRIVACY_COOKIE_DOMAIN = env.privacy_cookie_domain
 
 # the following should be 5, but our auth backend are calling check_password
 # twice, so we use 2*5
-SSO_SUSPICIOUS_LOGIN_MAX_ATTEMPTS = env.int('SSO_SUSPICIOUS_LOGIN_MAX_ATTEMPTS', 10)
-SSO_SUSPICIOUS_ACTIVITY_NOTIFICATION_EMAIL = env.str('SSO_SUSPICIOUS_ACTIVITY_NOTIFICATION_EMAIL', '')
+SSO_SUSPICIOUS_LOGIN_MAX_ATTEMPTS = env.sso_suspicious_login_max_attempts
+SSO_SUSPICIOUS_ACTIVITY_NOTIFICATION_EMAIL = env.sso_suspicious_activity_notification_email
 
 # Health check
-DIRECTORY_HEALTHCHECK_TOKEN = env.str('HEALTH_CHECK_TOKEN')
+DIRECTORY_HEALTHCHECK_TOKEN = env.health_check_token
 DIRECTORY_HEALTHCHECK_BACKENDS = [
     # health_check.db.backends.DatabaseBackend
     # INSTALLED_APPS's health_check.db
 ]
 
-GOV_NOTIFY_API_KEY = env.str('GOV_NOTIFY_API_KEY')
-GOV_NOTIFY_SIGNUP_CONFIRMATION_TEMPLATE_ID = env.str(
-    'GOV_NOTIFY_SIGNUP_CONFIRMATION_TEMPLATE_ID',
-    '0c76b730-ac37-4b08-a8ba-7b34e4492853',
-)
-GOV_NOTIFY_PASSWORD_RESET_TEMPLATE_ID = env.str(
-    'GOV_NOTIFY_PASSWORD_RESET_TEMPLATE_ID', '9ef82687-4bc0-4278-b15c-a49bc9325b28'
-)
-GOV_NOTIFY_PASSWORD_RESET_UNVERIFIED_TEMPLATE_ID = env.str(
-    'GOV_NOTIFY_PASSWORD_RESET_UNVERIFIED_TEMPLATE_ID', '6ad90342-6e55-4026-8884-b8a1d4d7f11c'
-)
-GOV_NOTIFY_SOCIAL_PASSWORD_RESET_TEMPLATE_ID = env.str(
-    'GOV_NOTIFY_SOCIAL_PASSWORD_RESET_TEMPLATE_ID', 'e5b5416d-854b-4aef-82da-865b6f901dbd'
-)
-GOV_NOTIFY_ALREADY_REGISTERED_TEMPLATE_ID = env.str(
-    'GOV_NOTIFY_ALREADY_REGISTERED_TEMPLATE_ID', '5c8cc5aa-a4f5-48ae-89e6-df5572c317ec'
-)
-GOV_NOTIFY_WELCOME_TEMPLATE_ID = env.str('GOV_NOTIFY_WELCOME_TEMPLATE_ID', '0a4ae7a9-7f67-4f5d-a536-54df2dee42df')
-GOV_NOTIFY_DATA_RETENTION_NOTIFICATION_TEMPLATE_ID = env.str(
-    'GOV_NOTIFY_DATA_RETENTION_NOTIFICATION_TEMPLATE_ID', '39e44eaa-515f-4843-b7c5-d3dd5d86747c'
-)
-
-SSO_BASE_URL = env.str('SSO_BASE_URL', 'https://sso.trade.great.gov.uk')
+GOV_NOTIFY_API_KEY = env.gov_notify_api_key
+GOV_NOTIFY_SIGNUP_CONFIRMATION_TEMPLATE_ID = env.gov_notify_signup_confirmation_template_id
+GOV_NOTIFY_PASSWORD_RESET_TEMPLATE_ID = env.gov_notify_password_reset_template_id
+GOV_NOTIFY_PASSWORD_RESET_UNVERIFIED_TEMPLATE_ID = env.gov_notify_password_reset_unverified_template_id
+GOV_NOTIFY_SOCIAL_PASSWORD_RESET_TEMPLATE_ID = env.gov_notify_social_password_reset_template_id
+GOV_NOTIFY_ALREADY_REGISTERED_TEMPLATE_ID = env.gov_notify_already_registered_template_id
+GOV_NOTIFY_WELCOME_TEMPLATE_ID = env.gov_notify_welcome_template_id
+GOV_NOTIFY_DATA_RETENTION_NOTIFICATION_TEMPLATE_ID = env.gov_notify_data_retention_notification_template_id
+SSO_BASE_URL = env.sso_base_url
 
 # Activity Stream
-ACTIVITY_STREAM_IP_WHITELIST = env.str('ACTIVITY_STREAM_IP_WHITELIST', '')
+ACTIVITY_STREAM_IP_WHITELIST = env.activity_stream_ip_whitelist
 # Defaults are not used so we don't accidentally expose the endpoint
 # with default credentials
-ACTIVITY_STREAM_ACCESS_KEY_ID = env.str('ACTIVITY_STREAM_ACCESS_KEY_ID')
-ACTIVITY_STREAM_SECRET_ACCESS_KEY = env.str('ACTIVITY_STREAM_SECRET_ACCESS_KEY')
+ACTIVITY_STREAM_ACCESS_KEY_ID = env.activity_stream_access_key_id
+ACTIVITY_STREAM_SECRET_ACCESS_KEY = env.activity_stream_secret_access_key
 ACTIVITY_STREAM_NONCE_EXPIRY_SECONDS = 60
 
 # feature flags
 FEATURE_FLAGS = {
-    'SKIP_MIGRATE_ON': env.bool('FEATURE_SKIP_MIGRATE', False),
-    'DISABLE_REGISTRATION_ON': env.bool('FEATURE_DISABLE_REGISTRATION', False),
-    'TEST_API_ON': env.bool('FEATURE_TEST_API_ENABLED', False),
-    'TEST_API_EMAIL_DOMAIN': env.str('TEST_API_EMAIL_DOMAIN', 'ci.uktrade.io'),
-    'MAINTENANCE_MODE_ON': env.bool('FEATURE_MAINTENANCE_MODE_ENABLED', False),  # used by directory-components
+    'SKIP_MIGRATE_ON': env.feature_skip_migrate,
+    'DISABLE_REGISTRATION_ON': env.feature_disable_registration,
+    'TEST_API_ON': env.feature_test_api_enabled,
+    'TEST_API_EMAIL_DOMAIN': env.test_api_email_domain,
+    'MAINTENANCE_MODE_ON': env.feature_maintenance_mode_enabled,  # used by directory-components
 }
 
-
-VCAP_SERVICES = env.json('VCAP_SERVICES', {})
-
-if 'redis' in VCAP_SERVICES:
-    REDIS_URL = VCAP_SERVICES['redis'][0]['credentials']['uri']
-else:
-    REDIS_URL = env.str('REDIS_URL')
+REDIS_URL = env.redis_url
 
 cache = {
     'BACKEND': 'django_redis.cache.RedisCache',
@@ -496,17 +470,17 @@ SESSION_ENGINE = 'django.contrib.sessions.backends.cached_db'
 ACCOUNT_SESSION_REMEMBER = True
 
 # Admin restrictor
-RESTRICT_ADMIN = env.bool('IP_RESTRICTOR_RESTRICT_IPS', False)
-ALLOWED_ADMIN_IPS = env.list('IP_RESTRICTOR_ALLOWED_ADMIN_IPS', default=[])
-ALLOWED_ADMIN_IP_RANGES = env.list('IP_RESTRICTOR_ALLOWED_ADMIN_IP_RANGES', default=[])
+RESTRICT_ADMIN = env.ip_restrictor_restrict_ips
+ALLOWED_ADMIN_IPS = env.ip_restrictor_allowed_admin_ips
+ALLOWED_ADMIN_IP_RANGES = env.ip_restrictor_allowed_admin_ip_ranges
 TRUST_PRIVATE_IP = True
 
 # Directory Components
-if env.bool('FEATURE_SETTINGS_JANITOR_ENABLED', False):
+if env.feature_settings_janitor_enabled:
     INSTALLED_APPS.append('directory_components.janitor')
-    DIRECTORY_COMPONENTS_VAULT_DOMAIN = env.str('DIRECTORY_COMPONENTS_VAULT_DOMAIN')
-    DIRECTORY_COMPONENTS_VAULT_ROOT_PATH = env.str('DIRECTORY_COMPONENTS_VAULT_ROOT_PATH')
-    DIRECTORY_COMPONENTS_VAULT_PROJECT = env.str('DIRECTORY_COMPONENTS_VAULT_PROJECT')
+    DIRECTORY_COMPONENTS_VAULT_DOMAIN = env.directory_components_vault_domain
+    DIRECTORY_COMPONENTS_VAULT_ROOT_PATH = env.directory_components_vault_root_path
+    DIRECTORY_COMPONENTS_VAULT_PROJECT = env.directory_components_vault_project
 
 # Provider specific settings
 # These are stored in Django admin google/facebook
@@ -517,12 +491,12 @@ SILENCED_SYSTEM_CHECKS = ["rest_framework.W001"]
 
 # Celery
 # is in api/celery.py
-FEATURE_REDIS_USE_SSL = env.bool('FEATURE_REDIS_USE_SSL', False)
+FEATURE_REDIS_USE_SSL = env.feature_redis_use_ssl
 CELERY_BROKER_URL = REDIS_URL
 CELERY_RESULT_BACKEND = REDIS_URL
 CELERY_ACCEPT_CONTENT = ['application/json']
 CELERY_TASK_SERIALIZER = 'json'
-CELERY_TASK_ALWAYS_EAGER = env.bool('CELERY_TASK_ALWAYS_EAGER', False)
+CELERY_TASK_ALWAYS_EAGER = env.celery_task_always_eager
 CELERY_RESULT_SERIALIZER = 'json'
 CELERY_TIMEZONE = 'UTC'
 CELERY_BROKER_POOL_LIMIT = None
@@ -531,11 +505,11 @@ CELERY_REDIS_BACKEND_USE_SSL = CELERY_BROKER_USE_SSL
 
 CELERY_IMPORTS = ('sso.tasks',)
 # Flag for loading magna header
-MAGNA_HEADER = env.bool('MAGNA_HEADER', False)
-DIRECTORY_CONSTANTS_URL_GREAT_MAGNA = env.str('DIRECTORY_CONSTANTS_URL_GREAT_MAGNA', 'https://great.gov.uk/')
+MAGNA_HEADER = env.magna_header
+DIRECTORY_CONSTANTS_URL_GREAT_MAGNA = env.directory_constants_url_great_magna
 
 # Data retention
-DATA_RETENTION_STORAGE_YEARS = env.int('DATA_RETENTION_STORAGE_YEARS', 3)
+DATA_RETENTION_STORAGE_YEARS = env.data_retention_storage_years
 
 DATETIME_INPUT_FORMATS = ['%Y-%m-%d']
 
