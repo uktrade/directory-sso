@@ -343,10 +343,13 @@ SESSION_COOKIE_SECURE = env.session_cookie_secure
 
 CSRF_COOKIE_SECURE = env.csrf_cookie_secure
 CSRF_COOKIE_HTTPONLY = True
-CSRF_TRUSTED_ORIGINS = env.csrf_trusted_origins.split(',')
+
+CSRF_TRUSTED_ORIGINS = env.csrf_trusted_origins
+CSRF_TRUSTED_ORIGINS = CSRF_TRUSTED_ORIGINS.split(',') if CSRF_TRUSTED_ORIGINS else []
 
 # Set with comma separated values in env
-ALLOWED_REDIRECT_DOMAINS = env.allowed_redirect_domains.split(',')
+ALLOWED_REDIRECT_DOMAINS = env.allowed_redirect_domains
+ALLOWED_REDIRECT_DOMAINS = ALLOWED_REDIRECT_DOMAINS.split(',') if ALLOWED_REDIRECT_DOMAINS else []
 
 for domain in ALLOWED_REDIRECT_DOMAINS:
     assert is_valid_domain(domain) is True
@@ -472,7 +475,11 @@ ACCOUNT_SESSION_REMEMBER = True
 # Admin restrictor
 RESTRICT_ADMIN = env.ip_restrictor_restrict_ips
 ALLOWED_ADMIN_IPS = env.ip_restrictor_allowed_admin_ips
+ALLOWED_ADMIN_IPS = ALLOWED_ADMIN_IPS.split(',') if ALLOWED_ADMIN_IPS else []
+
 ALLOWED_ADMIN_IP_RANGES = env.ip_restrictor_allowed_admin_ip_ranges
+ALLOWED_ADMIN_IP_RANGES = ALLOWED_ADMIN_IP_RANGES.split(',') if ALLOWED_ADMIN_IP_RANGES else []
+
 TRUST_PRIVATE_IP = True
 
 # Directory Components

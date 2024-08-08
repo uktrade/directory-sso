@@ -1,8 +1,8 @@
-from typing import Any, List, Optional
+from typing import Any, Optional
 
 from dbt_copilot_python.database import database_url_from_env
 from dbt_copilot_python.utility import is_copilot
-from pydantic import BaseModel, ConfigDict, computed_field, Field, field_validator
+from pydantic import BaseModel, ConfigDict, Field, computed_field
 from pydantic_settings import BaseSettings as PydanticBaseSettings
 from pydantic_settings import SettingsConfigDict
 
@@ -60,15 +60,15 @@ class BaseSettings(PydanticBaseSettings):
 
     csrf_cookie_secure: bool = True
 
-    csrf_trusted_origins: List[str] = Field(default=[])
+    csrf_trusted_origins: str = Field(default=[])
 
-    @field_validator('csrf_trusted_origins')
-    def split_comma_separated(cls, v):
-        breakpoint()
-        if isinstance(v, str):
-            v = v.strip()
-            return [] if v == "" else v.split(',')
-        return v
+    # @validator('csrf_trusted_origins', pre=True)
+    # def split_comma_separated(cls, v):
+    #     breakpoint()
+    #     if isinstance(v, str):
+    #         v = v.strip()
+    #         return [] if v == "" else v.split(',')
+    #     return v
 
     allowed_redirect_domains: str = Field(default=[])
 
