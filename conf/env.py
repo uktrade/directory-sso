@@ -1,8 +1,8 @@
-from typing import Any, Optional
+from typing import Any, List, Optional
 
 from dbt_copilot_python.database import database_url_from_env
 from dbt_copilot_python.utility import is_copilot
-from pydantic import BaseModel, ConfigDict, Field, computed_field
+from pydantic import BaseModel, ConfigDict, computed_field, Field, validator
 from pydantic_settings import BaseSettings as PydanticBaseSettings
 from pydantic_settings import SettingsConfigDict
 
@@ -37,7 +37,7 @@ class BaseSettings(PydanticBaseSettings):
     rest_framework_page_size: int = 1000
 
     redirect_field_name: str = "next"
-    default_redirect_url: str = "https://find-a-buyer.export.great.gov.uk/"
+    default_redirect_url: str = "http://profile.trade.great:8006/profile/"
     login_redirect_url: str = default_redirect_url
     logout_redirect_url: str = default_redirect_url
 
@@ -61,14 +61,6 @@ class BaseSettings(PydanticBaseSettings):
     csrf_cookie_secure: bool = True
 
     csrf_trusted_origins: str = Field(default=[])
-
-    # @validator('csrf_trusted_origins', pre=True)
-    # def split_comma_separated(cls, v):
-    #     breakpoint()
-    #     if isinstance(v, str):
-    #         v = v.strip()
-    #         return [] if v == "" else v.split(',')
-    #     return v
 
     allowed_redirect_domains: str = Field(default=[])
 
@@ -136,8 +128,6 @@ class BaseSettings(PydanticBaseSettings):
     ip_restrictor_allowed_admin_ips: str = Field(default=[])
     ip_restrictor_restrict_ips: bool = False
     ip_restrictor_allowed_admin_ip_ranges: str = Field(default=[])
-    allowed_admin_ips: str = Field(default=[])
-    allowed_admin_ip_ranges: str = Field(default=[])
 
     feature_settings_janitor_enabled: bool = False
 
