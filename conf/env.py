@@ -1,8 +1,8 @@
-from typing import Any, List, Optional
+from typing import Any, Optional
 
 from dbt_copilot_python.database import database_url_from_env
 from dbt_copilot_python.utility import is_copilot
-from pydantic import BaseModel, ConfigDict, computed_field, Field, validator
+from pydantic import BaseModel, ConfigDict, computed_field, Field
 from pydantic_settings import BaseSettings as PydanticBaseSettings
 from pydantic_settings import SettingsConfigDict
 
