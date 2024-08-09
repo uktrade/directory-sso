@@ -232,7 +232,7 @@ if env.sentry_dsn:
         integrations=[DjangoIntegration(), CeleryIntegration(), RedisIntegration()],
         before_send=strip_password_data,
         enable_tracing=env.sentry_enable_tracing,
-        traces_sample_rate=env.traces_sample_rate,
+        traces_sample_rate=env.sentry_traces_sample_rate,
     )
 
 # Authentication
