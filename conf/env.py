@@ -161,7 +161,6 @@ class DBTPlatformEnvironment(BaseSettings):
 
     build_step: bool = False
     celery_broker_url: str = ""
-    opensearch_url: str
 
     @computed_field(return_type=str)
     @property
