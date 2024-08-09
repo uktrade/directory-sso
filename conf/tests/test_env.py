@@ -103,17 +103,14 @@ def database_credentials():
 
 
 def test_gov_paas_environment(vcap_application, vcap_services):
-    os.environ.pop('IS_CIRCLECI', None)
-    os.environ['APP_ENVIRONMENT'] = 'local'
+    os.environ['APP_ENVIRONMENT'] = 'dev'
     os.environ['VCAP_SERVICES'] = vcap_services
     os.environ['VCAP_APPLICATION'] = vcap_application
 
     reload(environment_reader)
 
-    os.environ['IS_CIRCLECI'] = 'true'
-
     assert isinstance(environment_reader.env, environment_reader.GovPaasEnvironment)
-    assert environment_reader.env.app_environment == 'local'
+    assert environment_reader.env.app_environment == 'dev'
     assert environment_reader.env.secret_key == 'debug'
     assert environment_reader.env.database_url == 'postgres://exampleuser:examplepassword@example.com:5432/exampledb'
     assert environment_reader.env.redis_url == 'rediss://examplepassword@example.com:6379'
@@ -126,15 +123,12 @@ def test_gov_paas_environment(vcap_application, vcap_services):
 
 
 def test_dbt_platform_environment(database_credentials):
-    os.environ.pop('IS_CIRCLECI', None)
     os.environ['APP_ENVIRONMENT'] = 'local'
     os.environ['COPILOT_ENVIRONMENT_NAME'] = 'test'
     os.environ['DATABASE_CREDENTIALS'] = database_credentials
     os.environ['CELERY_BROKER_URL'] = 'rediss://examplepassword@example.com:6379'
 
     reload(environment_reader)
-
-    os.environ['IS_CIRCLECI'] = 'true'
 
     assert isinstance(environment_reader.env, environment_reader.DBTPlatformEnvironment)
     assert environment_reader.env.app_environment == 'local'
@@ -146,11 +140,13 @@ def test_dbt_platform_environment(database_credentials):
 def test_ci_environment():
     os.environ['DATABASE_URL'] = 'postgres://exampleuser:examplepassword@example.com:5432/exampledb'
     os.environ['REDIS_URL'] = 'rediss://examplepassword@example.com:6379'
+    os.environ['APP_ENVIRONMENT'] = 'local'
+    os.environ['IS_CIRCLECI'] = 'true'
 
     reload(environment_reader)
 
     assert isinstance(environment_reader.env, environment_reader.CIEnvironment)
-    assert environment_reader.env.app_environment == 'dev'
+    assert environment_reader.env.app_environment == 'local'
     assert environment_reader.env.secret_key == 'debug'
     assert environment_reader.env.database_url == 'postgres://exampleuser:examplepassword@example.com:5432/exampledb'
     assert environment_reader.env.redis_url == 'rediss://examplepassword@example.com:6379'
