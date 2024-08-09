@@ -21,7 +21,7 @@ class BaseSettings(PydanticBaseSettings):
     debug: bool = False
     app_environment: str = "dev"
     static_host: str = ""
-    staticfiles_storage: str = "whitenoise.storage.CompressedManifestStaticFilesStorage"
+    staticfiles_storage: str = "whitenoise.storage.CompressedStaticFilesStorage"
     secret_key: str
     sentry_dsn: str = ""
     sentry_environment: str = ""
@@ -37,7 +37,7 @@ class BaseSettings(PydanticBaseSettings):
     rest_framework_page_size: int = 1000
 
     redirect_field_name: str = "next"
-    default_redirect_url: str = "http://profile.trade.great:8006/profile/"
+    default_redirect_url: str = "https://great.gov.uk/profile"
     login_redirect_url: str = default_redirect_url
     logout_redirect_url: str = default_redirect_url
 
