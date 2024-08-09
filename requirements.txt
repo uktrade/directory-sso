@@ -74,7 +74,7 @@ deprecated==1.2.14
     #   opentelemetry-api
     #   opentelemetry-exporter-otlp-proto-grpc
     #   opentelemetry-exporter-otlp-proto-http
-directory-api-client==26.6.1
+directory-api-client==26.8.0
     # via -r requirements.in
 directory-client-core==7.2.13
     # via
@@ -97,7 +97,7 @@ distlib==0.3.8
     # via virtualenv
 dj-database-url==2.1.0
     # via -r requirements.in
-django==4.2.14
+django==4.2.15
     # via
     #   -r requirements.in
     #   directory-api-client
@@ -151,7 +151,7 @@ django-redis==5.4.0
     # via -r requirements.in
 django-sort-order-field==1.2
     # via -r requirements.in
-django-staff-sso-client==4.2.2
+django-staff-sso-client==4.3.0
     # via -r requirements.in
 django-timezone-field==6.1.0
     # via django-celery-beat
