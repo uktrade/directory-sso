@@ -37,7 +37,7 @@ class BaseSettings(PydanticBaseSettings):
     rest_framework_page_size: int = 1000
 
     redirect_field_name: str = "next"
-    default_redirect_url: str = "https://great.gov.uk/profile"
+    default_redirect_url: str = "http://profile.trade.great:8006/profile/"
     login_redirect_url: str = default_redirect_url
     logout_redirect_url: str = default_redirect_url
 
