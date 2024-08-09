@@ -6,6 +6,8 @@
 #
 amqp==5.2.0
     # via kombu
+annotated-types==0.7.0
+    # via pydantic
 asgiref==3.7.2
     # via django
 async-timeout==4.0.3
@@ -83,7 +85,7 @@ deprecated==1.2.14
     #   opentelemetry-api
     #   opentelemetry-exporter-otlp-proto-grpc
     #   opentelemetry-exporter-otlp-proto-http
-directory-api-client==26.6.1
+directory-api-client==26.8.0
     # via -r requirements.in
 directory-client-core==7.2.13
     # via
@@ -106,7 +108,7 @@ distlib==0.3.8
     # via virtualenv
 dj-database-url==2.1.0
     # via -r requirements.in
-django==4.2.14
+django==4.2.15
     # via
     #   -r requirements.in
     #   directory-api-client
@@ -160,7 +162,7 @@ django-redis==5.4.0
     # via -r requirements.in
 django-sort-order-field==1.2
     # via -r requirements.in
-django-staff-sso-client==4.2.2
+django-staff-sso-client==4.3.0
     # via -r requirements.in
 django-timezone-field==6.1.0
     # via django-celery-beat
@@ -326,6 +328,14 @@ pycodestyle==2.6.0
     # via flake8
 pycparser==2.21
     # via cffi
+pydantic==2.7.3
+    # via
+    #   -r requirements.in
+    #   pydantic-settings
+pydantic-core==2.18.4
+    # via pydantic
+pydantic-settings==2.3.1
+    # via -r requirements.in
 pyflakes==2.2.0
     # via flake8
 pyjwt[crypto]==2.7.0
@@ -364,6 +374,8 @@ python-dateutil==2.8.2
     #   faker
     #   freezegun
     #   python-crontab
+python-dotenv==1.0.1
+    # via pydantic-settings
 python3-openid==3.2.0
     # via django-allauth
 pytz==2023.3
@@ -443,6 +455,8 @@ typing-extensions==4.9.0
     #   jwcrypto
     #   kombu
     #   opentelemetry-sdk
+    #   pydantic
+    #   pydantic-core
 tzdata==2023.3
     # via
     #   celery
