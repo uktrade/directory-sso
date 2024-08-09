@@ -286,7 +286,7 @@ OAUTH2_PROVIDER_REFRESH_TOKEN_MODEL = 'oauth2_provider.RefreshToken'
 # django-allauth
 REDIRECT_FIELD_NAME = env.redirect_field_name
 DEFAULT_REDIRECT_URL = env.default_redirect_url
-LOGIN_REDIRECT_URL = env.login_redirect_url
+LOGIN_REDIRECT_URL = DEFAULT_REDIRECT_URL
 LOGOUT_REDIRECT_URL = env.logout_redirect_url
 ACCOUNT_AUTHENTICATION_METHOD = 'email'
 ACCOUNT_UNIQUE_EMAIL = True

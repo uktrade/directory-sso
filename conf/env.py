@@ -38,7 +38,6 @@ class BaseSettings(PydanticBaseSettings):
 
     redirect_field_name: str = "next"
     default_redirect_url: str
-    login_redirect_url: str
     logout_redirect_url: str
 
     account_email_subject_prefix: str = "Your great.gov.uk account: "

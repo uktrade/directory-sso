@@ -22,7 +22,6 @@ GOOGLE_TAG_MANAGER_ID=GTM-5K54QJ
 SSO_PROFILE_URL=http://profile.trade.great:8006
 EMAIL_BACKEND_CLASS_NAME=console
 DEFAULT_REDIRECT_URL=http://profile.trade.great:8006/profile/
-LOGIN_REDIRECT_URL=http://profile.trade.great:8006/profile/
 LOGOUT_REDIRECT_URL=http://profile.trade.great:8006/profile/
 DIRECTORY_API_CLIENT_API_KEY=debug
 DIRECTORY_API_CLIENT_BASE_URL=http://api.trade.great:8000
