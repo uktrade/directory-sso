@@ -37,9 +37,9 @@ class BaseSettings(PydanticBaseSettings):
     rest_framework_page_size: int = 1000
 
     redirect_field_name: str = "next"
-    default_redirect_url: str = "http://profile.trade.great:8006/profile/"
-    login_redirect_url: str = default_redirect_url
-    logout_redirect_url: str = default_redirect_url
+    default_redirect_url: str
+    login_redirect_url: str
+    logout_redirect_url: str
 
     account_email_subject_prefix: str = "Your great.gov.uk account: "
     account_default_http_protocol: str = "https"
