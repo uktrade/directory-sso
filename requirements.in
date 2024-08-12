@@ -14,7 +14,7 @@ whitenoise>=6.5
 gunicorn==23.0.0
 pillow==10.3.0
 psycopg2-binary==2.9.6
-sentry-sdk==1.29.2
+sentry-sdk==2.8.0
 boto3==1.26.141
 tldextract==3.4.4
 django-redis==5.4.*
