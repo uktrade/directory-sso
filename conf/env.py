@@ -6,7 +6,7 @@ from pydantic import BaseModel, ConfigDict, computed_field, Field
 from pydantic_settings import BaseSettings as PydanticBaseSettings
 from pydantic_settings import SettingsConfigDict
 
-from conf.helpers import get_env_files, is_circleci, is_local
+from conf.helpers import get_env_files, is_circleci, is_local, is_local_docker
 
 
 class BaseSettings(PydanticBaseSettings):
@@ -148,7 +148,7 @@ class BaseSettings(PydanticBaseSettings):
 class CIEnvironment(BaseSettings):
 
     database_url: str
-    redis_url: str
+    redis_url: str = "redis://docker-redis:6379/0/"
 
 
 class DBTPlatformEnvironment(BaseSettings):
