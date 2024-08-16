@@ -2,11 +2,11 @@ from typing import Any, Optional
 
 from dbt_copilot_python.database import database_url_from_env
 from dbt_copilot_python.utility import is_copilot
-from pydantic import BaseModel, ConfigDict, computed_field, Field
+from pydantic import BaseModel, ConfigDict, Field, computed_field
 from pydantic_settings import BaseSettings as PydanticBaseSettings
 from pydantic_settings import SettingsConfigDict
 
-from conf.helpers import get_env_files, is_circleci, is_local, is_local_docker
+from conf.helpers import get_env_files, is_circleci, is_local
 
 
 class BaseSettings(PydanticBaseSettings):
