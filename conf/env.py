@@ -148,7 +148,7 @@ class BaseSettings(PydanticBaseSettings):
 class CIEnvironment(BaseSettings):
 
     database_url: str
-    redis_url: str = "redis://docker-redis:6379/0/"
+    redis_url: str
 
 
 class DBTPlatformEnvironment(BaseSettings):
