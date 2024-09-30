@@ -10,10 +10,10 @@ from sentry_sdk.integrations.celery import CeleryIntegration
 from sentry_sdk.integrations.django import DjangoIntegration
 from sentry_sdk.integrations.redis import RedisIntegration
 
-from core.helpers import is_valid_domain
-from .utils import strip_password_data
 from conf.env import env
+from core.helpers import is_valid_domain
 
+from .utils import strip_password_data
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
