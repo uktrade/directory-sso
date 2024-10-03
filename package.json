@@ -4,9 +4,9 @@
   "description": "Accounts service",
   "license": "ISC",
   "devDependencies": {
-    "gulp": "^4.0.0",
-    "gulp-sass": "^4.0.2",
+    "gulp": "^5.0.0",
+    "gulp-sass": "^5.1.0",
     "gulp-sourcemaps": "^2.6.5",
-    "yarn": "^1.22.0"
+    "yarn": "^1.22.22"
   }
 }
