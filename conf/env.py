@@ -227,12 +227,9 @@ class GovPaasEnvironment(BaseSettings):
 
 if is_local() or is_circleci():
     # Load environment files in a local or CI environment
-    print(f"IS_LOCAL: {is_local()}")
-    print(f"IS_CIRCLECI: {is_circleci()}")
     env = CIEnvironment(_env_file=get_env_files(), _env_file_encoding="utf-8")
 elif is_copilot():
     # When deployed read values from DBT Platform environment
-    print(f"Running on DBT Platform")
     env = DBTPlatformEnvironment()
 else:
     # When deployed read values from Gov PaaS environment

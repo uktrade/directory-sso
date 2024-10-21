@@ -116,10 +116,7 @@ WSGI_APPLICATION = 'conf.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/1.9/ref/settings/#databases
-if is_copilot():
-    DATABASES = {"default": dj_database_url.parse(database_url_from_env("DATABASE_CREDENTIALS"))}
-else:
-    DATABASES = {'default': dj_database_url.config(default=env.database_url)}
+DATABASES = {'default': dj_database_url.config(default=env.database_url)}
 
 # Internationalization
 # https://docs.djangoproject.com/en/1.9/topics/i18n/
