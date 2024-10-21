@@ -4,6 +4,7 @@
   "description": "Accounts service",
   "license": "ISC",
   "scripts": {
+    "start": "echo start",
     "build": "echo build"
   },
   "engines": {
