@@ -1,6 +1,6 @@
 dbt-copilot-python==0.2.0
 dj-database-url==2.1.*
-django==4.2.15
+django==4.2.16
 django-allauth>=0.51.0
 django-environ>=0.9.0
 djangorestframework>=3.15.2
@@ -18,7 +18,7 @@ boto3==1.26.141
 tldextract==3.4.4
 django-redis==5.4.*
 notifications-python-client==9.0.0
-sigauth>=5.2.6
+sigauth==5.3.0
 directory-client-core>=7.2.13
 directory-api-client==26.8.0
 directory-constants==24.1.3
