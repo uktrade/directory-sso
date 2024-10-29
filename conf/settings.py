@@ -377,8 +377,10 @@ if DEBUG:
     # Whitelist debug_toolbar urls
     SIGAUTH_NAMESPACE_WHITELIST += ['djdt']
 
-    # Allows developers to view session-suer url in url to debug.
-    SIGAUTH_URL_NAMES_WHITELIST += ['session-user']
+    # Allows developers to access a DEBUG only view called CacheView.
+    SIGAUTH_URL_NAMES_WHITELIST += [
+        'user-cache',
+    ]
     INSTALLED_APPS += ['debug_toolbar']
     MIDDLEWARE = ['debug_toolbar.middleware.DebugToolbarMiddleware'] + MIDDLEWARE
     INTERNAL_IPS = ['127.0.0.1', '10.0.2.2']

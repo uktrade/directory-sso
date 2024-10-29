@@ -107,6 +107,11 @@ api_urlpatterns = [
     re_path(r'^user/data/$', sso.user.views_api.UserDataView.as_view(), name='user-data'),
 ]
 
+if settings.DEBUG:
+    api_urlpatterns = [
+        re_path(r'^user/cache/$', sso.user.views_api.CacheView.as_view(), name='user-cache'),
+    ] + api_urlpatterns
+
 testapi_urls = [
     re_path(r'^user-by-email/(?P<email>.*)/$', sso.testapi.views.UserByEmailAPIView.as_view(), name='user_by_email'),
     re_path(r'^test-users/$', sso.testapi.views.TestUsersAPIView.as_view(), name='test_users'),
