@@ -57,6 +57,8 @@ class BaseSettings(PydanticBaseSettings):
     session_cookie_secure: bool = True
     sso_session_cookie: str
 
+    is_docker: bool = False
+
     csrf_cookie_secure: bool = True
 
     csrf_trusted_origins: str = Field(default=[])

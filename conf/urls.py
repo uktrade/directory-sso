@@ -138,3 +138,8 @@ if settings.FEATURE_ENFORCE_STAFF_SSO_ENABLED:
         re_path('^auth/', include('authbroker_client.urls')),
     ]
     urlpatterns = [re_path('^', include(authbroker_urls))] + urlpatterns
+
+if settings.DEBUG:
+    import debug_toolbar
+
+    urlpatterns = [path('__debug__/', include(debug_toolbar.urls))] + urlpatterns

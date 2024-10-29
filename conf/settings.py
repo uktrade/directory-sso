@@ -366,11 +366,30 @@ SIGAUTH_URL_NAMES_WHITELIST = [
     'activity-stream-users',
     'activity-stream-user-answers-vfm',
     'clearcache_admin',
+    'session-user',
 ]
 
 SIGAUTH_NAMESPACE_WHITELIST = [
     'admin',
 ]
+
+if DEBUG:
+    # Whitelist debug_toolbar urls
+    SIGAUTH_NAMESPACE_WHITELIST += ['djdt']
+
+    # Allows developers to view session-suer url in url to debug.
+    SIGAUTH_URL_NAMES_WHITELIST += ['session-user']
+    INSTALLED_APPS += ['debug_toolbar']
+    MIDDLEWARE = ['debug_toolbar.middleware.DebugToolbarMiddleware'] + MIDDLEWARE
+    INTERNAL_IPS = ['127.0.0.1', '10.0.2.2']
+    if env.is_docker:
+        import socket
+
+        hostname, _, ips = socket.gethostbyname_ex(socket.gethostname())
+        INTERNAL_IPS = [ip[:-1] + '1' for ip in ips] + INTERNAL_IPS
+        DEBUG_TOOLBAR_CONFIG = {
+            'SHOW_TOOLBAR_CALLBACK': lambda request: DEBUG,
+        }
 
 # api request key
 DIRECTORY_API_SECRET = env.directory_api_secret
