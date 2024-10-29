@@ -68,6 +68,7 @@ INSTALLED_APPS = [
 SITE_ID = 1
 
 MIDDLEWARE = [
+    'django.middleware.cache.UpdateCacheMiddleware',
     'directory_components.middleware.MaintenanceModeMiddleware',
     'core.middleware.SSODisplayLoggedInCookieMiddleware',
     'django.middleware.security.SecurityMiddleware',
@@ -80,6 +81,7 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'directory_components.middleware.NoCacheMiddlware',
+    'django.middleware.cache.FetchFromCacheMiddleware',
 ]
 
 ROOT_URLCONF = 'conf.urls'
@@ -472,6 +474,8 @@ CACHES = {
     'default': cache,
     'api_fallback': cache,
 }
+
+CACHE_MIDDLEWARE_SECONDS = 60 * 30  # 30 minutes
 
 
 SESSION_ENGINE = 'django.contrib.sessions.backends.cached_db'
