@@ -517,3 +517,20 @@ def test_get_and_set_user_data(api_client):
 
     # test nonexistant object
     assert api_client.get(url, {'name': 'data-object-unknown'}, format='json').json() == {}
+
+
+@pytest.mark.django_db
+def test_user_cache(api_client):
+    user = factories.UserFactory()
+    user.userprofile.first_name = "Dummy"
+    user.save()
+
+    api_client.force_authenticate(user=user)
+    url = reverse('api:user-cache')
+
+    # Call set twice to put two objects in db
+    response = api_client.get(url)
+    assert response.status_code == 200
+
+    # Read them back
+    assert api_client.get(url).json().get('first_name') == user.userprofile.first_name

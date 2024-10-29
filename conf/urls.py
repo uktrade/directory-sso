@@ -17,6 +17,7 @@ import sso.oauth2.views_user
 import sso.testapi.views
 import sso.user.views
 import sso.user.views_api
+import sso.user.temp_api_views
 import sso.verification.views
 from core.views import PingDomView
 
@@ -109,7 +110,7 @@ api_urlpatterns = [
 
 if settings.DEBUG:
     api_urlpatterns = [
-        re_path(r'^user/cache/$', sso.user.views_api.CacheView.as_view(), name='user-cache'),
+        re_path(r'^user/cache/$', sso.user.temp_api_views.CacheView.as_view(), name='user-cache'),
     ] + api_urlpatterns
 
 testapi_urls = [
