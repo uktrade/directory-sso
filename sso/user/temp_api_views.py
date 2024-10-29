@@ -6,7 +6,6 @@ from sso.user import serializers
 from sso.user.models import UserProfile
 
 
-
 class CacheView(GenericAPIView):
     '''
     Temporary view to help develop and test caching

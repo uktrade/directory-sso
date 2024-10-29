@@ -15,9 +15,9 @@ import sso.api.views_activity_stream
 import sso.api.views_user
 import sso.oauth2.views_user
 import sso.testapi.views
+import sso.user.temp_api_views
 import sso.user.views
 import sso.user.views_api
-import sso.user.temp_api_views
 import sso.verification.views
 from core.views import PingDomView
 
