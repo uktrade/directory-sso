@@ -37,6 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.sitemaps',
     'django.contrib.sites',
     'django.contrib.staticfiles',
+    'clearcache',
     'django.contrib.admin',
     'django.contrib.messages',
     'django_celery_beat',
@@ -362,6 +363,11 @@ SIGAUTH_URL_NAMES_WHITELIST = [
     'pingdom',
     'activity-stream-users',
     'activity-stream-user-answers-vfm',
+    'clearcache_admin',
+]
+
+SIGAUTH_NAMESPACE_WHITELIST = [
+    'admin',
 ]
 
 # api request key
