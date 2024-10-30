@@ -13,7 +13,7 @@ def clear_the_cache(**kwargs):
     '''
     We have implemented Django caching middleware. By default, this caches all GET requests.
 
-    This signal will invalidate the cache when a model is saved request.
+    This signal will invalidate the cache when any models.Model.save() method is called.
     '''
     if settings.DEBUG:
         logger.info('A models.Model.save() has been invoked - attempting cache.clear() call.')
