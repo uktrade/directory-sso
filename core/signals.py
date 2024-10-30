@@ -16,7 +16,7 @@ def clear_the_cache(**kwargs):
     This signal will invalidate the cache when a model is saved request.
     '''
     if settings.DEBUG:
-        logger.info('.save() model has been invoked - attempting cache.clear() call')
+        logger.info('A models.Model.save() has been invoked - attempting cache.clear() call.')
     cache.clear()
     if settings.DEBUG:
-        logger.info('cache.clear() call complete')
+        logger.info('cache.clear() call complete.')
