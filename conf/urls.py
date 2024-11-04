@@ -15,7 +15,6 @@ import sso.api.views_activity_stream
 import sso.api.views_user
 import sso.oauth2.views_user
 import sso.testapi.views
-import sso.user.temp_api_views
 import sso.user.views
 import sso.user.views_api
 import sso.verification.views
@@ -107,11 +106,6 @@ api_urlpatterns = [
     re_path(r'^user/questionnaire/$', sso.user.views_api.UserQuestionnaireView.as_view(), name='user-questionnaire'),
     re_path(r'^user/data/$', sso.user.views_api.UserDataView.as_view(), name='user-data'),
 ]
-
-if settings.DEBUG:
-    api_urlpatterns = [
-        re_path(r'^user/cache/$', sso.user.temp_api_views.CacheView.as_view(), name='user-cache'),
-    ] + api_urlpatterns
 
 testapi_urls = [
     re_path(r'^user-by-email/(?P<email>.*)/$', sso.testapi.views.UserByEmailAPIView.as_view(), name='user_by_email'),

@@ -366,7 +366,6 @@ SIGAUTH_URL_NAMES_WHITELIST = [
     'activity-stream-users',
     'activity-stream-user-answers-vfm',
     'clearcache_admin',
-    'session-user',
 ]
 
 SIGAUTH_NAMESPACE_WHITELIST = [
@@ -377,10 +376,6 @@ if DEBUG:
     # Whitelist debug_toolbar urls
     SIGAUTH_NAMESPACE_WHITELIST += ['djdt']
 
-    # Allows developers to access a DEBUG only view called CacheView.
-    SIGAUTH_URL_NAMES_WHITELIST += [
-        'user-cache',
-    ]
     INSTALLED_APPS += ['debug_toolbar']
     MIDDLEWARE = ['debug_toolbar.middleware.DebugToolbarMiddleware'] + MIDDLEWARE
     INTERNAL_IPS = ['127.0.0.1', '10.0.2.2']
