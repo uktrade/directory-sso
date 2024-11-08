@@ -37,6 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.sitemaps',
     'django.contrib.sites',
     'django.contrib.staticfiles',
+    'clearcache',
     'django.contrib.admin',
     'django.contrib.messages',
     'django_celery_beat',
@@ -67,6 +68,7 @@ INSTALLED_APPS = [
 SITE_ID = 1
 
 MIDDLEWARE = [
+    'django.middleware.cache.UpdateCacheMiddleware',
     'directory_components.middleware.MaintenanceModeMiddleware',
     'core.middleware.SSODisplayLoggedInCookieMiddleware',
     'django.middleware.security.SecurityMiddleware',
@@ -79,6 +81,7 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'directory_components.middleware.NoCacheMiddlware',
+    'django.middleware.cache.FetchFromCacheMiddleware',
 ]
 
 ROOT_URLCONF = 'conf.urls'
@@ -362,7 +365,28 @@ SIGAUTH_URL_NAMES_WHITELIST = [
     'pingdom',
     'activity-stream-users',
     'activity-stream-user-answers-vfm',
+    'clearcache_admin',
 ]
+
+SIGAUTH_NAMESPACE_WHITELIST = [
+    'admin',
+]
+
+if DEBUG:
+    # Whitelist debug_toolbar urls
+    SIGAUTH_NAMESPACE_WHITELIST += ['djdt']
+
+    INSTALLED_APPS += ['debug_toolbar']
+    MIDDLEWARE = ['debug_toolbar.middleware.DebugToolbarMiddleware'] + MIDDLEWARE
+    INTERNAL_IPS = ['127.0.0.1', '10.0.2.2']
+    if env.is_docker:
+        import socket
+
+        hostname, _, ips = socket.gethostbyname_ex(socket.gethostname())
+        INTERNAL_IPS = [ip[:-1] + '1' for ip in ips] + INTERNAL_IPS
+        DEBUG_TOOLBAR_CONFIG = {
+            'SHOW_TOOLBAR_CALLBACK': lambda request: DEBUG,
+        }
 
 # api request key
 DIRECTORY_API_SECRET = env.directory_api_secret
@@ -466,6 +490,8 @@ CACHES = {
     'default': cache,
     'api_fallback': cache,
 }
+
+CACHE_MIDDLEWARE_SECONDS = 60 * 30  # 30 minutes
 
 
 SESSION_ENGINE = 'django.contrib.sessions.backends.cached_db'
