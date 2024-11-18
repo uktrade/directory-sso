@@ -97,7 +97,7 @@ distlib==0.3.8
     # via virtualenv
 dj-database-url==2.1.0
     # via -r requirements.in
-django==4.2.15
+django==4.2.16
     # via
     #   -r requirements.in
     #   directory-api-client
@@ -110,6 +110,7 @@ django==4.2.15
     #   django-allauth
     #   django-appconf
     #   django-celery-beat
+    #   django-clearcache
     #   django-cryptography
     #   django-extensions
     #   django-filter
@@ -126,6 +127,8 @@ django-allauth==0.51.0
 django-appconf==1.0.6
     # via django-cryptography
 django-celery-beat==2.5.0
+    # via -r requirements.in
+django-clearcache==1.2.1
     # via -r requirements.in
 django-cryptography==1.1
     # via -r requirements.in
@@ -334,7 +337,7 @@ s3transfer==0.6.2
     # via boto3
 sentry-sdk==1.29.2
     # via -r requirements.in
-sigauth==5.2.6
+sigauth==5.3.0
     # via
     #   -r requirements.in
     #   directory-client-core
