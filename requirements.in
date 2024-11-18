@@ -2,6 +2,7 @@ dbt-copilot-python==0.2.0
 dj-database-url==2.1.*
 django==4.2.16
 django-allauth>=0.51.0
+django-clearcache>=1.2.1
 django-environ>=0.9.0
 djangorestframework>=3.15.2
 django-filter>=21.1

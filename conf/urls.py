@@ -116,6 +116,7 @@ urlpatterns = [
     re_path(r"^sitemap\.xml$", sitemap, {'sitemaps': sitemaps}, name='sitemap'),
     re_path(r"^robots\.txt$", directory_components.views.RobotsView.as_view(), name='robots'),
     re_path(r"^$", sso.user.views.SSOLandingPage.as_view(), name="sso_root"),
+    re_path(r'^admin/clearcache/', include('clearcache.urls')),
     re_path(r'^admin/', admin.site.urls),
     re_path(r'^accounts/', include(allauth_urlpatterns)),
     re_path(r'^oauth2/', include((oauth2_provider_patterns, 'oauth2_provider'), namespace='oauth2_provider')),
@@ -137,3 +138,8 @@ if settings.FEATURE_ENFORCE_STAFF_SSO_ENABLED:
         re_path('^auth/', include('authbroker_client.urls')),
     ]
     urlpatterns = [re_path('^', include(authbroker_urls))] + urlpatterns
+
+if settings.DEBUG:
+    import debug_toolbar
+
+    urlpatterns = [path('__debug__/', include(debug_toolbar.urls))] + urlpatterns
