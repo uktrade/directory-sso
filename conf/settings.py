@@ -5,8 +5,6 @@ from typing import Any, Dict
 import dj_database_url
 import sentry_sdk
 from django.urls import reverse_lazy
-from dbt_copilot_python.database import database_url_from_env
-from dbt_copilot_python.utility import is_copilot
 from django_log_formatter_asim import ASIMFormatter
 from sentry_sdk.integrations.celery import CeleryIntegration
 from sentry_sdk.integrations.django import DjangoIntegration
