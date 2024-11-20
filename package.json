@@ -3,6 +3,12 @@
   "version": "0.0.1",
   "description": "Accounts service",
   "license": "ISC",
+  "scripts": {
+    "build": "echo build"
+  },
+  "engines": {
+    "node": "20.11.0"
+  },
   "devDependencies": {
     "gulp": "^5.0.0",
     "gulp-sass": "^5.1.0",
