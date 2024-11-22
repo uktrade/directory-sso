@@ -4,6 +4,7 @@ pytest==7.3.1
 pytest-cov
 pytest-django==4.5.2
 pytest-sugar
+django-debug-toolbar==3.2.4
 factory-boy
 freezegun
 pytest-xdist

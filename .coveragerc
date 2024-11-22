@@ -10,3 +10,4 @@ omit =
     */migrations/*
     conftest.py
     sso/conftest.py
+    core/signals.py

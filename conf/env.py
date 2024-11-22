@@ -2,7 +2,7 @@ from typing import Any, Optional
 
 from dbt_copilot_python.database import database_url_from_env
 from dbt_copilot_python.utility import is_copilot
-from pydantic import BaseModel, ConfigDict, computed_field, Field
+from pydantic import BaseModel, ConfigDict, Field, computed_field
 from pydantic_settings import BaseSettings as PydanticBaseSettings
 from pydantic_settings import SettingsConfigDict
 
@@ -56,6 +56,8 @@ class BaseSettings(PydanticBaseSettings):
     session_cookie_domain: str = ""
     session_cookie_secure: bool = True
     sso_session_cookie: str
+
+    is_docker: bool = False
 
     csrf_cookie_secure: bool = True
 
