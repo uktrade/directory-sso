@@ -65,18 +65,11 @@ class _ActivityStreamAuthentication(BaseAuthentication):
         return 'Hawk'
 
     def authenticate(self, request):
-        """Authenticates a request using two mechanisms:
+        """Authenticates a request using Hawk authentication
 
-        1. Ensure the request does not contain the X-Forwarded-For header
-           (disallow access via public network)
-        2. A Hawk signature in the Authorization header
-
-        If either of these suggest we cannot authenticate, AuthenticationFailed
-        is raised, as required in the DRF authentication flow
+        If the request is not authenticated, then a AuthenticationFailed is raised,
+        as required in the DRF authentication flow
         """
-        if 'HTTP_X_FORWARDED_FOR' in request.META:
-            logger.warning('Failed authentication: accessed from public network')
-            raise AuthenticationFailed('Public network access denied')
         return self._authenticate_by_hawk(request)
 
     def _authenticate_by_hawk(self, request):
