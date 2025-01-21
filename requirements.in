@@ -9,7 +9,7 @@ django-filter>=21.1
 django-extensions>=3.2.1
 django-pglocks>=1.0.4
 django-ratelimit>=3.0.1
-django-log-formatter-asim==0.0.4
+django-log-formatter-asim==0.0.6
 whitenoise>=6.5
 gunicorn==22.0.0
 pillow==10.3.0

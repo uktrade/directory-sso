@@ -156,7 +156,7 @@ django-health-check==3.18.2
     # via directory-healthcheck
 django-json-widget==1.1.1
     # via -r requirements.in
-django-log-formatter-asim==0.0.4
+django-log-formatter-asim==0.0.6
     # via -r requirements.in
 django-oauth-toolkit==2.3.0
     # via -r requirements.in
