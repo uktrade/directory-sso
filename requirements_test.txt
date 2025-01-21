@@ -418,7 +418,7 @@ ruamel-yaml-clib==0.2.8
     # via ruamel-yaml
 s3transfer==0.6.2
     # via boto3
-sentry-sdk==1.29.2
+sentry-sdk==2.8.0
     # via -r requirements.in
 sigauth==5.3.0
     # via
