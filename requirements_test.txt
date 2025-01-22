@@ -156,7 +156,7 @@ django-health-check==3.18.2
     # via directory-healthcheck
 django-json-widget==1.1.1
     # via -r requirements.in
-django-log-formatter-asim==0.0.4
+django-log-formatter-asim==0.0.6
     # via -r requirements.in
 django-oauth-toolkit==2.3.0
     # via -r requirements.in
@@ -480,7 +480,7 @@ vine==5.1.0
     #   amqp
     #   celery
     #   kombu
-virtualenv==20.26.2
+virtualenv==20.26.6
     # via pre-commit
 w3lib==1.22.0
     # via directory-client-core
