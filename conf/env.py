@@ -28,6 +28,8 @@ class BaseSettings(PydanticBaseSettings):
     sentry_enable_tracing: bool = False
     sentry_traces_sample_rate: float = 1.0
 
+    safelist_ips: str = ''
+
     feature_enforce_staff_sso_enabled: bool = False
 
     staff_sso_authbroker_url: str

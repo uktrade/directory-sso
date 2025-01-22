@@ -1,3 +1,4 @@
+from dbt_copilot_python.utility import is_copilot
 from django.conf import settings
 from django.http import HttpResponse
 from django.utils.deprecation import MiddlewareMixin
@@ -37,3 +38,20 @@ class AdminPermissionCheckMiddleware(MiddlewareMixin):
             if self.is_admin_name_space(request) or request.path_info.startswith('/admin/login'):
                 if not request.user.is_staff:
                     return HttpResponse(self.SSO_UNAUTHORISED_ACCESS_MESSAGE, status=401)
+
+
+class XForwardForCheckMiddleware(MiddlewareMixin):
+    CLIENT_IP_ERROR_MESSAGE = 'X Forward For checks failed'
+
+    def process_request(self, request):
+        if is_copilot():
+            # 200 response if client IP in x-forwarded-for header from DBT platform
+            try:
+                client_ip = request.META['HTTP_X_FORWARDED_FOR'].split(',')[0]
+                if client_ip not in settings.SAFELIST_IPS:
+                    return HttpResponse(self.CLIENT_IP_ERROR_MESSAGE, status=401)
+            except IndexError:
+                # Return forbidden if the x-forwarded-for header does not have 0 index
+                return HttpResponse(self.CLIENT_IP_ERROR_MESSAGE, status=401)
+            except KeyError:
+                pass

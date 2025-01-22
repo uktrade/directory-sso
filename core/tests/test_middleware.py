@@ -1,4 +1,7 @@
+import os
+
 import pytest
+from dbt_copilot_python.utility import is_copilot
 from django.http import HttpResponse
 from django.test.client import Client
 from django.urls import reverse
@@ -80,3 +83,42 @@ def test_admin_permission_middleware_authorised_with_staff(client, settings, adm
     response = client.get(reverse('admin:login'))
 
     assert response.status_code == 302
+
+
+@pytest.mark.django_db
+def test_x_forward_for_middleware_with_expected_ip(client, settings):
+    os.environ["COPILOT_ENVIRONMENT_NAME"] = "dev"
+    settings.SAFELIST_IPS = [
+        '1.2.3.4',
+    ]
+    reload_urlconf()
+
+    # Middleware is for DBT only and should only trigger is is_copilot() is true
+    assert is_copilot() is True
+
+    response = client.get(
+        reverse('pingdom'),
+        content_type='',
+        HTTP_X_FORWARDED_FOR='1.2.3.4, 123.123.123.123',
+    )
+
+    assert response.status_code == 200
+
+
+def test_x_forward_for_middleware_with_unexpected_ip(client, settings):
+    os.environ["COPILOT_ENVIRONMENT_NAME"] = "dev"
+    settings.SAFELIST_IPS = [
+        '1.2.3.4.5',
+    ]
+    reload_urlconf()
+
+    # Middleware is for DBT only and should only trigger is is_copilot() is true
+    assert is_copilot() is True
+
+    response = client.get(
+        reverse('pingdom'),
+        content_type='',
+        HTTP_X_FORWARDED_FOR='1.2.3.4, 123.123.123.123',
+    )
+
+    assert response.status_code == 401

@@ -29,6 +29,8 @@ DEBUG = env.debug
 # PaaS, we can open ALLOWED_HOSTS
 ALLOWED_HOSTS = ['*']
 
+SAFELIST_IPS = [host.strip() for host in env.safelist_ips.split(',')]
+
 
 INSTALLED_APPS = [
     'django.contrib.auth',
