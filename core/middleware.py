@@ -54,3 +54,6 @@ class XForwardForCheckMiddleware(MiddlewareMixin):
             except IndexError:
                 # Return forbidden if the x-forwarded-for header does not have 0 index
                 return HttpResponse(self.CLIENT_IP_ERROR_MESSAGE, status=401)
+            except KeyError:
+                pass
+
