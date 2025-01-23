@@ -88,8 +88,8 @@ def test_admin_permission_middleware_authorised_with_staff(client, settings, adm
 @pytest.mark.django_db
 def test_x_forward_for_middleware_with_expected_ip(client, settings):
     os.environ["COPILOT_ENVIRONMENT_NAME"] = "dev"
-    settings.SAFELIST_IPS = [
-        '1.2.3.4',
+    settings.ALLOWED_IPS = [
+        '1.2.3.4', '123.123.123.123'
     ]
     reload_urlconf()
 
@@ -104,12 +104,11 @@ def test_x_forward_for_middleware_with_expected_ip(client, settings):
 
     assert response.status_code == 200
 
-
 @pytest.mark.django_db
 def test_x_forward_for_middleware_with_unexpected_ip(client, settings):
     os.environ["COPILOT_ENVIRONMENT_NAME"] = "dev"
-    settings.SAFELIST_IPS = [
-        '1.2.3.4.5',
+    settings.ALLOWED_IPS = [
+        '0.0.0.0',
     ]
     reload_urlconf()
 
