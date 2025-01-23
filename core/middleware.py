@@ -45,7 +45,7 @@ class XForwardForCheckMiddleware(MiddlewareMixin):
 
     def process_request(self, request):
         if is_copilot():
-            # 200 response if client IP in x-forwarded-for header from DBT platform else 401
+            # 200 response if client IP from x-forwarded-for header in ALLOWED_IPS, else 401.
             try:
                 client_ips = request.META['HTTP_X_FORWARDED_FOR'].split(',')
                 for ip in client_ips:
