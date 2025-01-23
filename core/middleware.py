@@ -51,5 +51,5 @@ class XForwardForCheckMiddleware(MiddlewareMixin):
                 for ip in client_ips:
                     if ip.strip() not in settings.ALLOWED_IPS:
                         return HttpResponse(self.CLIENT_IP_ERROR_MESSAGE, status=401)
-            except (IndexError, KeyError):
+            except KeyError:
                 return HttpResponse(self.CLIENT_IP_ERROR_MESSAGE, status=401)
