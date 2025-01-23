@@ -123,4 +123,3 @@ def test_x_forward_for_middleware_with_unexpected_ip(client, settings):
 
     assert response.status_code == 401
     os.environ.pop("COPILOT_ENVIRONMENT_NAME")
-
