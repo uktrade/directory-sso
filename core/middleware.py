@@ -56,4 +56,3 @@ class XForwardForCheckMiddleware(MiddlewareMixin):
                 return HttpResponse(self.CLIENT_IP_ERROR_MESSAGE, status=401)
             except KeyError:
                 pass
-
