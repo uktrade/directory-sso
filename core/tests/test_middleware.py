@@ -88,9 +88,7 @@ def test_admin_permission_middleware_authorised_with_staff(client, settings, adm
 @pytest.mark.django_db
 def test_x_forward_for_middleware_with_expected_ip(client, settings):
     os.environ["COPILOT_ENVIRONMENT_NAME"] = "dev"
-    settings.ALLOWED_IPS = [
-        '1.2.3.4', '123.123.123.123'
-    ]
+    settings.ALLOWED_IPS = ['1.2.3.4', '123.123.123.123']
     reload_urlconf()
 
     # Middleware is for DBT only and should only trigger is is_copilot() is true
