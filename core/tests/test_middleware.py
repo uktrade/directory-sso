@@ -104,6 +104,7 @@ def test_x_forward_for_middleware_with_expected_ip(client, settings):
 
     assert response.status_code == 200
 
+
 @pytest.mark.django_db
 def test_x_forward_for_middleware_with_unexpected_ip(client, settings):
     os.environ["COPILOT_ENVIRONMENT_NAME"] = "dev"
