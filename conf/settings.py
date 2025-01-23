@@ -73,6 +73,7 @@ MIDDLEWARE = [
     'django.middleware.cache.UpdateCacheMiddleware',
     'directory_components.middleware.MaintenanceModeMiddleware',
     'core.middleware.SSODisplayLoggedInCookieMiddleware',
+    'core.middleware.XForwardForCheckMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',
     'conf.signature.SignatureCheckMiddleware',
