@@ -9,6 +9,7 @@ from rest_framework.generics import CreateAPIView, GenericAPIView, UpdateAPIView
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
+from django.views.decorators.cache import never_cache
 
 from conf.signature import SignatureCheckPermission
 from core.authentication import SessionAuthentication
@@ -152,6 +153,7 @@ class UserQuestionnaireView(GenericAPIView):
         return Response(status=200, data=data)
 
 
+@method_decorator(never_cache, name='get')
 class UserDataView(GenericAPIView):
     permission_classes = [IsAuthenticated, SignatureCheckPermission]
     authentication_classes = [SessionAuthentication]
