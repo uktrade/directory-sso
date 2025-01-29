@@ -11,6 +11,7 @@ from rest_framework.generics import ListAPIView
 from rest_framework.pagination import CursorPagination
 from rest_framework.response import Response
 from rest_framework.viewsets import ViewSet
+from rest_framework import permissions
 
 from sso.user import serializers
 from sso.user.models import User, UserAnswer
@@ -28,6 +29,7 @@ ADDED_IPS = (
     + ADDED_IPS_BY_DIRECTORY_SSO_PROXY
     + ADDED_IPS_BY_DIRECTORY_SSO_PAAS_ROUTER
 )
+CLIENT_IP_ERROR_MESSAGE = 'X Forward For checks failed'
 
 
 def _lookup_credentials(access_key_id):
@@ -54,6 +56,25 @@ def _authorise(request):
         content=request.body,
         content_type=request.content_type,
     )
+
+
+class _XForwardForCheck(permissions.BasePermission):
+    """
+    Checking X-Forward-For header for IP addresses that appear in 
+    settings.ALLOWED_IPS
+    """
+
+    message = CLIENT_IP_ERROR_MESSAGE
+
+    def has_permission(self, request, view):
+        try:
+            client_ips = request.META['HTTP_X_FORWARDED_FOR'].split(',')
+            for ip in client_ips:
+                if ip.strip() in settings.ALLOWED_IPS:
+                    return True
+            return False
+        except KeyError:
+            return False
 
 
 class _ActivityStreamAuthentication(BaseAuthentication):
@@ -100,13 +121,13 @@ class _ActivityStreamHawkResponseMiddleware:
             content=response.content, content_type=response['Content-Type']
         )
         return response
-
+    
 
 class ActivityStreamViewSet(ViewSet):
     """List-only view set for the activity stream"""
 
     authentication_classes = (_ActivityStreamAuthentication,)
-    permission_classes = ()
+    permission_classes = (_XForwardForCheck,)
 
     @decorator_from_middleware(_ActivityStreamHawkResponseMiddleware)
     def list(self, request):
@@ -120,7 +141,7 @@ class ActivityStreamDirectorySSOUsersPagination(CursorPagination):
 
 class ActivityStreamDirectorySSOUsers(ListAPIView):
     authentication_classes = [_ActivityStreamAuthentication]
-    permission_classes = []
+    permission_classes = [_XForwardForCheck]
 
     pagination_class = ActivityStreamDirectorySSOUsersPagination
     queryset = User.objects.all()
@@ -164,7 +185,7 @@ class ActivityStreamDirectorySSOUsers(ListAPIView):
 
 class ActivityStreamDirectorySSOUserAnswersVFM(ListAPIView):
     authentication_classes = [_ActivityStreamAuthentication]
-    permission_classes = []
+    permission_classes = [_XForwardForCheck]
 
     pagination_class = ActivityStreamDirectorySSOUsersPagination
     queryset = UserAnswer.objects.all()
