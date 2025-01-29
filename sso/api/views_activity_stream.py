@@ -60,7 +60,7 @@ def _authorise(request):
 
 class _XForwardForCheck(permissions.BasePermission):
     """
-    Checking X-Forward-For header for IP addresses that appear in 
+    Checking X-Forward-For header for IP addresses that appear in
     settings.ALLOWED_IPS
     """
 
@@ -121,7 +121,7 @@ class _ActivityStreamHawkResponseMiddleware:
             content=response.content, content_type=response['Content-Type']
         )
         return response
-    
+
 
 class ActivityStreamViewSet(ViewSet):
     """List-only view set for the activity stream"""
