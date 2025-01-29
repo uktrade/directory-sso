@@ -1,5 +1,5 @@
 import logging
-
+from dbt_copilot_python.utility import is_copilot
 from django.conf import settings
 from django.utils.crypto import constant_time_compare
 from django.utils.decorators import decorator_from_middleware
@@ -67,6 +67,8 @@ class _XForwardForCheck(permissions.BasePermission):
     message = CLIENT_IP_ERROR_MESSAGE
 
     def has_permission(self, request, view):
+        if is_copilot():
+            return True
         try:
             client_ips = request.META['HTTP_X_FORWARDED_FOR'].split(',')
             for ip in client_ips:
