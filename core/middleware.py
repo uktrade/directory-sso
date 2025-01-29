@@ -1,4 +1,3 @@
-from dbt_copilot_python.utility import is_copilot
 from django.conf import settings
 from django.http import HttpResponse
 from django.utils.deprecation import MiddlewareMixin
