@@ -80,3 +80,33 @@ def test_admin_permission_middleware_authorised_with_staff(client, settings, adm
     response = client.get(reverse('admin:login'))
 
     assert response.status_code == 302
+
+
+@pytest.mark.django_db
+def test_x_forward_for_middleware_with_expected_ip(client, settings):
+    settings.ALLOWED_IPS = ['1.2.3.4', '123.123.123.123']
+    reload_urlconf()
+
+    response = client.get(
+        reverse('pingdom'),
+        content_type='',
+        HTTP_X_FORWARDED_FOR='1.2.3.4, 123.123.123.123',
+    )
+
+    assert response.status_code == 200
+
+
+@pytest.mark.django_db
+def test_x_forward_for_middleware_with_unexpected_ip(client, settings):
+    settings.ALLOWED_IPS = [
+        '0.0.0.0',
+    ]
+    reload_urlconf()
+
+    response = client.get(
+        reverse('pingdom'),
+        content_type='',
+        HTTP_X_FORWARDED_FOR='1.2.3.4, 123.123.123.123',
+    )
+
+    assert response.status_code == 401
