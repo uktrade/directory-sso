@@ -1,7 +1,6 @@
 import os
 
 import pytest
-from dbt_copilot_python.utility import is_copilot
 from django.http import HttpResponse
 from django.test.client import Client
 from django.urls import reverse
