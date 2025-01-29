@@ -38,22 +38,3 @@ class AdminPermissionCheckMiddleware(MiddlewareMixin):
             if self.is_admin_name_space(request) or request.path_info.startswith('/admin/login'):
                 if not request.user.is_staff:
                     return HttpResponse(self.SSO_UNAUTHORISED_ACCESS_MESSAGE, status=401)
-
-
-class XForwardForCheckMiddleware(MiddlewareMixin):
-    CLIENT_IP_ERROR_MESSAGE = 'X Forward For checks failed'
-
-    def process_request(self, request):
-        if not is_copilot():
-            # 200 response if client IP from x-forwarded-for header in ALLOWED_IPS, else 401.
-            try:
-                ip_found = False
-                client_ips = request.META['HTTP_X_FORWARDED_FOR'].split(',')
-                for ip in client_ips:
-                    if ip.strip() in settings.ALLOWED_IPS:
-                        ip_found = True
-                        break
-                if not ip_found:
-                    return HttpResponse(self.CLIENT_IP_ERROR_MESSAGE, status=401)
-            except KeyError:
-                pass
