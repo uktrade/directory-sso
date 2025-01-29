@@ -47,9 +47,13 @@ class XForwardForCheckMiddleware(MiddlewareMixin):
         if is_copilot():
             # 200 response if client IP from x-forwarded-for header in ALLOWED_IPS, else 401.
             try:
+                ip_found = False
                 client_ips = request.META['HTTP_X_FORWARDED_FOR'].split(',')
                 for ip in client_ips:
-                    if ip.strip() not in settings.ALLOWED_IPS:
-                        return HttpResponse(self.CLIENT_IP_ERROR_MESSAGE, status=401)
+                    if ip.strip() in settings.ALLOWED_IPS:
+                        ip_found = True
+                        break
+                if not ip_found:
+                    return HttpResponse(self.CLIENT_IP_ERROR_MESSAGE, status=401)
             except KeyError:
                 pass
