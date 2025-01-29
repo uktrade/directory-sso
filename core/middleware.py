@@ -44,7 +44,7 @@ class XForwardForCheckMiddleware(MiddlewareMixin):
     CLIENT_IP_ERROR_MESSAGE = 'X Forward For checks failed'
 
     def process_request(self, request):
-        if is_copilot():
+        if not is_copilot():
             # 200 response if client IP from x-forwarded-for header in ALLOWED_IPS, else 401.
             try:
                 ip_found = False
