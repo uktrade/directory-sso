@@ -169,15 +169,17 @@ def test_if_61_seconds_in_past_401_returned(api_client):
 
 
 @pytest.mark.django_db
-def test_empty_object_returned_with_authentication(api_client):
+def test_empty_object_returned_with_authentication(api_client, settings):
     """If the Authorization and X-Forwarded-For headers are correct, then
     the correct, and authentic, data is returned
     """
+    settings.ALLOWED_IPS = ['1.2.3.4', '123.123.123.123']
     sender = _auth_sender()
     response = api_client.get(
         _url(),
         content_type='',
         HTTP_AUTHORIZATION=sender.request_header,
+        HTTP_X_FORWARDED_FOR='1.2.3.4, 123.123.123.123',
     )
 
     assert response.status_code == status.HTTP_200_OK
@@ -213,10 +215,11 @@ def test_empty_object_returned_with_authentication(api_client):
 
 
 @pytest.mark.django_db
-def test_activity_stream_list_users_endpoint(api_client):
+def test_activity_stream_list_users_endpoint(api_client, settings):
     """If the Authorization and X-Forwarded-For headers are correct, then
     the correct, and authentic, data is returned
     """
+    settings.ALLOWED_IPS = ['1.2.3.4', '123.123.123.123']
     user_1 = UserFactory()
     UserProfileFactory(user=user_1, mobile_phone_number='824802648236868364')
     UserFactory.create_batch(4)
@@ -225,6 +228,7 @@ def test_activity_stream_list_users_endpoint(api_client):
         _url_activity_stream_users(),
         content_type='',
         HTTP_AUTHORIZATION=sender.request_header,
+        HTTP_X_FORWARDED_FOR='1.2.3.4, 123.123.123.123',
     )
     data = response.json()
     assert response.status_code == status.HTTP_200_OK
@@ -246,6 +250,7 @@ def test_activity_stream_list_users_endpoint(api_client):
         data['next'],
         content_type='',
         HTTP_AUTHORIZATION=sender.request_header,
+        HTTP_X_FORWARDED_FOR='1.2.3.4, 123.123.123.123',
     )
     data = response.json()
 
@@ -259,6 +264,7 @@ def test_activity_stream_list_users_endpoint(api_client):
         data['next'],
         content_type='',
         HTTP_AUTHORIZATION=sender.request_header,
+        HTTP_X_FORWARDED_FOR='1.2.3.4, 123.123.123.123',
     )
     data = response.json()
 
@@ -269,10 +275,11 @@ def test_activity_stream_list_users_endpoint(api_client):
 
 
 @pytest.mark.django_db
-def test_activity_stream_list_user_answers_vfm_endpoint(api_client):
+def test_activity_stream_list_user_answers_vfm_endpoint(api_client, settings):
     """If the Authorization and X-Forwarded-For headers are correct, then
     the correct, and authentic, data is returned
     """
+    settings.ALLOWED_IPS = ['1.2.3.4', '123.123.123.123']
     # Load some questions to associate
 
     call_command('loaddata', 'test_fixtures/user_vfm_tests.json')
@@ -282,6 +289,7 @@ def test_activity_stream_list_user_answers_vfm_endpoint(api_client):
         _url_activity_stream_user_answers_vfm(),
         content_type='',
         HTTP_AUTHORIZATION=sender.request_header,
+        HTTP_X_FORWARDED_FOR='1.2.3.4, 123.123.123.123',
     )
     data = response.json()
 
@@ -307,6 +315,7 @@ def test_activity_stream_list_user_answers_vfm_endpoint(api_client):
         data['next'],
         content_type='',
         HTTP_AUTHORIZATION=sender.request_header,
+        HTTP_X_FORWARDED_FOR='1.2.3.4, 123.123.123.123',
     )
     data = response.json()
 
@@ -321,6 +330,7 @@ def test_activity_stream_list_user_answers_vfm_endpoint(api_client):
         data['next'],
         content_type='',
         HTTP_AUTHORIZATION=sender.request_header,
+        HTTP_X_FORWARDED_FOR='1.2.3.4, 123.123.123.123',
     )
     data = response.json()
 
