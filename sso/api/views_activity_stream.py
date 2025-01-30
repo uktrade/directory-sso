@@ -13,6 +13,8 @@ from rest_framework.response import Response
 from rest_framework.viewsets import ViewSet
 from rest_framework import permissions
 
+import sentry_sdk
+
 from sso.user import serializers
 from sso.user.models import User, UserAnswer
 
@@ -74,9 +76,10 @@ class _XForwardForCheck(permissions.BasePermission):
             for ip in client_ips:
                 if ip.strip() in settings.ALLOWED_IPS:
                     return True
+            sentry_sdk.capture_message(f'X-Forwarded-For IP address mismatch. IPs: {request.META['HTTP_X_FORWARDED_FOR']}', 'warning')
             return False
         except KeyError:
-            return False
+            sentry_sdk.capture_message('Missing X-Forwarded-For header', 'warning')
 
 
 class _ActivityStreamAuthentication(BaseAuthentication):
