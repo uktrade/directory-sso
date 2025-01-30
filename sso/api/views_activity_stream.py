@@ -72,11 +72,12 @@ class _XForwardForCheck(permissions.BasePermission):
         if is_copilot():
             return True
         try:
-            client_ips = request.META['HTTP_X_FORWARDED_FOR'].split(',')
+            received_header = request.META['HTTP_X_FORWARDED_FOR']
+            client_ips = received_header.split(',')
             for ip in client_ips:
                 if ip.strip() in settings.ALLOWED_IPS:
                     return True
-            sentry_sdk.capture_message(f'X-Forwarded-For IP address mismatch. IPs: {request.META['HTTP_X_FORWARDED_FOR']}', 'warning')
+            sentry_sdk.capture_message(f'X-Forwarded-For IP address mismatch. IPs: {received_header}', 'warning')
             return False
         except KeyError:
             sentry_sdk.capture_message('Missing X-Forwarded-For header', 'warning')
