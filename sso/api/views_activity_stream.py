@@ -81,6 +81,7 @@ class _XForwardForCheck(permissions.BasePermission):
             return False
         except KeyError:
             sentry_sdk.capture_message('Missing X-Forwarded-For header', 'warning')
+            return False
 
 
 class _ActivityStreamAuthentication(BaseAuthentication):
