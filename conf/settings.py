@@ -29,7 +29,7 @@ DEBUG = env.debug
 # PaaS, we can open ALLOWED_HOSTS
 ALLOWED_HOSTS = ['*']
 
-ALLOWED_IPS = [host.strip() for host in env.allowed_ips.split(',')]
+ALLOWED_IPS = [ip.strip() for ip in env.allowed_ips.split(',')]
 
 
 INSTALLED_APPS = [
@@ -73,7 +73,6 @@ MIDDLEWARE = [
     'django.middleware.cache.UpdateCacheMiddleware',
     'directory_components.middleware.MaintenanceModeMiddleware',
     'core.middleware.SSODisplayLoggedInCookieMiddleware',
-    'core.middleware.XForwardForCheckMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',
     'conf.signature.SignatureCheckMiddleware',
