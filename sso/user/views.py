@@ -59,8 +59,8 @@ class LoginView(RedirectToNextMixin, allauth_views.LoginView):
 class LogoutView(RedirectToNextMixin, allauth_views.LogoutView):
     def post(self, request, *args, **kwargs):
         # Flushing the session if the POST request comes from outside the service
-        logger.info(request.headers)
-        logger.info(request.COOKIES)
+        logger.info("HEADERS ARE HERE", request.headers)
+        logger.info("COOKIES ARE HERE", request.COOKIES)
 
         session_key = request.COOKIES.get('session_key')
         if session_key:
