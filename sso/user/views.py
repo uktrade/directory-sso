@@ -13,6 +13,8 @@ import core.mixins
 from sso.constants import RESEND_VERIFICATION_URL
 from sso.user import utils
 
+logger = logging.getLogger(__name__)
+
 
 class RedirectToNextMixin:
 
@@ -56,6 +58,9 @@ class LoginView(RedirectToNextMixin, allauth_views.LoginView):
 class LogoutView(RedirectToNextMixin, allauth_views.LogoutView):
     def post(self, request, *args, **kwargs):
         # Flushing the session if the POST request comes from outside the service
+        logger.info(request.headers)
+        logger.info(request.COOKIES)
+
         session_key = request.COOKIES.get('session_key')
         if session_key:
             session_store = SessionStore(session_key=session_key)
