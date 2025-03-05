@@ -1,3 +1,4 @@
+import logging
 import urllib
 
 from allauth.account import views as allauth_views
