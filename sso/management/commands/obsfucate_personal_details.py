@@ -1,9 +1,8 @@
 import argparse
-import urllib.parse
 
 from django.core.management import BaseCommand
 
-from sso.user.models import User, UserData, UserProfile
+from sso.user.models import User, UserProfile
 
 
 class Command(BaseCommand):
@@ -25,7 +24,7 @@ class Command(BaseCommand):
     def mask_string_data(self, data):
         if not data:
             return data
-        ret = f'{data[:self.START_INDEX]}{self.MASK_CHAR * len(data[self.START_INDEX:self.END_INDEX])}{data[self.END_INDEX:]}'
+        ret = f'{data[:self.START_INDEX]}{self.MASK_CHAR * len(data[self.START_INDEX:self.END_INDEX])}{data[self.END_INDEX:]}'  #noqa:E501
         return ret
 
     def mask_json_data(self, data, fields):
