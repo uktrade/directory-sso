@@ -32,5 +32,5 @@ def test_obsfucate_personal_details(mock_mask_user, mock_mask_user_profile):
     UserFactory()
     UserProfileFactory()
     tasks.obsfucate_personal_details()
-    assert mock_mask_user.call_count == 1
+    assert mock_mask_user.call_count == 2
     assert mock_mask_user_profile.call_count == 1
