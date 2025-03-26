@@ -11,3 +11,8 @@ def notify_users():
 @app.task()
 def archive_users():
     call_command('archive_users')
+
+
+@app.task()
+def obsfucate_personal_details():
+    call_command('obsfucate_personal_details')
