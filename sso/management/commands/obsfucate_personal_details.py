@@ -12,7 +12,6 @@ class Command(BaseCommand):
     END_INDEX = -1
     MASK_CHAR = '*'
 
-
     def mask_email_data(self, data):
         if not data:
             return data
@@ -39,7 +38,6 @@ class Command(BaseCommand):
                 data[field] = masked_field
         return data
 
-
     def mask_user(self, user, options):
         user.email = self.mask_email_data(user.email)
         user.first_name = self.mask_string_data(user.first_name)
@@ -47,15 +45,14 @@ class Command(BaseCommand):
 
         if options['dry_run'] is False:
             user.save()
-    
+
     def mask_user_profile(self, user_profile, options):
         user_profile.first_name = self.mask_string_data(user_profile.first_name)
         user_profile.last_name = self.mask_string_data(user_profile.last_name)
         user_profile.mobile_phone_number = self.mask_string_data(user_profile.mobile_phone_number)
-    
+
         if options['dry_run'] is False:
             user_profile.save()
-       
 
     def add_arguments(self, parser):
         parser.add_argument(
@@ -74,10 +71,8 @@ class Command(BaseCommand):
         # Obsfucate UserProfile  Data
         for user_profile in UserProfile.objects.all():
             self.mask_user_profile(user_profile, options)
-        
+
         if options['dry_run'] is True:
             self.stdout.write(self.style.WARNING('Dry run -- no data updated.'))
 
         self.stdout.write(self.style.SUCCESS('All done, bye!'))
-
-
