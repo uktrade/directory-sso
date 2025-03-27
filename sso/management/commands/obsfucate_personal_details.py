@@ -1,7 +1,7 @@
 import argparse
 
-from django.core.management import BaseCommand
 from django.conf import settings
+from django.core.management import BaseCommand
 
 from sso.user.models import User, UserProfile
 
@@ -13,6 +13,13 @@ class Command(BaseCommand):
     END_INDEX = -1
     MASK_CHAR = '*'
 
+    count = 0
+
+    @classmethod
+    def email_count(cls):
+        cls.count += 1
+        return cls.count
+
     def mask_email_data(self, data):
         if not data:
             return data
@@ -20,7 +27,7 @@ class Command(BaseCommand):
         address = data.split('@')[1]
         name = self.mask_string_data(name)
         address = self.mask_string_data(address)
-        return f'{name}@{address}'
+        return f'{name}-{Command.email_count}@{address}'
 
     def mask_string_data(self, data):
         if not data:
