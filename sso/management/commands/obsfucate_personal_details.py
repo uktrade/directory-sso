@@ -1,5 +1,6 @@
 import argparse
 
+from django.conf import settings
 from django.core.management import BaseCommand
 
 from sso.user.models import User, UserProfile
@@ -63,6 +64,10 @@ class Command(BaseCommand):
         )
 
     def handle(self, *args, **options):  # noqa: C901
+
+        if settings.APP_ENVIRONMENT.lower() == 'production':
+            self.stdout.write(self.style.WARNING('Running in Production environment is disabled - exiting'))
+            return
 
         # Obsfucate User Data
         for user in User.objects.all():
