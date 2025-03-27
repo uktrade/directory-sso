@@ -15,10 +15,10 @@ class Command(BaseCommand):
 
     count = 0
 
-    @staticmethod
-    def email_count():
-        count += 1
-        return count
+    @classmethod
+    def email_count(cls):
+        cls.count += 1
+        return cls.count
 
     def mask_email_data(self, data):
         if not data:
