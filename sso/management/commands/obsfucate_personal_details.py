@@ -2,6 +2,7 @@ import argparse
 
 from django.conf import settings
 from django.core.management import BaseCommand
+from django.conf import settings
 
 from sso.user.models import User, UserProfile
 
