@@ -27,7 +27,7 @@ class Command(BaseCommand):
         address = data.split('@')[1]
         name = self.mask_string_data(name)
         address = self.mask_string_data(address)
-        return f'{name}-{Command.email_count}@{address}'
+        return f'{name}-{Command.email_count()}@{address}'
 
     def mask_string_data(self, data):
         if not data:
