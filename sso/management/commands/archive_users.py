@@ -12,20 +12,30 @@ class Command(MigrateCommand):
     """
     Archive users who's not logged in past three years
     or created three years ago and never logged in
+    OR delete a specific user by email if the email is provided
     """
+    def add_arguments(self, parser):
+        # Add an optional email argument
+        parser.add_argument(
+            '--email',
+            type=str,
+            help='Email address of the user to delete'
+        )
 
     def handle(self, *args, **options):
-        queryset = User.inactive
+        email = options['email']
+        if email:
+            queryset = User.objects.filter(email=email)
+            total_old_users = queryset.count()
+        else:
+            queryset = User.inactive.filter(inactivity_notification=4)
+            total_old_users = queryset.count()
+
         total_users = queryset.count()
         company, company_user = 0, 0
 
-        old_users = queryset.filter(
-            # inactivity_notification=4 means we have sent final notification to user
-            inactivity_notification=4
-        )
-        total_old_users = old_users.count()
         # Delete related user data in directory-api
-        for user in old_users:
+        for user in queryset:
             # directory-api data removal
             response = api_client.company.delete_company_by_sso_id(
                 sso_id=user.id, request_key=settings.DIRECTORY_API_SECRET
@@ -55,7 +65,7 @@ class Command(MigrateCommand):
             company_user += int(json_response.get('company_user_count', 0))
 
         # Delete sso users
-        old_users.delete()
+        queryset.delete()
         DataRetentionStatistics.objects.create(
             sso_user=total_old_users,
             company=company,
