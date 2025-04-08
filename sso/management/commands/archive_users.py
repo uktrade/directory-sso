@@ -14,13 +14,10 @@ class Command(MigrateCommand):
     or created three years ago and never logged in
     OR delete a specific user by email if the email is provided
     """
+
     def add_arguments(self, parser):
         # Add an optional email argument
-        parser.add_argument(
-            '--email',
-            type=str,
-            help='Email address of the user to delete'
-        )
+        parser.add_argument('--email', type=str, help='Email address of the user to delete')
 
     def handle(self, *args, **options):
         email = options['email']
