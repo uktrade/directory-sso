@@ -12,7 +12,7 @@ from django.utils.http import http_date
 class BgsSessionMiddleware(MiddlewareMixin):
     """
     This is a copy of the Django built-in SessionMiddle class,  that allows
-    session cookies for both the great and bgs sites running in parallel. 
+    session cookies for both the great and bgs sites running in parallel.
 
     The Middlare will manage an additional session cookie
     based on the domain name (whether it contains 'bgs' of 'business.gov.uk').
