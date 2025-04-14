@@ -1,19 +1,20 @@
 import logging
 
-import sentry_sdk
 from dbt_copilot_python.utility import is_copilot
 from django.conf import settings
 from django.utils.crypto import constant_time_compare
 from django.utils.decorators import decorator_from_middleware
 from mohawk import Receiver
 from mohawk.exc import HawkFail
-from rest_framework import permissions
 from rest_framework.authentication import BaseAuthentication
 from rest_framework.exceptions import AuthenticationFailed
 from rest_framework.generics import ListAPIView
 from rest_framework.pagination import CursorPagination
 from rest_framework.response import Response
 from rest_framework.viewsets import ViewSet
+from rest_framework import permissions
+
+import sentry_sdk
 
 from sso.user import serializers
 from sso.user.models import User, UserAnswer
