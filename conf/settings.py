@@ -351,6 +351,7 @@ ACCOUNT_FORMS = {
 }
 
 SESSION_COOKIE_DOMAIN = env.session_cookie_domain
+BGS_SESSION_COOKIE_DOMAIN = env.bgs_session_cookie_domain
 # env var not same as setting to be more explicit (directory-ui uses same name)
 SESSION_COOKIE_NAME = env.sso_session_cookie
 SESSION_COOKIE_SECURE = env.session_cookie_secure
