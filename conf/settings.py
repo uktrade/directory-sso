@@ -71,6 +71,7 @@ INSTALLED_APPS = [
 
 SITE_ID = 1
 
+
 MIDDLEWARE = [
     'django.middleware.cache.UpdateCacheMiddleware',
     'directory_components.middleware.MaintenanceModeMiddleware',
@@ -87,6 +88,12 @@ MIDDLEWARE = [
     'directory_components.middleware.NoCacheMiddlware',
     'django.middleware.cache.FetchFromCacheMiddleware',
 ]
+
+
+# Fixed login redirect error on multisite
+FEATURE_BGS_LOGIN = env.feature_bgs_login
+if FEATURE_BGS_LOGIN:
+    MIDDLEWARE += ['core.bgs_middleware.BgsSessionMiddleware']
 
 ROOT_URLCONF = 'conf.urls'
 
