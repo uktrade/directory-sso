@@ -98,7 +98,6 @@ TEMPLATES = [
             os.path.join(BASE_DIR, 'sso', 'templates'),
             Path(BASE_DIR) / 'node_modules' / '@uktrade' / 'great-design-system' / 'dist' / 'components' / 'header-bgs',
             Path(BASE_DIR) / 'node_modules' / '@uktrade' / 'great-design-system' / 'dist' / 'components' / 'footer-bgs',
-
         ],
         'OPTIONS': {
             'context_processors': [
