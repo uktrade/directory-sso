@@ -10,7 +10,7 @@
     "node": "20.11.0"
   },
   "devDependencies": {
-    "@uktrade/great-design-system": "^1.5.15",
+    "@uktrade/great-design-system": "^1.5.17",
     "gulp": "^5.0.0",
     "gulp-sass": "^5.1.0",
     "gulp-sourcemaps": "^2.6.5",
