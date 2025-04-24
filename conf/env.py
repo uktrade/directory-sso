@@ -56,6 +56,7 @@ class BaseSettings(PydanticBaseSettings):
     default_from_email: str
 
     session_cookie_domain: str = ""
+    bgs_session_cookie_domain: str = ""
     session_cookie_secure: bool = True
     sso_session_cookie: str
 
@@ -127,6 +128,7 @@ class BaseSettings(PydanticBaseSettings):
     feature_test_api_enabled: bool = False
     test_api_email_domain: str = "ci.uktrade.io"
     feature_maintenance_mode_enabled: bool = False
+    feature_bgs_login: bool = False
 
     ip_restrictor_allowed_admin_ips: str = Field(default=[])
     ip_restrictor_restrict_ips: bool = False
