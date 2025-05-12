@@ -24,7 +24,7 @@ EMAIL_TEMPLATES = {
     'account/email/password_reset_key': (
         settings.BGS_GOV_NOTIFY_PASSWORD_RESET_TEMPLATE_ID
         if settings.FEATURE_USE_BGS_TEMPLATES
-        else settings.BGS_GOV_NOTIFY_PASSWORD_RESET_TEMPLATE_ID
+        else settings.GOV_NOTIFY_PASSWORD_RESET_TEMPLATE_ID
     ),
 }
 
