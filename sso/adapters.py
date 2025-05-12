@@ -21,7 +21,11 @@ from sso.verification.models import VerificationCode
 EMAIL_TEMPLATES = {
     'account/email/email_confirmation_signup': settings.GOV_NOTIFY_SIGNUP_CONFIRMATION_TEMPLATE_ID,
     'account/email/email_confirmation': settings.GOV_NOTIFY_SIGNUP_CONFIRMATION_TEMPLATE_ID,
-    'account/email/password_reset_key': settings.BGS_GOV_NOTIFY_PASSWORD_RESET_TEMPLATE_ID if settings.FEATURE_USE_BGS_TEMPLATES else settings.BGS_GOV_NOTIFY_PASSWORD_RESET_TEMPLATE_ID,
+    'account/email/password_reset_key': (
+        settings.BGS_GOV_NOTIFY_PASSWORD_RESET_TEMPLATE_ID
+        if settings.FEATURE_USE_BGS_TEMPLATES
+        else settings.BGS_GOV_NOTIFY_PASSWORD_RESET_TEMPLATE_ID
+    ),
 }
 
 
@@ -115,11 +119,18 @@ class AccountAdapter(DefaultAccountAdapter):
 
         if not self.is_social_account(context):
             #  build personalisation dict from context
-            if template_id in (settings.GOV_NOTIFY_PASSWORD_RESET_TEMPLATE_ID, settings.BGS_GOV_NOTIFY_PASSWORD_RESET_TEMPLATE_ID,):
+            if template_id in (
+                settings.GOV_NOTIFY_PASSWORD_RESET_TEMPLATE_ID,
+                settings.BGS_GOV_NOTIFY_PASSWORD_RESET_TEMPLATE_ID,
+            ):
                 if self.is_verified_account(context):
                     personalisation = {'password_reset': self.build_password_reset_url(context)}
                 else:
-                    template_id = settings.BGS_GOV_NOTIFY_PASSWORD_RESET_UNVERIFIED_TEMPLATE_ID if settings.FEATURE_USE_BGS_TEMPLATES else settings.GOV_NOTIFY_PASSWORD_RESET_UNVERIFIED_TEMPLATE_ID
+                    template_id = (
+                        settings.BGS_GOV_NOTIFY_PASSWORD_RESET_UNVERIFIED_TEMPLATE_ID
+                        if settings.FEATURE_USE_BGS_TEMPLATES
+                        else settings.GOV_NOTIFY_PASSWORD_RESET_UNVERIFIED_TEMPLATE_ID
+                    )
                     code = self.regenerate_verification_code(context)
                     personalisation = {
                         'verification_link': self.generate_verification_link(context),
