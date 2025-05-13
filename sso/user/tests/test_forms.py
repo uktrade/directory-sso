@@ -6,6 +6,7 @@ from allauth.account.models import EmailAddress
 from django.conf import settings
 from django.core.validators import EmailValidator
 from django.forms.fields import Field
+from django.test import override_settings
 
 from sso.user import forms
 from sso.user.models import User
@@ -55,6 +56,7 @@ def test_password_reset_form_accepts_nonexisting_email_without_sending(mocked_no
     assert mocked_notification_client().send_email_notification.called is False
 
 
+@override_settings(FEATURE_USE_BGS_TEMPLATES=False)
 @patch('sso.adapters.NotificationsAPIClient')
 @pytest.mark.django_db
 def test_password_reset_form_accepts_existing_email_and_sends(mocked_notification_client, rf, verified_user):
