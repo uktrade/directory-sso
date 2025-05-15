@@ -24,6 +24,7 @@ def redirect_next_processor(request):
         'sso_profile_url': settings.SSO_PROFILE_URL,
     }
 
+
 def current_website_name(request):
     website_name = 'great.gov.uk'
     bgs_domains = ['.bgs.', 'business.gov.uk']
@@ -32,6 +33,4 @@ def current_website_name(request):
         if domain in request.get_host():
             website_name = 'business.gov.uk'
 
-    return {
-        'current_website_name': website_name
-    }
+    return {'current_website_name': website_name}
