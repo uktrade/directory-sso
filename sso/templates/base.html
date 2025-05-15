@@ -5,10 +5,15 @@
   {% get_canonical_url as canonical_url %}
    <link rel="canonical" href="{{ canonical_url }}">
 {% endblock %}
-{% block body_header %}
-  {% include '_header-bgs.html' with hideSearch=True %}
+  {% block body_header %}
+  {% if current_website_name == 'business.gov.uk' %}
+    {% include '_header-bgs.html' with hideSearch=True %}
+  {% else %}
+    {% include '_header.html' with hideSearch=True %}
+  {% endif %}
 {% endblock %}
 {% block body_content_container %}
+{{ current_website_name }}
     <main id="content" class="{% block css_layout_class %}sso-content{% endblock css_layout_class %}" role="main">
       <div class="container">
           {% block body %}

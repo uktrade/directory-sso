@@ -23,3 +23,15 @@ def redirect_next_processor(request):
         'sso_is_logged_in': bool(request.user and request.user.is_authenticated),
         'sso_profile_url': settings.SSO_PROFILE_URL,
     }
+
+def current_website_name(request):
+    website_name = 'great.gov.uk'
+    bgs_domains = ['.bgs.', 'business.gov.uk']
+
+    for domain in bgs_domains:
+        if domain in request.get_host():
+            website_name = 'business.gov.uk'
+
+    return {
+        'current_website_name': website_name
+    }

@@ -28,7 +28,7 @@ class SignupForm(forms.DirectoryComponentsFormMixin, allauth.account.forms.Signu
         label=mark_safe(
             'Tick this box to accept the '
             f'<a href="{urls.domestic.TERMS_AND_CONDITIONS}" target="_blank">terms and '
-            'conditions</a> of the business.gov.uk service.'
+            'conditions</a> of the {current_website_name} service.'
         )
     )
     field_order = [

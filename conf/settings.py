@@ -97,6 +97,7 @@ TEMPLATES = [
         'DIRS': [
             os.path.join(BASE_DIR, 'sso', 'templates'),
             Path(BASE_DIR) / 'node_modules' / '@uktrade' / 'great-design-system' / 'dist' / 'components' / 'header-bgs',
+            Path(BASE_DIR) / 'node_modules' / '@uktrade' / 'great-design-system' / 'dist' / 'components' / 'header',
             Path(BASE_DIR) / 'node_modules' / '@uktrade' / 'great-design-system' / 'dist' / 'components' / 'footer-bgs',
         ],
         'OPTIONS': {
@@ -106,6 +107,7 @@ TEMPLATES = [
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
                 'sso.user.context_processors.redirect_next_processor',
+                'sso.user.context_processors.current_website_name',
                 'directory_components.context_processors.feature_flags',
                 'directory_components.context_processors.urls_processor',
                 'directory_components.context_processors.header_footer_processor',

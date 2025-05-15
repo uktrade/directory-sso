@@ -11266,6 +11266,8 @@ a.great-ds-header__site-link .great-ds-icon-svg {
   border-bottom: 4px solid rgba(0, 0, 0, 0.2);
   background: white;
   height: 100%;
+  display: flex;
+  flex-direction: column;
 }
 .great-ds-card__inner:hover {
   border-color: rgba(0, 0, 0, 0.3);
@@ -11296,9 +11298,16 @@ a.great-ds-header__site-link .great-ds-icon-svg {
 .great-ds-card__link {
   text-decoration: none;
   color: inherit;
-  display: flex;
-  flex-direction: column;
-  height: 100%;
+}
+.great-ds-card__link::before {
+  background-color: rgba(255, 255, 255, 0);
+  bottom: 0;
+  content: "";
+  display: block;
+  left: 0;
+  position: absolute;
+  right: 0;
+  top: 0;
 }
 .great-ds-card__link:focus, .great-ds-card__link:focus:active {
   outline: none;
