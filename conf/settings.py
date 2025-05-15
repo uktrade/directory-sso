@@ -460,10 +460,13 @@ GOV_NOTIFY_API_KEY = env.gov_notify_api_key
 GOV_NOTIFY_SIGNUP_CONFIRMATION_TEMPLATE_ID = env.gov_notify_signup_confirmation_template_id
 GOV_NOTIFY_PASSWORD_RESET_TEMPLATE_ID = env.gov_notify_password_reset_template_id
 GOV_NOTIFY_PASSWORD_RESET_UNVERIFIED_TEMPLATE_ID = env.gov_notify_password_reset_unverified_template_id
+BGS_GOV_NOTIFY_PASSWORD_RESET_TEMPLATE_ID = env.bgs_gov_notify_password_reset_template_id
+BGS_GOV_NOTIFY_PASSWORD_RESET_UNVERIFIED_TEMPLATE_ID = env.bgs_gov_notify_password_reset_unverified_template_id
 GOV_NOTIFY_SOCIAL_PASSWORD_RESET_TEMPLATE_ID = env.gov_notify_social_password_reset_template_id
 GOV_NOTIFY_ALREADY_REGISTERED_TEMPLATE_ID = env.gov_notify_already_registered_template_id
 GOV_NOTIFY_WELCOME_TEMPLATE_ID = env.gov_notify_welcome_template_id
 GOV_NOTIFY_DATA_RETENTION_NOTIFICATION_TEMPLATE_ID = env.gov_notify_data_retention_notification_template_id
+
 SSO_BASE_URL = env.sso_base_url
 
 # Activity Stream
@@ -554,3 +557,5 @@ DATA_RETENTION_STORAGE_YEARS = env.data_retention_storage_years
 DATETIME_INPUT_FORMATS = ['%Y-%m-%d']
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+FEATURE_USE_BGS_TEMPLATES = env.feature_use_bgs_templates
