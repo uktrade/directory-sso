@@ -8,6 +8,7 @@ from directory_api_client import api_client
 from directory_constants import urls
 from django.conf import settings
 from django.contrib.sessions.models import Session
+from django.test import override_settings
 from django.urls import reverse
 from django.utils.encoding import force_bytes
 from django.utils.http import urlsafe_base64_encode
@@ -351,6 +352,7 @@ def test_password_reset_unverified_user(mocked_notification_client, mocked_token
     )
 
 
+@override_settings(FEATURE_USE_BGS_TEMPLATES=False)
 @patch('sso.adapters.NotificationsAPIClient')
 @pytest.mark.django_db
 def test_password_reset_redirect_default_param_if_no_next_param(
@@ -396,6 +398,7 @@ def test_password_reset_invalid_key(client, user):
     assert "Bad Token" in str(response.content)
 
 
+@override_settings(FEATURE_USE_BGS_TEMPLATES=False)
 @patch('sso.adapters.NotificationsAPIClient')
 @pytest.mark.django_db
 def test_password_reset_no_internal_session(mocked_notification_client, client, verified_user):
@@ -419,6 +422,7 @@ def test_password_reset_no_internal_session(mocked_notification_client, client, 
     assert "Bad Token" in str(response.content)
 
 
+@override_settings(FEATURE_USE_BGS_TEMPLATES=False)
 @patch('sso.adapters.NotificationsAPIClient')
 @pytest.mark.django_db
 def test_password_reset_redirect_next_param_if_next_param_valid(
@@ -453,6 +457,7 @@ def test_password_reset_redirect_next_param_if_next_param_valid(
     assert response.url == expected
 
 
+@override_settings(FEATURE_USE_BGS_TEMPLATES=False)
 @patch('sso.adapters.NotificationsAPIClient')
 @pytest.mark.django_db
 def test_password_reset_redirect_next_param_if_next_param_invalid(
@@ -485,6 +490,7 @@ def test_password_reset_redirect_next_param_if_next_param_invalid(
     assert response.url == settings.DEFAULT_REDIRECT_URL
 
 
+@override_settings(FEATURE_USE_BGS_TEMPLATES=False)
 @patch('sso.adapters.NotificationsAPIClient')
 @pytest.mark.django_db
 def test_password_reset_redirect_next_param_if_next_param_internal(
