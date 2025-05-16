@@ -3,11 +3,11 @@
 {% load i18n %}
 {% load breadcrumbs from directory_components %}
 
-{% block head_title %}{% trans "Verify your email address - great.gov.uk" %}{% endblock %}
+{% block head_title %}Verify your email address - {{ current_website_name }}{% endblock %}
 
 {% block content %}
 {% breadcrumbs 'Verify email address' %}
-  <a href="{{ services_urls.great_domestic }}">Great.gov.uk</a>
+  <a href="{{ services_urls.great_domestic }}">{{ current_website_name }}</a>
 {% endbreadcrumbs %}
 <div class="grid-row">
   <div class="column-half">

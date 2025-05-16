@@ -3,19 +3,19 @@
 {% load i18n %}
 {% load socialaccount %}
 {% load breadcrumbs from directory_components %}
-{% block head_title %}Sign in - great.gov.uk{% endblock %}
+{% block head_title %}Sign in - {{ current_website_name }}{% endblock %}
 {% block head_other %}
   {{ block.super }}
   <meta name="robots" content="noindex">
   {% endblock %}
 {% block content %}
 {% breadcrumbs 'Sign in' %}
-  <a href="{{ services_urls.great_domestic }}">Great.gov.uk</a>
+  <a href="{{ services_urls.great_domestic }}">{{ current_website_name }}</a>
 {% endbreadcrumbs %}
 <div class="grid-row" id="login-form-container">
   <div class="column-half">
     <h1 class="heading-xlarge margin-bottom-15">Sign in</h1>
-    <p>Use your great.gov.uk login details to sign in.</p>
+    <p>Use your {{ current_website_name }} login details to sign in.</p>
     <section class="column-two-thirds" id="login-form">
       <form method="POST" action="{% url 'account_login' %}">
         {% csrf_token %}
@@ -31,8 +31,8 @@
 
   <div class="column-half">
     <section>
-      <h2 class="heading-xlarge margin-bottom-15">Create a great.gov.uk account</h2>
-      <p>Create a great.gov.uk account and you'll get a business page to promote your business to overseas buyers.</p>
+      <h2 class="heading-xlarge margin-bottom-15">Create a {{ current_website_name }} account</h2>
+      <p>Create a {{ current_website_name }} account and you'll get a business page to promote your business to overseas buyers.</p>
       <p>It takes less than three minutes to create an account.</p>
       <a class="button" href="{{ sso_register_url }}">Create account</a>
     </section>
