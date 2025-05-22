@@ -26,7 +26,11 @@ class Command(MigrateCommand):
         }
 
         notifications_client = NotificationsAPIClient(settings.GOV_NOTIFY_API_KEY)
-        template_id = settings.GOV_NOTIFY_DATA_RETENTION_NOTIFICATION_TEMPLATE_ID
+        template_id = (
+            settings.BGS_GOV_NOTIFY_DATA_RETENTION_NOTIFICATION_TEMPLATE_ID
+            if settings.FEATURE_USE_BGS_TEMPLATES
+            else settings.GOV_NOTIFY_DATA_RETENTION_NOTIFICATION_TEMPLATE_ID
+        )
 
         # This remindar batch refer to notification batch of 30, 14, 7 and 0 days
         # So notification counter align as 1 -> 30 days, 2->14 days, 3 -> 7 days 4 -> 0 day
