@@ -118,6 +118,7 @@ class BaseSettings(PydanticBaseSettings):
     gov_notify_already_registered_template_id: str = "5c8cc5aa-a4f5-48ae-89e6-df5572c317ec"
     gov_notify_welcome_template_id: str = "0a4ae7a9-7f67-4f5d-a536-54df2dee42df"
     gov_notify_data_retention_notification_template_id: str = "39e44eaa-515f-4843-b7c5-d3dd5d86747c"
+    bgs_gov_notify_data_retention_notification_template_id: str = "a94de81e-a24a-4c70-9392-b64e98673b58"
 
     sso_base_url: str = "https://sso.trade.great.gov.uk"
 
