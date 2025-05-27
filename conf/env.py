@@ -109,6 +109,7 @@ class BaseSettings(PydanticBaseSettings):
 
     gov_notify_api_key: str
     gov_notify_signup_confirmation_template_id: str = "0c76b730-ac37-4b08-a8ba-7b34e4492853"
+    bgs_gov_notify_signup_confirmation_template_id: str = "727f7eeb-59a9-4772-854b-c2f2d92d0c65"
     gov_notify_password_reset_template_id: str = "9ef82687-4bc0-4278-b15c-a49bc9325b28"
     bgs_gov_notify_password_reset_template_id: str = "1b0f8925-d027-4034-9bae-c276b6fef3f2"
     gov_notify_password_reset_unverified_template_id: str = "6ad90342-6e55-4026-8884-b8a1d4d7f11c"

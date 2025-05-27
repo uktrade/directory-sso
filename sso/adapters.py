@@ -19,8 +19,16 @@ from sso.verification import helpers
 from sso.verification.models import VerificationCode
 
 EMAIL_TEMPLATES = {
-    'account/email/email_confirmation_signup': settings.GOV_NOTIFY_SIGNUP_CONFIRMATION_TEMPLATE_ID,
-    'account/email/email_confirmation': settings.GOV_NOTIFY_SIGNUP_CONFIRMATION_TEMPLATE_ID,
+    'account/email/email_confirmation_signup': (
+        settings.BGS_GOV_NOTIFY_SIGNUP_CONFIRMATION_TEMPLATE_ID
+        if settings.FEATURE_USE_BGS_TEMPLATES
+        else settings.GOV_NOTIFY_SIGNUP_CONFIRMATION_TEMPLATE_ID
+    ),
+    'account/email/email_confirmation': (
+        settings.BGS_GOV_NOTIFY_SIGNUP_CONFIRMATION_TEMPLATE_ID
+        if settings.FEATURE_USE_BGS_TEMPLATES
+        else settings.GOV_NOTIFY_SIGNUP_CONFIRMATION_TEMPLATE_ID
+    ),
     'account/email/password_reset_key': (
         settings.BGS_GOV_NOTIFY_PASSWORD_RESET_TEMPLATE_ID
         if settings.FEATURE_USE_BGS_TEMPLATES
