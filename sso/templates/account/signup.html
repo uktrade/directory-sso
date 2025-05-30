@@ -3,17 +3,17 @@
 {% load i18n %}
 {% load breadcrumbs from directory_components %}
 
-{% block head_title %}{% trans "Register - great.gov.uk" %}{% endblock %}
+{% block head_title %}Register - {{ current_website_name }}{% endblock %}
 
 {% block content %}
 {% breadcrumbs 'Register' %}
-  <a href="{{ services_urls.great_domestic }}">Great.gov.uk</a>
+  <a href="{{ services_urls.great_domestic }}">{{ current_website_name }}</a>
 {% endbreadcrumbs %}
 <div class="column-half">
 <div id="profile-register-intro" class="grid-row">
     <h1 class="heading-xlarge">{% trans "Create an account" %}</h1>
     <p>To create an account you'll need a business email address. We'll send you an email with a code to verify it.</p>
-    <p class="margin-bottom-30">Already have a great.gov.uk account? <a class="link" href="{{ sso_login_url }}">Sign in.</a></p>
+    <p class="margin-bottom-30">Already have a {{ current_website_name }} account? <a class="link" href="{{ sso_login_url }}">Sign in.</a></p>
   </div>
 
 <form class="signup" id="signup_form" method="post" action="{% url 'account_signup' %}">
