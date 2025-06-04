@@ -1,4 +1,5 @@
 import logging
+
 from dbt_copilot_python.utility import is_copilot
 from django.conf import settings
 from django.utils.crypto import constant_time_compare

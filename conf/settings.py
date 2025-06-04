@@ -72,6 +72,7 @@ INSTALLED_APPS = [
 
 SITE_ID = 1
 
+
 MIDDLEWARE = [
     'django.middleware.cache.UpdateCacheMiddleware',
     'directory_components.middleware.MaintenanceModeMiddleware',
@@ -88,6 +89,12 @@ MIDDLEWARE = [
     'directory_components.middleware.NoCacheMiddlware',
     'django.middleware.cache.FetchFromCacheMiddleware',
 ]
+
+
+# Fixed login redirect error on multisite
+FEATURE_BGS_LOGIN = env.feature_bgs_login
+if FEATURE_BGS_LOGIN:
+    MIDDLEWARE += ['core.bgs_middleware.BgsSessionMiddleware']
 
 ROOT_URLCONF = 'conf.urls'
 
@@ -349,6 +356,7 @@ ACCOUNT_FORMS = {
 }
 
 SESSION_COOKIE_DOMAIN = env.session_cookie_domain
+BGS_SESSION_COOKIE_DOMAIN = env.bgs_session_cookie_domain
 # env var not same as setting to be more explicit (directory-ui uses same name)
 SESSION_COOKIE_NAME = env.sso_session_cookie
 SESSION_COOKIE_SECURE = env.session_cookie_secure
