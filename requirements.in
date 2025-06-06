@@ -1,6 +1,6 @@
 dbt-copilot-python==0.2.0
 dj-database-url==2.1.*
-django==4.2.20
+django==4.2.22
 django-allauth>=0.51.0
 django-clearcache>=1.2.1
 django-environ>=0.9.0
