@@ -1,6 +1,7 @@
 import os
 import ssl
 from typing import Any, Dict
+from pathlib import Path
 
 import dj_database_url
 import sentry_sdk
@@ -95,6 +96,9 @@ TEMPLATES = [
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': [
             os.path.join(BASE_DIR, 'sso', 'templates'),
+            Path(BASE_DIR) / 'node_modules' / '@uktrade' / 'great-design-system' / 'dist' / 'components' / 'header-bgs',
+            Path(BASE_DIR) / 'node_modules' / '@uktrade' / 'great-design-system' / 'dist' / 'components' / 'header',
+            Path(BASE_DIR) / 'node_modules' / '@uktrade' / 'great-design-system' / 'dist' / 'components' / 'footer-bgs',
         ],
         'OPTIONS': {
             'context_processors': [
@@ -103,6 +107,7 @@ TEMPLATES = [
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
                 'sso.user.context_processors.redirect_next_processor',
+                'sso.user.context_processors.current_website_name',
                 'directory_components.context_processors.feature_flags',
                 'directory_components.context_processors.urls_processor',
                 'directory_components.context_processors.header_footer_processor',
@@ -455,6 +460,7 @@ DIRECTORY_HEALTHCHECK_BACKENDS = [
 
 GOV_NOTIFY_API_KEY = env.gov_notify_api_key
 GOV_NOTIFY_SIGNUP_CONFIRMATION_TEMPLATE_ID = env.gov_notify_signup_confirmation_template_id
+BGS_GOV_NOTIFY_SIGNUP_CONFIRMATION_TEMPLATE_ID = env.bgs_gov_notify_signup_confirmation_template_id
 GOV_NOTIFY_PASSWORD_RESET_TEMPLATE_ID = env.gov_notify_password_reset_template_id
 GOV_NOTIFY_PASSWORD_RESET_UNVERIFIED_TEMPLATE_ID = env.gov_notify_password_reset_unverified_template_id
 BGS_GOV_NOTIFY_PASSWORD_RESET_TEMPLATE_ID = env.bgs_gov_notify_password_reset_template_id
@@ -463,6 +469,7 @@ GOV_NOTIFY_SOCIAL_PASSWORD_RESET_TEMPLATE_ID = env.gov_notify_social_password_re
 GOV_NOTIFY_ALREADY_REGISTERED_TEMPLATE_ID = env.gov_notify_already_registered_template_id
 GOV_NOTIFY_WELCOME_TEMPLATE_ID = env.gov_notify_welcome_template_id
 GOV_NOTIFY_DATA_RETENTION_NOTIFICATION_TEMPLATE_ID = env.gov_notify_data_retention_notification_template_id
+BGS_GOV_NOTIFY_DATA_RETENTION_NOTIFICATION_TEMPLATE_ID = env.bgs_gov_notify_data_retention_notification_template_id
 
 SSO_BASE_URL = env.sso_base_url
 

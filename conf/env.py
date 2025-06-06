@@ -109,6 +109,7 @@ class BaseSettings(PydanticBaseSettings):
 
     gov_notify_api_key: str
     gov_notify_signup_confirmation_template_id: str = "0c76b730-ac37-4b08-a8ba-7b34e4492853"
+    bgs_gov_notify_signup_confirmation_template_id: str = "727f7eeb-59a9-4772-854b-c2f2d92d0c65"
     gov_notify_password_reset_template_id: str = "9ef82687-4bc0-4278-b15c-a49bc9325b28"
     bgs_gov_notify_password_reset_template_id: str = "1b0f8925-d027-4034-9bae-c276b6fef3f2"
     gov_notify_password_reset_unverified_template_id: str = "6ad90342-6e55-4026-8884-b8a1d4d7f11c"
@@ -117,6 +118,7 @@ class BaseSettings(PydanticBaseSettings):
     gov_notify_already_registered_template_id: str = "5c8cc5aa-a4f5-48ae-89e6-df5572c317ec"
     gov_notify_welcome_template_id: str = "0a4ae7a9-7f67-4f5d-a536-54df2dee42df"
     gov_notify_data_retention_notification_template_id: str = "39e44eaa-515f-4843-b7c5-d3dd5d86747c"
+    bgs_gov_notify_data_retention_notification_template_id: str = "a94de81e-a24a-4c70-9392-b64e98673b58"
 
     sso_base_url: str = "https://sso.trade.great.gov.uk"
 
